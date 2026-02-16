@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AppTextStyleViewModifier: ViewModifier {
-    let style: TextStyle
+    let style: AppTextStyle
     
     func body(content: Content) -> some View {
         content

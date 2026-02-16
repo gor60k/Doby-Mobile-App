@@ -12,8 +12,8 @@ struct AuthView<Content: View>: View {
             HeaderView(
                 title: "Регистрация",
                 subtitle: "Создайте свой свой аккаунт",
-                titleStyle: AppTextStyles.largeTitleBold,
-                subtitleStyle: AppTextStyles.headlineMedium
+                titleStyle: AppTextStyle.Presets.largeTitleBold,
+                subtitleStyle: AppTextStyle.Presets.headlineMedium
             )
             
             content

@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension Font {
-    struct AppFonts {
+    struct Custom {
         //MARK: - Large titles
         static let largeTitleBlack = Font.system(.largeTitle, design: .rounded, weight: .black)
         static let largeTitleHeavy = Font.system(.largeTitle, design: .rounded, weight: .heavy)

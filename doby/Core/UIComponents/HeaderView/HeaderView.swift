@@ -3,8 +3,8 @@ import SwiftUI
 struct HeaderView: View {
     let title: String
     let subtitle: String
-    var titleStyle: TextStyle
-    let subtitleStyle: TextStyle
+    var titleStyle: AppTextStyle
+    let subtitleStyle: AppTextStyle
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

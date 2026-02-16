@@ -15,7 +15,7 @@ struct RoleAccordionView<Content: View>: View {
         DisclosureGroup(isExpanded: $isExpanded) {
             VStack(alignment: .leading, spacing: 16) {
                 Text(item.description)
-                    .style(AppTextStyles.bodyRegular)
+                    .style(AppTextStyle.Presets.bodyRegular)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -41,7 +41,7 @@ struct RoleAccordionView<Content: View>: View {
                 .frame(width: 32)
             
             Text(item.title)
-                .style(AppTextStyles.headlineBold)
+                .style(AppTextStyle.Presets.headlineBold)
             
             Spacer()
         }

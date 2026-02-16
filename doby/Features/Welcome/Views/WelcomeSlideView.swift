@@ -9,11 +9,12 @@ struct WelcomeSlideView: View {
             ForEach(slides) { slide in
                 VStack(spacing: 16) {
                     Text(slide.title)
-                        .style(AppTextStyles.largeTitleBold)
+                        .style(AppTextStyle.Presets.largeTitleBold)
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
+            
                     Text(slide.subtitle)
-                        .style(AppTextStyles.headlineMedium)
+                        .style(AppTextStyle.Presets.headlineMedium)
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
                 }

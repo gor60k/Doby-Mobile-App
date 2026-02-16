@@ -11,8 +11,8 @@ struct RoleView: View {
                 HeaderView(
                     title: "Выбор роли",
                     subtitle: "Выберите вашу роль ниже",
-                    titleStyle: AppTextStyles.largeTitleBold,
-                    subtitleStyle: AppTextStyles.headlineMedium
+                    titleStyle: AppTextStyle.Presets.largeTitleBold,
+                    subtitleStyle: AppTextStyle.Presets.headlineMedium
                 )
                 
                 ScrollView {
