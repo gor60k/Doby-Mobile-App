@@ -16,14 +16,14 @@ class RoleAccordionViewModel: ObservableObject {
                 description: "Вы выбираете роль догситтера. Это значит, что владельцы питомцев смогут находить вас и доверять вам заботу о своих любимцах...",
                 systemImage: "pet.carrier.fill",
                 roleValue: "SITTER",
-                bgColor: .primatyYellowLight
+                bgColor: .primaryYellowLight
             ),
             RoleAccordionItem(
                 title: "Я Владелец Питомца!",
                 description: "Вы выбираете роль владельца питомца. Это позволит вам находить проверенных догситтеров...",
                 systemImage: "dog.fill",
                 roleValue: "OWNER",
-                bgColor: .primatyYellowLight
+                bgColor: .primaryYellowLight
             )
         ]
     }

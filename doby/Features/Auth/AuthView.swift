@@ -9,13 +9,6 @@ struct AuthView<Content: View>: View {
     
     var body: some View {
         ScrollView {
-            HeaderView(
-                title: "Регистрация",
-                subtitle: "Создайте свой свой аккаунт",
-                titleStyle: AppTextStyle.Presets.largeTitleBold,
-                subtitleStyle: AppTextStyle.Presets.headlineMedium
-            )
-            
             content
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -25,8 +18,6 @@ struct AuthView<Content: View>: View {
 
 #Preview {
     AuthView(content: {
-        VStack {
-            Text("text")
-        }
+        OwnerRegistrationView(selectedRole: "")
     })
 }

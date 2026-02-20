@@ -4,9 +4,13 @@ struct RoleView: View {
     @State private var navigateNext: Bool = false
     @StateObject private var viewModel = RoleAccordionViewModel()
     @State private var showAuth = false
+    @FocusState private var isPhoneFocused: Bool
+    
+    private let formatter = PhoneFormatter(defaultRegion: "RU")
+    
+    @State private var phone = ""
     
     var body: some View {
-        NavigationStack {
             VStack {
                 HeaderView(
                     title: "Выбор роли",
@@ -26,11 +30,16 @@ struct RoleView: View {
                                 .sheet(isPresented: $showAuth) {
                                     if let role = viewModel.selectedRole {
                                         AuthView(content: {
-                                            VStack {
-                                                Text("Экран авторизации для: \(role)")
+                                            Group {
+                                                if role == "SITTER" {
+                                                    SitterRegistrationView(selecteRole: role)
+                                                } else {
+                                                    OwnerRegistrationView(selectedRole: role)
+                                                }
                                             }
                                         })
-                                        .presentationDetents(role == "SITTER" ? [.large] : [.medium])
+                                        .background(.primaryYellowLight)
+                                        .presentationDetents([.large])
                                         .presentationDragIndicator(.visible)
                                     } else {
                                         Text("какашка")
@@ -42,7 +51,7 @@ struct RoleView: View {
                     .padding()
                 }
             }
-        }
+
     }
 }
 
