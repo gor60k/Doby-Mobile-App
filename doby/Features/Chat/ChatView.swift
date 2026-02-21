@@ -8,8 +8,8 @@ struct ChatView: View {
             
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach(0..<5, id: \.self) { _ in
-                        ChatItemView()
+                    ForEach(UserMock.users) { user in
+                        ChatItemView(userName: user.name, userIcon: user.icon ?? "")
                     }
                 }
                 .padding()

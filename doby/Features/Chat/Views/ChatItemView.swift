@@ -1,9 +1,12 @@
 import SwiftUI
 
 struct ChatItemView: View {
+    let userName: String
+    let userIcon: String
+    
     var body: some View {
         HStack(alignment: .top) {
-            Image("MockUserIcon")
+            Image(userIcon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 50, height: 50)
@@ -11,7 +14,7 @@ struct ChatItemView: View {
                 .overlay(Circle().stroke(Color.gray, lineWidth: 1))
             
             VStack {
-                Text("Джефри Эпштейн")
+                Text(userName)
                     .style(AppTextStyle.Presets.subheadlineSemibold)
             }
         }
@@ -28,7 +31,7 @@ struct ChatItemView: View {
     ZStack {
         Color.gray.ignoresSafeArea()
         VStack {
-            ChatItemView()
+            ChatItemView(userName: "test", userIcon: "MockUserIcon")
         }
         .padding()
     }
