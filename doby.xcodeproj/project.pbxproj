@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21652F44A6F8002E5A40 /* PhoneNumberKit */; };
+		088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		08A280EB2F4104B700B54BD2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +34,22 @@
 		08A280F42F4104B700B54BD2 /* dobyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dobyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		088F21632F44A689002E5A40 /* Exceptions for "doby" folder in "doby" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 08A280DC2F4104B600B54BD2 /* doby */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		08A280DF2F4104B600B54BD2 /* doby */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				088F21632F44A689002E5A40 /* Exceptions for "doby" folder in "doby" target */,
+			);
 			path = doby;
 			sourceTree = "<group>";
 		};
@@ -52,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */,
+				088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +132,8 @@
 			);
 			name = doby;
 			packageProductDependencies = (
+				088F21652F44A6F8002E5A40 /* PhoneNumberKit */,
+				088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */,
 			);
 			productName = doby;
 			productReference = 08A280DD2F4104B600B54BD2 /* doby.app */;
@@ -195,6 +217,9 @@
 			);
 			mainGroup = 08A280D42F4104B600B54BD2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 08A280DE2F4104B600B54BD2 /* Products */;
 			projectDirPath = "";
@@ -400,6 +425,7 @@
 				DEVELOPMENT_TEAM = 59WCZD34K5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = doby/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +458,7 @@
 				DEVELOPMENT_TEAM = 59WCZD34K5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = doby/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -578,6 +605,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		088F21652F44A6F8002E5A40 /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
+		};
+		088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = "PhoneNumberKit-Static";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 08A280D52F4104B600B54BD2 /* Project object */;
 }

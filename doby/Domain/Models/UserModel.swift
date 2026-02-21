@@ -10,4 +10,5 @@ struct UserModel: Codable, Identifiable {
     var name: String
     let role: Role
     var phone: String
+    var icon: String?
 }

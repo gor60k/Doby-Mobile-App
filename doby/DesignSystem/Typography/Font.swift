@@ -2,7 +2,7 @@ import SwiftUI
 
 extension Font {
     struct Custom {
-        //MARK: - Large titles
+        // MARK: - Large titles
         static let largeTitleBlack = Font.system(.largeTitle, design: .rounded, weight: .black)
         static let largeTitleHeavy = Font.system(.largeTitle, design: .rounded, weight: .heavy)
         static let largeTitleBold = Font.system(.largeTitle, design: .rounded, weight: .bold)
@@ -13,7 +13,7 @@ extension Font {
         static let largeTitleThin = Font.system(.largeTitle, design: .rounded, weight: .thin)
         static let largeTitleUltraLight = Font.system(.largeTitle, design: .rounded, weight: .ultraLight)
         
-        //MARK: - Titles
+        // MARK: - Titles
         static let titleBlack = Font.system(.title, design: .rounded, weight: .black)
         static let titleHeavy = Font.system(.title, design: .rounded, weight: .heavy)
         static let titleBold = Font.system(.title, design: .rounded, weight: .bold)
@@ -24,7 +24,7 @@ extension Font {
         static let titleThin = Font.system(.title, design: .rounded, weight: .thin)
         static let titleUltraLight = Font.system(.title, design: .rounded, weight: .ultraLight)
         
-        //MARK: - Headlines
+        // MARK: - Headlines
         static let headlineBlack = Font.system(.headline, design: .rounded, weight: .black)
         static let headlineHeavy = Font.system(.headline, design: .rounded, weight: .heavy)
         static let headlineBold = Font.system(.headline, design: .rounded, weight: .bold)
@@ -35,7 +35,7 @@ extension Font {
         static let headlineThin = Font.system(.headline, design: .rounded, weight: .thin)
         static let headlineUltraLight = Font.system(.headline, design: .rounded, weight: .ultraLight)
         
-        //MARK: - Body text
+        // MARK: - Body text
         static let bodyBlack = Font.system(.body, design: .rounded, weight: .black)
         static let bodyHeavy = Font.system(.body, design: .rounded, weight: .heavy)
         static let bodyBold = Font.system(.body, design: .rounded, weight: .bold)
@@ -46,7 +46,7 @@ extension Font {
         static let bodyThin = Font.system(.body, design: .rounded, weight: .thin)
         static let bodyUltraLight = Font.system(.body, design: .rounded, weight: .ultraLight)
         
-        //MARK: - Subheadlines
+        // MARK: - Subheadlines
         static let subheadlineBlack = Font.system(.subheadline, design: .rounded, weight: .black)
         static let subheadlineHeavy = Font.system(.subheadline, design: .rounded, weight: .heavy)
         static let subheadlineBold = Font.system(.subheadline, design: .rounded, weight: .bold)
@@ -57,7 +57,7 @@ extension Font {
         static let subheadlineThin = Font.system(.subheadline, design: .rounded, weight: .thin)
         static let subheadlineUltraLight = Font.system(.subheadline, design: .rounded, weight: .ultraLight)
         
-        //MARK: - Footnotes
+        // MARK: - Footnotes
         static let footnoteBlack = Font.system(.footnote, design: .rounded, weight: .black)
         static let footnoteHeavy = Font.system(.footnote, design: .rounded, weight: .heavy)
         static let footnoteBold = Font.system(.footnote, design: .rounded, weight: .bold)
@@ -68,7 +68,7 @@ extension Font {
         static let footnoteThin = Font.system(.footnote, design: .rounded, weight: .thin)
         static let footnoteUltraLight = Font.system(.footnote, design: .rounded, weight: .ultraLight)
         
-        //MARK: - Caption
+        // MARK: - Caption
         static let captionBlack = Font.system(.caption, design: .rounded, weight: .black)
         static let captionHeavy = Font.system(.caption, design: .rounded, weight: .heavy)
         static let captionBold = Font.system(.caption, design: .rounded, weight: .bold)

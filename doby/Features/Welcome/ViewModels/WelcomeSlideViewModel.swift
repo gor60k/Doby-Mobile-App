@@ -14,10 +14,4 @@ class WelcomeSlideViewModel: ObservableObject {
     var isLastSlide: Bool {
         currentPage == slides.count - 1
     }
-    
-    func continueTapped() {
-        if isLastSlide {
-            navigateToRoleSelection = true
-        }
-    }
 }

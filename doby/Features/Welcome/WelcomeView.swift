@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @EnvironmentObject var router: AppRouter
+    
     @StateObject private var viewModel = WelcomeSlideViewModel(slides: [
         WelcomeSlide(id: 0, title: "Найдите надежного ситтера", subtitle: "Просмотрите профили и выберете того, кому доверите любимца"),
         WelcomeSlide(id: 1, title: "Договоритесь в чате", subtitle: "Обсудите все детали ухода прямо в приложении"),
@@ -9,6 +11,7 @@ struct WelcomeView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
+            // MARK: - фоновое изображение
             Image("welcomeImage")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -17,12 +20,21 @@ struct WelcomeView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 16) {
+                // MARK: - Пагинация для слайдера
                 WelcomePageIndicatorView(numberOfPages: viewModel.slides.count, currentPage: viewModel.currentPage)
+                
+                // MARK: - Сам слайдер
                 WelcomeSlideView(currentPage: $viewModel.currentPage, slides: viewModel.slides)
+                
+                // MARK: - Кнопка для перехода на другой экран
                 PrimaryButton(
                     title: "Продолжить",
                     isEnabled: viewModel.isLastSlide,
-                    action: viewModel.continueTapped
+                    action: {
+                        if viewModel.isLastSlide {
+                            router.push(.role)
+                        }
+                    }
                 )
             }
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 32, trailing: 16))
@@ -30,9 +42,6 @@ struct WelcomeView: View {
             .cornerRadius(16)
         }
         .ignoresSafeArea(edges: .bottom)
-        .navigationDestination(isPresented: $viewModel.navigateToRoleSelection) {
-            RoleView()
-        }
     }
 }
 
