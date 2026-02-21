@@ -38,7 +38,6 @@ struct RoleView: View {
                                                 }
                                             }
                                         })
-                                        .background(.primaryYellowLight)
                                         .presentationDetents([.large])
                                         .presentationDragIndicator(.visible)
                                     } else {

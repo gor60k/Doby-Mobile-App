@@ -14,8 +14,6 @@ struct OwnerRegistrationView: View {
     
     var body: some View {
             VStack(spacing: 16) {
-                Text(selectedRole)
-                
                 PrimaryTextField(title: "Введите имя") {
                     TextField("Имя", text: $name)
                 }
@@ -23,6 +21,7 @@ struct OwnerRegistrationView: View {
                 PrimaryTextField(title: "Введите номер телефона") {
                     PhoneNumberTextFieldView(phoneNumber: $phone, isValid: $isPhoneValid)
                 }
+                
                 
                 PrimaryButton(
                     title: "Зарегистрироваться",
@@ -32,14 +31,30 @@ struct OwnerRegistrationView: View {
                         
                         if isHomeActive {
                             dismiss()
-                            router.push(.home)
+                            router.push(.rootTab)
                         }
                     }
                 )
                 
                 Divider()
                     .overlay(.secondary)
+                
+                PrimaryButton(
+                    title: "Войти с Google",
+                    isEnabled: true,
+                    action: nil
+                )
+                
+                PrimaryButton(
+                    title: "Войти с Telegram",
+                    isEnabled: true,
+                    action: nil
+                )
             }
-            .padding()
+            .padding(.horizontal)
     }
+}
+
+#Preview {
+    OwnerRegistrationView(selectedRole: "")
 }

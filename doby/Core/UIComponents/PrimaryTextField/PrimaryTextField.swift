@@ -23,11 +23,11 @@ struct PrimaryTextField<Content: View>: View {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color(.systemBackground))
+                        .fill(Color(.systemGray6))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(.primaryYellow, lineWidth: 1)
+                        .stroke(.secondary, lineWidth: 1)
                 )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -36,7 +36,7 @@ struct PrimaryTextField<Content: View>: View {
 
 #Preview {
     ZStack {
-        Color.gray.ignoresSafeArea()
+//        Color.gray.ignoresSafeArea()
         PrimaryTextField(title: "Text") {
             TextField("Text", text: .constant(""))
         }

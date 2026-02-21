@@ -4,7 +4,7 @@ import Combine
 enum AppRoute: Hashable {
     case welcome
     case role
-    case home
+    case rootTab
 }
 
 final class AppRouter: ObservableObject {
