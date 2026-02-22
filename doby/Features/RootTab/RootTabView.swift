@@ -2,12 +2,12 @@ import SwiftUI
 
 struct RootTabView: View {
     @State private var selectedTab: RootTab = .profile
-    @Environment(UserViewModel.self) var userVM
+    @Environment(AppSession.self) var session
     
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            if let role = userVM.currentUser?.role {
+            if let role = session.currentUser?.role {
                 switch role {
                 case .owner: ownerTabs
                 case .sitter: sitterTabs

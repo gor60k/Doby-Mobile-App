@@ -3,20 +3,20 @@ import SwiftUI
 @main
 struct dobyApp: App {
     @StateObject private var router = AppRouter()
-    @State private var userVM = UserViewModel()
+    @State private var session = AppSession(user: UserMock.sitter, auth: true)
     
     var body: some Scene {
         WindowGroup {
             Group {
-                if userVM.isAuthenticated {
-                    NavigationStack {
+                if session.isAuthenticated {
+                    NavigationStack(path: $router.path) {
                         RootTabView()
                             .navigationDestination(for: AppRoute.self) { route in
                                     destinationView(for: route)
                             }
                     }
                 } else {
-                    NavigationStack {
+                    NavigationStack(path: $router.path) {
                         WelcomeView()
                             .navigationDestination(for: AppRoute.self) { route in
                                     destinationView(for: route)
@@ -25,7 +25,7 @@ struct dobyApp: App {
                 }
             }
             .environmentObject(router)
-            .environment(userVM)
+            .environment(session)
         }
     }
 }

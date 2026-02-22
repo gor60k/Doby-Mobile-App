@@ -11,27 +11,33 @@ struct OwnerRegistrationView: View {
     @State private var isHomeActive = false
     
     let selectedRole: String
+    @State private var viewModel = OwnerRegistrationViewModel()
     
     var body: some View {
             VStack(spacing: 16) {
                 PrimaryTextField(title: "Введите имя") {
-                    TextField("Имя", text: $name)
+                    TextField("Имя", text: $viewModel.name)
                 }
                 
                 PrimaryTextField(title: "Введите номер телефона") {
-                    PhoneNumberTextFieldView(phoneNumber: $phone, isValid: $isPhoneValid)
+                    PhoneNumberTextFieldView(phoneNumber: $viewModel.phone, isValid: $isPhoneValid)
                 }
                 
                 
                 PrimaryButton(
                     title: "Зарегистрироваться",
-                    isEnabled: isPhoneValid && !name.isEmpty,
+                    isEnabled: isPhoneValid && !viewModel.name.isEmpty && !viewModel.isLoading,
                     action: {
-                        isHomeActive = true
-                        
-                        if isHomeActive {
-                            dismiss()
-                            router.push(.rootTab)
+                        Task {
+                            viewModel.role = selectedRole
+                            await viewModel.register()
+                            
+                            if viewModel.errorMessage == nil {
+                                await MainActor.run {
+                                    dismiss()
+                                    router.push(.rootTab)
+                                }
+                            }
                         }
                     }
                 )

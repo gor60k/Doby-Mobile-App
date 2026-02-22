@@ -4,7 +4,7 @@ struct ChatView: View {
     
     var body: some View {
         VStack {
-            HeaderView(title: "Чат", subtitle: "Общайтесь", titleStyle: AppTextStyle.Presets.largeTitleBold, subtitleStyle: AppTextStyle.Presets.subheadlineMedium)
+            HeaderView(title: "Чат", subtitle: nil, titleStyle: AppTextStyle.Presets.largeTitleBold, subtitleStyle: nil)
             
             ScrollView {
                 VStack(spacing: 16) {
@@ -16,5 +16,9 @@ struct ChatView: View {
             }
         }
     }
+}
+
+#Preview {
+    ChatView()
 }
 
