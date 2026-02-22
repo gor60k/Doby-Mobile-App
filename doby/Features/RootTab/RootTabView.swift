@@ -47,5 +47,5 @@ struct RootTabView: View {
 
 #Preview {
     RootTabView()
-        .environment(UserViewModel())
+        .environment(AppSession(user: UserMock.sitter, auth: true))
 }

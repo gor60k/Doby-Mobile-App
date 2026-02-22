@@ -10,15 +10,15 @@ final class UserService: UserServiceProtocol {
         self.apiClient = apiClient
     }
     
-    func fetchAllUsers() async throws -> [UserModel] {
+    func fetchAllUsers() async throws -> [User] {
         try await apiClient.request(UserServiceEndpoint.getAllUsers)
     }
     
-    func fetchUser(id: String) async throws -> UserModel {
+    func fetchUser(id: String) async throws -> User {
         try await apiClient.request(UserServiceEndpoint.getUser(id: id))
     }
     
-    func createUser(_ request: CreateUserRequestModel) async throws -> UserModel {
+    func createUser(_ request: CreateUserRequestModel) async throws -> User {
         try await apiClient.request(UserServiceEndpoint.createUser(user: request))
     }
 }

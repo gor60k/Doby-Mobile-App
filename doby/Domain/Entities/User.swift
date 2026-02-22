@@ -5,7 +5,7 @@ enum Role: String, Codable {
     case sitter = "SITTER"
 }
 
-struct UserModel: Codable, Identifiable {
+struct User: Codable, Identifiable {
     var id = UUID()
     var name: String
     let role: Role

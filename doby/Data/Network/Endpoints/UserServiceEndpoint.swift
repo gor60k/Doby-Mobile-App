@@ -1,5 +1,11 @@
 import Foundation
 
+enum UserServiceEndpoint {
+    case getAllUsers
+    case getUser(id: String)
+    case createUser(user: CreateUserRequestModel)
+}
+
 extension UserServiceEndpoint: APIEndpointProtocol {
     var baseURL: URL {
         URL(string: "http://localhost:3000")!
@@ -28,3 +34,4 @@ extension UserServiceEndpoint: APIEndpointProtocol {
         }
     }
 }
+

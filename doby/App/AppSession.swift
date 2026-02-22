@@ -3,13 +3,13 @@ import Observation
 
 @Observable
 final class AppSession {
-    var currentUser: UserModel?
+    var currentUser: User?
     var isAuthenticated: Bool = false
     
     static let preview = AppSession(user: UserMock.owner, auth: true)
     static let guest = AppSession(user: nil, auth: false)
     
-    init(user: UserModel? = nil, auth: Bool = false) {
+    init(user: User? = nil, auth: Bool = false) {
         self.currentUser = user
         self.isAuthenticated = auth
     }

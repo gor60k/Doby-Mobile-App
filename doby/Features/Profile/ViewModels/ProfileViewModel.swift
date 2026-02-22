@@ -5,7 +5,7 @@ import Observation
 class ProfileViewModel {
     private let userService: UserServiceProtocol
     
-    var user: UserModel?
+    var user: User?
     var isLoading: Bool = false
     var errorMessage: String?
     
