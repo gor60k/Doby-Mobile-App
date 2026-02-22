@@ -2,9 +2,9 @@ import SwiftUI
 
 struct HeaderView: View {
     let title: String
-    let subtitle: String
+    let subtitle: String?
     var titleStyle: AppTextStyle
-    let subtitleStyle: AppTextStyle
+    let subtitleStyle: AppTextStyle?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -12,9 +12,11 @@ struct HeaderView: View {
                 .font(titleStyle.font)
                 .foregroundColor(titleStyle.color)
                 
-            Text(subtitle)
-                .font(subtitleStyle.font)
-                .foregroundColor(subtitleStyle.color)
+            if let subtitle = subtitle {
+                Text(subtitle)
+                    .font((subtitleStyle ?? AppTextStyle.Presets.subheadlineRegular).font)
+                    .foregroundColor((subtitleStyle ?? AppTextStyle.Presets.subheadlineRegular).color)
+            }
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .leading)

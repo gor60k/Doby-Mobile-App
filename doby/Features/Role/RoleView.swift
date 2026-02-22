@@ -1,13 +1,12 @@
 import SwiftUI
 
 struct RoleView: View {
-    @State private var navigateNext: Bool = false
     @StateObject private var viewModel = RoleAccordionViewModel()
-    @State private var showAuth = false
+    
     @FocusState private var isPhoneFocused: Bool
     
-    private let formatter = PhoneFormatter(defaultRegion: "RU")
-    
+    @State private var navigateNext: Bool = false
+    @State private var showAuth = false
     @State private var phone = ""
     
     var body: some View {
