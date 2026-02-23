@@ -18,7 +18,7 @@ final class UserService: UserServiceProtocol {
         try await apiClient.request(UserServiceEndpoint.getUser(id: id))
     }
     
-    func createUser(_ request: CreateUserRequestModel) async throws -> User {
+    func createUser(_ request: CreateUserRequest) async throws -> User {
         try await apiClient.request(UserServiceEndpoint.createUser(user: request))
     }
 }

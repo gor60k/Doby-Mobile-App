@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CreateUserRequestModel: Encodable, Copyable {
+struct CreateUserRequest: Encodable, Copyable {
     let name: String
     let role: Role
     let phone: String

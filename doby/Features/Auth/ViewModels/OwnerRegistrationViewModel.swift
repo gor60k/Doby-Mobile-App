@@ -25,7 +25,7 @@ final class OwnerRegistrationViewModel {
         print("регистрация началась")
         
         do {
-            let request = CreateUserRequestModel(
+            let request = CreateUserRequest(
                 name: name,
                 role: role ?? .owner,
                 phone: phone

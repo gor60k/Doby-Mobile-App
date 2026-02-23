@@ -3,7 +3,7 @@ import Foundation
 enum UserServiceEndpoint {
     case getAllUsers
     case getUser(id: String)
-    case createUser(user: CreateUserRequestModel)
+    case createUser(user: CreateUserRequest)
 }
 
 extension UserServiceEndpoint: APIEndpointProtocol {
