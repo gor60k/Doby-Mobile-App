@@ -10,7 +10,7 @@ struct OwnerRegistrationView: View {
     @State private var isPhoneValid = false
     @State private var isHomeActive = false
     
-    let selectedRole: String
+    let selectedRole: Role
     @State private var viewModel = OwnerRegistrationViewModel()
     
     var body: some View {
@@ -62,5 +62,5 @@ struct OwnerRegistrationView: View {
 }
 
 #Preview {
-    OwnerRegistrationView(selectedRole: "")
+    OwnerRegistrationView(selectedRole: .owner)
 }

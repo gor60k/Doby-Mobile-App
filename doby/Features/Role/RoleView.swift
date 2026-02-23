@@ -1,7 +1,10 @@
 import SwiftUI
 
 struct RoleView: View {
+    @EnvironmentObject private var router: AppRouter
+    
     @StateObject private var viewModel = RoleAccordionViewModel()
+    @State private var session = SessionService()
     
     @FocusState private var isPhoneFocused: Bool
     
@@ -22,37 +25,15 @@ struct RoleView: View {
                     VStack(spacing: 16) {
                         ForEach(viewModel.accordionItems) { item in
                             RoleAccordionView(item: item) {
-                                PrimaryButton(title: "Продолжить", isEnabled: true) {
-                                    viewModel.selectRole(item.roleValue)
-                                    showAuth = true
-                                }
-                                .sheet(isPresented: $showAuth) {
-                                    if let role = viewModel.selectedRole {
-                                        AuthView(content: {
-                                            Group {
-                                                if role == "SITTER" {
-                                                    SitterRegistrationView(selecteRole: role)
-                                                } else {
-                                                    OwnerRegistrationView(selectedRole: role)
-                                                }
-                                            }
-                                        })
-                                        .presentationDetents([.large])
-                                        .presentationDragIndicator(.visible)
-                                    } else {
-                                        Text("какашка")
-                                    }
-                                }
+                                PrimaryButton(title: "Продолжить", isEnabled: true, action: {
+                                    session.selectedRole = item.roleValue
+                                    router.push(.auth)
+                                })
                             }
                         }
                     }
                     .padding()
                 }
             }
-
     }
-}
-
-#Preview {
-    RoleView()
 }

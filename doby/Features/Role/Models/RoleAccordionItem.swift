@@ -5,7 +5,7 @@ struct RoleAccordionItem: Identifiable {
     let title: String
     let description: String
     let systemImage: String
-    let roleValue: String
+    let roleValue: Role
     let bgColor: Color?
 }
 

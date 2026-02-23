@@ -56,7 +56,7 @@ struct RoleAccordionView<Content: View>: View {
             title: "Я Догситтер!",
             description: "Описание роли догситтера в несколько строк для проверки верстки.",
             systemImage: "pet.carrier.fill",
-            roleValue: "SITTER",
+            roleValue: .sitter,
             bgColor: .yellow.opacity(0.2)
         )) {
             Button("Action") {}

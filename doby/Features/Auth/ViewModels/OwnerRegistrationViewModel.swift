@@ -7,7 +7,7 @@ final class OwnerRegistrationViewModel {
     private let userService: UserServiceProtocol
     
     var name: String = ""
-    var role: String = ""
+    var role: Role?
     var phone: String = ""
     
     var isLoading: Bool = false
@@ -27,7 +27,7 @@ final class OwnerRegistrationViewModel {
         do {
             let request = CreateUserRequestModel(
                 name: name,
-                role: role,
+                role: role ?? .owner,
                 phone: phone
             )
             

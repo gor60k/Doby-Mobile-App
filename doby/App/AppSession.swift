@@ -19,4 +19,3 @@ final class AppSession {
         isAuthenticated = false
     }
 }
-
