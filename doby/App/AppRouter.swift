@@ -4,6 +4,7 @@ import Combine
 enum AppRoute: Hashable {
     case welcome
     case role
+    case auth
     case rootTab
 }
 

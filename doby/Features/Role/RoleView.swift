@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct RoleView: View {
-    @StateObject private var viewModel = RoleAccordionViewModel()
+    @EnvironmentObject private var router: AppRouter
+    
+    @StateObject private var viewModel = RoleViewModel()
     
     @FocusState private var isPhoneFocused: Bool
     
-    @State private var navigateNext: Bool = false
-    @State private var showAuth = false
-    @State private var phone = ""
+    @State private var session = SessionService()
     
     var body: some View {
             VStack {
@@ -21,38 +21,25 @@ struct RoleView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         ForEach(viewModel.accordionItems) { item in
-                            RoleAccordionView(item: item) {
-                                PrimaryButton(title: "Продолжить", isEnabled: true) {
-                                    viewModel.selectRole(item.roleValue)
-                                    showAuth = true
-                                }
-                                .sheet(isPresented: $showAuth) {
-                                    if let role = viewModel.selectedRole {
-                                        AuthView(content: {
-                                            Group {
-                                                if role == "SITTER" {
-                                                    SitterRegistrationView(selecteRole: role)
-                                                } else {
-                                                    OwnerRegistrationView(selectedRole: role)
-                                                }
-                                            }
-                                        })
-                                        .presentationDetents([.large])
-                                        .presentationDragIndicator(.visible)
-                                    } else {
-                                        Text("какашка")
-                                    }
-                                }
+                            PrimaryDisclosureView(
+                                title: item.title,
+                                headlineIcon: item.systemImage,
+                                description: item.description
+                            ) {
+                                PrimaryButton(title: "Продолжить", isEnabled: true, action: {
+                                    viewModel.selectRole(item.role ?? .owner)
+                                    router.push(.auth)
+                                })
                             }
+                            .foregroundColor(.primaryYellow)
+                            .glassEffect(
+                                .regular.tint(.primaryYellowLight).interactive(),
+                                in: RoundedRectangle(cornerRadius: 16)
+                            )
                         }
                     }
                     .padding()
                 }
             }
-
     }
-}
-
-#Preview {
-    RoleView()
 }

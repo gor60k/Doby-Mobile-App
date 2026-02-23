@@ -3,7 +3,7 @@ import SwiftUI
 @main
 struct dobyApp: App {
     @StateObject private var router = AppRouter()
-    @State private var session = AppSession(user: UserMock.sitter, auth: true)
+    @State private var session = SessionService()
     
     var body: some Scene {
         WindowGroup {
@@ -35,6 +35,7 @@ private func destinationView(for route: AppRoute) -> some View {
     switch route {
     case .welcome: WelcomeView()
     case .role: RoleView()
+    case .auth: AuthView()
     case .rootTab: RootTabView()
     }
 }

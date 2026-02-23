@@ -7,8 +7,9 @@ final class OwnerRegistrationViewModel {
     private let userService: UserServiceProtocol
     
     var name: String = ""
-    var role: String = ""
-    var phone: String = ""
+    var email: String = ""
+    var password: String = ""
+    var role: Role?
     
     var isLoading: Bool = false
     var errorMessage: String?
@@ -25,10 +26,11 @@ final class OwnerRegistrationViewModel {
         print("регистрация началась")
         
         do {
-            let request = CreateUserRequestModel(
+            let request = CreateUserRequest(
                 name: name,
-                role: role,
-                phone: phone
+                email: email,
+                password: password,
+                role: role ?? .owner,
             )
             
             let createUser = try await userService.createUser(request)

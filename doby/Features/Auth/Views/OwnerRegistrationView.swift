@@ -6,11 +6,13 @@ struct OwnerRegistrationView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var name = ""
-    @State private var phone = ""
+    @State private var email = ""
+    @State private var password = ""
+    
     @State private var isPhoneValid = false
     @State private var isHomeActive = false
     
-    let selectedRole: String
+    let selectedRole: Role
     @State private var viewModel = OwnerRegistrationViewModel()
     
     var body: some View {
@@ -19,14 +21,19 @@ struct OwnerRegistrationView: View {
                     TextField("Имя", text: $viewModel.name)
                 }
                 
-                PrimaryTextField(title: "Введите номер телефона") {
-                    PhoneNumberTextFieldView(phoneNumber: $viewModel.phone, isValid: $isPhoneValid)
+                PrimaryTextField(title: "Введите ваш Email") {
+                    TextField("Email", text: $viewModel.email)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
                 }
                 
+                PrimaryTextField(title: "Придумайте пароль") {
+                    TextField("Пароль", text: $viewModel.password)
+                }
                 
                 PrimaryButton(
                     title: "Зарегистрироваться",
-                    isEnabled: isPhoneValid && !viewModel.name.isEmpty && !viewModel.isLoading,
+                    isEnabled: !viewModel.name.isEmpty && !viewModel.isLoading,
                     action: {
                         Task {
                             viewModel.role = selectedRole
@@ -34,7 +41,6 @@ struct OwnerRegistrationView: View {
                             
                             if viewModel.errorMessage == nil {
                                 await MainActor.run {
-                                    dismiss()
                                     router.push(.rootTab)
                                 }
                             }
@@ -62,5 +68,5 @@ struct OwnerRegistrationView: View {
 }
 
 #Preview {
-    OwnerRegistrationView(selectedRole: "")
+    OwnerRegistrationView(selectedRole: .owner)
 }

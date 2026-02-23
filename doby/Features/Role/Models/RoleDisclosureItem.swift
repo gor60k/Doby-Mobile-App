@@ -1,11 +1,10 @@
 import SwiftUI
 
-struct RoleAccordionItem: Identifiable {
+struct RoleDisclosureItem: Identifiable {
     let id = UUID()
     let title: String
     let description: String
     let systemImage: String
-    let roleValue: String
-    let bgColor: Color?
+    let role: Role?
 }
 

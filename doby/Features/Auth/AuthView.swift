@@ -1,11 +1,7 @@
 import SwiftUI
 
-struct AuthView<Content: View>: View {
-    private let content: Content
-    
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
+struct AuthView: View {
+    @State private var session = SessionService()
     
     var body: some View {
         VStack {
@@ -20,7 +16,11 @@ struct AuthView<Content: View>: View {
                 .padding(.horizontal)
             
             ScrollView {
-                content
+                if session.selectedRole == .sitter {
+                    SitterRegistrationView()
+                } else {
+                    OwnerRegistrationView(selectedRole: .owner)
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -29,7 +29,5 @@ struct AuthView<Content: View>: View {
 }
 
 #Preview {
-    AuthView(content: {
-        OwnerRegistrationView(selectedRole: "")
-    })
+    AuthView()
 }

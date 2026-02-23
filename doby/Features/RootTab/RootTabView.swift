@@ -2,12 +2,12 @@ import SwiftUI
 
 struct RootTabView: View {
     @State private var selectedTab: RootTab = .profile
-    @Environment(AppSession.self) var session
+    @State private var session = SessionService()
     
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            if let role = session.currentUser?.role {
+            if let role = session.selectedRole {
                 switch role {
                 case .owner: ownerTabs
                 case .sitter: sitterTabs
@@ -43,9 +43,4 @@ struct RootTabView: View {
         OrdersView()
             .tabItem { Label(RootTab.orders.title, systemImage: RootTab.orders.icon) }
     }
-}
-
-#Preview {
-    RootTabView()
-        .environment(UserViewModel())
 }
