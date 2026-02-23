@@ -3,7 +3,7 @@ import SwiftUI
 @main
 struct dobyApp: App {
     @StateObject private var router = AppRouter()
-    @State private var session = AppSession(user: nil, auth: false)
+    @State private var session = SessionService()
     
     var body: some Scene {
         WindowGroup {

@@ -9,6 +9,6 @@ struct User: Codable, Identifiable {
     var id = UUID()
     var name: String
     let role: Role
-    var phone: String
+    var email: String?
     var icon: String?
 }
