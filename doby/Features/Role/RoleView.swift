@@ -11,7 +11,7 @@ struct RoleView: View {
     
     var body: some View {
             VStack {
-                HeaderView(
+                ViewHeadline(
                     title: "Выбор роли",
                     subtitle: "Выберите вашу роль ниже",
                     titleStyle: AppTextStyle.Presets.largeTitleBold,
@@ -21,7 +21,7 @@ struct RoleView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         ForEach(viewModel.accordionItems) { item in
-                            PrimaryDisclosureView(
+                            PrimaryDisclosure(
                                 title: item.title,
                                 headlineIcon: item.systemImage,
                                 description: item.description

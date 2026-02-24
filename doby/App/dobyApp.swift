@@ -8,7 +8,7 @@ struct dobyApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if session.isAuthenticated {
+                if session.isRegistered {
                     NavigationStack(path: $router.path) {
                         RootTabView()
                             .navigationDestination(for: AppRoute.self) { route in

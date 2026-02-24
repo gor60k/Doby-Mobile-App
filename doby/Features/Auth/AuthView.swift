@@ -5,7 +5,7 @@ struct AuthView: View {
     
     var body: some View {
         VStack {
-            HeaderView(
+            ViewHeadline(
                 title: "Регистрация",
                 subtitle: "Создайте аккаунт",
                 titleStyle: AppTextStyle.Presets.largeTitleBold,

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PrimaryDisclosureLabelView: View {
+struct PrimaryDisclosureLabel: View {
     let title: String
     let icon: String?
     

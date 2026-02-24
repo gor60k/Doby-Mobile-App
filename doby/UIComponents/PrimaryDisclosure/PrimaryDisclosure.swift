@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PrimaryDisclosureView<Content: View>: View {
+struct PrimaryDisclosure<Content: View>: View {
     @State private var isExpanded: Bool = false
     
     let title: String
@@ -31,7 +31,7 @@ struct PrimaryDisclosureView<Content: View>: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         } label: {
-            PrimaryDisclosureLabelView(
+            PrimaryDisclosureLabel(
                 title: title,
                 icon: headlineIcon
             )
@@ -45,7 +45,7 @@ struct PrimaryDisclosureView<Content: View>: View {
     ZStack {
         Color.gray.ignoresSafeArea()
         VStack {
-            PrimaryDisclosureView(
+            PrimaryDisclosure(
                 title: "title",
                 headlineIcon: "dog.fill",
                 description: "description",
@@ -62,3 +62,5 @@ struct PrimaryDisclosureView<Content: View>: View {
         .padding()
     }
 }
+
+

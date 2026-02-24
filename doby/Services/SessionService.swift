@@ -5,6 +5,7 @@ import Observation
 final class SessionService {
     private let roleStorageKey: String = "selectedUserRole"
     private let authStorageKey: String = "isAuthenticated"
+    private let regStorageKey: String = "isRegistered"
     
     var selectedRole: Role? {
         get {
@@ -26,6 +27,16 @@ final class SessionService {
         }
     }
     
+    var isRegistered: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: regStorageKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: regStorageKey)
+            print("REG STATUS UPDATED:", newValue)
+        }
+    }
+    
     var isAuthenticated: Bool {
         get {
             return UserDefaults.standard.bool(forKey: authStorageKey)
@@ -34,5 +45,9 @@ final class SessionService {
             UserDefaults.standard.set(newValue, forKey: authStorageKey)
             print("AUTH STATUS UPDATED:", newValue)
         }
+    }
+    
+    func removeKey(_ key: String) {
+        UserDefaults.standard.removeObject(forKey: key)
     }
 }

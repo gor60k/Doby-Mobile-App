@@ -3,7 +3,8 @@ import PhoneNumberKit
 
 struct OwnerRegistrationView: View {
     @EnvironmentObject private var router: AppRouter
-    @Environment(\.dismiss) private var dismiss
+    
+    @State private var session = SessionService()
     
     @State private var name = ""
     @State private var email = ""
@@ -41,6 +42,7 @@ struct OwnerRegistrationView: View {
                             
                             if viewModel.errorMessage == nil {
                                 await MainActor.run {
+                                    session.isAuthenticated = true
                                     router.push(.rootTab)
                                 }
                             }
