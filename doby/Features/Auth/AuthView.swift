@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     var body: some View {
         VStack {

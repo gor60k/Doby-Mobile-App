@@ -7,7 +7,7 @@ struct RoleView: View {
     
     @FocusState private var isPhoneFocused: Bool
     
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     var body: some View {
             VStack {

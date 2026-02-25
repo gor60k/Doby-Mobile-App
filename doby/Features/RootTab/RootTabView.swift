@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RootTabView: View {
     @State private var selectedTab: RootTab = .profile
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     var body: some View {
         TabView(selection: $selectedTab) {

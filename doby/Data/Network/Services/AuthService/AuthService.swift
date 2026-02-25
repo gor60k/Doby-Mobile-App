@@ -10,7 +10,7 @@ final class AuthService: AuthServiceProtocol {
         self.apiClient = apiClient
     }
     
-    func register(user: RegisterRequest) async throws -> [User] {
+    func register(user: RegisterRequest) async throws -> AuthResponse {
         try await apiClient.request(AuthServiceEndpoint.register(user: user))
     }
     

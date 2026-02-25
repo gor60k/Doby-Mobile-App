@@ -3,8 +3,7 @@ import PhoneNumberKit
 
 struct OwnerRegistrationView: View {
     @EnvironmentObject private var router: AppRouter
-    
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     @State private var name = ""
     @State private var email = ""
@@ -14,7 +13,7 @@ struct OwnerRegistrationView: View {
     @State private var isHomeActive = false
     
     let selectedRole: Role
-    @State private var viewModel = OwnerRegistrationViewModel()
+    @State private var viewModel = AuthViewModel()
     
     var body: some View {
             VStack(spacing: 16) {
@@ -42,7 +41,6 @@ struct OwnerRegistrationView: View {
                             
                             if viewModel.errorMessage == nil {
                                 await MainActor.run {
-                                    session.isAuthenticated = true
                                     router.push(.rootTab)
                                 }
                             }

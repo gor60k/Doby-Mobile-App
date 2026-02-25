@@ -5,6 +5,7 @@ enum AppRoute: Hashable {
     case welcome
     case role
     case auth
+    case login
     case rootTab
 }
 

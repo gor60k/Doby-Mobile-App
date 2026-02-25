@@ -3,7 +3,7 @@ import PhoneNumberKit
 
 struct SitterRegistrationView: View {
     @EnvironmentObject private var router: AppRouter
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     var body: some View {
         VStack {
