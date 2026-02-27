@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HeaderView: View {
+struct ViewHeadline: View {
     let title: String
     let subtitle: String?
     var titleStyle: AppTextStyle

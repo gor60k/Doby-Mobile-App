@@ -3,17 +3,15 @@ import PhoneNumberKit
 
 struct OwnerRegistrationView: View {
     @EnvironmentObject private var router: AppRouter
-    @Environment(\.dismiss) private var dismiss
+    private let session = SessionService.shared
+    
+    @State private var viewModel = AuthViewModel()
     
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
     
-    @State private var isPhoneValid = false
-    @State private var isHomeActive = false
-    
     let selectedRole: Role
-    @State private var viewModel = OwnerRegistrationViewModel()
     
     var body: some View {
             VStack(spacing: 16) {
@@ -41,7 +39,7 @@ struct OwnerRegistrationView: View {
                             
                             if viewModel.errorMessage == nil {
                                 await MainActor.run {
-                                    router.push(.rootTab)
+                                    router.popToRoot()
                                 }
                             }
                         }

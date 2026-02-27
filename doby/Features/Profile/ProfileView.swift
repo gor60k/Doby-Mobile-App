@@ -1,31 +1,32 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject private var router: AppRouter
+    
     @State private var viewModel = ProfileViewModel()
+    @State private var authViewModel = AuthViewModel()
     private let userId = UUID()
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
-                ProgressView("Загрузка...")
-                    .progressViewStyle(CircularProgressViewStyle())
-            }
+            Button("Выйти", action: {
+                SessionService.shared.removeKey("isAuthenticated")
+                router.popToRoot()
+            })
+                .buttonStyle(.bordered)
             
-            else if let error = viewModel.errorMessage {
-                Text("Ошибка: \(error)")
-                    .foregroundColor(.red)
-            }
-            
-            else if let user = viewModel.user {
-                VStack {
-                    Text(user.name)
-                    Text(user.id.uuidString)
+            Button("Удалить профиль", action: {
+                Task {
+                    await authViewModel.delete()
+                    
+                    if authViewModel.errorMessage == nil {
+                        await MainActor.run {
+                            router.popToRoot()
+                        }
+                    }
                 }
-            }
-            
-            else {
-                Text("Нет данных пользователя")
-            }
+            })
+                .buttonStyle(.bordered)
         }
     }
 }

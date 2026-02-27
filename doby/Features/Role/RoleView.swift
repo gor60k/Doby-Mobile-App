@@ -7,11 +7,11 @@ struct RoleView: View {
     
     @FocusState private var isPhoneFocused: Bool
     
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     var body: some View {
             VStack {
-                HeaderView(
+                ViewHeadline(
                     title: "Выбор роли",
                     subtitle: "Выберите вашу роль ниже",
                     titleStyle: AppTextStyle.Presets.largeTitleBold,
@@ -21,7 +21,7 @@ struct RoleView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         ForEach(viewModel.accordionItems) { item in
-                            PrimaryDisclosureView(
+                            PrimaryDisclosure(
                                 title: item.title,
                                 headlineIcon: item.systemImage,
                                 description: item.description

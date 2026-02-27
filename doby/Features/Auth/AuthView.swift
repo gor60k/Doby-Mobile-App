@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var session = SessionService()
+    private let session = SessionService.shared
     
     var body: some View {
         VStack {
-            HeaderView(
+            ViewHeadline(
                 title: "Регистрация",
                 subtitle: "Создайте аккаунт",
                 titleStyle: AppTextStyle.Presets.largeTitleBold,
@@ -16,10 +16,14 @@ struct AuthView: View {
                 .padding(.horizontal)
             
             ScrollView {
-                if session.selectedRole == .sitter {
-                    SitterRegistrationView()
+                if session.isRegistered {
+                   SignInView()
                 } else {
-                    OwnerRegistrationView(selectedRole: .owner)
+                    if session.selectedRole == .sitter {
+                        SitterRegistrationView()
+                    } else {
+                        OwnerRegistrationView(selectedRole: .owner)
+                    }
                 }
             }
         }

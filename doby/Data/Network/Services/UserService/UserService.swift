@@ -17,9 +17,5 @@ final class UserService: UserServiceProtocol {
     func fetchUser(id: String) async throws -> User {
         try await apiClient.request(UserServiceEndpoint.getUser(id: id))
     }
-    
-    func createUser(_ request: CreateUserRequest) async throws -> User {
-        try await apiClient.request(UserServiceEndpoint.createUser(user: request))
-    }
 }
 

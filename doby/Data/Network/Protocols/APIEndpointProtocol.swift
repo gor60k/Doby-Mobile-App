@@ -5,6 +5,7 @@ protocol APIEndpointProtocol {
     var path: String { get }
     var method: HTTPMethod { get }
     var body: Data? { get }
+    var headers: [String: String]? { get }
 }
 
 enum HTTPMethod: String {
