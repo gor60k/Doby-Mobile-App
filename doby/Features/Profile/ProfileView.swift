@@ -4,6 +4,7 @@ struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     
     @State private var viewModel = ProfileViewModel()
+    @State private var authViewModel = AuthViewModel()
     private let userId = UUID()
     
     var body: some View {
@@ -15,9 +16,15 @@ struct ProfileView: View {
                 .buttonStyle(.bordered)
             
             Button("Удалить профиль", action: {
-                SessionService.shared.removeKey("isRegistered")
-                SessionService.shared.removeKey("isAuthenticated")
-                router.popToRoot()
+                Task {
+                    await authViewModel.delete()
+                    
+                    if authViewModel.errorMessage == nil {
+                        await MainActor.run {
+                            router.popToRoot()
+                        }
+                    }
+                }
             })
                 .buttonStyle(.bordered)
         }

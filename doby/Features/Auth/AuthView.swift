@@ -16,10 +16,14 @@ struct AuthView: View {
                 .padding(.horizontal)
             
             ScrollView {
-                if session.selectedRole == .sitter {
-                    SitterRegistrationView()
+                if session.isRegistered {
+                   SignInView()
                 } else {
-                    OwnerRegistrationView(selectedRole: .owner)
+                    if session.selectedRole == .sitter {
+                        SitterRegistrationView()
+                    } else {
+                        OwnerRegistrationView(selectedRole: .owner)
+                    }
                 }
             }
         }

@@ -3,7 +3,10 @@ import Observation
 
 @Observable
 final class AuthViewModel {
+    private var session = SessionService.shared
+    private var keychain = KeychainService.shared
     private var authService: AuthServiceProtocol
+    
     private let tokenKey = "authToken"
     
     var name: String = ""
@@ -23,7 +26,7 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        print("REGISTER START ")
+        print("REGISTER START")
         
         do {
             let user = RegisterRequest(
@@ -35,12 +38,13 @@ final class AuthViewModel {
             
             let response = try await authService.register(user: user)
             
-            SessionService.shared.currentUser = response.user
-            SessionService.shared.isRegistered = true
+            session.currentUser = response.user
+            session.isRegistered = true
             print("USER SAVED: \(response.user)")
             
-            KeychainService.shared.save(token: response.token, for: tokenKey)
+            keychain.save(token: response.token, for: tokenKey)
             print("TOKEN SAVED: \(response.token)")
+            
             
         } catch {
             errorMessage = error.localizedDescription
@@ -63,9 +67,16 @@ final class AuthViewModel {
                 password: password
             )
             
-            let request = try await authService.login(user: user)
+            let response = try await authService.login(user: user)
             
-            print("USER: \(request)")
+            session.currentUser = response.user
+            session.isAuthenticated = true
+            print("USER SAVED: \(response.user)")
+            
+            keychain.save(token: response.token, for: tokenKey)
+            print("TOKEN SAVED: \(response.token)")
+            
+            print("USER: \(response)")
         } catch {
             errorMessage = error.localizedDescription
             print("LOGIN ERR: \(error)")
@@ -76,6 +87,52 @@ final class AuthViewModel {
     }
     
     func logout() async {
+        isLoading = true
+        errorMessage = nil
         
+        print("LOGOUT START")
+        
+        do {
+            let response: () = try await authService.logout()
+            session.isAuthenticated = false
+        } catch {
+            errorMessage = error.localizedDescription
+            print("LOGOUT ERR: \(error)")
+        }
+        
+        print("LOGOUT SUCCESS")
+        isLoading = false
+    }
+    
+    func delete() async {
+        isLoading = true
+        errorMessage = nil
+        
+        print("DELETE START")
+        
+        guard let token = keychain.getToken(for: tokenKey) else {
+            errorMessage = "No auth token found"
+            isLoading = false
+            return
+        }
+        
+        do {
+            try await authService.delete(headers: [
+                "Authorization": "Bearer \(token)"
+            ])
+            
+            session.currentUser = nil
+            session.isRegistered = false
+            session.isAuthenticated = false
+                    
+            keychain.deleteToken(for: tokenKey)
+                    
+            print("DELETE SUCCESS")
+        } catch {
+            errorMessage = error.localizedDescription
+            print("DELETE ERR: \(error)")
+        }
+        
+        isLoading = false
     }
 }

@@ -14,11 +14,15 @@ final class AuthService: AuthServiceProtocol {
         try await apiClient.request(AuthServiceEndpoint.register(user: user))
     }
     
-    func login(user: LoginRequest) async throws -> [User] {
+    func login(user: LoginRequest) async throws -> AuthResponse {
         try await apiClient.request(AuthServiceEndpoint.login(user: user))
     }
     
     func logout() async throws {
         try await apiClient.voidRequest(AuthServiceEndpoint.logout)
+    }
+    
+    func delete(headers: [String: String]? = nil) async throws {
+        try await apiClient.voidRequest(AuthServiceEndpoint.delete(headers: headers))
     }
 }

@@ -3,7 +3,6 @@ import Foundation
 enum UserServiceEndpoint {
     case getAllUsers
     case getUser(id: String)
-    case createUser(user: CreateUserRequest)
 }
 
 extension UserServiceEndpoint: APIEndpointProtocol {
@@ -15,23 +14,30 @@ extension UserServiceEndpoint: APIEndpointProtocol {
         switch self {
         case .getAllUsers: return "/users/"
         case .getUser(let id): return "/users/\(id)"
-        case .createUser: return "/users/"
         }
     }
     
     var method: HTTPMethod {
         switch self {
         case .getAllUsers, .getUser: return .get
-        case .createUser: return .post
+            
         }
     }
     
     var body: Data? {
         switch self {
-        case .createUser(let user):
-            return try? JSONEncoder().encode(user)
+        case .getAllUsers:
+            return nil
         default: return nil
         }
     }
+    
+    var headers: [String: String]? {
+        switch self {
+        case .getAllUsers:
+            return ["Content-Type": "application/json"]
+        case .getUser(let id):
+            return ["Content-Type": "application/json"]
+        }
+    }
 }
-

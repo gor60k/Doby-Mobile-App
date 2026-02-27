@@ -13,7 +13,7 @@ struct dobyApp: App {
                         if session.isAuthenticated {
                             RootTabView()
                         } else {
-                            SignInView()
+                            AuthView()
                         }
                     } else {
                         WelcomeView()
