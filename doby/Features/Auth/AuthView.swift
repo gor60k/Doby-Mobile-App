@@ -20,7 +20,7 @@ struct AuthView: View {
                    SignInView()
                 } else {
                     if session.selectedRole == .sitter {
-                        SitterRegistrationView()
+                        SitterRegistrationView(selectedRole: .sitter)
                     } else {
                         OwnerRegistrationView(selectedRole: .owner)
                     }

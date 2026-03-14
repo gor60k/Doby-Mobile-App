@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct RegisterRequest: Encodable {
-    let name: String
+    let username: String
     let email: String
     let password: String
-    let role: Role
+    let phone: String
+    let city_translit: String?
 }

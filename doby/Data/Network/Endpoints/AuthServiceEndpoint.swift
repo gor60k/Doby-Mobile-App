@@ -9,7 +9,7 @@ enum AuthServiceEndpoint {
 
 extension AuthServiceEndpoint: APIEndpointProtocol {
     var baseURL: URL {
-        URL(string: "http://localhost:3000")!
+        URL(string: "http://localhost:8000/api")!
     }
     
     var path: String {

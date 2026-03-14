@@ -7,13 +7,15 @@ final class AuthViewModel {
     private var keychain = KeychainService.shared
     private var authService: AuthServiceProtocol
     
-    private let tokenKey = "authToken"
+    private let refreshToken = "refreshToken"
+    private let accessToken = "accessToken"
     
     var name: String = ""
     var email: String = ""
     var password: String = ""
-    var role: Role?
-    
+    var phone: String = ""
+    var city: City? = nil
+
     var isLoading: Bool = false
     var errorMessage: String?
     
@@ -30,20 +32,24 @@ final class AuthViewModel {
         
         do {
             let user = RegisterRequest(
-                name: name,
+                username: name,
                 email: email,
                 password: password,
-                role: role ?? .owner
+                phone: phone,
+                city_translit: city?.translit
             )
             
             let response = try await authService.register(user: user)
             
             session.currentUser = response.user
             session.isRegistered = true
+            session.isAuthenticated = true
             print("USER SAVED: \(response.user)")
             
-            keychain.save(token: response.token, for: tokenKey)
-            print("TOKEN SAVED: \(response.token)")
+            keychain.save(token: response.refresh_token, for: refreshToken)
+            keychain.save(token: response.access_token, for: accessToken)
+            
+            print("TOKENS SAVED: | ACCESS:\(response.access_token) | REFRESH:\(response.refresh_token)")
             
             
         } catch {
@@ -56,83 +62,83 @@ final class AuthViewModel {
     }
     
     func login() async {
-        isLoading = true
-        errorMessage = nil
-        
-        print("LOGIN START")
-        
-        do {
-            let user = LoginRequest(
-                email: email,
-                password: password
-            )
-            
-            let response = try await authService.login(user: user)
-            
-            session.currentUser = response.user
-            session.isAuthenticated = true
-            print("USER SAVED: \(response.user)")
-            
-            keychain.save(token: response.token, for: tokenKey)
-            print("TOKEN SAVED: \(response.token)")
-            
-            print("USER: \(response)")
-        } catch {
-            errorMessage = error.localizedDescription
-            print("LOGIN ERR: \(error)")
-        }
-        
-        print("LOGIN SUCCESS")
-        isLoading = false
+//        isLoading = true
+//        errorMessage = nil
+//        
+//        print("LOGIN START")
+//        
+//        do {
+//            let user = LoginRequest(
+//                email: email,
+//                password: password
+//            )
+//            
+//            let response = try await authService.login(user: user)
+//            
+//            session.currentUser = response.user
+//            session.isAuthenticated = true
+//            print("USER SAVED: \(response.user)")
+//            
+//            keychain.save(token: response.token, for: tokenKey)
+//            print("TOKEN SAVED: \(response.token)")
+//            
+//            print("USER: \(response)")
+//        } catch {
+//            errorMessage = error.localizedDescription
+//            print("LOGIN ERR: \(error)")
+//        }
+//        
+//        print("LOGIN SUCCESS")
+//        isLoading = false
     }
     
     func logout() async {
-        isLoading = true
-        errorMessage = nil
-        
-        print("LOGOUT START")
-        
-        do {
-            let response: () = try await authService.logout()
-            session.isAuthenticated = false
-        } catch {
-            errorMessage = error.localizedDescription
-            print("LOGOUT ERR: \(error)")
-        }
-        
-        print("LOGOUT SUCCESS")
-        isLoading = false
+//        isLoading = true
+//        errorMessage = nil
+//        
+//        print("LOGOUT START")
+//        
+//        do {
+//            let response: () = try await authService.logout()
+//            session.isAuthenticated = false
+//        } catch {
+//            errorMessage = error.localizedDescription
+//            print("LOGOUT ERR: \(error)")
+//        }
+//        
+//        print("LOGOUT SUCCESS")
+//        isLoading = false
     }
     
     func delete() async {
-        isLoading = true
-        errorMessage = nil
-        
-        print("DELETE START")
-        
-        guard let token = keychain.getToken(for: tokenKey) else {
-            errorMessage = "No auth token found"
-            isLoading = false
-            return
-        }
-        
-        do {
-            try await authService.delete(headers: [
-                "Authorization": "Bearer \(token)"
-            ])
-            
-            session.currentUser = nil
-            session.isRegistered = false
-            session.isAuthenticated = false
-                    
-            keychain.deleteToken(for: tokenKey)
-                    
-            print("DELETE SUCCESS")
-        } catch {
-            errorMessage = error.localizedDescription
-            print("DELETE ERR: \(error)")
-        }
-        
-        isLoading = false
+//        isLoading = true
+//        errorMessage = nil
+//        
+//        print("DELETE START")
+//        
+//        guard let token = keychain.getToken(for: tokenKey) else {
+//            errorMessage = "No auth token found"
+//            isLoading = false
+//            return
+//        }
+//        
+//        do {
+//            try await authService.delete(headers: [
+//                "Authorization": "Bearer \(token)"
+//            ])
+//            
+//            session.currentUser = nil
+//            session.isRegistered = false
+//            session.isAuthenticated = false
+//                    
+//            keychain.deleteToken(for: tokenKey)
+//                    
+//            print("DELETE SUCCESS")
+//        } catch {
+//            errorMessage = error.localizedDescription
+//            print("DELETE ERR: \(error)")
+//        }
+//        
+//        isLoading = false
     }
 }

@@ -10,6 +10,8 @@ struct OwnerRegistrationView: View {
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
+    @State private var phone = ""
+    @State private var city: City? = nil
     
     let selectedRole: Role
     
@@ -25,6 +27,16 @@ struct OwnerRegistrationView: View {
                         .textInputAutocapitalization(.never)
                 }
                 
+                PrimaryTextField(title: "Введите номер телефона") {
+                    TextField("Phone", text: $viewModel.phone)
+                        .keyboardType(.phonePad)
+                }
+                
+                CityAutocompleteView(selectedCity: Binding(
+                    get: { viewModel.city ?? City(name: "", translit: "") },
+                    set: { viewModel.city = $0 }
+                ))
+                
                 PrimaryTextField(title: "Придумайте пароль") {
                     TextField("Пароль", text: $viewModel.password)
                 }
@@ -34,7 +46,7 @@ struct OwnerRegistrationView: View {
                     isEnabled: !viewModel.name.isEmpty && !viewModel.isLoading,
                     action: {
                         Task {
-                            viewModel.role = selectedRole
+//                            viewModel.role = selectedRole
                             await viewModel.register()
                             
                             if viewModel.errorMessage == nil {
@@ -65,6 +77,6 @@ struct OwnerRegistrationView: View {
     }
 }
 
-#Preview {
-    OwnerRegistrationView(selectedRole: .owner)
-}
+//#Preview {
+//    OwnerRegistrationView(selectedRole: .owner)
+//}
