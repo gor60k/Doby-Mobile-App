@@ -5,10 +5,14 @@ struct ProfileView: View {
     
     @State private var viewModel = ProfileViewModel()
     @State private var authViewModel = AuthViewModel()
-    private let userId = UUID()
+    
+    private var session = SessionService.shared
     
     var body: some View {
         VStack {
+            
+            Text((session.currentUser?.username) ?? "")
+            
             Button("Выйти", action: {
                 SessionService.shared.removeKey("isAuthenticated")
                 router.popToRoot()
@@ -26,7 +30,7 @@ struct ProfileView: View {
                     }
                 }
             })
-                .buttonStyle(.bordered)
+            .buttonStyle(.bordered)
         }
     }
 }

@@ -31,7 +31,8 @@ extension AuthServiceEndpoint: APIEndpointProtocol {
     var body: Data? {
         switch self {
         case .register(let user): return try? JSONEncoder().encode(user)
-        case .login(let user): return try? JSONEncoder().encode(user)
+        case .login(let user): return try?
+            JSONEncoder().encode(user)
         case .logout: return nil
         case .delete: return nil
         }

@@ -17,14 +17,5 @@ struct AuthUser: Decodable, Encodable {
     let sitter_pofile: SitterProfile?
 }
 
-// MARK: - структуры полей юзера
-struct SitterProfile: Decodable, Encodable {
-    let experience_years: Int
-    let price_per_hour: Int
-    let is_verified: Bool
-}
 
-struct City: Decodable, Encodable, Equatable {
-    let name: String
-    let translit: String
-}
+

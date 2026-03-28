@@ -46,7 +46,6 @@ struct OwnerRegistrationView: View {
                     isEnabled: !viewModel.name.isEmpty && !viewModel.isLoading,
                     action: {
                         Task {
-//                            viewModel.role = selectedRole
                             await viewModel.register()
                             
                             if viewModel.errorMessage == nil {
@@ -76,7 +75,3 @@ struct OwnerRegistrationView: View {
             .padding(.horizontal)
     }
 }
-
-//#Preview {
-//    OwnerRegistrationView(selectedRole: .owner)
-//}

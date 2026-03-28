@@ -3,26 +3,43 @@ import Observation
 
 @Observable
 class ProfileViewModel {
+    
+    private var session = SessionService.shared
+    private var accessToken = KeychainService.shared.getToken(for: "accessToken")
     private let userService: UserServiceProtocol
     
-    var user: User?
     var isLoading: Bool = false
     var errorMessage: String?
+    var user: User?
     
     init(userService: UserServiceProtocol = UserService()) {
         self.userService = userService
+        
+        Task {
+            await fetchMe()
+        }
     }
     
     @MainActor
-    func loadUser(id: UUID) async {
+    func fetchMe() async {
         isLoading = true
         errorMessage = nil
         
+        print("FETCHING START")
+        
         do {
-            let fetchUser = try await userService.fetchUser(id: id.uuidString)
-            self.user = fetchUser
+            let response = try await userService.fetchMe(
+                headers: ["Authorization": "Bearer \(accessToken ?? "")"]
+            )
+            
+            let mappedUser = response.toUser()
+            self.user = mappedUser
+            
+            print("USER FETCHED: \(mappedUser.username)")
+            
         } catch {
-            self.errorMessage = error.localizedDescription
+            errorMessage = error.localizedDescription
+            print("FETCH ERROR: \(error.localizedDescription)")
         }
         
         isLoading = false

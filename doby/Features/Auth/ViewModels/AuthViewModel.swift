@@ -42,6 +42,7 @@ final class AuthViewModel {
             let response = try await authService.register(user: user)
             
             session.currentUser = response.user
+            
             session.isRegistered = true
             session.isAuthenticated = true
             print("USER SAVED: \(response.user)")
@@ -51,94 +52,18 @@ final class AuthViewModel {
             
             print("TOKENS SAVED: | ACCESS:\(response.access_token) | REFRESH:\(response.refresh_token)")
             
-            
+            print("REGISTER SUCCESS")
         } catch {
             errorMessage = error.localizedDescription
             print("REGISTER ERR: \(error)")
         }
         
-        print("REGISTER SUCCESS")
         isLoading = false
     }
     
-    func login() async {
-//        isLoading = true
-//        errorMessage = nil
-//        
-//        print("LOGIN START")
-//        
-//        do {
-//            let user = LoginRequest(
-//                email: email,
-//                password: password
-//            )
-//            
-//            let response = try await authService.login(user: user)
-//            
-//            session.currentUser = response.user
-//            session.isAuthenticated = true
-//            print("USER SAVED: \(response.user)")
-//            
-//            keychain.save(token: response.token, for: tokenKey)
-//            print("TOKEN SAVED: \(response.token)")
-//            
-//            print("USER: \(response)")
-//        } catch {
-//            errorMessage = error.localizedDescription
-//            print("LOGIN ERR: \(error)")
-//        }
-//        
-//        print("LOGIN SUCCESS")
-//        isLoading = false
-    }
+    func login() async {}
     
-    func logout() async {
-//        isLoading = true
-//        errorMessage = nil
-//        
-//        print("LOGOUT START")
-//        
-//        do {
-//            let response: () = try await authService.logout()
-//            session.isAuthenticated = false
-//        } catch {
-//            errorMessage = error.localizedDescription
-//            print("LOGOUT ERR: \(error)")
-//        }
-//        
-//        print("LOGOUT SUCCESS")
-//        isLoading = false
-    }
+    func logout() async {}
     
-    func delete() async {
-//        isLoading = true
-//        errorMessage = nil
-//        
-//        print("DELETE START")
-//        
-//        guard let token = keychain.getToken(for: tokenKey) else {
-//            errorMessage = "No auth token found"
-//            isLoading = false
-//            return
-//        }
-//        
-//        do {
-//            try await authService.delete(headers: [
-//                "Authorization": "Bearer \(token)"
-//            ])
-//            
-//            session.currentUser = nil
-//            session.isRegistered = false
-//            session.isAuthenticated = false
-//                    
-//            keychain.deleteToken(for: tokenKey)
-//                    
-//            print("DELETE SUCCESS")
-//        } catch {
-//            errorMessage = error.localizedDescription
-//            print("DELETE ERR: \(error)")
-//        }
-//        
-//        isLoading = false
-    }
+    func delete() async {}
 }
