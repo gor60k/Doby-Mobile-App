@@ -24,6 +24,17 @@ extension Font {
         static let titleThin = Font.system(.title, design: .rounded, weight: .thin)
         static let titleUltraLight = Font.system(.title, design: .rounded, weight: .ultraLight)
         
+        // MARK: - Labels
+        static let labelBlack = Font.system(.title2, design: .rounded, weight: .black)
+        static let labelHeavy = Font.system(.title2, design: .rounded, weight: .heavy)
+        static let labelBold = Font.system(.title2, design: .rounded, weight: .bold)
+        static let labelSemibold = Font.system(.title2, design: .rounded, weight: .semibold)
+        static let labelMedium = Font.system(.title2, design: .rounded, weight: .medium)
+        static let labelRegular = Font.system(.title2, design: .rounded, weight: .regular)
+        static let labelLight = Font.system(.title2, design: .rounded, weight: .light)
+        static let labelThin = Font.system(.title2, design: .rounded, weight: .thin)
+        static let labelUltraLight = Font.system(.title2, design: .rounded, weight: .ultraLight)
+        
         // MARK: - Headlines
         static let headlineBlack = Font.system(.headline, design: .rounded, weight: .black)
         static let headlineHeavy = Font.system(.headline, design: .rounded, weight: .heavy)

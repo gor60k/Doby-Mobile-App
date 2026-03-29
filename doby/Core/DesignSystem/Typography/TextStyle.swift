@@ -29,6 +29,17 @@ extension AppTextStyle {
         static let titleThin = AppTextStyle(font: .Custom.titleThin, color: .secondary.opacity(0.6))
         static let titleUltraLight = AppTextStyle(font: .Custom.titleUltraLight, color: .secondary.opacity(0.4))
         
+        // MARK: - Labels
+        static let labelBlack = AppTextStyle(font: .Custom.labelBlack, color: .primary)
+        static let labelHeavy = AppTextStyle(font: .Custom.labelHeavy, color: .primary.opacity(0.9))
+        static let labelBold = AppTextStyle(font: .Custom.labelBold, color: .primary.opacity(0.85))
+        static let labelSemibold = AppTextStyle(font: .Custom.labelSemibold, color: .primary.opacity(0.8))
+        static let labelMedium = AppTextStyle(font: .Custom.labelMedium, color: .secondary)
+        static let labelRegular = AppTextStyle(font: .Custom.labelRegular, color: .secondary)
+        static let labelLight = AppTextStyle(font: .Custom.labelLight, color: .secondary.opacity(0.8))
+        static let labelThin = AppTextStyle(font: .Custom.labelThin, color: .secondary.opacity(0.6))
+        static let labelUltraLight = AppTextStyle(font: .Custom.labelUltraLight, color: .secondary.opacity(0.4))
+        
         // MARK: - Headlines
         static let headlineBlack = AppTextStyle(font: .Custom.headlineBlack, color: .primary)
         static let headlineHeavy = AppTextStyle(font: .Custom.headlineHeavy, color: .primary.opacity(0.9))

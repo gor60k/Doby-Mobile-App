@@ -9,7 +9,7 @@ enum AuthServiceEndpoint {
 
 extension AuthServiceEndpoint: APIEndpointProtocol {
     var baseURL: URL {
-        URL(string: "http://localhost:3000")!
+        URL(string: "http://localhost:8000/api")!
     }
     
     var path: String {
@@ -31,7 +31,8 @@ extension AuthServiceEndpoint: APIEndpointProtocol {
     var body: Data? {
         switch self {
         case .register(let user): return try? JSONEncoder().encode(user)
-        case .login(let user): return try? JSONEncoder().encode(user)
+        case .login(let user): return try?
+            JSONEncoder().encode(user)
         case .logout: return nil
         case .delete: return nil
         }

@@ -6,9 +6,12 @@ enum Role: String, Codable {
 }
 
 struct User: Codable, Identifiable {
-    var id = UUID()
-    var name: String
-    let role: Role
-    var email: String?
-    var icon: String?
+    let id: Int
+    let username: String
+    let email: String
+    let avatar: String?
+    let phone: String
+    let city: City?
+    let bio: String?
+    let sitter_profile: SitterProfile?
 }

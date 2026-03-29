@@ -1,30 +1,12 @@
 import Foundation
-import Observation
+import Combine
 
-@Observable
-class ProfileViewModel {
-    private let userService: UserServiceProtocol
+class ProfileViewModel: ObservableObject {
+    @Published var currentPage: Int = 0
     
-    var user: User?
-    var isLoading: Bool = false
-    var errorMessage: String?
+    let avatarSlides: [ProfileAvatarSlide]
     
-    init(userService: UserServiceProtocol = UserService()) {
-        self.userService = userService
-    }
-    
-    @MainActor
-    func loadUser(id: UUID) async {
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            let fetchUser = try await userService.fetchUser(id: id.uuidString)
-            self.user = fetchUser
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
-        
-        isLoading = false
+    init(avatarSlides: [ProfileAvatarSlide]) {
+        self.avatarSlides = avatarSlides
     }
 }
