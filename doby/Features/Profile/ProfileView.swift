@@ -10,27 +10,36 @@ struct ProfileView: View {
     
     var body: some View {
         VStack {
-            
-            Text((session.currentUser?.username) ?? "")
-            
-            Button("Выйти", action: {
-                SessionService.shared.removeKey("isAuthenticated")
-                router.popToRoot()
-            })
-                .buttonStyle(.bordered)
-            
-            Button("Удалить профиль", action: {
-                Task {
-                    await authViewModel.delete()
-                    
-                    if authViewModel.errorMessage == nil {
-                        await MainActor.run {
-                            router.popToRoot()
-                        }
+            VStack {
+                TabView {
+                    ForEach(0..<3, id: \.self) { _ in
+                        Image("ProfileAvatarPlaceholder")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
-            })
-            .buttonStyle(.bordered)
+                .tabViewStyle(.page(indexDisplayMode: .automatic))
+                .frame(maxWidth: .infinity, maxHeight: 300)
+                .ignoresSafeArea()
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: -61, trailing: 0))
+                
+                VStack(alignment: .leading, spacing: 10) {
+                    Text((session.currentUser?.username) ?? "Username")
+                        .style(AppTextStyle.Presets.titleBold)
+                    
+                    Text("Мне 42 года и я очень люблю маленьких собачек")
+                    
+                    Divider()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
+}
+
+#Preview {
+    ProfileView()
 }

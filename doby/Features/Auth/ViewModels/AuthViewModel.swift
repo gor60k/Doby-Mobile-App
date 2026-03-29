@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import AuthenticationServices
 
 @Observable
 final class AuthViewModel {
@@ -15,7 +16,7 @@ final class AuthViewModel {
     var password: String = ""
     var phone: String = ""
     var city: City? = nil
-
+    
     var isLoading: Bool = false
     var errorMessage: String?
     
@@ -62,6 +63,52 @@ final class AuthViewModel {
     }
     
     func login() async {}
+    
+    func handleAppleRequest(_ request: ASAuthorizationAppleIDRequest) {
+        request.requestedScopes = [.fullName, .email]
+        
+    }
+    
+    @MainActor
+    func handleAppleCompletion(_ result: Result<ASAuthorization, Error>) async {
+        errorMessage = nil
+        
+        switch result {
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+                errorMessage = "Не удалось получить Apple ID"
+                return
+            }
+            
+            guard let identityToken = credential.identityToken,
+                  let tokenString = String(data: identityToken, encoding: .utf8) else {
+                errorMessage = "Не удалось получить токен идентификации"
+                return
+            }
+            
+            print("APPLE SIGN IN TOKEN: \(tokenString)")
+            print("APPLE USER ID: \(credential.user)")
+            
+            if let email = credential.email {
+                self.email = email
+            }
+            
+            if let fullName = credential.fullName {
+                let formatter = PersonNameComponentsFormatter()
+                let formattedName = formatter.string(from: fullName)
+                
+                if !formattedName.isEmpty {
+                    self.name = formattedName
+                }
+            }
+            
+            errorMessage = "Добавить обмен identityToken с бэком"
+            
+        case .failure(let error):
+            errorMessage = error.localizedDescription
+            print("APPLE SIGN IN ERR: \(error)")
+        }
+    }
     
     func logout() async {}
     
