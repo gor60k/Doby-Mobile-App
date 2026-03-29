@@ -21,10 +21,13 @@ struct WelcomeView: View {
             
             VStack(spacing: 16) {
                 // MARK: - Пагинация для слайдера
-                WelcomePageIndicatorView(numberOfPages: viewModel.slides.count, currentPage: viewModel.currentPage)
+                PrimaryPagination(numberOfPages: viewModel.slides.count, currentPage: viewModel.currentPage)
                 
                 // MARK: - Сам слайдер
-                WelcomeSlideView(currentPage: $viewModel.currentPage, slides: viewModel.slides)
+                PrimarySlider(currentPage: $viewModel.currentPage, items: viewModel.slides) { slide in
+                    WelcomeSlideContentView(slide: slide)
+                }
+                .frame(height: 160)
                 
                 // MARK: - Кнопка для перехода на другой экран
                 PrimaryButton(
@@ -38,7 +41,7 @@ struct WelcomeView: View {
                 )
             }
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 32, trailing: 16))
-            .background(.white)
+            .background(.primaryBackground)
             .cornerRadius(16)
         }
         .ignoresSafeArea(edges: .bottom)

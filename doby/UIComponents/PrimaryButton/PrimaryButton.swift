@@ -23,7 +23,8 @@ struct PrimaryButton: View {
             action?()
         }) {
             Text(title)
-                .font(.system(.title2))
+                .font(.system(.title2, design: .rounded))
+                .fontWeight(.medium)
         }
         .disabled(!(isEnabled ?? true))
         .buttonStyle(PrimaryButtonStyle(

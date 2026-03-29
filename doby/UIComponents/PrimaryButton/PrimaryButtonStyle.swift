@@ -5,7 +5,7 @@ struct PrimaryButtonStyle: ButtonStyle {
     let buttonColor: Color?
     
     func makeBody(configuration: Configuration) -> some View {
-        let color = buttonColor ?? Color("PrimaryYellow")
+        let color = buttonColor ?? .primaryYellow
         
         configuration.label
             .frame(maxWidth: .infinity)

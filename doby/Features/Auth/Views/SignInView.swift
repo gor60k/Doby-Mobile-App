@@ -40,11 +40,11 @@ struct SignInView: View {
             SignInWithAppleButton(
                 .signIn,
                 onRequest: { request in
-                    viewModel.handleAppleRequest(request)
+//                    viewModel.handleAppleRequest(request)
                 },
                 onCompletion: { result in
                     Task {
-                        await viewModel.handleAppleCompletion(result)
+//                        await viewModel.handleAppleCompletion(result)
                         
                         if viewModel.errorMessage == nil {
                             await MainActor.run {
@@ -64,16 +64,6 @@ struct SignInView: View {
                 action: nil,
                 buttonColor: Color("TelegramBlue")
             )
-            
-//            HStack {
-//                Text("Нет аккаунта?")
-//                    .foregroundColor(.secondary)
-//                NavigationLink(destination: SignUpView()) {
-//                    Text("Зарегистрируйтесь!")
-//                        .foregroundColor(Color("PrimaryYellow"))
-//                        .underline()
-//                }
-//            }
         }
         .padding(.horizontal)
     }

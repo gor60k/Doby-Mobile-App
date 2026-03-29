@@ -4,22 +4,31 @@ struct PrimaryTextField<Content: View>: View {
    
     private let title: String
     private let content: Content
+    private let isValid: Bool
+    private let showsError: Bool
+    private let errorText: String?
     
     init(
         title: String,
+        isValid: Bool = true,
+        showsError: Bool = false,
+        errorText: String? = nil,
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
+        self.isValid = isValid
+        self.showsError = showsError
+        self.errorText = errorText
         self.content = content()
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .style(AppTextStyle.Presets.headlineRegular)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-           content
+            content
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 16)
@@ -27,8 +36,14 @@ struct PrimaryTextField<Content: View>: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(.secondary, lineWidth: 1)
+                        .stroke(showsError && !isValid ? Color(.red) : .secondary, lineWidth: 1)
                 )
+            
+            if let errorText, showsError && !isValid {
+                Text(errorText)
+                    .font(.caption)
+                    .foregroundColor(.red)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

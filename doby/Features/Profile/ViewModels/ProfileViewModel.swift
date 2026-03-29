@@ -1,8 +1,12 @@
 import Foundation
-import Observation
+import Combine
 
-@Observable
-class ProfileViewModel {
+class ProfileViewModel: ObservableObject {
+    @Published var currentPage: Int = 0
     
+    let avatarSlides: [ProfileAvatarSlide]
     
+    init(avatarSlides: [ProfileAvatarSlide]) {
+        self.avatarSlides = avatarSlides
+    }
 }
