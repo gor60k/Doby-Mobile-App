@@ -7,6 +7,7 @@ enum AppRoute: Hashable {
     case auth
     case login
     case rootTab
+    case settings
 }
 
 final class AppRouter: ObservableObject {

@@ -39,42 +39,56 @@ final class AuthViewModel {
     
     @MainActor
     func register() async {
-        guard isPasswordValid else {
-            errorMessage = "Пароли не совпадают или слишком короткие"
-            return
-        }
+        session.isRegistered = true
+        session.isAuthenticated = true
         
-        isLoading = true
-        errorMessage = nil
+        session.currentUser = AuthUser(
+            id: 228,
+            username: "",
+            email: "test@gmail.com",
+            avatar: ["ProfileAvatarPlaceholder"],
+            phone: "",
+            city: nil,
+            bio: "Мне 42 и я люблю маленьких собачек",
+            sitter_pofile: nil
+        )
         
-        print("REGISTER START")
-        
-        do {
-            let user = RegisterRequest(
-                email: email,
-                password: password,
-            )
-            
-            let response = try await authService.register(user: user)
-            
-            session.currentUser = response.user
-            
-            session.isRegistered = true
-            session.isAuthenticated = true
-            print("USER SAVED: \(response.user)")
-            
-            keychain.save(token: response.refresh_token, for: refreshToken)
-            keychain.save(token: response.access_token, for: accessToken)
-            
-            print("TOKENS SAVED: | ACCESS:\(response.access_token) | REFRESH:\(response.refresh_token)")
-            
-            print("REGISTER SUCCESS")
-        } catch {
-            errorMessage = error.localizedDescription
-            print("REGISTER ERR: \(error)")
-        }
-        
-        isLoading = false
+//        guard isPasswordValid else {
+//            errorMessage = "Пароли не совпадают или слишком короткие"
+//            return
+//        }
+//        
+//        isLoading = true
+//        errorMessage = nil
+//        
+//        print("REGISTER START")
+//        
+//        do {
+//            let user = RegisterRequest(
+//                email: email,
+//                password: password,
+//            )
+//            
+//            let response = try await authService.register(user: user)
+//            
+//            session.currentUser = response.user
+//            
+//            session.isRegistered = true
+//            session.isAuthenticated = true
+//            print("USER SAVED: \(response.user)")
+//            
+//            keychain.save(token: response.refresh_token, for: refreshToken)
+//            keychain.save(token: response.access_token, for: accessToken)
+//            
+//            print("TOKENS SAVED: | ACCESS:\(response.access_token) | REFRESH:\(response.refresh_token)")
+//            
+//            print("REGISTER SUCCESS")
+//        } catch {
+//            errorMessage = error.localizedDescription
+//            print("REGISTER ERR: \(error)")
+//        }
+//        
+//        isLoading = false
     }
     
     func login() async {}

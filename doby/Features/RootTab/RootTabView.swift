@@ -1,18 +1,16 @@
 import SwiftUI
 
 struct RootTabView: View {
-    @State private var selectedTab: RootTab = .profile
+    @State private var selectedTab: RootTab = .chat
     private let session = SessionService.shared
     
     var body: some View {
         TabView(selection: $selectedTab) {
+            PetView()
+                .tabItem { Label(RootTab.pet.title, systemImage: RootTab.pet.icon) }
             
-            if let role = session.selectedRole {
-                switch role {
-                case .owner: ownerTabs
-                case .sitter: sitterTabs
-                }
-            }
+            OrdersView()
+                .tabItem { Label(RootTab.orders.title, systemImage: RootTab.orders.icon) }
             
             ChatView()
                 .tabItem { Label(RootTab.chat.title, systemImage: RootTab.chat.icon) }
@@ -22,25 +20,8 @@ struct RootTabView: View {
         }
         .tint(.primaryYellow)
     }
-    
-    @ViewBuilder
-    var ownerTabs: some View {
-        PetView()
-            .tabItem { Label(RootTab.pet.title, systemImage: RootTab.pet.icon) }
-        
-        SearchView()
-            .tabItem { Label(RootTab.search.title, systemImage: RootTab.search.icon) }
-    }
-    
-    @ViewBuilder
-    var sitterTabs: some View {
-        CalendarView()
-            .tabItem { Label(RootTab.calendar.title, systemImage: RootTab.calendar.icon) }
-        
-        EarningsView()
-            .tabItem { Label(RootTab.earnings.title, systemImage: RootTab.earnings.icon) }
-        
-        OrdersView()
-            .tabItem { Label(RootTab.orders.title, systemImage: RootTab.orders.icon) }
-    }
+}
+
+#Preview {
+    RootTabView()
 }

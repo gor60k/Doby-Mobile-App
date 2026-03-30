@@ -10,6 +10,7 @@ extension dobyApp {
         case .auth: AuthView()
         case .login: SignInView()
         case .rootTab: RootTabView()
+        case .settings: SettingsView()
         }
     }
 }

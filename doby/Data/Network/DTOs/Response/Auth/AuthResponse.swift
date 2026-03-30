@@ -10,7 +10,7 @@ struct AuthUser: Decodable, Encodable {
     let id: Int
     let username: String
     let email: String
-    let avatar: String?
+    let avatar: [String?]
     let phone: String
     let city: City?
     let bio: String?
