@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RootTabView: View {
+    @EnvironmentObject var primaryColorService: PrimaryColorService
+    
     @State private var selectedTab: RootTab = .chat
     private let session = SessionService.shared
     
@@ -18,7 +20,7 @@ struct RootTabView: View {
             ProfileView()
                 .tabItem { Label(RootTab.profile.title, systemImage: RootTab.profile.icon) }
         }
-        .tint(.primaryYellow)
+        .tint(primaryColorService.currentColor.color)
     }
 }
 

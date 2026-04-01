@@ -92,4 +92,17 @@ final class AuthViewModel {
     }
     
     func login() async {}
+    
+    func logout() async {
+        session.isAuthenticated = false
+
+        session.currentUser = nil
+    }
+    
+    func deleteMe() async {
+        session.isRegistered = false
+        session.isAuthenticated = false
+
+        session.currentUser = nil
+    }
 }

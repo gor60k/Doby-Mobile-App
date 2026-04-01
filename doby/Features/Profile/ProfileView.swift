@@ -14,7 +14,7 @@ struct ProfileView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: 10) {
                     let username = session.currentUser?.username
                     
                     Image("ProfileAvatarPlaceholder")
@@ -52,18 +52,24 @@ struct ProfileView: View {
                 }
                 .pickerStyle(.segmented)
 
-                VStack {
+                VStack(alignment: .leading) {
                     if selection == "Обо мне" {
-                        Text("Описание пользователя")
+                        Text("Привет, я люблю 42🙏❤️")
+                            .style(AppTextStyle.Presets.labelBold)
+                        Text("Слава Богу 42🙏❤️СЛАВА 42🙏❤️АНГЕЛА ХРАНИТЕЛЯ 42 КАЖДОМУ ИЗ ВАС🙏❤️БОЖЕ ХРАНИ 42🙏❤️СПАСИБО ВАМ НАШИ БРАТУХИ🙏🏼❤️ХРАНИ БОсса💯Слава Богу 42🙏❤️СЛАВА 42🙏❤️АНГЕЛА ХРАНИ Слава Богу 42🙏❤️СЛАВА 42🙏❤️")
+                            .style(AppTextStyle.Presets.bodyRegular)
                         
                     } else if selection == "Отзывы" {
-                        Text("Отзывы")
+                        VStack(spacing: 10) {
+                            ForEach(0..<3, id: \.self) { _ in
+                                PrimaryFeedback()
+                            }
+                        }
                     }
                 }
-                
-                Divider()
             }
             .padding(.horizontal)
+            .scrollIndicators(.hidden)
 
             VStack {
                 Button(action: {router.push(.settings)}) {
