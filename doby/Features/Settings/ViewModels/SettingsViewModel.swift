@@ -4,12 +4,29 @@ import Combine
 final class SettingsViewModel: ObservableObject {
     private var session = SessionService.shared
     
-    @State var username: String = ""
-    @State var name: String = ""
-    @State var surname: String = ""
-    @State var phone: String = ""
+    @Published var username: String = ""
+    @Published var name: String = ""
+    @Published var surname: String = ""
+    @Published var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
     
-    @State var email: String = ""
+    @Published var password: String = ""
+    @Published var newPassword: String = ""
+    @Published var confirmNewPassword: String = ""
     
+    @Published var phone: String = ""
+    @Published var email: String = ""
     
+    init() {
+        loadCurrentUser()
+    }
+    
+    func loadCurrentUser() {
+        guard let user = session.currentUser else { return }
+        
+        username = user.username
+        name = user.first_name ?? ""
+        surname = user.last_name ?? ""
+        phone = user.phone ?? ""
+        email = user.username
+    }
 }

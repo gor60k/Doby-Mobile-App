@@ -16,6 +16,8 @@ struct ProfileView: View {
             ScrollView {
                 VStack(spacing: 10) {
                     let username = session.currentUser?.username
+                    let firstName = session.currentUser?.first_name
+                    let lastName = session.currentUser?.last_name
                     
                     Image("ProfileAvatarPlaceholder")
                         .resizable()
@@ -23,12 +25,18 @@ struct ProfileView: View {
                         .frame(width: 100, height: 100)
                         .clipShape(Circle())
                     
-                    Text(
-                        (username?.isEmpty == false)
-                        ? username!
-                        : "Хвостик-\(session.currentUser?.id ?? 0)"
-                    )
-                    .style(AppTextStyle.Presets.titleBold)
+                    if let firstName = firstName, !firstName.isEmpty {
+                        HStack {
+                            Text(firstName)
+                            Text(lastName ?? "")
+                        }
+                    } else if let username = username, !username.isEmpty {
+                        Text(username)
+                            .style(AppTextStyle.Presets.titleSemibold)
+                    } else {
+                        Text("Хвостик-\(session.currentUser?.uuid)")
+                    }
+                    
                 }
                 
                 VStack(alignment: .leading) {

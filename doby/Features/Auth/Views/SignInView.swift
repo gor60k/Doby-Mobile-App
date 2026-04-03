@@ -61,7 +61,7 @@ struct SignInView: View {
             PrimaryButton(
                 title: "Войти с Telegram",
                 isEnabled: true,
-                action: nil,
+                action: {},
                 buttonColor: Color("TelegramBlue")
             )
         }

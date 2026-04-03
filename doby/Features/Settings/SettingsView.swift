@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var router: AppRouter
     
-    @State private var viewModel = SettingsViewModel()
+    @StateObject private var viewModel = SettingsViewModel()
     @State private var authViewModel = AuthViewModel()
     
     var body: some View {
@@ -13,7 +13,7 @@ struct SettingsView: View {
                     TextField("Имя", text: $viewModel.name)
                     TextField("Фамилия", text: $viewModel.surname)
                     TextField("Номер телефона", text: $viewModel.phone)
-                    TextField("Город", text: $viewModel.email)
+                    TextField("Город", text: $viewModel.city.name)
                 }
                 
                 Section(header: Text("Данные аккаунта")) {
@@ -21,50 +21,66 @@ struct SettingsView: View {
                     TextField("Почта", text: $viewModel.email)
                 }
                 
-                Button(action: {
-                    router.push(.settingsChild(.appearance))
-                }) {
-                    HStack {
-                        Text("Оформление")
-                        Spacer()
-                        Image(systemName: "chevron.forward")
+                Section(header: Text("Другие настройки")) {
+                    Button(action: {
+                        router.push(.settingsChild(.appearance))
+                    }) {
+                        HStack {
+                            Text("Оформление")
+                            Spacer()
+                            Image(systemName: "chevron.forward")
+                        }
+                    }
+                    Button(action: {
+                        router.push(.settingsChild(.privacy))
+                    }) {
+                        HStack {
+                            Text("Безопасность")
+                            Spacer()
+                            Image(systemName: "chevron.forward")
+                        }
+                    }
+                    Button(action: {
+                        router.push(.settingsChild(.notifications))
+                    }) {
+                        HStack {
+                            Text("Уведомления")
+                            Spacer()
+                            Image(systemName: "chevron.forward")
+                        }
                     }
                 }
+                
                 Button(action: {
-                    router.push(.settingsChild(.privacy))
-                }) {
-                    HStack {
-                        Text("Безопасность")
-                        Spacer()
-                        Image(systemName: "chevron.forward")
+                    Task {
+                        await authViewModel.logout()
+                        await MainActor.run {
+                            router.popToRoot()
+                        }
                     }
+                }) {
+                    Text("Выйти")
+                        .foregroundColor(.secondary)
                 }
+                
                 Button(action: {
-                    router.push(.settingsChild(.notifications))
-                }) {
-                    HStack {
-                        Text("Уведомления")
-                        Spacer()
-                        Image(systemName: "chevron.forward")
+                    Task {
+                        await authViewModel.deleteMe()
+                        await MainActor.run {
+                            router.popToRoot()
+                        }
                     }
+                }) {
+                    Text("Удалить аккаунт")
+                        .foregroundColor(.red)
                 }
             }
-            
-            Button(action: {
-                Task {
-                    await authViewModel.logout()
-                    await MainActor.run {
-                        router.popToRoot()
-                    }
-                }
-            }) {
-                Text("Выйти")
-                    .foregroundColor(.red)
-            }
+            .scrollDismissesKeyboard(.interactively)
         }
     }
 }
 
 #Preview {
     SettingsView()
+        .withAppEnvironment()
 }
