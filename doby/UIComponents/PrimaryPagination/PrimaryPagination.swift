@@ -10,10 +10,11 @@ struct PrimaryPagination: View {
         HStack(spacing: 8) {
             ForEach(0..<numberOfPages, id: \.self) { index in
                 Capsule()
-                    .fill(currentPage == index ? primaryColorService.currentColor.color : Color.secondary)
+                    .fill(currentPage == index ? primaryColorService.currentColor.color : Color(.secondarySystemBackground))
                     .frame(width: currentPage == index ? 24 : 8, height: 8)
                     .animation(.easeInOut(duration: 0.3), value: currentPage)
             }
         }
     }
 }
+ 

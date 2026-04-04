@@ -1,17 +1,29 @@
 import SwiftUI
 
-enum Role: String, Codable {
-    case owner = "OWNER"
-    case sitter = "SITTER"
-}
-
-struct User: Codable, Identifiable {
-    let id: Int
+struct User: Codable {
+    let uuid: UUID
     let username: String
-    let email: String
+    let firstName: String?
+    let lastName: String?
+    let patronymic: String?
     let avatar: String?
-    let phone: String
+    let phone: String?
     let city: City?
     let bio: String?
-    let sitter_profile: SitterProfile?
+    let sitterProfile: SitterProfile?
+}
+
+extension User {
+    init(dto: AuthUser) {
+        self.uuid = dto.uuid
+        self.username = dto.username
+        self.firstName = dto.first_name
+        self.lastName = dto.last_name
+        self.patronymic = dto.patronymic
+        self.avatar = dto.avatar
+        self.phone = dto.phone
+        self.city = dto.city
+        self.bio = dto.bio
+        self.sitterProfile = dto.sitter_profile
+    }
 }

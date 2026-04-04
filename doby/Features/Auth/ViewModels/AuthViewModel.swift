@@ -68,7 +68,7 @@ final class AuthViewModel {
             let response = try await authService.register(user: user)
             print("REGISTER RESPONSE RECEIVED")
             
-            session.currentUser = response.user
+            session.currentUser = User(dto: response.user)
             
             session.isRegistered = true
             session.isAuthenticated = true

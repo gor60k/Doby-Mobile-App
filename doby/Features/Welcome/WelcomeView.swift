@@ -24,10 +24,12 @@ struct WelcomeView: View {
                 PrimaryPagination(numberOfPages: viewModel.slides.count, currentPage: viewModel.currentPage)
                 
                 // MARK: - Сам слайдер
-                PrimarySlider(currentPage: $viewModel.currentPage, items: viewModel.slides) { slide in
+                PrimarySlider(
+                    currentPage: $viewModel.currentPage,
+                    items: viewModel.slides,
+                ) { slide in
                     WelcomeSlideContentView(slide: slide)
                 }
-                .frame(height: 160)
                 
                 // MARK: - Кнопка для перехода на другой экран
                 PrimaryButton(

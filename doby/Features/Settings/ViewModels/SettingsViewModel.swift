@@ -24,8 +24,8 @@ final class SettingsViewModel: ObservableObject {
         guard let user = session.currentUser else { return }
         
         username = user.username
-        name = user.first_name ?? ""
-        surname = user.last_name ?? ""
+        name = user.firstName ?? ""
+        surname = user.lastName ?? ""
         phone = user.phone ?? ""
         email = user.username
     }
