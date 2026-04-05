@@ -2,6 +2,8 @@ import SwiftUI
 
 struct SignUpView: View {
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject var primaryColorService: PrimaryColorService
+    
     private var session = SessionService.shared
     
     @State private var viewModel = AuthViewModel()
@@ -53,7 +55,7 @@ struct SignUpView: View {
                     } label: {
                         Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
                             .frame(height: 22)
-                            .foregroundColor(.primaryYellow)
+                            .foregroundColor(primaryColorService.currentColor.color)
                     }
                 }
             }
@@ -83,7 +85,7 @@ struct SignUpView: View {
                     } label: {
                         Image(systemName: isConfirmPasswordVisible ? "eye.slash" : "eye")
                             .frame(height: 22)
-                            .foregroundColor(.primaryYellow)
+                            .foregroundColor(primaryColorService.currentColor.color)
                     }
                 }
             }
@@ -102,6 +104,20 @@ struct SignUpView: View {
                         }
                     }
                 }
+//                action: {
+//                print("SIGN UP TAP | isFormValid=\(viewModel.isFormValid) | email=\(viewModel.email) | passwordCount=\(viewModel.password.count) | confirmCount=\(viewModel.confirmPassword.count)")
+//                Task {
+//                    print("SIGN UP TASK START")
+//                    await viewModel.register()
+//                    print("SIGN UP TASK END | error=\(String(describing: viewModel.errorMessage))")
+//                    
+//                    if viewModel.errorMessage == nil {
+//                        await MainActor.run {
+//                            router.popToRoot()
+//                        }
+//                    }
+//                }
+//            }
             )
         }
         .padding(.horizontal, 16)

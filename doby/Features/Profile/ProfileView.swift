@@ -1,90 +1,84 @@
 import SwiftUI
 
+enum ProfileDetailsTab: String, CaseIterable {
+    case about = "Обо мне"
+    case feedback = "Отзывы"
+}
+
 struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject var primaryColorService: PrimaryColorService
     
-    @StateObject private var viewModel = ProfileViewModel(
-        avatarSlides: [
-            ProfileAvatarSlide(id: 0, image: "ProfileAvatarPlaceholder"),
-            ProfileAvatarSlide(id: 1, image: "ProfileAvatarPlaceholder"),
-            ProfileAvatarSlide(id: 2, image: "ProfileAvatarPlaceholder"),
-        ]
-    )
+    @StateObject private var viewModel = ProfileViewModel()
+    
     @State private var authViewModel = AuthViewModel()
+    @State private var currentPage: Int = 1
     
-    private var session = SessionService.shared
+    @State private var selection: ProfileDetailsTab = .about
+    let options = ProfileDetailsTab.allCases
     
     var body: some View {
-        VStack {
-            VStack {
-                PrimarySlider(
-                    currentPage: $viewModel.currentPage,
-                    items: viewModel.avatarSlides
-                ) { slide in
-                    ProfileAvatarSlideContentView(slide: slide)
+        ZStack(alignment: .topTrailing) {
+            ScrollView {
+                ProfileHeaderView(user: session.currentUser)
+                    .padding(.horizontal)
+                    .padding(.bottom, 10)
+                
+                PrimaryCollapsibleSection(title: "Мои питомцы") {
+                    ProfilePetsView(
+                        currentPage: viewModel.currentPage,
+                        slides: viewModel.slides
+                    )
                 }
-                .frame(height: 300)
-                .ignoresSafeArea()
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: -61, trailing: 0))
+                .padding(.horizontal)
+                .padding(.bottom, 10)
                 
-                PrimaryPagination(numberOfPages: viewModel.avatarSlides.count, currentPage: viewModel.currentPage)
+                PrimaryCollapsibleSection(title: "Подробнее") {
+                    ProfileDetailsView(
+                        selection: $selection,
+                        aboutValue: .about,
+                        feedbackValue: .feedback,
+                        options: options,
+                        title: { $0.rawValue }
+                    )
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 10)
                 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text((session.currentUser?.username) ?? "Username")
-                            .style(AppTextStyle.Presets.titleBold)
-                        
-                        Text("Мне 42 года и я очень люблю маленьких собачек")
-                        
-                        Divider()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    HStack {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("от 4242")
-                                    .style(AppTextStyle.Presets.labelSemibold)
-                                Text("за сутки")
-                                    .style(AppTextStyle.Presets.headlineRegular)
-                            }
+                PrimaryCollapsibleSection(title: "История заказов") {
+                    VStack(spacing: 12) {
+                        ForEach(viewModel.orders, id: \.self) { order in
+                            ProfileOrderCardView(order: order)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.primaryYellowLight))
-                        
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("от 4242")
-                                    .style(AppTextStyle.Presets.labelSemibold)
-                                Text("за сутки")
-                                    .style(AppTextStyle.Presets.headlineRegular)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.primaryYellowLight))
-                        
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("от 4242")
-                                    .style(AppTextStyle.Presets.labelSemibold)
-                                Text("за сутки")
-                                    .style(AppTextStyle.Presets.headlineRegular)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(10)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.primaryYellowLight))
                     }
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 10)
             }
+            .scrollIndicators(.hidden)
+
+            VStack {
+                Button(action: {router.push(.settings)}) {
+                    Text("Изм.")
+                        .style(AppTextStyle.Presets.bodySemibold)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .glassEffect(
+                    .regular
+                        .interactive()
+                )
+            }
+            .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(.primaryBackground)
     }
+    
+    private var session = SessionService.shared
 }
 
 #Preview {
     ProfileView()
+        .withAppEnvironment()
 }

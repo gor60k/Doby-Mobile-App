@@ -15,6 +15,6 @@ struct WelcomeSlideContentView: View {
                 .frame(maxWidth: .infinity)
                 .multilineTextAlignment(.center)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .frame(maxWidth: .infinity, alignment: .top)
     }
 }

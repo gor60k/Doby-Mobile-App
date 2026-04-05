@@ -5,6 +5,9 @@ struct dobyApp: App {
     @StateObject private var router = AppRouter()
     private let session = SessionService.shared
     
+    @StateObject private var themeService = ThemeService()
+    @StateObject private var primaryColorService = PrimaryColorService()
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
@@ -20,11 +23,26 @@ struct dobyApp: App {
                     }
                 }
                 .navigationDestination(for: AppRoute.self) { route in
-                    destinationView(for: route)
+                    switch route {
+                    case .welcome: WelcomeView()
+                    case .auth: AuthView()
+                    case .rootTab: RootTabView()
+                    case .settings: SettingsView()
+                    case .settingsChild(let childRoute):
+                        switch childRoute {
+                        case .appearance: SettingsAppearensView()
+                        case .privacy: SettingsPrivacyView()
+                        case .notifications: SettingsNotificationsView()
+                        }
+                    }
                 }
             }
             .environmentObject(router)
+            .environmentObject(themeService)
+            .environmentObject(primaryColorService)
             .environment(session)
+            .preferredColorScheme(themeService.colorScheme)
+            .tint(primaryColorService.primaryColor.color)
         }
     }
 }

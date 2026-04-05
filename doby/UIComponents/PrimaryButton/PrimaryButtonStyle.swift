@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct PrimaryButtonStyle: ButtonStyle {
+    @EnvironmentObject var primaryColorService: PrimaryColorService
+    
     let isEnabled: Bool
     let buttonColor: Color?
     
     func makeBody(configuration: Configuration) -> some View {
-        let color = buttonColor ?? .primaryYellow
+        let color = buttonColor ?? primaryColorService.currentColor.color
         
         configuration.label
             .frame(maxWidth: .infinity)

@@ -39,8 +39,17 @@ final class AuthViewModel {
     
     @MainActor
     func register() async {
+        print("REGISTER CALLED | email=\(email) | isEmailValid=\(isEmailValid) | passwordCount=\(password.count) | confirmMatches=\(password == confirmPassword)")
+        
+        guard isEmailValid else {
+            errorMessage = "Некорректный email"
+            print("REGISTER STOP: invalid email")
+            return
+        }
+        
         guard isPasswordValid else {
             errorMessage = "Пароли не совпадают или слишком короткие"
+            print("REGISTER STOP: invalid password")
             return
         }
         
@@ -51,13 +60,15 @@ final class AuthViewModel {
         
         do {
             let user = RegisterRequest(
-                email: email,
+                username: email,
                 password: password,
             )
             
+            print("REGISTER REQUEST SEND")
             let response = try await authService.register(user: user)
+            print("REGISTER RESPONSE RECEIVED")
             
-            session.currentUser = response.user
+            session.currentUser = User(dto: response.user)
             
             session.isRegistered = true
             session.isAuthenticated = true
@@ -72,10 +83,26 @@ final class AuthViewModel {
         } catch {
             errorMessage = error.localizedDescription
             print("REGISTER ERR: \(error)")
+            print("REGISTER ERR DESCRIPTION: \(error.localizedDescription)")
         }
         
         isLoading = false
     }
     
-    func login() async {}
+    func login() async {
+        
+    }
+    
+    func logout() async {
+        session.isAuthenticated = false
+
+        session.currentUser = nil
+    }
+    
+    func deleteMe() async {
+        session.isRegistered = false
+        session.isAuthenticated = false
+
+        session.currentUser = nil
+    }
 }

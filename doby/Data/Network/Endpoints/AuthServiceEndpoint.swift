@@ -9,7 +9,8 @@ enum AuthServiceEndpoint {
 
 extension AuthServiceEndpoint: APIEndpointProtocol {
     var baseURL: URL {
-        URL(string: "http://localhost:8000/api")!
+//        URL(string: "http://localhost:8000/api")!
+        URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev/api")!
     }
     
     var path: String {

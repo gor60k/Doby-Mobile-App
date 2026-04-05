@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AuthView: View {
+    @EnvironmentObject var primaryColorService: PrimaryColorService
+    
     private let session = SessionService.shared
     
     @State private var isSignUp: Bool = false
@@ -50,7 +52,7 @@ struct AuthView: View {
                     }
                 }) {
                     Text(isSignUp ? "Войти" : "Зарегистрироваться")
-                        .foregroundColor(.primaryYellow)
+                        .foregroundColor(primaryColorService.currentColor.color)
                         .underline()
                 }
             }
