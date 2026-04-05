@@ -25,6 +25,13 @@ struct ProfileHeaderView: View {
                 Text("Хвостик-\(user?.uuid)")
                     .style(AppTextStyle.Presets.titleSemibold)
             }
+            
+            Text("42 года, Краснодар, Юбилейный")
+                .style(AppTextStyle.Presets.headlineRegular)
         }
     }
+}
+
+#Preview {
+    ProfileHeaderView()
 }

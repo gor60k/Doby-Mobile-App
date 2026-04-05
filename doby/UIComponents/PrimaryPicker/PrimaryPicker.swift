@@ -1,14 +1,15 @@
 import SwiftUI
 
-struct PrimaryPicker: View {
-    
-    @Binding var selection: String
-    let options: [String]
+struct PrimaryPicker<Option: Hashable>: View {
+    @Binding var selection: Option
+    let options: [Option]
+    let title: (Option) -> String
     
     var body: some View {
         Picker("Выберите", selection: $selection) {
             ForEach(options, id: \.self) { option in
-                Text(option)
+                Text(title(option))
+                    .tag(option)
             }
         }
         .pickerStyle(.segmented)
