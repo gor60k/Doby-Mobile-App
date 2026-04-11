@@ -3,10 +3,10 @@ import SwiftUI
 @main
 struct dobyApp: App {
     @StateObject private var router = AppRouter()
-    private let session = SessionService.shared
-    
     @StateObject private var themeService = ThemeService()
     @StateObject private var primaryColorService = PrimaryColorService()
+    
+    private let session = SessionService.shared
     
     var body: some Scene {
         WindowGroup {

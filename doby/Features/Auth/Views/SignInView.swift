@@ -3,12 +3,15 @@ import AuthenticationServices
 
 struct SignInView: View {
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    
     private var session = SessionService.shared
     
     @State private var viewModel = AuthViewModel()
-    
-    @State private var email = ""
-    @State private var password = ""
+    @State private var didEditEmail = false
+    @State private var didEditPassword = false
+    @State private var didEditConfirmPassword = false
+    @State private var isPasswordVisible = false
     
     var body: some View {
         VStack(spacing: 16) {
@@ -18,8 +21,35 @@ struct SignInView: View {
                     .textInputAutocapitalization(.never)
             }
             
-            PrimaryTextField(title: "Введите пароль") {
-                TextField("Пароль", text: $viewModel.password)
+            PrimaryTextField(
+                title: "Введите пароль",
+                isValid: viewModel.password.count >= 6,
+                showsError: didEditPassword,
+                errorText: viewModel.password.count >= 6 ? nil : "Минимум 6 символов"
+            ) {
+                HStack(spacing: 8) {
+                    Group {
+                        if isPasswordVisible {
+                            TextField("Пароль не менее 6 символов", text: $viewModel.password)
+                        } else {
+                            SecureField("Пароль не менее 6 символов", text: $viewModel.password)
+                        }
+                    }
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textContentType(.newPassword)
+                    .onChange(of: viewModel.password) { _, _ in
+                        didEditPassword = true
+                    }
+                    
+                    Button {
+                        isPasswordVisible.toggle()
+                    } label: {
+                        Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                            .frame(height: 22)
+                            .foregroundColor(primaryColorService.currentColor.color)
+                    }
+                }
             }
             
             PrimaryButton(title: "Войти", isEnabled: true, action: {

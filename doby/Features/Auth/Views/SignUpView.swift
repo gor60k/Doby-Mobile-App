@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @EnvironmentObject private var router: AppRouter
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @EnvironmentObject private var primaryColorService: PrimaryColorService
     
     private var session = SessionService.shared
     
@@ -104,20 +104,6 @@ struct SignUpView: View {
                         }
                     }
                 }
-//                action: {
-//                print("SIGN UP TAP | isFormValid=\(viewModel.isFormValid) | email=\(viewModel.email) | passwordCount=\(viewModel.password.count) | confirmCount=\(viewModel.confirmPassword.count)")
-//                Task {
-//                    print("SIGN UP TASK START")
-//                    await viewModel.register()
-//                    print("SIGN UP TASK END | error=\(String(describing: viewModel.errorMessage))")
-//                    
-//                    if viewModel.errorMessage == nil {
-//                        await MainActor.run {
-//                            router.popToRoot()
-//                        }
-//                    }
-//                }
-//            }
             )
         }
         .padding(.horizontal, 16)

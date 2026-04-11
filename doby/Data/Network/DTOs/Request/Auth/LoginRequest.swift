@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoginRequest: Encodable {
-    let email: String
+    let username: String
     let password: String
 }
 

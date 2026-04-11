@@ -16,7 +16,7 @@ extension AuthServiceEndpoint: APIEndpointProtocol {
     var path: String {
         switch self {
         case .register(let user): return "/auth/register/"
-        case .login(let user): return "/auth/login/"
+        case .login(let user): return "/auth/token/"
         case .logout: return "/auth/logout/"
         case .delete: return "/auth/delete/me/"
         }

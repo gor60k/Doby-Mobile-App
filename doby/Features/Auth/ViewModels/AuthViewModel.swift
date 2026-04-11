@@ -6,6 +6,7 @@ final class AuthViewModel {
     private var session = SessionService.shared
     private var keychain = KeychainService.shared
     private var authService: AuthServiceProtocol
+    private var userService: UserServiceProtocol
     
     private let refreshToken = "refreshToken"
     private let accessToken = "accessToken"
@@ -16,7 +17,7 @@ final class AuthViewModel {
     
     var isPasswordValid: Bool {
         !password.isEmpty &&
-        password.count >= 6 &&
+        password.count >= 8 &&
         password == confirmPassword
     }
     
@@ -33,8 +34,12 @@ final class AuthViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(authService: AuthServiceProtocol = AuthService()) {
+    init(
+        authService: AuthServiceProtocol = AuthService(),
+        userService: UserServiceProtocol = UserService()
+    ) {
         self.authService = authService
+        self.userService = userService
     }
     
     @MainActor
@@ -89,13 +94,65 @@ final class AuthViewModel {
         isLoading = false
     }
     
+    @MainActor
     func login() async {
+        guard isEmailValid else {
+            errorMessage = "Некорректный email"
+            print("LOGIN STOP: invalid email")
+            return
+        }
         
+        guard !password.isEmpty else {
+            errorMessage = "Введите пароль"
+            print("LOGIN STOP: empty password")
+            return
+        }
+        
+        isLoading = true
+        errorMessage = nil
+        
+        print("LOGIN START")
+        
+        do {
+            let request = LoginRequest(
+                username: email,
+                password: password
+            )
+            
+            print("LOGIN REQUEST SEND")
+            let tokens = try await authService.login(user: request)
+            print("ACCESS \(tokens.access)")
+            print("REFRESH \(tokens.refresh)")
+            print("LOGIN TOKENS RECEIVED")
+            
+            keychain.save(token: tokens.refresh, for: refreshToken)
+            keychain.save(token: tokens.access, for: accessToken)
+            print("TOKENS SAVED")
+            
+            let userResponse = try await userService.me(
+                requestHeaders: ["Authorization": "Bearer \(tokens.access)"]
+            )
+            print("ME RESPONSE RECEIVED")
+            
+            session.currentUser = User(dto: userResponse)
+            session.isAuthenticated = true
+            print("USER SAVED: \(userResponse)")
+            
+            print("LOGIN SUCCESS")
+        } catch {
+            errorMessage = error.localizedDescription
+            print("LOGIN ERR: \(error)")
+            print("LOGIN ERR DESCRIPTION: \(error.localizedDescription)")
+        }
+        
+        isLoading = false
     }
     
     func logout() async {
-        session.isAuthenticated = false
+        keychain.deleteToken(for: accessToken)
+        keychain.deleteToken(for: refreshToken)
 
+        session.isAuthenticated = false
         session.currentUser = nil
     }
     

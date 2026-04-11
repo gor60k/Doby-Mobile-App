@@ -3,11 +3,7 @@ import SwiftUI
 struct WelcomeView: View {
     @EnvironmentObject var router: AppRouter
     
-    @StateObject private var viewModel = WelcomeSlideViewModel(slides: [
-        WelcomeSlide(id: 0, title: "Найдите надежного ситтера", subtitle: "Просмотрите профили и выберете того, кому доверите любимца"),
-        WelcomeSlide(id: 1, title: "Договоритесь в чате", subtitle: "Обсудите все детали ухода прямо в приложении"),
-        WelcomeSlide(id: 2, title: "Оплатите безопасно", subtitle: "Используйте надежные встроенные платежи без риска")
-    ])
+    @StateObject private var viewModel = WelcomeViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -39,7 +35,7 @@ struct WelcomeView: View {
                         if viewModel.isLastSlide {
                             router.push(.auth)
                         }
-                    }
+                    },
                 )
             }
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 32, trailing: 16))

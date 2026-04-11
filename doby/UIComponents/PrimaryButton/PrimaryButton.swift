@@ -1,15 +1,17 @@
 import SwiftUI
 
 struct PrimaryButton: View {
+    @EnvironmentObject var primaryColorService: PrimaryColorService
+    
     let title: String
     let isEnabled: Bool
     let action: () -> Void
     let buttonColor: Color?
-
+    
     init(
         title: String,
         isEnabled: Bool = true,
-        action: @escaping () -> Void = {},
+        action: @escaping() -> Void,
         buttonColor: Color? = nil
     ) {
         self.title = title
@@ -17,10 +19,14 @@ struct PrimaryButton: View {
         self.action = action
         self.buttonColor = buttonColor
     }
+    
+    private var resolvedColor: Color {
+        buttonColor ?? primaryColorService.primaryColor.color
+    }
 
     var body: some View {
+        
         Button {
-            print("PRIMARY BUTTON TAP | title=\(title) | isEnabled=\(isEnabled)")
             action()
         } label: {
             Text(title)
@@ -29,14 +35,24 @@ struct PrimaryButton: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
         }
-        .buttonStyle(PrimaryButtonStyle(
-            isEnabled: isEnabled,
-            buttonColor: buttonColor
-        ))
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 14)
+        .glassEffect(
+            .regular
+                .tint(isEnabled ? resolvedColor : Color.secondary)
+                .interactive(),
+        )
+        .animation(.easeInOut(duration: 0.3), value: isEnabled)
+        .foregroundColor(.white)
         .disabled(!isEnabled)
     }
 }
 
 #Preview {
-    PrimaryButton(title: "text")
+    PrimaryButton(
+        title: "text",
+        isEnabled: true,
+        action: {},
+    )
+    .withAppEnvironment()
 }

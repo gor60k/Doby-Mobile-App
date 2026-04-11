@@ -19,5 +19,7 @@ struct AuthUser: Decodable, Encodable {
     let sitter_profile: SitterProfile?
 }
 
+extension AuthUser: UserProtocol {}
+
 
 

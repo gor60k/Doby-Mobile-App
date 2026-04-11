@@ -14,7 +14,7 @@ struct User: Codable {
 }
 
 extension User {
-    init(dto: AuthUser) {
+    init(dto: some UserProtocol) {
         self.uuid = dto.uuid
         self.username = dto.username
         self.firstName = dto.first_name
