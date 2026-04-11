@@ -58,7 +58,7 @@ struct ProfileView: View {
             VStack {
                 UtilityButton(
                     action: {
-                        router.push(.settings)
+                        router.push(.profile(.settings))
                     },
                     title: "Изм.")
             }

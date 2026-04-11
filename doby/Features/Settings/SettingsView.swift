@@ -23,7 +23,7 @@ struct SettingsView: View {
                 
                 Section(header: Text("Другие настройки")) {
                     Button(action: {
-                        router.push(.settingsChild(.appearance))
+                        router.push(.settings(.appearance))
                     }) {
                         HStack {
                             Text("Оформление")
@@ -32,7 +32,7 @@ struct SettingsView: View {
                         }
                     }
                     Button(action: {
-                        router.push(.settingsChild(.privacy))
+                        router.push(.settings(.privacy))
                     }) {
                         HStack {
                             Text("Безопасность")
@@ -41,7 +41,7 @@ struct SettingsView: View {
                         }
                     }
                     Button(action: {
-                        router.push(.settingsChild(.notifications))
+                        router.push(.settings(.notifications))
                     }) {
                         HStack {
                             Text("Уведомления")

@@ -4,6 +4,7 @@ enum AppRoute: Hashable {
     case welcome
     case auth
     case rootTab
-    case settings
-    case settingsChild(SettingsRoute)
+    case profile(ProfileRoute)
+    case settings(SettingsRoute)
+    case pet(PetRoute)
 }

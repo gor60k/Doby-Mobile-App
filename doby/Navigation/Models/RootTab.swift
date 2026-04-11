@@ -1,4 +1,4 @@
-enum RootTab: String, CaseIterable {
+enum RootTab: Hashable {
     case pet
     case orders
     case chat
