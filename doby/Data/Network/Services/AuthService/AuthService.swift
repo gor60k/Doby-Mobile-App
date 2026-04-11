@@ -14,7 +14,7 @@ final class AuthService: AuthServiceProtocol {
         try await apiClient.request(AuthServiceEndpoint.register(user: user))
     }
     
-    func login(user: LoginRequest) async throws -> AuthResponse {
+    func login(user: LoginRequest) async throws -> LoginResponse {
         try await apiClient.request(AuthServiceEndpoint.login(user: user))
     }
     

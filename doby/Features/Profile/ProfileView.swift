@@ -1,29 +1,25 @@
 import SwiftUI
 
-enum ProfileDetailsTab: String, CaseIterable {
-    case about = "Обо мне"
-    case feedback = "Отзывы"
-}
-
 struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
     @StateObject private var viewModel = ProfileViewModel()
+    private var session = SessionService.shared
     
-    @State private var authViewModel = AuthViewModel()
     @State private var currentPage: Int = 1
-    
     @State private var selection: ProfileDetailsTab = .about
     let options = ProfileDetailsTab.allCases
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             ScrollView {
+                // MARK: - Шапка профиля
                 ProfileHeaderView(user: session.currentUser)
                     .padding(.horizontal)
                     .padding(.bottom, 10)
                 
+                // MARK: - Секция с питомцами юзера
                 PrimaryCollapsibleSection(title: "Мои питомцы") {
                     ProfilePetsView(
                         currentPage: viewModel.currentPage,
@@ -33,6 +29,7 @@ struct ProfileView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
+                // MARK: - Секция с деталями юзера (обо мне и отзывы)
                 PrimaryCollapsibleSection(title: "Подробнее") {
                     ProfileDetailsView(
                         selection: $selection,
@@ -45,6 +42,7 @@ struct ProfileView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
+                // MARK: - Секция с историей заказов
                 PrimaryCollapsibleSection(title: "История заказов") {
                     VStack(spacing: 12) {
                         ForEach(viewModel.orders, id: \.self) { order in
@@ -56,26 +54,19 @@ struct ProfileView: View {
                 .padding(.bottom, 10)
             }
             .scrollIndicators(.hidden)
-
+            
             VStack {
-                Button(action: {router.push(.settings)}) {
-                    Text("Изм.")
-                        .style(AppTextStyle.Presets.bodySemibold)
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .glassEffect(
-                    .regular
-                        .interactive()
-                )
+                UtilityButton(
+                    action: {
+                        router.push(.profile(.settings))
+                    },
+                    title: "Изм.")
             }
             .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(.primaryBackground)
     }
-    
-    private var session = SessionService.shared
 }
 
 #Preview {

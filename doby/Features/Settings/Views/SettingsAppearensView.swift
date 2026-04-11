@@ -33,7 +33,7 @@ struct SettingsAppearensView: View {
                     }
                 }
                 .onChange(of: primaryColorSelection) { oldValue, newValue in
-                    primaryColorService.primaryColor = newValue
+                    primaryColorService.setPrimaryColor(newValue)
                 }
                 .onAppear {
                     primaryColorSelection = primaryColorService.currentColor

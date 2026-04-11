@@ -7,39 +7,29 @@ struct ProfilePetsView: View {
     @State var slides: [ProfilePetsSlide]
     
     var body: some View {
-        VStack {
+        ZStack(alignment: .topTrailing) {
             VStack {
-                Button(action: {}) {
-                    HStack(spacing: 6) {
-                        Text("Добавить питомца")
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundColor(.white)
-                        Image(systemName: "plus")
-                            .foregroundColor(.white)
-                    }
+                PrimarySlider(
+                    currentPage: $currentPage,
+                    items: slides,
+                ) { _ in
+                    ProfilePetCardView()
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .glassEffect(
-                    .regular
-                        .tint(primaryColorService.currentColor.color)
-                        .interactive(),
+                .frame(height: 200)
+                
+                PrimaryPagination(
+                    numberOfPages: slides.count,
+                    currentPage: currentPage
                 )
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
             
-            PrimarySlider(
-                currentPage: $currentPage,
-                items: slides,
-            ) { _ in
-                ProfilePetCardView()
+            VStack {
+                UtilityButton(
+                    action: {},
+                    icon: "plus"
+                )
             }
-            .frame(height: 200)
-            
-            PrimaryPagination(
-                numberOfPages: slides.count,
-                currentPage: currentPage
-            )
+            .padding()
         }
     }
 }
