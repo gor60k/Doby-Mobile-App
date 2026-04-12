@@ -7,4 +7,6 @@ enum AppRoute: Hashable {
     case profile(ProfileRoute)
     case settings(SettingsRoute)
     case pet(PetRoute)
+    case petSettings
+    case petAdding
 }

@@ -43,6 +43,22 @@ struct PetView: View {
                 }
             }
             .padding()
+            
+            Button(action: {
+                router.push(.petAdding)
+            }) {
+                Image(systemName: "plus")
+            }
+        }
+        .overlay(alignment: .topTrailing) {
+            UtilityButton(
+                action: {
+                    router.push(.petAdding)
+//                    router.push(.profile(.settings))
+                },
+                icon: "plus"
+            )
+            .padding(.trailing, 16)
         }
     }
 }

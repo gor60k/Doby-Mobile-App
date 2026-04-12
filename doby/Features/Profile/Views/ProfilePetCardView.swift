@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct ProfilePetCardView: View {
+    @EnvironmentObject var router: AppRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
             Image("PetAvatarPlaceholder")
                 .resizable()
-                .frame(height: 200)
             
             VStack(alignment: .leading) {
                 Text("Бобик")
@@ -38,11 +38,25 @@ struct ProfilePetCardView: View {
                         .foregroundColor(.primary)
                         .lineLimit(3)
                 }
+                
+                Spacer()
+                
+                Button(action: {
+                    router.push(.pet(.profile))
+                }) {
+                    Text("Подробнее")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundColor(.white)
+                        
+                }
+                .padding(.vertical, 6)
+                .padding(.horizontal, 12)
+                .background(RoundedRectangle(cornerRadius: 12).fill(primaryColorService.currentColor.color))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .padding(12)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: 200)
         .background(primaryColorService.currentColor.color.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }

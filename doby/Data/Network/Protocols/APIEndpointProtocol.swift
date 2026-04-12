@@ -1,6 +1,8 @@
 import Foundation
 
 protocol APIEndpointProtocol {
+    associatedtype Response: Decodable
+
     var baseURL: URL { get }
     var path: String { get }
     var method: HTTPMethod { get }
@@ -14,3 +16,5 @@ enum HTTPMethod: String {
     case put = "PUT"
     case delete = "DELETE"
 }
+
+struct EmptyResponse: Decodable {}

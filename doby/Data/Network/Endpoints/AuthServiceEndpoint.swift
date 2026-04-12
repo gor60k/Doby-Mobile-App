@@ -1,50 +1,51 @@
 import Foundation
 
-enum AuthServiceEndpoint {
-    case register(user: RegisterRequest)
-    case login(user: LoginRequest)
-    case logout
-    case delete(headers: [String: String]?)
+enum APIConstants {
+    static let baseURL = URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev/api")!
 }
 
-extension AuthServiceEndpoint: APIEndpointProtocol {
-    var baseURL: URL {
-//        URL(string: "http://localhost:8000/api")!
-        URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev/api")!
-    }
-    
-    var path: String {
-        switch self {
-        case .register(let user): return "/auth/register/"
-        case .login(let user): return "/auth/token/"
-        case .logout: return "/auth/logout/"
-        case .delete: return "/auth/delete/me/"
-        }
-    }
-    
-    var method: HTTPMethod {
-        switch self {
-        case .register, .login, .logout: return .post
-        case .delete: return .delete
-        }
-    }
-    
-    var body: Data? {
-        switch self {
-        case .register(let user): return try? JSONEncoder().encode(user)
-        case .login(let user): return try?
-            JSONEncoder().encode(user)
-        case .logout: return nil
-        case .delete: return nil
-        }
-    }
-    
-    var headers: [String: String]? {
-        switch self {
-        case .register, .login, .logout:
-            return ["Content-Type": "application/json"]
-        case .delete(let headers):
-            return headers
-        }
-    }
+struct RegisterEndpoint: APIEndpointProtocol {
+    typealias Response = AuthResponse
+
+    let request: RegisterRequest
+
+    var baseURL: URL { APIConstants.baseURL }
+    var path: String { "/auth/register/" }
+    var method: HTTPMethod { .post }
+    var body: Data? { try? JSONEncoder().encode(request) }
+    var headers: [String: String]? { ["Content-Type": "application/json"] }
+}
+
+struct LoginEndpoint: APIEndpointProtocol {
+    typealias Response = LoginResponse
+
+    let request: LoginRequest
+
+    var baseURL: URL { APIConstants.baseURL }
+    var path: String { "/auth/token/" }
+    var method: HTTPMethod { .post }
+    var body: Data? { try? JSONEncoder().encode(request) }
+    var headers: [String: String]? { ["Content-Type": "application/json"] }
+}
+
+struct LogoutEndpoint: APIEndpointProtocol {
+    typealias Response = EmptyResponse
+
+    var baseURL: URL { APIConstants.baseURL }
+    var path: String { "/auth/logout/" }
+    var method: HTTPMethod { .post }
+    var body: Data? { nil }
+    var headers: [String: String]? { ["Content-Type": "application/json"] }
+}
+
+struct DeleteMeEndpoint: APIEndpointProtocol {
+    typealias Response = EmptyResponse
+
+    let headersValue: [String: String]?
+
+    var baseURL: URL { APIConstants.baseURL }
+    var path: String { "/auth/delete/me/" }
+    var method: HTTPMethod { .delete }
+    var body: Data? { nil }
+    var headers: [String: String]? { headersValue }
 }

@@ -11,6 +11,6 @@ final class UserService: UserServiceProtocol {
     }
     
     func me(requestHeaders: [String: String]) async throws -> MeResponse {
-        try await apiClient.request(UserServiceEndpoint.me(requestHeaders: requestHeaders))
+        try await apiClient.request(MeEndpoint(headersValue: requestHeaders))
     }
 }

@@ -64,13 +64,13 @@ final class AuthViewModel {
         print("REGISTER START")
         
         do {
-            let user = RegisterRequest(
+            let request = RegisterRequest(
                 username: email,
                 password: password,
             )
             
             print("REGISTER REQUEST SEND")
-            let response = try await authService.register(user: user)
+            let response = try await authService.register(request)
             print("REGISTER RESPONSE RECEIVED")
             
             session.currentUser = User(dto: response.user)
@@ -120,14 +120,16 @@ final class AuthViewModel {
             )
             
             print("LOGIN REQUEST SEND")
-            let tokens = try await authService.login(user: request)
+            let tokens = try await authService.login(request)
             print("ACCESS \(tokens.access)")
             print("REFRESH \(tokens.refresh)")
             print("LOGIN TOKENS RECEIVED")
             
+            keychain.deleteToken(for: refreshToken)
+            keychain.deleteToken(for: accessToken)
             keychain.save(token: tokens.refresh, for: refreshToken)
             keychain.save(token: tokens.access, for: accessToken)
-            print("TOKENS SAVED")
+            print("TOKENS SAVED | ACCESS:\(tokens.access) | REFRESH:\(tokens.refresh)")
             
             let userResponse = try await userService.me(
                 requestHeaders: ["Authorization": "Bearer \(tokens.access)"]

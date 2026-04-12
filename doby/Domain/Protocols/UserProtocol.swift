@@ -8,7 +8,7 @@ protocol UserProtocol {
     var patronymic: String? { get }
     var avatar: String? { get }
     var phone: String? { get }
-    var city: City? { get }
+    var city: CityDTO? { get }
     var bio: String? { get }
-    var sitter_profile: SitterProfile? { get }
+    var sitter_profile: SitterProfileDTO? { get }
 }

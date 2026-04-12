@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProfilePetsView: View {
+    @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
     @State var currentPage: Int = 0
@@ -22,14 +23,16 @@ struct ProfilePetsView: View {
                     currentPage: currentPage
                 )
             }
-            
-            VStack {
+            .overlay(alignment: .topTrailing) {
                 UtilityButton(
-                    action: {},
+                    action: {
+                        router.push(.petAdding)
+                    },
                     icon: "plus"
                 )
+                .padding(.vertical, 16)
+                .padding(.trailing, 16)
             }
-            .padding()
         }
     }
 }

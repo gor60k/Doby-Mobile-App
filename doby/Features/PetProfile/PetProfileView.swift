@@ -3,7 +3,7 @@ import SwiftUI
 struct PetProfileView: View {
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    @StateObject private var viewModel = PetViewModel()
+    @StateObject private var viewModel = PetProfileViewModel()
     
     enum PetDetailsTab: String, CaseIterable {
         case about = "Обо мне"
@@ -20,116 +20,21 @@ struct PetProfileView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                ZStack {
-                    VStack {
-                        PrimarySlider(
-                            currentPage: $viewModel.currentPage,
-                            items: viewModel.slides,
-                        ) { slide in
-                            Image(slide.image)
-                                .resizable()
-                                .scaledToFill()
-                        }
-                    }
-                    
-                    HStack {
-                        Text("\(viewModel.currentPage + 1) / \(viewModel.slides.count)")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(.black.opacity(0.5))
-                            .clipShape(Capsule())
-                    }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    .padding()
-                }
-                .frame(maxWidth: .infinity, maxHeight: 300)
-                
-                HStack(spacing: 8) {
-                    VStack(alignment: .leading) {
-                        Text("Бобик")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                        
-                        HStack {
-                            Text("Корги")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                            
-                            Text("2 года")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    Text("♀")
-                        .font(.system(size: 30))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(primaryColorService.currentColor.color))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(20)
-                .glassEffect(
-                    .regular,
-                    in: RoundedRectangle(cornerRadius: 16)
+                PetProfileGallaryView(
+                    currentPage: $viewModel.currentPage,
+                    items: viewModel.slides
                 )
-                .padding(.horizontal, 16)
-                .padding(.bottom, 10)
-                .zIndex(1)
+                PetProfileLabelView(name: viewModel.pet.name, species: "Такса", age: viewModel.pet.age, gender: .male)
                 
                 PrimaryCollapsibleSection(title: "Подробнее") {
                     VStack(spacing: 10) {
                         HStack(spacing: 8) {
-                            VStack(alignment: .leading) {
-                                Text("Вес")
-                                    .font(.system(.body, design: .rounded))
-                                    .foregroundColor(.secondary)
-                                Text("6 кг")
-                                    .font(.system(.headline, design: .rounded))
-                                    .foregroundColor(primaryColorService.currentColor.color)
+                            ForEach(Array(viewModel.infoItems.enumerated()), id: \.offset) { _, item in
+                                PetProfileInfoCardView(item: item)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 16).fill(primaryColorService.currentColor.color.opacity(0.1))
-                            )
-                            
-                            VStack(alignment: .leading) {
-                                Text("Высота")
-                                    .font(.system(.body, design: .rounded))
-                                    .foregroundColor(.secondary)
-                                Text("20 см")
-                                    .font(.system(.headline, design: .rounded))
-                                    .foregroundColor(primaryColorService.currentColor.color)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 16).fill(primaryColorService.currentColor.color.opacity(0.1))
-                            )
-                            
-                            VStack(alignment: .leading) {
-                                Text("Цвет")
-                                    .font(.system(.body, design: .rounded))
-                                    .foregroundColor(.secondary)
-                                Text("Белый")
-                                    .font(.system(.headline, design: .rounded))
-                                    .foregroundColor(primaryColorService.currentColor.color)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 16).fill(primaryColorService.currentColor.color.opacity(0.1))
-                            )
                         }
                         
-                        PetDetailsView(
+                        PetProfileDetailsView(
                             selection: $selection,
                             aboutValue: .about,
                             feedbackValue: .feedback,

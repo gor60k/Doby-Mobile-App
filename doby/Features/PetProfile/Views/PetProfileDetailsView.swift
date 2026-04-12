@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PetDetailsView<Selection: Hashable>: View {
+struct PetProfileDetailsView<Selection: Hashable>: View {
     @Binding var selection: Selection
     let aboutValue: Selection
     let feedbackValue: Selection

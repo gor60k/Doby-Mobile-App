@@ -6,6 +6,7 @@ final class SessionService {
     static let shared = SessionService()
     
     private let userStorageKey: String = "currentUser"
+    private let petsStorageKey: String = "pets"
     private let roleStorageKey: String = "selectedUserRole"
     private let authStorageKey: String = "isAuthenticated"
     private let regStorageKey: String = "isRegistered"
@@ -28,6 +29,30 @@ final class SessionService {
                 UserDefaults.standard.removeObject(forKey: userStorageKey)
             }
         }
+    }
+    
+    var currentPets: [Pet]? {
+        get {
+            if let data = UserDefaults.standard.data(forKey: petsStorageKey),
+               let pets = try? JSONDecoder().decode([Pet].self, from: data) {
+                return pets
+            }
+            return nil
+        }
+        set {
+            if let newValue = newValue,
+               let data = try? JSONEncoder().encode(newValue) {
+                UserDefaults.standard.set(data, forKey: petsStorageKey)
+            } else {
+                UserDefaults.standard.removeObject(forKey: petsStorageKey)
+            }
+        }
+    }
+    
+    func appendPet(_ pet: Pet) {
+        var pets = currentPets ?? []
+        pets.append(pet)
+        currentPets = pets
     }
     
     var isRegistered: Bool {
