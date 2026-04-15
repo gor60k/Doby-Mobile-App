@@ -3,8 +3,8 @@ import SwiftUI
 struct ProfilePetsSlide: Identifiable {
     let id: Int
     let name: String
-    let type: String
+    let breedName: String
     let age: Int
-    let sex: String
-    let about: String
+//    let sex: String
+//    let about: String
 }

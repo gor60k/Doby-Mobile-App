@@ -5,6 +5,13 @@ struct PetProfileView: View {
     
     @StateObject private var viewModel = PetProfileViewModel()
     
+    private let petStorage = PetStorage.shared
+    
+    let petId: Int
+    private var pet: Pet? {
+        petStorage.pet(by: petId)
+    }
+    
     enum PetDetailsTab: String, CaseIterable {
         case about = "Обо мне"
         case feedback = "Отзывы"
@@ -24,7 +31,7 @@ struct PetProfileView: View {
                     currentPage: $viewModel.currentPage,
                     items: viewModel.slides
                 )
-                PetProfileLabelView(name: viewModel.pet.name, species: "Такса", age: viewModel.pet.age, gender: .male)
+                PetProfileLabelView(name: pet?.name ?? "", species: pet?.breedName ?? "", age: pet?.age ?? 0, gender: .male)
                 
                 PrimaryCollapsibleSection(title: "Подробнее") {
                     VStack(spacing: 10) {
@@ -88,6 +95,6 @@ struct PetProfileView: View {
 }
 
 #Preview {
-    PetProfileView()
+    PetProfileView(petId: 0)
         .withAppEnvironment()
 }

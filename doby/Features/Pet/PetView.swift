@@ -11,6 +11,7 @@ struct PetView: View {
             VStack(spacing: 16) {
                 ForEach(petStorage.pets) { pet in
                     PetCard(
+                        id: pet.id,
                         name: pet.name,
                         breedName: pet.breedName,
                         age: pet.age
@@ -19,12 +20,20 @@ struct PetView: View {
             }
             .padding()
             
-            UtilityButton(
-                action: {
-                    router.push(.petAdding)
-                },
-                icon: "plus"
+            Button(action: {
+                router.push(.petAdding)
+            }) {
+                Image(systemName: "plus")
+                    .font(.system(size: 30))
+                    .foregroundColor(primaryColorService.currentColor.color)
+            }
+            .padding()
+            .glassEffect(
+                .regular
+                    .tint(primaryColorService.currentColor.color.opacity(0.1))
+                    .interactive(),
             )
+            .clipShape(.circle)
         }
     }
 }

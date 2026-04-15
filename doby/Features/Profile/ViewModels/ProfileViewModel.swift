@@ -1,14 +1,27 @@
 import Foundation
 import Combine
 
+@MainActor
 class ProfileViewModel: ObservableObject {
-    @Published var currentPage: Int = 0
+    private let userStorage = UserStorage.shared
+    private let petStorage = PetStorage.shared
     
-    var slides = [
-        ProfilePetsSlide(id: 0, name: "Бобик", type: "Такса", age: 2, sex: "Мальчик", about: "Описание питомца"),
-        ProfilePetsSlide(id: 1, name: "Бобик", type: "Такса", age: 2, sex: "Мальчик", about: "Описание питомца"),
-        ProfilePetsSlide(id: 2, name: "Бобик", type: "Такса", age: 2, sex: "Мальчик", about: "Описание питомца")
-    ]
+    @Published var currentPage: Int = 0
+    @Published private(set) var pets: [Pet] = []
+    @Published private(set) var user: User?
+    
+    init() {
+        loadUser()
+        loadPets()
+    }
+    
+    func loadUser() {
+        user = userStorage.currentUser
+    }
+    
+    func loadPets() {
+        pets = petStorage.pets
+    }
     
     var orders = [
         Order(

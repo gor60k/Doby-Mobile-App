@@ -6,7 +6,6 @@ struct ProfileView: View {
     
     @StateObject private var viewModel = ProfileViewModel()
     private var session = SessionService.shared
-    private var userStorage = UserStorage.shared
     
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
@@ -15,7 +14,7 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             // MARK: - Шапка профиля
-            ProfileHeaderView(user: userStorage.currentUser)
+            ProfileHeaderView(user: viewModel.user)
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             
@@ -23,7 +22,7 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "Мои питомцы") {
                 ProfilePetsView(
                     currentPage: viewModel.currentPage,
-                    slides: viewModel.slides
+                    pets: viewModel.pets
                 )
             }
             .padding(.horizontal)

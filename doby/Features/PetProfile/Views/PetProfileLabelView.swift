@@ -20,7 +20,7 @@ struct PetProfileLabelView: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     
-                    Text("\(age)")
+                    Text("\(age.yearsString)")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }

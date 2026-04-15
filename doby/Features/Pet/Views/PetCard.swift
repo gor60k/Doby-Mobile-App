@@ -4,13 +4,14 @@ struct PetCard: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
+    let id: Int
     let name: String
     let breedName: String
     let age: Int
     
     var body: some View {
         Button(action: {
-            router.push(.pet(.profile))
+            router.push(.pet(.profile(id: id)))
         }) {
             HStack(spacing: 12) {
                 Image(systemName: "pawprint.circle.fill")
@@ -26,7 +27,7 @@ struct PetCard: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    Text("Возраст: \(age) года")
+                    Text(age.yearsString)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }

@@ -1,3 +1,3 @@
 enum PetRoute: Hashable {
-    case profile
+    case profile(id: Int)
 }
