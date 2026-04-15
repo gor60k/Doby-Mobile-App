@@ -1,15 +1,23 @@
 import Foundation
+import Combine
+import os
 import Observation
 
 @Observable
 final class PetAddingViewModel {
     private var session = SessionService.shared
     private var keychain = KeychainService.shared
+    private var petStorage = PetStorage.shared
+    private var log = LogService.shared
+    
     private var petService: PetServiceProtocol
     
-    private let accessToken = "accessToken"
+    private let logger = Logger(
+        subsystem: "com.app.subsystem",
+        category: "PetAddingViewModel"
+    )
     
-    var pets: [Pet] = []
+//    var pets: [Pet] = []
     
     var petType: PetType = .dog
     var name: String = ""
@@ -32,9 +40,7 @@ final class PetAddingViewModel {
         isLoading = true
         errorMessage = nil
         
-        print("PET ADDING START")
-        
-        do {
+        await log.logAsync("ADDPET", logger: logger) {
             let request = PetRequest(
                 pet_type: petType.toDTO(),
                 name: name,
@@ -44,32 +50,12 @@ final class PetAddingViewModel {
                 breed_name: breedName,
             )
             
-            print("PET ADDING REQUEST SEND")
+            let response = try await petService.create(request)
             
-            guard let token = keychain.getToken(for: accessToken), !token.isEmpty else {
-                errorMessage = "Не удалось получить access token"
-                print("PET ADDING STOP: access token missing")
-                isLoading = false
-                return
-            }
-
-            let response = try await petService.create(
-                request,
-                headers: [
-                    "Authorization": "Bearer \(token)"
-                ]
-            )
-            
-            session.appendPet(response.toDomain())
-            pets = session.currentPets ?? []
-            
-            print("PET SAVED: \(response)")
-            
-        } catch {
-            errorMessage = error.localizedDescription
-            print("LOGIN ERR: \(error)")
-            print("LOGIN ERR DESCRIPTION: \(error.localizedDescription)")
+            petStorage.appendPet(response.toDomain())
+//            pets = session.currentPets ?? []
         }
+        
         isLoading = false
     }
 }

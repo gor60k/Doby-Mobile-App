@@ -18,3 +18,7 @@ enum HTTPMethod: String {
 }
 
 struct EmptyResponse: Decodable {}
+
+extension APIEndpointProtocol {
+    var headers: [String: String]? { nil }
+}
