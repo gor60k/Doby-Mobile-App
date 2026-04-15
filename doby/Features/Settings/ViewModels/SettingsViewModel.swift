@@ -3,6 +3,7 @@ import Combine
 
 final class SettingsViewModel: ObservableObject {
     private var session = SessionService.shared
+    private var userStorage = UserStorage.shared
     
     @Published var username: String = ""
     @Published var name: String = ""
@@ -21,7 +22,7 @@ final class SettingsViewModel: ObservableObject {
     }
     
     func loadCurrentUser() {
-        guard let user = session.currentUser else { return }
+        guard let user = userStorage.currentUser else { return }
         
         username = user.username
         name = user.firstName ?? ""

@@ -5,8 +5,8 @@ struct PetDestinationView: View {
     
     var body: some View {
         switch route {
-        case .profile:
-            PetProfileView()
+        case .profile(let id):
+            PetProfileView(petId: id)
         }
     }
 }

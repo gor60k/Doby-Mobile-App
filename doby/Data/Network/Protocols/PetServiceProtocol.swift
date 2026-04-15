@@ -1,13 +1,10 @@
 import Foundation
 
 protocol PetServiceProtocol {
-    func create(_ request: PetRequest,
-                headers: [String: String]
-    ) async throws -> PetResponse
+    func create(_ request: PetRequest) async throws -> PetResponse
     
     func fetchById(
         ownerUUID: UUID,
-        petId: Int,
-        headers: [String: String]
+        petId: Int
     ) async throws -> PetResponse
 }

@@ -1,15 +1,21 @@
 import Foundation
+import os
 import Observation
 
 @Observable
 final class AuthViewModel {
     private var session = SessionService.shared
     private var keychain = KeychainService.shared
+    private var userStorage = UserStorage.shared
+    private var log = LogService.shared
+    
     private var authService: AuthServiceProtocol
     private var userService: UserServiceProtocol
     
-    private let refreshToken = "refreshToken"
-    private let accessToken = "accessToken"
+    private let logger = Logger(
+        subsystem: "com.app.subsystem",
+        category: "AuthViewModel"
+    )
     
     var email: String = ""
     var password: String = ""
@@ -44,8 +50,6 @@ final class AuthViewModel {
     
     @MainActor
     func register() async {
-        print("REGISTER CALLED | email=\(email) | isEmailValid=\(isEmailValid) | passwordCount=\(password.count) | confirmMatches=\(password == confirmPassword)")
-        
         guard isEmailValid else {
             errorMessage = "Некорректный email"
             print("REGISTER STOP: invalid email")
@@ -61,34 +65,17 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        print("REGISTER START")
-        
-        do {
+        await log.logAsync("REGISTER", logger: logger) {
             let request = RegisterRequest(
                 username: email,
                 password: password,
             )
             
-            print("REGISTER REQUEST SEND")
             let response = try await authService.register(request)
-            print("REGISTER RESPONSE RECEIVED")
             
-            session.currentUser = User(dto: response.user)
-            
+            userStorage.save(User(dto: response.user))
             session.isRegistered = true
             session.isAuthenticated = true
-            print("USER SAVED: \(response.user)")
-            
-            keychain.save(token: response.refresh_token, for: refreshToken)
-            keychain.save(token: response.access_token, for: accessToken)
-            
-            print("TOKENS SAVED: | ACCESS:\(response.access_token) | REFRESH:\(response.refresh_token)")
-            
-            print("REGISTER SUCCESS")
-        } catch {
-            errorMessage = error.localizedDescription
-            print("REGISTER ERR: \(error)")
-            print("REGISTER ERR DESCRIPTION: \(error.localizedDescription)")
         }
         
         isLoading = false
@@ -111,57 +98,36 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        print("LOGIN START")
-        
-        do {
+        await log.logAsync("LOGIN", logger: logger) {
             let request = LoginRequest(
                 username: email,
                 password: password
             )
             
-            print("LOGIN REQUEST SEND")
-            let tokens = try await authService.login(request)
-            print("ACCESS \(tokens.access)")
-            print("REFRESH \(tokens.refresh)")
-            print("LOGIN TOKENS RECEIVED")
+            let response = try await authService.login(request)
             
-            keychain.deleteToken(for: refreshToken)
-            keychain.deleteToken(for: accessToken)
-            keychain.save(token: tokens.refresh, for: refreshToken)
-            keychain.save(token: tokens.access, for: accessToken)
-            print("TOKENS SAVED | ACCESS:\(tokens.access) | REFRESH:\(tokens.refresh)")
-            
-            let userResponse = try await userService.me(
-                requestHeaders: ["Authorization": "Bearer \(tokens.access)"]
-            )
-            print("ME RESPONSE RECEIVED")
-            
-            session.currentUser = User(dto: userResponse)
+            userStorage.save(User(dto: response.user))
             session.isAuthenticated = true
-            print("USER SAVED: \(userResponse)")
-            
-            print("LOGIN SUCCESS")
-        } catch {
-            errorMessage = error.localizedDescription
-            print("LOGIN ERR: \(error)")
-            print("LOGIN ERR DESCRIPTION: \(error.localizedDescription)")
         }
         
         isLoading = false
     }
     
+    @MainActor
     func logout() async {
-        keychain.deleteToken(for: accessToken)
-        keychain.deleteToken(for: refreshToken)
+        await log.logAsync("LOGOUT", logger: logger) {
+            _ = try await authService.logout()
+        }
 
         session.isAuthenticated = false
-        session.currentUser = nil
+        userStorage.clear()
     }
     
+    @MainActor
     func deleteMe() async {
         session.isRegistered = false
         session.isAuthenticated = false
 
-        session.currentUser = nil
+        userStorage.clear()
     }
 }

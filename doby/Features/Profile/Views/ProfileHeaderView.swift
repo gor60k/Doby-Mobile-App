@@ -5,13 +5,15 @@ struct ProfileHeaderView: View {
     
     var body: some View {
         VStack {
-            let fullName = "\(user?.firstName) \(user?.lastName)"
+            let fullName = "\(user?.firstName ?? "") \(user?.lastName ?? "")"
             
-            Image("ProfileAvatarPlaceholder")
+            Image(systemName: "person.circle.fill")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 100)
-                .clipShape(Circle())
+                .foregroundColor(Color(.secondarySystemBackground))
+//                .background(Color(.secondarySystemBackground))
+//                .clipShape(Circle())
             
             if let firstName = user?.firstName, !firstName.isEmpty {
                 HStack {

@@ -14,7 +14,7 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             // MARK: - Шапка профиля
-            ProfileHeaderView(user: session.currentUser)
+            ProfileHeaderView(user: viewModel.user)
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             
@@ -22,7 +22,7 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "Мои питомцы") {
                 ProfilePetsView(
                     currentPage: viewModel.currentPage,
-                    slides: viewModel.slides
+                    pets: viewModel.pets
                 )
             }
             .padding(.horizontal)

@@ -4,22 +4,32 @@ struct ProfilePetCardView: View {
     @EnvironmentObject var router: AppRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
+    let id: Int
+    let name: String
+    let breedName: String
+    let age: Int
+    
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
-            Image("PetAvatarPlaceholder")
-                .resizable()
+            VStack {
+                Image(systemName: "pawprint.fill")
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(primaryColorService.currentColor.color)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
             VStack(alignment: .leading) {
-                Text("Бобик")
+                Text(name)
                     .font(.system(.title2, design: .rounded, weight: .semibold))
                     .foregroundColor(primaryColorService.currentColor.color)
 
-                Text("Такса")
+                Text(breedName)
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundColor(.secondary)
 
                 HStack(spacing: 12) {
-                    Label("2 года", systemImage: "calendar")
+                    Label(age.yearsString, systemImage: "calendar")
                     Label("Мальчик", systemImage: "pawprint")
                 }
                 .font(.caption)
@@ -42,7 +52,7 @@ struct ProfilePetCardView: View {
                 Spacer()
                 
                 Button(action: {
-                    router.push(.pet(.profile))
+                    router.push(.pet(.profile(id: id)))
                 }) {
                     Text("Подробнее")
                         .font(.system(.caption, design: .rounded))
@@ -64,7 +74,12 @@ struct ProfilePetCardView: View {
 
 #Preview {
     VStack {
-        ProfilePetCardView()
+        ProfilePetCardView(
+            id: 0,
+            name: "pet.name",
+            breedName: "pet.breedName",
+            age: 0
+        )
     }
     .withAppEnvironment()
     .padding()

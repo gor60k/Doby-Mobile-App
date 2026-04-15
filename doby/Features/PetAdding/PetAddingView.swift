@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct PetAddingView: View {
+    
+    
     @State private var viewModel = PetAddingViewModel()
     
     var body: some View {
@@ -31,6 +33,8 @@ struct PetAddingView: View {
                 Button(action: {
                     Task {
                         await viewModel.addPet()
+                        
+                        
                     }
                 }) {
                     Text("Добавить питомца")

@@ -1,6 +1,6 @@
-import SwiftUI
+import Foundation
 
-struct Pet: Codable {
+struct Pet: Codable, Identifiable {
     let id: Int
     let petType: PetType
     var petTypeDisplay: String {
