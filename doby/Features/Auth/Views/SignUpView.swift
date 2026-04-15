@@ -99,6 +99,7 @@ struct SignUpView: View {
                         
                         if viewModel.errorMessage == nil {
                             await MainActor.run {
+                                router.refreshStartDestination(for: session)
                                 router.popToRoot()
                             }
                         }

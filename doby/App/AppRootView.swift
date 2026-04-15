@@ -22,14 +22,21 @@ struct AppRootView: View {
                         SettingsDestinationView(route: route)
                     case .pet(let route):
                         PetDestinationView(route: route)
+                    case .petSettings:
+                        PetSettingsView()
+                    case .petAdding:
+                        PetAddingView()
                     }
                 }
+        }
+        .onAppear {
+            appRouter.refreshStartDestination(for: session)
         }
     }
     
     @ViewBuilder
     private var rootView: some View {
-        switch appRouter.startDestination(for: session) {
+        switch appRouter.startDestination {
         case .welcome:
             WelcomeView()
         case .auth:

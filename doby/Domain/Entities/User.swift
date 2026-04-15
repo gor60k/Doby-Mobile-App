@@ -22,8 +22,8 @@ extension User {
         self.patronymic = dto.patronymic
         self.avatar = dto.avatar
         self.phone = dto.phone
-        self.city = dto.city
+        self.city = dto.city?.toDomain()
         self.bio = dto.bio
-        self.sitterProfile = dto.sitter_profile
+        self.sitterProfile = dto.sitter_profile?.toDomain()
     }
 }

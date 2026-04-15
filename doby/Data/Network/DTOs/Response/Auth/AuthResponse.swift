@@ -14,9 +14,9 @@ struct AuthUser: Decodable, Encodable {
     var patronymic: String?
     var avatar: String?
     var phone: String?
-    var city: City?
+    var city: CityDTO?
     var bio: String?
-    let sitter_profile: SitterProfile?
+    let sitter_profile: SitterProfileDTO?
 }
 
 extension AuthUser: UserProtocol {}

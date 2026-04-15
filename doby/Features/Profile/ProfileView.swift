@@ -12,60 +12,56 @@ struct ProfileView: View {
     let options = ProfileDetailsTab.allCases
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            ScrollView {
-                // MARK: - Шапка профиля
-                ProfileHeaderView(user: session.currentUser)
-                    .padding(.horizontal)
-                    .padding(.bottom, 10)
-                
-                // MARK: - Секция с питомцами юзера
-                PrimaryCollapsibleSection(title: "Мои питомцы") {
-                    ProfilePetsView(
-                        currentPage: viewModel.currentPage,
-                        slides: viewModel.slides
-                    )
-                }
+        ScrollView {
+            // MARK: - Шапка профиля
+            ProfileHeaderView(user: session.currentUser)
                 .padding(.horizontal)
                 .padding(.bottom, 10)
-                
-                // MARK: - Секция с деталями юзера (обо мне и отзывы)
-                PrimaryCollapsibleSection(title: "Подробнее") {
-                    ProfileDetailsView(
-                        selection: $selection,
-                        aboutValue: .about,
-                        feedbackValue: .feedback,
-                        options: options,
-                        title: { $0.rawValue }
-                    )
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                
-                // MARK: - Секция с историей заказов
-                PrimaryCollapsibleSection(title: "История заказов") {
-                    VStack(spacing: 12) {
-                        ForEach(viewModel.orders, id: \.self) { order in
-                            ProfileOrderCardView(order: order)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-            }
-            .scrollIndicators(.hidden)
             
-            VStack {
-                UtilityButton(
-                    action: {
-                        router.push(.profile(.settings))
-                    },
-                    title: "Изм.")
+            // MARK: - Секция с питомцами юзера
+            PrimaryCollapsibleSection(title: "Мои питомцы") {
+                ProfilePetsView(
+                    currentPage: viewModel.currentPage,
+                    slides: viewModel.slides
+                )
             }
             .padding(.horizontal)
+            .padding(.bottom, 10)
+            
+            // MARK: - Секция с деталями юзера (обо мне и отзывы)
+            PrimaryCollapsibleSection(title: "Подробнее") {
+                ProfileDetailsView(
+                    selection: $selection,
+                    aboutValue: .about,
+                    feedbackValue: .feedback,
+                    options: options,
+                    title: { $0.rawValue }
+                )
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 10)
+            
+            // MARK: - Секция с историей заказов
+            PrimaryCollapsibleSection(title: "История заказов") {
+                VStack(spacing: 12) {
+                    ForEach(viewModel.orders, id: \.self) { order in
+                        ProfileOrderCardView(order: order)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 10)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.primaryBackground)
+        .scrollIndicators(.hidden)
+        .overlay(alignment: .topTrailing) {
+            UtilityButton(
+                action: {
+                    router.push(.profile(.settings))
+                },
+                title: "Изм."
+            )
+            .padding(.trailing, 16)
+        }
     }
 }
 
