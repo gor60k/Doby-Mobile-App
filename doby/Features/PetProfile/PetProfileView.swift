@@ -3,7 +3,7 @@ import SwiftUI
 struct PetProfileView: View {
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    @StateObject private var viewModel = PetProfileViewModel()
+    @State private var viewModel = PetProfileViewModel()
     
     private let petStorage = PetStorage.shared
     

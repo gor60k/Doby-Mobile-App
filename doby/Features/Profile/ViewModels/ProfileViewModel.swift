@@ -1,14 +1,15 @@
 import Foundation
-import Combine
+import Observation
 
 @MainActor
-class ProfileViewModel: ObservableObject {
+@Observable
+class ProfileViewModel {
     private let userStorage = UserStorage.shared
     private let petStorage = PetStorage.shared
     
-    @Published var currentPage: Int = 0
-    @Published private(set) var pets: [Pet] = []
-    @Published private(set) var user: User?
+    var currentPage: Int = 0
+    private(set) var pets: [Pet] = []
+    private(set) var user: User?
     
     init() {
         loadUser()

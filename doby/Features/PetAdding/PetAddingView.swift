@@ -1,44 +1,88 @@
 import SwiftUI
+import PhotosUI
 
 struct PetAddingView: View {
-    
-    
     @State private var viewModel = PetAddingViewModel()
-    
+    @State private var warningInput: String = ""
+    @State private var featureInput: String = ""
+
     var body: some View {
         Form {
-            Section(header: Text("Add a new pet")) {
-                TextField("Имя", text: $viewModel.name)
-                
-                Stepper("Возраст: \(viewModel.age)", value: $viewModel.age, in: 0...30)
-                
-                HStack {
-                    Text("Высота")
-                    Spacer()
-                    TextField("см", value: $viewModel.height, format: .number)
-                        .multilineTextAlignment(.trailing)
-                        .keyboardType(.decimalPad)
+            PetAddingInfoView(
+                petType: $viewModel.petType,
+                name: $viewModel.name,
+                breedName: $viewModel.breedName,
+                age: $viewModel.age
+            )
+            
+            PetAddingDetailsView(
+                height: $viewModel.height,
+                weight: $viewModel.weight,
+                description: $viewModel.description
+            )
+            
+            PetAddingNutritionView(
+                feedingType: $viewModel.feedingType,
+                feedingSchedule: $viewModel.feedingSchedule,
+                feedingNotes: $viewModel.feedingNotes
+            )
+            PetAddingPhotoView(selectedPhotoItems: $viewModel.selectedPhotoItems)
+            
+            PetAddingWarningTagsView(
+                warningInput: $viewModel.warningInput,
+                warningTags: viewModel.warningTags,
+                isAddButtonDisabled: viewModel.isAddWarningButtonDisabled,
+                onAdd: {
+                    viewModel.addTag(.warning)
+                },
+                onDelete: { tag in
+                    viewModel.removeTag(tag, from: .warning)
                 }
-                
-                HStack {
-                    Text("Вес")
-                    Spacer()
-                    TextField("кг", value: $viewModel.weight, format: .number)
-                        .multilineTextAlignment(.trailing)
-                        .keyboardType(.decimalPad)
+            )
+            
+            PetAddingFeatureTagsView(
+                featureInput: $viewModel.featureInput,
+                featureTags: viewModel.featureTags,
+                isAddButtonDisabled: viewModel.isAddFeatureButtonDisabled,
+                onAdd: {
+                    viewModel.addTag(.feature)
+                },
+                onDelete: { tag in
+                    viewModel.removeTag(tag, from: .feature)
                 }
-                
-                TextField("Порода", text: $viewModel.breedName)
-                
-                Button(action: {
-                    Task {
-                        await viewModel.addPet()
-                        
-                        
+            )
+            
+            submitSection
+        }
+    }
+
+    @ViewBuilder
+    private var submitSection: some View {
+        Section {
+            Button {
+                Task {
+                    await viewModel.addPet()
+                }
+            } label: {
+                HStack {
+                    Spacer()
+                    if viewModel.isLoading {
+                        ProgressView()
+                    } else {
+                        Text("Добавить питомца")
+                            .fontWeight(.semibold)
                     }
-                }) {
-                    Text("Добавить питомца")
+                    Spacer()
                 }
+            }
+            .disabled(viewModel.isLoading || viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        }
+
+        if let errorMessage = viewModel.errorMessage {
+            Section {
+                Text(errorMessage)
+                    .foregroundStyle(.red)
+                    .font(.footnote)
             }
         }
     }

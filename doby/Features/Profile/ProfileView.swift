@@ -4,7 +4,7 @@ struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
-    @StateObject private var viewModel = ProfileViewModel()
+    @State private var viewModel = ProfileViewModel()
     private var session = SessionService.shared
     
     @State private var currentPage: Int = 1
