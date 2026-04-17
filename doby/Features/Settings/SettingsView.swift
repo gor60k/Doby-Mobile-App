@@ -4,7 +4,7 @@ import PhotosUI
 struct SettingsView: View {
     @EnvironmentObject private var router: AppRouter
     
-    @StateObject private var viewModel = SettingsViewModel()
+    @State private var viewModel = SettingsViewModel()
     @State private var authViewModel = AuthViewModel()
     @State private var selectedAvatarItem: PhotosPickerItem?
     @State private var selectedAvatarImage: UIImage?

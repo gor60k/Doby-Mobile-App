@@ -4,12 +4,12 @@ struct PetView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    private let petStorage = PetStorage.shared
+    private let viewModel = PetViewModel()
     
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                ForEach(petStorage.pets) { pet in
+                ForEach(viewModel.pets) { pet in
                     PetCard(
                         id: pet.id,
                         name: pet.name,

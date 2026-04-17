@@ -1,8 +1,9 @@
 import SwiftUI
-import Combine
+import Observation
 
-final class PetProfileViewModel: ObservableObject {
-    @Published var currentPage: Int = 0
+@Observable
+final class PetProfileViewModel {
+    var currentPage: Int = 0
     
     let slides: [PetAvaratSlide] = [
         PetAvaratSlide(id: 0, image: "PetAvatarPlaceholder"),

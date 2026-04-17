@@ -1,7 +1,8 @@
 import Foundation
-import Combine
+import _PhotosUI_SwiftUI
 import os
 import Observation
+import PhotosUI
 
 @Observable
 final class PetAddingViewModel {
@@ -17,14 +18,30 @@ final class PetAddingViewModel {
         category: "PetAddingViewModel"
     )
     
-//    var pets: [Pet] = []
-    
     var petType: PetType = .dog
     var name: String = ""
     var age: Int = 0
     var height: Int = 0
     var weight: Int = 0
     var breedName: String = ""
+
+    var description: String = ""
+    var selectedPhotoItems: [PhotosPickerItem] = []
+    var selectedPhotosData: [Data] = []
+
+    var feedingType: String = ""
+    var feedingSchedule: String = ""
+    var feedingNotes: String = ""
+    
+    var warningTagsViewModel = PrimaryTagsViewModel(
+        type: .warning,
+        placeholder: "Например: аллергия"
+    )
+    
+    var featureTagsViewModel = PrimaryTagsViewModel(
+        type: .feature,
+        placeholder: "Например: любит детей"
+    )
     
     var isLoading: Bool = false
     var errorMessage: String?
@@ -33,6 +50,17 @@ final class PetAddingViewModel {
         petService: PetServiceProtocol = PetService()
     ) {
         self.petService = petService
+    }
+    
+    @MainActor
+    func loadSelectedPhotos() async {
+        selectedPhotosData = []
+
+        for item in selectedPhotoItems {
+            if let data = try? await item.loadTransferable(type: Data.self) {
+                selectedPhotosData.append(data)
+            }
+        }
     }
     
     @MainActor
@@ -53,7 +81,6 @@ final class PetAddingViewModel {
             let response = try await petService.create(request)
             
             petStorage.appendPet(response.toDomain())
-//            pets = session.currentPets ?? []
         }
         
         isLoading = false

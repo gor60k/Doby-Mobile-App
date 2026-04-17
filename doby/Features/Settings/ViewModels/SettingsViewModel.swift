@@ -1,21 +1,22 @@
 import SwiftUI
-import Combine
+import Observation
 
-final class SettingsViewModel: ObservableObject {
+@Observable
+final class SettingsViewModel {
     private var session = SessionService.shared
     private var userStorage = UserStorage.shared
     
-    @Published var username: String = ""
-    @Published var name: String = ""
-    @Published var surname: String = ""
-    @Published var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
+    var username: String = ""
+    var name: String = ""
+    var surname: String = ""
+    var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
     
-    @Published var password: String = ""
-    @Published var newPassword: String = ""
-    @Published var confirmNewPassword: String = ""
+    var password: String = ""
+    var newPassword: String = ""
+    var confirmNewPassword: String = ""
     
-    @Published var phone: String = ""
-    @Published var email: String = ""
+    var phone: String = ""
+    var email: String = ""
     
     init() {
         loadCurrentUser()

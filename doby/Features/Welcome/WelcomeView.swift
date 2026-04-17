@@ -3,7 +3,7 @@ import SwiftUI
 struct WelcomeView: View {
     @EnvironmentObject var router: AppRouter
     
-    @StateObject private var viewModel = WelcomeViewModel()
+    @State private var viewModel = WelcomeViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {

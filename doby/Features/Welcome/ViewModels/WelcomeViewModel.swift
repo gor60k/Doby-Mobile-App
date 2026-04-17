@@ -1,8 +1,9 @@
 import SwiftUI
-import Combine
+import Observation
 
-class WelcomeViewModel: ObservableObject {
-    @Published var currentPage: Int = 0
+@Observable
+class WelcomeViewModel {
+    var currentPage: Int = 0
     
     let slides: [WelcomeSlide] = [
         WelcomeSlide(id: 0, title: "Найдите надежного ситтера", subtitle: "Просмотрите профили и выберете того, кому доверите любимца"),
