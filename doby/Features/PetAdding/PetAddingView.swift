@@ -3,8 +3,6 @@ import PhotosUI
 
 struct PetAddingView: View {
     @State private var viewModel = PetAddingViewModel()
-    @State private var warningInput: String = ""
-    @State private var featureInput: String = ""
 
     var body: some View {
         Form {
@@ -26,30 +24,17 @@ struct PetAddingView: View {
                 feedingSchedule: $viewModel.feedingSchedule,
                 feedingNotes: $viewModel.feedingNotes
             )
-            PetAddingPhotoView(selectedPhotoItems: $viewModel.selectedPhotoItems)
             
-            PetAddingWarningTagsView(
-                warningInput: $viewModel.warningInput,
-                warningTags: viewModel.warningTags,
-                isAddButtonDisabled: viewModel.isAddWarningButtonDisabled,
-                onAdd: {
-                    viewModel.addTag(.warning)
-                },
-                onDelete: { tag in
-                    viewModel.removeTag(tag, from: .warning)
-                }
+            PetAddingPhotoView(
+                selectedPhotoItems: $viewModel.selectedPhotoItems
             )
             
-            PetAddingFeatureTagsView(
-                featureInput: $viewModel.featureInput,
-                featureTags: viewModel.featureTags,
-                isAddButtonDisabled: viewModel.isAddFeatureButtonDisabled,
-                onAdd: {
-                    viewModel.addTag(.feature)
-                },
-                onDelete: { tag in
-                    viewModel.removeTag(tag, from: .feature)
-                }
+            PetAddingWarningView(
+                warningTagsViewModel: $viewModel.warningTagsViewModel
+            )
+            
+            PetAddingFeatureView(
+                featureTagsViewModel: $viewModel.featureTagsViewModel
             )
             
             submitSection

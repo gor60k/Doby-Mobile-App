@@ -33,11 +33,15 @@ final class PetAddingViewModel {
     var feedingSchedule: String = ""
     var feedingNotes: String = ""
     
-    var warningInput: String = ""
-    var featureInput: String = ""
-
-    var warningTags: [String] = []
-    var featureTags: [String] = []
+    var warningTagsViewModel = PrimaryTagsViewModel(
+        type: .warning,
+        placeholder: "Например: аллергия"
+    )
+    
+    var featureTagsViewModel = PrimaryTagsViewModel(
+        type: .feature,
+        placeholder: "Например: любит детей"
+    )
     
     var isLoading: Bool = false
     var errorMessage: String?
@@ -46,99 +50,6 @@ final class PetAddingViewModel {
         petService: PetServiceProtocol = PetService()
     ) {
         self.petService = petService
-    }
-    
-    enum TagKind {
-        case warning
-        case feature
-    }
-
-    func isAddButtonDisabled(for kind: TagKind) -> Bool {
-        trimmedTagInput(tagInput(for: kind)).isEmpty
-    }
-
-    func addTag(_ kind: TagKind) {
-        let trimmed = trimmedTagInput(tagInput(for: kind))
-        guard !trimmed.isEmpty else { return }
-
-        var currentTags = tags(for: kind)
-        guard !currentTags.contains(trimmed) else {
-            setTagInput("", for: kind)
-            return
-        }
-
-        currentTags.append(trimmed)
-        setTags(currentTags, for: kind)
-        setTagInput("", for: kind)
-    }
-
-    func removeTag(_ tag: String, from kind: TagKind) {
-        let updatedTags = tags(for: kind).filter { $0 != tag }
-        setTags(updatedTags, for: kind)
-    }
-
-    private func tagInput(for kind: TagKind) -> String {
-        switch kind {
-        case .warning:
-            return warningInput
-        case .feature:
-            return featureInput
-        }
-    }
-
-    private func setTagInput(_ value: String, for kind: TagKind) {
-        switch kind {
-        case .warning:
-            warningInput = value
-        case .feature:
-            featureInput = value
-        }
-    }
-
-    private func tags(for kind: TagKind) -> [String] {
-        switch kind {
-        case .warning:
-            return warningTags
-        case .feature:
-            return featureTags
-        }
-    }
-
-    private func setTags(_ value: [String], for kind: TagKind) {
-        switch kind {
-        case .warning:
-            warningTags = value
-        case .feature:
-            featureTags = value
-        }
-    }
-    
-    private func trimmedTagInput(_ value: String) -> String {
-        value.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
-    var isAddWarningButtonDisabled: Bool {
-        isAddButtonDisabled(for: .warning)
-    }
-
-    var isAddFeatureButtonDisabled: Bool {
-        isAddButtonDisabled(for: .feature)
-    }
-
-    func addWarningTag() {
-        addTag(.warning)
-    }
-
-    func addFeatureTag() {
-        addTag(.feature)
-    }
-
-    func removeWarningTag(_ tag: String) {
-        removeTag(tag, from: .warning)
-    }
-
-    func removeFeatureTag(_ tag: String) {
-        removeTag(tag, from: .feature)
     }
     
     @MainActor
@@ -170,22 +81,6 @@ final class PetAddingViewModel {
             let response = try await petService.create(request)
             
             petStorage.appendPet(response.toDomain())
-
-//            name = ""
-//            age = 0
-//            height = 0
-//            weight = 0
-//            breedName = ""
-//            description = ""
-//            selectedPhotoItems = []
-//            selectedPhotosData = []
-//            feedingType = ""
-//            feedingSchedule = ""
-//            feedingNotes = ""
-//            warningInput = ""
-//            warningTags = []
-//            featureTags = []
-//            pets = session.currentPets ?? []
         }
         
         isLoading = false
