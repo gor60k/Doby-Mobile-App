@@ -10,97 +10,101 @@ struct SignInView: View {
     @State private var viewModel = AuthViewModel()
     @State private var didEditEmail = false
     @State private var didEditPassword = false
-    @State private var didEditConfirmPassword = false
-    @State private var isPasswordVisible = false
     
     var body: some View {
-        VStack(spacing: 16) {
-            PrimaryTextField(title: "Введите ваш Email") {
-                TextField("Email", text: $viewModel.email)
-                    .keyboardType(.emailAddress)
-                    .textInputAutocapitalization(.never)
-            }
-            
-            PrimaryTextField(
-                title: "Введите пароль",
-                isValid: viewModel.password.count >= 6,
-                showsError: didEditPassword,
-                errorText: viewModel.password.count >= 6 ? nil : "Минимум 6 символов"
-            ) {
-                HStack(spacing: 8) {
-                    Group {
-                        if isPasswordVisible {
-                            TextField("Пароль не менее 6 символов", text: $viewModel.password)
-                        } else {
-                            SecureField("Пароль не менее 6 символов", text: $viewModel.password)
-                        }
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("С возвращением")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                    
+                    Text("Войдите, чтобы продолжить пользоваться приложением")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 24)
+                
+                VStack(spacing: 16) {
+                    AuthEmailFieldView(
+                        title: "Введите ваш Email",
+                        isValid: viewModel.isEmailValid,
+                        showsError: didEditEmail,
+                        errorText: viewModel.isEmailValid ? "" : "Некоректный email",
+                        email: $viewModel.email
+                    )
+                    .onChange(of: viewModel.email) { _, _ in
+                        didEditEmail = true
                     }
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .textContentType(.newPassword)
+                    
+                    AuthPasswordFieldView(
+                        title: "Введите пароль",
+                        placeholder: "Пароль не менее 8 символов",
+                        isValid: viewModel.password.count >= 8,
+                        showsError: didEditPassword,
+                        errorText: viewModel.password.count >= 8 ? nil : "Минимум 8 символов",
+                        password: $viewModel.password
+                    )
                     .onChange(of: viewModel.password) { _, _ in
                         didEditPassword = true
                     }
                     
-                    Button {
-                        isPasswordVisible.toggle()
-                    } label: {
-                        Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
-                            .frame(height: 22)
-                            .foregroundColor(primaryColorService.currentColor.color)
-                    }
-                }
-            }
-            
-            PrimaryButton(title: "Войти", isEnabled: true, action: {
-                Task {
-                    await viewModel.login()
-                    
-                    if viewModel.errorMessage == nil {
-                        await MainActor.run {
-                            router.refreshStartDestination(for: session)
-                            router.popToRoot()
+                    PrimaryButton(
+                        title: "Войти",
+                        isEnabled: viewModel.isLoginFormValid,
+                        action: {
+                            Task {
+                                await viewModel.login()
+                                
+                                if viewModel.errorMessage == nil {
+                                    await MainActor.run {
+                                        router.refreshStartDestination(for: session)
+                                        router.goToRootTab()
+                                    }
+                                }
+                            }
                         }
-                    }
+                    )
                 }
-            })
-            
-            Divider()
-                .background(.secondary)
-            
-            SignInWithAppleButton(
-                .signIn,
-                onRequest: { request in
-//                    viewModel.handleAppleRequest(request)
-                },
-                onCompletion: { result in
-                    Task {
-//                        await viewModel.handleAppleCompletion(result)
-                        
-                        if viewModel.errorMessage == nil {
-                            await MainActor.run {
-                                router.refreshStartDestination(for: session)
-                                router.popToRoot()
+                .frame(maxWidth: .infinity)
+                
+                DividerLabel(label: "или")
+                
+                SignInWithAppleButton(
+                    .signIn,
+                    onRequest: { request in
+                    },
+                    onCompletion: { result in
+                        Task {
+                            
+                            if viewModel.errorMessage == nil {
+                                await MainActor.run {
+                                    router.refreshStartDestination(for: session)
+                                    router.goToRootTab()
+                                }
                             }
                         }
                     }
-                }
-            )
-            .frame(height: 54)
-            .signInWithAppleButtonStyle(.black)
-            .clipShape(RoundedRectangle(cornerRadius: 25))
-            
-            PrimaryButton(
-                title: "Войти с Telegram",
-                isEnabled: true,
-                action: {},
-                buttonColor: Color("TelegramBlue")
-            )
+                )
+                .frame(height: 54)
+                .signInWithAppleButtonStyle(.black)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+                
+                PrimaryButton(
+                    title: "Войти с Telegram",
+                    isEnabled: true,
+                    action: {},
+                    buttonColor: Color("TelegramBlue")
+                )
+            }
+            .padding(.horizontal)
         }
-        .padding(.horizontal)
+        .scrollDismissesKeyboard(.interactively)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
 #Preview {
     SignInView()
+        .withAppEnvironment()
 }

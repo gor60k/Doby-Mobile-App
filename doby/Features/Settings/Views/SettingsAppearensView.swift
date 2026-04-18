@@ -45,6 +45,8 @@ struct SettingsAppearensView: View {
                     .frame(height: 40)
             }
         }
+        .navigationTitle("Внешний вид")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

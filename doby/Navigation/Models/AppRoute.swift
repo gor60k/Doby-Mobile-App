@@ -1,12 +1,7 @@
 import SwiftUI
 
-enum AppRoute: Hashable {
+enum AppFlow: Hashable {
     case welcome
     case auth
     case rootTab
-    case profile(ProfileRoute)
-    case settings(SettingsRoute)
-    case pet(PetRoute)
-    case petSettings
-    case petAdding
 }

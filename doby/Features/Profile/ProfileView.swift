@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var router: ProfileRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
     @State private var viewModel = ProfileViewModel()
@@ -52,15 +52,23 @@ struct ProfileView: View {
             .padding(.horizontal)
             .padding(.bottom, 10)
         }
+        .padding(.top, 60)
+        .ignoresSafeArea(edges: .top)
         .scrollIndicators(.hidden)
-        .overlay(alignment: .topTrailing) {
-            UtilityButton(
-                action: {
-                    router.push(.profile(.settings))
-                },
-                title: "Изм."
-            )
-            .padding(.trailing, 16)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Изм.") {
+                    router.push(.settings)
+                }
+                .tint(.primary)
+            }
+            
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Поделиться", systemImage: "qrcode") {
+                    
+                }
+                .tint(.primary)
+            }
         }
     }
 }

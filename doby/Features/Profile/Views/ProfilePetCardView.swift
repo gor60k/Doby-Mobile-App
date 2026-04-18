@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProfilePetCardView: View {
-    @EnvironmentObject var router: AppRouter
+    @EnvironmentObject var router: ProfileRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
     let id: Int
@@ -52,7 +52,7 @@ struct ProfilePetCardView: View {
                 Spacer()
                 
                 Button(action: {
-                    router.push(.pet(.profile(id: id)))
+                    router.push(.petProfile(petId: id))
                 }) {
                     Text("Подробнее")
                         .font(.system(.caption, design: .rounded))

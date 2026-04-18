@@ -11,7 +11,7 @@ struct PetCard: View {
     
     var body: some View {
         Button(action: {
-            router.push(.pet(.profile(id: id)))
+//            router.push(.pet(.profile(id: id)))
         }) {
             HStack(spacing: 12) {
                 Image(systemName: "pawprint.circle.fill")

@@ -21,10 +21,15 @@ final class AuthViewModel {
     var password: String = ""
     var confirmPassword: String = ""
     
-    var isPasswordValid: Bool {
+    var isRegisterPasswordValid: Bool {
         !password.isEmpty &&
         password.count >= 8 &&
         password == confirmPassword
+    }
+    
+    var isLoginPasswordValid: Bool {
+        !password.isEmpty &&
+        password.count >= 8
     }
     
     var isEmailValid: Bool {
@@ -32,9 +37,14 @@ final class AuthViewModel {
         email.contains(".")
     }
     
-    var isFormValid: Bool {
+    var isRegisterFormValid: Bool {
         isEmailValid &&
-        isPasswordValid
+        isRegisterPasswordValid
+    }
+    
+    var isLoginFormValid: Bool {
+        isEmailValid &&
+        isLoginPasswordValid
     }
     
     var isLoading: Bool = false
@@ -56,7 +66,7 @@ final class AuthViewModel {
             return
         }
         
-        guard isPasswordValid else {
+        guard isRegisterPasswordValid else {
             errorMessage = "Пароли не совпадают или слишком короткие"
             print("REGISTER STOP: invalid password")
             return
@@ -89,7 +99,7 @@ final class AuthViewModel {
             return
         }
         
-        guard !password.isEmpty else {
+        guard isLoginPasswordValid else {
             errorMessage = "Введите пароль"
             print("LOGIN STOP: empty password")
             return

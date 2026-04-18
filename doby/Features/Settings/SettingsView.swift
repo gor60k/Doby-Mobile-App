@@ -2,7 +2,8 @@ import SwiftUI
 import PhotosUI
 
 struct SettingsView: View {
-    @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var router: ProfileRouter
+    @EnvironmentObject private var appRoute: AppRouter
     
     @State private var viewModel = SettingsViewModel()
     @State private var authViewModel = AuthViewModel()
@@ -28,17 +29,19 @@ struct SettingsView: View {
                 email: $viewModel.email
             )
             
-            SettingsPetServicesView(action: { router.push(.petSettings) })
+            SettingsPetServicesView(action: {
+                router.push(.petSettings)
+            })
             
             SettingsAppView(
                 appearanceAction: {
-                    router.push(.settings(.appearance))
+                    router.push(.settingsAppearance)
                 },
                 privacyAction: {
-                    router.push(.settings(.privacy))
+                    router.push(.settingsPrivacy)
                 },
                 notificationsAction: {
-                    router.push(.settings(.notifications))
+                    router.push(.settingsNotifications)
                 }
             )
             
@@ -47,8 +50,7 @@ struct SettingsView: View {
                     Task {
                         await authViewModel.logout()
                         await MainActor.run {
-                            router.refreshStartDestination(for: SessionService.shared)
-                            router.popToRoot()
+                            appRoute.goToAuth()
                         }
                     }
                 }) {
@@ -61,7 +63,7 @@ struct SettingsView: View {
                     Task {
                         await authViewModel.deleteMe()
                         await MainActor.run {
-                            router.popToRoot()
+                            appRoute.goToWelcome()
                         }
                     }
                 }) {

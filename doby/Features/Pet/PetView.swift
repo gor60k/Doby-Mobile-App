@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PetView: View {
-    @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var router: PetRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
     private let viewModel = PetViewModel()

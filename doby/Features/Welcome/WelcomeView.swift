@@ -33,7 +33,7 @@ struct WelcomeView: View {
                     isEnabled: viewModel.isLastSlide,
                     action: {
                         if viewModel.isLastSlide {
-                            router.push(.auth)
+                            router.goToAuth()
                         }
                     },
                 )

@@ -51,7 +51,6 @@ struct PrimaryTextField<Content: View>: View {
 
 #Preview {
     ZStack {
-//        Color.gray.ignoresSafeArea()
         PrimaryTextField(title: "Text") {
             TextField("Text", text: .constant(""))
         }

@@ -9,31 +9,22 @@ final class AppRouter: ObservableObject {
     }
 
     @Published var startDestination: StartDestination = .welcome
-
-    @Published var path = NavigationPath()
     @Published var selectedTab: RootTab = .profile
 
-    func push(_ route: AppRoute) {
-        path.append(route)
+    func goToWelcome() {
+        startDestination = .welcome
     }
 
-    func pop() {
-        guard !path.isEmpty else { return }
-        path.removeLast()
+    func goToAuth() {
+        startDestination = .auth
     }
 
-    func popToRoot() {
-        guard !path.isEmpty else { return }
-        path = NavigationPath()
+    func goToRootTab() {
+        startDestination = .rootTab
     }
 
     func refreshStartDestination(for session: SessionService) {
-        if !session.isRegistered {
-            startDestination = .welcome
-            return
-        }
-
-        startDestination = session.isAuthenticated ? .rootTab : .auth
+        startDestination = startDestination(for: session)
     }
 
     func startDestination(for session: SessionService) -> StartDestination {

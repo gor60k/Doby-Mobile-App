@@ -5,65 +5,34 @@ struct AuthView: View {
     
     private let session = SessionService.shared
     
-    @State private var isSignUp: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some View {
         VStack {
-            ViewHeadline(
-                title: isSignUp ? "Регистрация" : "Войти",
-                subtitle: isSignUp ? "Создайте новый аккаунт" : "Войдите в свой аккаунт",
-                titleStyle: AppTextStyle.Presets.largeTitleBold,
-                subtitleStyle: AppTextStyle.Presets.headlineRegular
-            )
-            Divider()
-                .overlay(.secondary)
-                .padding(.horizontal)
-            
-            ScrollView {
-                ZStack(alignment: .topLeading) {
-                    if isSignUp {
+            SignInView()
+                .sheet(isPresented: $isPresented) {
+                    NavigationStack {
                         SignUpView()
-                            .frame(maxHeight: .infinity, alignment: .top)
-                            .transition(.asymmetric(
-                                insertion: .move(edge: .trailing),
-                                removal: .move(edge: .leading)
-                            ))
-                    } else {
-                        SignInView()
-                            .frame(maxHeight: .infinity, alignment: .top)
-                            .transition(.asymmetric(
-                                insertion: .move(edge: .leading),
-                                removal: .move(edge: .trailing)
-                            ))
+                            .toolbar {
+                                ToolbarItem(placement: .topBarLeading) {
+                                    Button("Назад", systemImage: "chevron.left") {
+                                        isPresented = false
+                                    }
+                                }
+                            }
                     }
+                    .presentationDetents([.large])
                 }
-                .frame(height: 450)
-                .clipped()
-            }
-            
-            Spacer()
-            
-            HStack {
-                Text(isSignUp ? "Есть аккаунт?" : "Нет аккаунта?")
-                    .foregroundColor(.secondary)
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isSignUp.toggle()
-                    }
-                }) {
-                    Text(isSignUp ? "Войти" : "Зарегистрироваться")
-                        .foregroundColor(primaryColorService.currentColor.color)
-                        .underline()
-                }
-            }
-            .padding(.bottom)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.vertical)
+        .overlay(alignment: .bottom) {
+            AuthBottomBarView(isPresented: $isPresented)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+        }
         .background(.primaryBackground)
     }
 }
 
 #Preview {
     AuthView()
+        .withAppEnvironment()
 }
