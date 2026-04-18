@@ -4,35 +4,26 @@ struct AppRootView: View {
     @EnvironmentObject private var appRouter: AppRouter
     
     let session: SessionService
+    @State private var hasResolvedInitialRoute = false
+    @State private var shouldAnimateRootTransitions = false
     
     var body: some View {
-        currentFlowView
-            .onAppear {
-                appRouter.refreshStartDestination(for: session)
+        ZStack {
+            if hasResolvedInitialRoute {
+                CurrentFlowView()
+            } else {
+                Color.clear
+                    .ignoresSafeArea()
             }
-    }
-    
-    @ViewBuilder
-    private var currentFlowView: some View {
-        switch appRouter.startDestination {
-        case .welcome:
-            welcomeStack
-        case .auth:
-            authStack
-        case .rootTab:
-            rootTabStack
         }
-    }
-    
-    private var welcomeStack: some View {
-        WelcomeView()
-    }
-    
-    private var authStack: some View {
-        AuthView()
-    }
-    
-    private var rootTabStack: some View {
-        RootTabView()
+        .animation(shouldAnimateRootTransitions ? .easeInOut(duration: 0.3) : nil, value: appRouter.startDestination)
+        .onAppear {
+            guard !hasResolvedInitialRoute else { return }
+            appRouter.setInitialStartDestination(for: session)
+            hasResolvedInitialRoute = true
+            DispatchQueue.main.async {
+                shouldAnimateRootTransitions = true
+            }
+        }
     }
 }

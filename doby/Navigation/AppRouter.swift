@@ -11,20 +11,32 @@ final class AppRouter: ObservableObject {
     @Published var startDestination: StartDestination = .welcome
     @Published var selectedTab: RootTab = .profile
 
+    func setInitialStartDestination(for session: SessionService) {
+        startDestination = startDestination(for: session)
+    }
+
     func goToWelcome() {
-        startDestination = .welcome
+        withAnimation(.easeInOut(duration: 0.3)) {
+            startDestination = .welcome
+        }
     }
 
     func goToAuth() {
-        startDestination = .auth
+        withAnimation(.easeInOut(duration: 0.3)) {
+            startDestination = .auth
+        }
     }
 
     func goToRootTab() {
-        startDestination = .rootTab
+        withAnimation(.easeInOut(duration: 0.3)) {
+            startDestination = .rootTab
+        }
     }
 
     func refreshStartDestination(for session: SessionService) {
-        startDestination = startDestination(for: session)
+        withAnimation(.easeInOut(duration: 0.3)) {
+            startDestination = startDestination(for: session)
+        }
     }
 
     func startDestination(for session: SessionService) -> StartDestination {
