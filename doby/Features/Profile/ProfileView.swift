@@ -45,7 +45,7 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "История заказов") {
                 VStack(spacing: 12) {
                     ForEach(viewModel.orders, id: \.self) { order in
-                        ProfileOrderCardView(order: order)
+                        PrimaryOrderCard(order: order)
                     }
                 }
             }
@@ -55,25 +55,16 @@ struct ProfileView: View {
         .padding(.top, 60)
         .ignoresSafeArea(edges: .top)
         .scrollIndicators(.hidden)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Изм.") {
-                    router.push(.settings)
-                }
-                .tint(.primary)
-            }
-            
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Поделиться", systemImage: "qrcode") {
-                    
-                }
-                .tint(.primary)
-            }
-        }
+        .profileToolbar(
+            onEditTap: { router.push(.settings) },
+            onQRScanTap: {}
+        )
     }
 }
 
 #Preview {
-    ProfileView()
-        .withAppEnvironment()
+    NavigationStack {
+        ProfileView()
+            .withAppEnvironment()
+    }
 }

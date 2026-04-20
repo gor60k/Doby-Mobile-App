@@ -101,6 +101,10 @@ struct SignInView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay(alignment: .bottom) {
+            AuthBottomBarView()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+        }
     }
 }
 

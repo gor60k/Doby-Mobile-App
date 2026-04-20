@@ -1,11 +1,10 @@
 import SwiftUI
 
 struct ProfileStack: View {
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
-    @StateObject private var profileRouter = ProfileRouter()
+    @StateObject private var router = ProfileRouter()
     
     var body: some View {
-        NavigationStack(path: $profileRouter.path) {
+        NavigationStack(path: $router.path) {
             ProfileView()
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
@@ -24,6 +23,6 @@ struct ProfileStack: View {
                     }
                 }
         }
-        .environmentObject(profileRouter)
+        .environmentObject(router)
     }
 }

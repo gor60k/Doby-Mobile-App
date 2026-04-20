@@ -2,20 +2,19 @@ import SwiftUI
 
 struct AuthBottomBarView: View {
     @EnvironmentObject var primaryColorService: PrimaryColorService
-    
-    @Binding var isPresented: Bool
+    @EnvironmentObject var router: AuthRouter
     
     var body: some View {
         HStack {
-            Text(isPresented ? "Есть аккаунт?" : "Нет аккаунта?")
+            Text("Нет аккаунта?")
                 .font(.system(.caption, design: .rounded))
                 .foregroundColor(.secondary)
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    isPresented.toggle()
+                    router.push(.signUp)
                 }
             }) {
-                Text(isPresented ? "Войти" : "Зарегистрироваться")
+                Text("Зарегистрироваться")
                     .font(.system(.caption, design: .rounded))
                     .foregroundColor(primaryColorService.currentColor.color)
                     .underline()

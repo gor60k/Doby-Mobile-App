@@ -1,9 +1,22 @@
 import SwiftUI
 
-struct ProfileOrderCardView: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+struct PrimaryOrderCard: View {
+    @EnvironmentObject private var primaryColorService: PrimaryColorService
     
     let order: Order
+
+    private var statusColor: Color {
+        switch order.status {
+        case .scheduled:
+            return .gray
+        case .inProgress:
+            return primaryColorService.currentColor.color
+        case .completed:
+            return .green
+        case .canceled:
+            return .red
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -19,11 +32,12 @@ struct ProfileOrderCardView: View {
                 
                 Spacer()
                 
-                Text(order.statusText)
+                Text(order.status.rawValue)
+                    .foregroundStyle(statusColor)
                     .style(AppTextStyle.Presets.captionRegular)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
-                    .background(primaryColorService.currentColor.color.opacity(0.12), in: Capsule())
+                    .background(statusColor.opacity(0.1), in: Capsule())
             }
             
             VStack(alignment: .leading, spacing: 10) {
