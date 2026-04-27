@@ -5,4 +5,5 @@ enum ProfileRoute: Hashable {
     case settingsNotifications
     case petSettings
     case petProfile(petId: Int)
+    case petAdding
 }
