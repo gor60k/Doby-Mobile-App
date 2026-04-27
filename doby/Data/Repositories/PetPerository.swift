@@ -1,6 +1,6 @@
 import SwiftUI
 
-final class PetRepository {
+final class PetRepository: PetRepositoryProtocol {
     private let service: PetService
     private let storage: PetStorage
     
@@ -19,7 +19,7 @@ final class PetRepository {
         return pet
     }
     
-    func fetchById(ownerUUID: UUID, petId: Int) async throws -> Pet {
+    func fetchPet(ownerUUID: UUID, petId: Int) async throws -> Pet {
         let response = try await service.fetchById(ownerUUID: ownerUUID, petId: petId)
         let pet = PetMapper.map(response: response)
         
