@@ -38,8 +38,14 @@ struct PetCard: View {
                     .foregroundColor(.gray)
             }
             .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
+            .background(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color(.secondarySystemBackground))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(.primary.opacity(0.06), lineWidth: 1)
+            )
         }
         .buttonStyle(PlainButtonStyle())
     }

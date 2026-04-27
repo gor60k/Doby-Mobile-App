@@ -17,15 +17,4 @@ final class PetProfileViewModel {
         .height(20),
         .color("Белый")
     ]
-    
-    let pet: Pet = Pet(
-        id: 0,
-        petType: .dog,
-        name: "Бобик",
-        age: 2,
-        ownerUUID: UUID(uuidString: "123E4567-E89B-12D3-A456-426614174000")!,
-        height: 0,
-        weight: 0,
-        breedName: ""
-    )
 }

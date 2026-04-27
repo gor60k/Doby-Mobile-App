@@ -8,7 +8,7 @@ struct PetView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(spacing: 8) {
                 ForEach(viewModel.pets) { pet in
                     PetCard(
                         id: pet.id,
@@ -19,26 +19,28 @@ struct PetView: View {
                 }
             }
             .padding()
-            
-            Button(action: {
-                router.push(.petAdding)
-            }) {
-                Image(systemName: "plus")
-                    .font(.system(size: 30))
-                    .foregroundColor(primaryColorService.currentColor.color)
+        }
+        .navigationTitle("Питомцы")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Изм.", action: {})
+                    .tint(.primary)
             }
-            .padding()
-            .glassEffect(
-                .regular
-                    .tint(primaryColorService.currentColor.color.opacity(0.1))
-                    .interactive(),
-            )
-            .clipShape(.circle)
+            
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Добавить", systemImage: "plus", action: {
+                    router.push(.petAdding)
+                })
+                    .tint(primaryColorService.primaryColor.color)
+            }
         }
     }
 }
 
 #Preview {
-    PetView()
-        .withAppEnvironment()
+    NavigationStack {
+        PetView()
+            .withAppEnvironment()
+    }
 }

@@ -6,17 +6,11 @@ import PhotosUI
 
 @Observable
 final class PetAddingViewModel {
+    private let repository: PetRepository
+    
     private var session = SessionService.shared
     private var keychain = KeychainService.shared
     private var petStorage = PetStorage.shared
-    private var log = LogService.shared
-    
-    private var petService: PetServiceProtocol
-    
-    private let logger = Logger(
-        subsystem: "com.app.subsystem",
-        category: "PetAddingViewModel"
-    )
     
     var petType: PetType = .dog
     var name: String = ""
@@ -24,6 +18,8 @@ final class PetAddingViewModel {
     var height: Int = 0
     var weight: Int = 0
     var breedName: String = ""
+    var dietType: String = ""
+    var dietPattern: String = ""
 
     var description: String = ""
     var selectedPhotoItems: [PhotosPickerItem] = []
@@ -47,9 +43,12 @@ final class PetAddingViewModel {
     var errorMessage: String?
     
     init(
-        petService: PetServiceProtocol = PetService()
+        repository: PetRepository = .init(
+            service: PetService(),
+            storage: PetStorage.shared
+        ),
     ) {
-        self.petService = petService
+        self.repository = repository
     }
     
     @MainActor
@@ -68,19 +67,18 @@ final class PetAddingViewModel {
         isLoading = true
         errorMessage = nil
         
-        await log.logAsync("ADDPET", logger: logger) {
-            let request = PetRequest(
-                pet_type: petType.toDTO(),
+        do {
+            let input = CreatePetInput(
+                petType: petType,
                 name: name,
                 age: age,
-                height: height,
-                weight: weight,
-                breed_name: breedName,
+                warningTags: warningTagsViewModel.tags,
+                specificTags: featureTagsViewModel.tags,
             )
             
-            let response = try await petService.create(request)
-            
-            petStorage.appendPet(response.toDomain())
+            _ = try await repository.createPet(input: input)
+        } catch {
+            errorMessage = error.localizedDescription
         }
         
         isLoading = false

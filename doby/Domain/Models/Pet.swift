@@ -9,10 +9,16 @@ struct Pet: Codable, Identifiable {
         case .dog: return "Собака"
         }
     }
+    let ownerUUID: UUID
     let name: String
     let age: Int
-    let ownerUUID: UUID
     let height: Int
     let weight: Int
     let breedName: String
+    let dietType: String
+    let dietPatterns: String
+    let warningTags: [String]
+    let specificTags: [String]
+    let dietAdditionalInfo: String
+    let photos: [PetPhoto]
 }
