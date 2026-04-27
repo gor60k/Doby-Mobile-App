@@ -1,7 +1,7 @@
 import Foundation
 
 struct RegisterEndpoint: APIEndpointProtocol {
-    typealias Response = AuthResponse
+    typealias Response = RegisterResponse
 
     let request: RegisterRequest
 
@@ -12,7 +12,7 @@ struct RegisterEndpoint: APIEndpointProtocol {
 }
 
 struct LoginEndpoint: APIEndpointProtocol {
-    typealias Response = AuthResponse
+    typealias Response = LoginResponse
     
     let request: LoginRequest
     

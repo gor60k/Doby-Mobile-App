@@ -35,16 +35,10 @@ struct SignUpView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Добро пожаловать!")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                    
-                    Text("Зарегистрируйтесь, чтобы продолжить пользоваться приложением")
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 24)
+                AuthHeaderView(
+                    title: "Добро пожаловать!",
+                    subtitle: "Зарегистрируйтесь, чтобы продолжить пользоваться приложением"
+                )
                 
                 
                 VStack(spacing: 16) {

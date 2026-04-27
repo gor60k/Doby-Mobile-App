@@ -14,16 +14,10 @@ struct SignInView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 16) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("С возвращением")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                    
-                    Text("Войдите, чтобы продолжить пользоваться приложением")
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 24)
+                AuthHeaderView(
+                    title: "C возвращением",
+                    subtitle: "Войдите, чтобы продолжить пользоваться приложением"
+                )
                 
                 VStack(spacing: 16) {
                     AuthEmailFieldView(
@@ -37,17 +31,28 @@ struct SignInView: View {
                         didEditEmail = true
                     }
                     
-                    AuthPasswordFieldView(
-                        title: "Введите пароль",
-                        placeholder: "Пароль не менее 8 символов",
-                        isValid: viewModel.password.count >= 8,
-                        showsError: didEditPassword,
-                        errorText: viewModel.password.count >= 8 ? nil : "Минимум 8 символов",
-                        password: $viewModel.password
-                    )
-                    .onChange(of: viewModel.password) { _, _ in
-                        didEditPassword = true
+                    VStack(alignment: .trailing, spacing: 10) {
+                        AuthPasswordFieldView(
+                            title: "Введите пароль",
+                            placeholder: "Пароль не менее 8 символов",
+                            isValid: viewModel.password.count >= 8,
+                            showsError: didEditPassword,
+                            errorText: viewModel.password.count >= 8 ? nil : "Минимум 8 символов",
+                            password: $viewModel.password
+                        )
+                        .onChange(of: viewModel.password) { _, _ in
+                            didEditPassword = true
+                        }
+                        
+                        Button("Забыли пароль?") {
+                            
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundColor(primaryColorService.currentColor.color)
+                        .font(.system(.subheadline, design: .rounded))
+                        .underline()
                     }
+                    
                     
                     PrimaryButton(
                         title: "Войти",
@@ -65,6 +70,8 @@ struct SignInView: View {
                             }
                         }
                     )
+                    
+                    AuthBottomBarView()
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -101,10 +108,6 @@ struct SignInView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .overlay(alignment: .bottom) {
-            AuthBottomBarView()
-                .ignoresSafeArea(.keyboard, edges: .bottom)
-        }
     }
 }
 

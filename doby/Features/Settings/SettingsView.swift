@@ -61,7 +61,7 @@ struct SettingsView: View {
                 
                 Button(action: {
                     Task {
-                        await authViewModel.deleteMe()
+//                        await authViewModel.deleteMe()
                         await MainActor.run {
                             appRoute.goToWelcome()
                         }

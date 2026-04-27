@@ -4,18 +4,7 @@ import Observation
 
 @Observable
 final class AuthViewModel {
-    private var session = SessionService.shared
-    private var keychain = KeychainService.shared
-    private var userStorage = UserStorage.shared
-    private var log = LogService.shared
-    
-    private var authService: AuthServiceProtocol
-    private var userService: UserServiceProtocol
-    
-    private let logger = Logger(
-        subsystem: "com.app.subsystem",
-        category: "AuthViewModel"
-    )
+    private let repository: AuthRepository
     
     var email: String = ""
     var password: String = ""
@@ -51,11 +40,13 @@ final class AuthViewModel {
     var errorMessage: String?
     
     init(
-        authService: AuthServiceProtocol = AuthService(),
-        userService: UserServiceProtocol = UserService()
+        repository: AuthRepository = .init(
+            service: AuthService(),
+            storage: UserStorage.shared,
+            session: SessionService.shared
+        )
     ) {
-        self.authService = authService
-        self.userService = userService
+        self.repository = repository
     }
     
     @MainActor
@@ -75,17 +66,15 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        await log.logAsync("REGISTER", logger: logger) {
-            let request = RegisterRequest(
+        do {
+            let input = RegisterInput(
                 username: email,
-                password: password,
+                password: password
             )
             
-            let response = try await authService.register(request)
-            
-            userStorage.save(User(dto: response.user))
-            session.isRegistered = true
-            session.isAuthenticated = true
+            _ = try await repository.register(input: input)
+        } catch {
+            errorMessage = error.localizedDescription
         }
         
         isLoading = false
@@ -108,16 +97,15 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        await log.logAsync("LOGIN", logger: logger) {
-            let request = LoginRequest(
+        do {
+            let input = LoginInput(
                 username: email,
                 password: password
             )
             
-            let response = try await authService.login(request)
-            
-            userStorage.save(User(dto: response.user))
-            session.isAuthenticated = true
+            _ = try await repository.login(input: input)
+        } catch {
+            errorMessage = error.localizedDescription
         }
         
         isLoading = false
@@ -125,19 +113,16 @@ final class AuthViewModel {
     
     @MainActor
     func logout() async {
-        await log.logAsync("LOGOUT", logger: logger) {
-            _ = try await authService.logout()
+        
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            _ = try await repository.logout()
+        } catch {
+            errorMessage = error.localizedDescription
         }
-
-        session.isAuthenticated = false
-        userStorage.clear()
-    }
-    
-    @MainActor
-    func deleteMe() async {
-        session.isRegistered = false
-        session.isAuthenticated = false
-
-        userStorage.clear()
+       
+        isLoading = false
     }
 }
