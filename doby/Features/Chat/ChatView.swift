@@ -1,15 +1,11 @@
 import SwiftUI
 
 struct ChatView: View {
+    @State private var searchText = ""
+    @State private var selectedTab = 0
+    
     var body: some View {
         VStack {
-            VStack {
-                TextField("Поиск", text: .constant(""))
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 16).fill(Color(.secondarySystemBackground)))
-            
             ScrollView {
                 VStack(spacing: 16) {
                     ForEach(0..<10, id: \.self) { _ in
@@ -47,15 +43,31 @@ struct ChatView: View {
                         }
                     }
                 }
+                .padding(.horizontal)
             }
-            .scrollIndicators(.hidden)
+            .scrollIndicators(.automatic)
         }
-        .padding(.horizontal)
-        .background(.primaryBackground)
+        .navigationTitle("Чаты")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarTitleDisplayMode(.automatic)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Изм.") {
+                    
+                }
+                .tint(.primary)
+            }
+        }
+        .searchable(
+            text: $searchText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Поиск"
+        )
     }
 }
 
 #Preview {
-    ChatView()
+    NavigationStack {
+        ChatView()
+    }
 }
-

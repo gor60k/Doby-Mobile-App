@@ -4,45 +4,26 @@ struct AppRootView: View {
     @EnvironmentObject private var appRouter: AppRouter
     
     let session: SessionService
+    @State private var hasResolvedInitialRoute = false
+    @State private var shouldAnimateRootTransitions = false
     
     var body: some View {
-        NavigationStack(path: $appRouter.path) {
-            rootView
-                .navigationDestination(for: AppRoute.self) { route in
-                    switch route {
-                    case .welcome:
-                        WelcomeView()
-                    case .auth:
-                        AuthView()
-                    case .rootTab:
-                        RootTabView()
-                    case .profile(let route):
-                        ProfileDestinationView(route: route)
-                    case .settings(let route):
-                        SettingsDestinationView(route: route)
-                    case .pet(let route):
-                        PetDestinationView(route: route)
-                    case .petSettings:
-                        PetSettingsView()
-                    case .petAdding:
-                        PetAddingView()
-                    }
-                }
+        ZStack {
+            if hasResolvedInitialRoute {
+                CurrentFlowView()
+            } else {
+                Color.clear
+                    .ignoresSafeArea()
+            }
         }
+        .animation(shouldAnimateRootTransitions ? .easeInOut(duration: 0.3) : nil, value: appRouter.startDestination)
         .onAppear {
-            appRouter.refreshStartDestination(for: session)
-        }
-    }
-    
-    @ViewBuilder
-    private var rootView: some View {
-        switch appRouter.startDestination {
-        case .welcome:
-            WelcomeView()
-        case .auth:
-            AuthView()
-        case .rootTab:
-            RootTabView()
+            guard !hasResolvedInitialRoute else { return }
+            appRouter.setInitialStartDestination(for: session)
+            hasResolvedInitialRoute = true
+            DispatchQueue.main.async {
+                shouldAnimateRootTransitions = true
+            }
         }
     }
 }

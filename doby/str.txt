@@ -1,0 +1,290 @@
+.
+├── App
+│   ├── AppRootView.swift
+│   ├── dobyApp.swift
+│   ├── Interfaces
+│   │   ├── AppPrimaryColor.swift
+│   │   └── AppTheme.swift
+│   └── Protocols
+├── Assets.xcassets
+│   ├── AccentColor.colorset
+│   │   └── Contents.json
+│   ├── AppIcon.appiconset
+│   │   ├── a_digital_vector_app_icon_features_a_rounded_squar 1.png
+│   │   ├── a_digital_vector_app_icon_features_a_rounded_squar 2.png
+│   │   ├── a_digital_vector_app_icon_features_a_rounded_squar.png
+│   │   └── Contents.json
+│   ├── Contents.json
+│   ├── MockUserIcon.imageset
+│   │   ├── Contents.json
+│   │   └── f4791e8c01d83f6af819689ab4bfb104.jpg
+│   ├── PetAvatarPlaceholder.imageset
+│   │   ├── Contents.json
+│   │   └── da976561469e2a75578c596220ee6aed.jpg
+│   ├── PrimaryBackgroundColor.colorset
+│   │   └── Contents.json
+│   ├── PrimaryBlue.colorset
+│   │   └── Contents.json
+│   ├── PrimaryGreen.colorset
+│   │   └── Contents.json
+│   ├── PrimaryYellow.colorset
+│   │   └── Contents.json
+│   ├── PrimaryYellowLight.colorset
+│   │   └── Contents.json
+│   ├── ProfileAvatarPlaceholder.imageset
+│   │   ├── 2026-03-28 13.12.16.jpg
+│   │   └── Contents.json
+│   ├── TelegramBlue.colorset
+│   │   └── Contents.json
+│   └── welcomeImage.imageset
+│       ├── alex-sokolov-rng9oG8FHyI-unsplash.jpg
+│       └── Contents.json
+├── Core
+│   ├── DesignSystem
+│   │   ├── Extensions
+│   │   │   └── Text.swift
+│   │   ├── Media
+│   │   │   └── Image.swift
+│   │   └── Typography
+│   │       ├── Font.swift
+│   │       ├── TextStyle.swift
+│   │       └── ViewModifier
+│   │           └── AppTextStyleViewModifier.swift
+│   ├── Extensions
+│   │   ├── Int.swift
+│   │   └── View.swift
+│   └── Network
+├── Data
+│   └── Network
+│       ├── APIClient.swift
+│       ├── APIConstants.swift
+│       ├── APIError.swift
+│       ├── DTOs
+│       │   ├── CityDTO.swift
+│       │   ├── PetTypeDTO.swift
+│       │   ├── Request
+│       │   │   ├── Auth
+│       │   │   │   ├── LoginRequest.swift
+│       │   │   │   ├── RegisterRequest.swift
+│       │   │   │   └── TokenRequest.swift
+│       │   │   └── Pet
+│       │   │       └── PetRequest.swift
+│       │   ├── Response
+│       │   │   ├── Auth
+│       │   │   │   ├── AuthResponse.swift
+│       │   │   │   ├── LoginResponse.swift
+│       │   │   │   └── TokenResponse.swift
+│       │   │   ├── Pet
+│       │   │   │   └── PetResponse.swift
+│       │   │   └── User
+│       │   │       └── MeResponse.swift
+│       │   └── SitterProfileDTO.swift
+│       ├── Endpoints
+│       │   ├── AuthServiceEndpoint.swift
+│       │   ├── PetServiceEndpoint.swift
+│       │   └── UserServiceEndpoint.swift
+│       ├── Protocols
+│       │   ├── APIClientProtocol.swift
+│       │   ├── APIEndpointProtocol.swift
+│       │   ├── AuthorizedAPIEndpointProtocol.swift
+│       │   ├── AuthServiceProtocol.swift
+│       │   ├── PetServiceProtocol.swift
+│       │   └── UserServiceProtocol.swift
+│       └── Services
+│           ├── AuthService.swift
+│           ├── PetService.swift
+│           └── UserService.swift
+├── Domain
+│   ├── Entities
+│   │   ├── Pet.swift
+│   │   └── User.swift
+│   ├── Models
+│   │   ├── City.swift
+│   │   ├── Gender.swift
+│   │   ├── PetType.swift
+│   │   ├── SitterProfile.swift
+│   │   └── TagType.swift
+│   └── Protocols
+│       └── UserProtocol.swift
+├── Features
+│   ├── Auth
+│   │   ├── Models
+│   │   ├── SignInView.swift
+│   │   ├── SignUpView.swift
+│   │   ├── ViewModels
+│   │   │   └── AuthViewModel.swift
+│   │   └── Views
+│   │       ├── AuthBottomBarView.swift
+│   │       ├── AuthEmailFieldView.swift
+│   │       └── AuthPasswordFieldView.swift
+│   ├── Chat
+│   │   ├── ChatView.swift
+│   │   ├── Models
+│   │   ├── ViewModels
+│   │   └── Views
+│   │       └── ChatItemView.swift
+│   ├── Orders
+│   │   ├── Models
+│   │   ├── OrdersView.swift
+│   │   ├── ViewModels
+│   │   └── Views
+│   ├── Pet
+│   │   ├── Models
+│   │   ├── PetView.swift
+│   │   ├── ViewModels
+│   │   │   └── PetViewModel.swift
+│   │   └── Views
+│   │       └── PetCard.swift
+│   ├── PetAdding
+│   │   ├── Models
+│   │   ├── PetAddingView.swift
+│   │   ├── ViewModels
+│   │   │   └── PetAddingViewModel.swift
+│   │   └── Views
+│   │       ├── PetAddingDetailsView.swift
+│   │       ├── PetAddingFeatureView.swift
+│   │       ├── PetAddingInfoView.swift
+│   │       ├── PetAddingNutritionView.swift
+│   │       ├── PetAddingPhotoView.swift
+│   │       ├── PetAddingTagsView.swift
+│   │       └── PetAddingWarningView.swift
+│   ├── PetProfile
+│   │   ├── Models
+│   │   │   ├── PetAvaratSlide.swift
+│   │   │   └── PetProfileInfoItem.swift
+│   │   ├── PetProfileView.swift
+│   │   ├── ViewModels
+│   │   │   └── PetProfileViewModel.swift
+│   │   └── Views
+│   │       ├── PetProfileDetailsView.swift
+│   │       ├── PetProfileGallaryView.swift
+│   │       ├── PetProfileInfoCardView.swift
+│   │       └── PetProfileLabelView.swift
+│   ├── PetSettings
+│   │   ├── Models
+│   │   ├── PetSettingsView.swift
+│   │   ├── ViewModels
+│   │   └── Views
+│   ├── Profile
+│   │   ├── Models
+│   │   │   ├── Order.swift
+│   │   │   ├── ProfileDetailsTab.swift
+│   │   │   └── ProfilePetsSlide.swift
+│   │   ├── ProfileView.swift
+│   │   ├── ViewModels
+│   │   │   └── ProfileViewModel.swift
+│   │   └── Views
+│   │       ├── ProfileAboutView.swift
+│   │       ├── ProfileDetailsView.swift
+│   │       ├── ProfileHeaderView.swift
+│   │       ├── ProfileOrderCardView.swift
+│   │       ├── ProfilePetCardView.swift
+│   │       ├── ProfilePetsView.swift
+│   │       ├── ProfileReviewsView.swift
+│   │       ├── ProfileServiceButtonView.swift
+│   │       └── ProfileServicesView.swift
+│   ├── RootTab
+│   │   ├── Models
+│   │   ├── ModelViews
+│   │   ├── RootTabView.swift
+│   │   └── Views
+│   ├── Settings
+│   │   ├── Models
+│   │   ├── SettingsView.swift
+│   │   ├── ViewModels
+│   │   │   └── SettingsViewModel.swift
+│   │   └── Views
+│   │       ├── Sections
+│   │       │   ├── SettingsAccountActionsView.swift
+│   │       │   ├── SettingsAccountInfoView.swift
+│   │       │   ├── SettingsAppView.swift
+│   │       │   ├── SettingsPersonalInfoView.swift
+│   │       │   ├── SettingsPetServicesView.swift
+│   │       │   └── SettingsPhotosPickerView.swift
+│   │       ├── SettingsAppearensView.swift
+│   │       ├── SettingsNotificationsView.swift
+│   │       └── SettingsPrivacyView.swift
+│   └── Welcome
+│       ├── Models
+│       │   └── WelcomeSlide.swift
+│       ├── ViewModels
+│       │   └── WelcomeViewModel.swift
+│       ├── Views
+│       │   └── WelcomeSlideContentView.swift
+│       └── WelcomeView.swift
+├── Info.plist
+├── Mocks
+│   └── UserMock.swift
+├── Navigation
+│   ├── AppRouter.swift
+│   ├── AuthRouter.swift
+│   ├── Models
+│   │   ├── AppRoute.swift
+│   │   ├── AuthRoute.swift
+│   │   ├── PetRoute.swift
+│   │   ├── ProfileRoute.swift
+│   │   ├── RootTab.swift
+│   │   └── SettingsRoute.swift
+│   ├── PetRouter.swift
+│   ├── ProfileRouter.swift
+│   ├── SettingsRouter.swift
+│   ├── Stacks
+│   │   ├── AuthStack.swift
+│   │   ├── RootTab
+│   │   │   ├── ChatStack.swift
+│   │   │   ├── OrdersStack.swift
+│   │   │   ├── PetStack.swift
+│   │   │   └── ProfileStack.swift
+│   │   ├── RootTabStack.swift
+│   │   ├── Settings
+│   │   │   └── SettingsStack.swift
+│   │   └── WelcomeStack.swift
+│   └── Views
+│       └── CurrentFlowView.swift
+├── Services
+│   ├── KeychainService.swift
+│   ├── LogService.swift
+│   ├── PrimaryColorService.swift
+│   ├── SessionService.swift
+│   └── ThemeService.swift
+├── Storage
+│   ├── PetStorage.swift
+│   └── UserStorage.swift
+├── str.txt
+└── UIComponents
+    ├── CityAutocompleteView
+    │   └── CityAutocompleteView.swift
+    ├── DividerLabel
+    │   └── DividerLabel.swift
+    ├── DividerWithTitle
+    │   └── DividerWithTitle.swift
+    ├── FormItemRow
+    │   └── FormItemRow.swift
+    ├── PrimaryButton
+    │   └── PrimaryButton.swift
+    ├── PrimaryCollapsibleSection
+    │   └── PrimaryCollapsibleSection.swift
+    ├── PrimaryDisclosure
+    │   ├── PrimaryDisclosure.swift
+    │   └── PrimaryDisclosureLabel.swift
+    ├── PrimaryFeedback
+    │   └── PrimaryFeedback.swift
+    ├── PrimaryPagination
+    │   └── PrimaryPagination.swift
+    ├── PrimaryPicker
+    │   └── PrimaryPicker.swift
+    ├── PrimarySlider
+    │   └── PrimarySlider.swift
+    ├── PrimaryTagsView
+    │   ├── PrimaryTagsView.swift
+    │   ├── TagFlow.swift
+    │   └── ViewModels
+    │       └── PrimaryTagsViewModel.swift
+    ├── PrimaryTextField
+    │   └── PrimaryTextField.swift
+    ├── UtilityButton
+    │   └── UtilityButton.swift
+    └── ViewHeadline
+        └── ViewHeadline.swift
+
+114 directories, 174 files

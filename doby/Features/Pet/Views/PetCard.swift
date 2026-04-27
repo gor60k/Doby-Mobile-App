@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PetCard: View {
-    @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var router: PetRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
     let id: Int
@@ -11,7 +11,7 @@ struct PetCard: View {
     
     var body: some View {
         Button(action: {
-            router.push(.pet(.profile(id: id)))
+            router.push(.profile(id: id))
         }) {
             HStack(spacing: 12) {
                 Image(systemName: "pawprint.circle.fill")
@@ -38,8 +38,14 @@ struct PetCard: View {
                     .foregroundColor(.gray)
             }
             .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
+            .background(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color(.secondarySystemBackground))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(.primary.opacity(0.06), lineWidth: 1)
+            )
         }
         .buttonStyle(PlainButtonStyle())
     }

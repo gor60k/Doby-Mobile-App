@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var router: ProfileRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
     @State private var viewModel = ProfileViewModel()
@@ -45,27 +45,26 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "История заказов") {
                 VStack(spacing: 12) {
                     ForEach(viewModel.orders, id: \.self) { order in
-                        ProfileOrderCardView(order: order)
+                        PrimaryOrderCard(order: order)
                     }
                 }
             }
             .padding(.horizontal)
             .padding(.bottom, 10)
         }
+        .padding(.top, 60)
+        .ignoresSafeArea(edges: .top)
         .scrollIndicators(.hidden)
-        .overlay(alignment: .topTrailing) {
-            UtilityButton(
-                action: {
-                    router.push(.profile(.settings))
-                },
-                title: "Изм."
-            )
-            .padding(.trailing, 16)
-        }
+        .profileToolbar(
+            onEditTap: { router.push(.settings) },
+            onQRScanTap: {}
+        )
     }
 }
 
 #Preview {
-    ProfileView()
-        .withAppEnvironment()
+    NavigationStack {
+        ProfileView()
+            .withAppEnvironment()
+    }
 }

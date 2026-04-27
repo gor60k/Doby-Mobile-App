@@ -2,6 +2,11 @@ import SwiftUI
 
 struct SettingsNotificationsView: View {
     var body: some View {
-        Text("Settings Notifications")
+        Form {
+            Text("Settings Notifications")
+        }
+        .navigationTitle("Уведомления")
+        .navigationBarTitleDisplayMode(.inline)
+        
     }
 }

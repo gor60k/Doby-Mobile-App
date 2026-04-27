@@ -1,6 +1,7 @@
 import Foundation
 
-struct LoginResponse :Decodable, Encodable {
-    let access: String
-    let refresh: String
+struct LoginResponse: Codable {
+    let user: UserDTO
+    let access_token: String
+    let refresh_token: String
 }

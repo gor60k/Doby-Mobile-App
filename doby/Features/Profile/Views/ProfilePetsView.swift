@@ -31,7 +31,7 @@ struct ProfilePetsView: View {
             .overlay(alignment: .topTrailing) {
                 UtilityButton(
                     action: {
-                        router.push(.petAdding)
+//                        router.push(.petAdding)
                     },
                     icon: "plus"
                 )

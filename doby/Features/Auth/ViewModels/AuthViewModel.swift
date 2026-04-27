@@ -4,27 +4,21 @@ import Observation
 
 @Observable
 final class AuthViewModel {
-    private var session = SessionService.shared
-    private var keychain = KeychainService.shared
-    private var userStorage = UserStorage.shared
-    private var log = LogService.shared
-    
-    private var authService: AuthServiceProtocol
-    private var userService: UserServiceProtocol
-    
-    private let logger = Logger(
-        subsystem: "com.app.subsystem",
-        category: "AuthViewModel"
-    )
+    private let repository: AuthRepository
     
     var email: String = ""
     var password: String = ""
     var confirmPassword: String = ""
     
-    var isPasswordValid: Bool {
+    var isRegisterPasswordValid: Bool {
         !password.isEmpty &&
         password.count >= 8 &&
         password == confirmPassword
+    }
+    
+    var isLoginPasswordValid: Bool {
+        !password.isEmpty &&
+        password.count >= 8
     }
     
     var isEmailValid: Bool {
@@ -32,20 +26,27 @@ final class AuthViewModel {
         email.contains(".")
     }
     
-    var isFormValid: Bool {
+    var isRegisterFormValid: Bool {
         isEmailValid &&
-        isPasswordValid
+        isRegisterPasswordValid
+    }
+    
+    var isLoginFormValid: Bool {
+        isEmailValid &&
+        isLoginPasswordValid
     }
     
     var isLoading: Bool = false
     var errorMessage: String?
     
     init(
-        authService: AuthServiceProtocol = AuthService(),
-        userService: UserServiceProtocol = UserService()
+        repository: AuthRepository = .init(
+            service: AuthService(),
+            storage: UserStorage.shared,
+            session: SessionService.shared
+        )
     ) {
-        self.authService = authService
-        self.userService = userService
+        self.repository = repository
     }
     
     @MainActor
@@ -56,7 +57,7 @@ final class AuthViewModel {
             return
         }
         
-        guard isPasswordValid else {
+        guard isRegisterPasswordValid else {
             errorMessage = "Пароли не совпадают или слишком короткие"
             print("REGISTER STOP: invalid password")
             return
@@ -65,17 +66,15 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        await log.logAsync("REGISTER", logger: logger) {
-            let request = RegisterRequest(
+        do {
+            let input = RegisterInput(
                 username: email,
-                password: password,
+                password: password
             )
             
-            let response = try await authService.register(request)
-            
-            userStorage.save(User(dto: response.user))
-            session.isRegistered = true
-            session.isAuthenticated = true
+            _ = try await repository.register(input: input)
+        } catch {
+            errorMessage = error.localizedDescription
         }
         
         isLoading = false
@@ -89,7 +88,7 @@ final class AuthViewModel {
             return
         }
         
-        guard !password.isEmpty else {
+        guard isLoginPasswordValid else {
             errorMessage = "Введите пароль"
             print("LOGIN STOP: empty password")
             return
@@ -98,16 +97,15 @@ final class AuthViewModel {
         isLoading = true
         errorMessage = nil
         
-        await log.logAsync("LOGIN", logger: logger) {
-            let request = LoginRequest(
+        do {
+            let input = LoginInput(
                 username: email,
                 password: password
             )
             
-            let response = try await authService.login(request)
-            
-            userStorage.save(User(dto: response.user))
-            session.isAuthenticated = true
+            _ = try await repository.login(input: input)
+        } catch {
+            errorMessage = error.localizedDescription
         }
         
         isLoading = false
@@ -115,19 +113,16 @@ final class AuthViewModel {
     
     @MainActor
     func logout() async {
-        await log.logAsync("LOGOUT", logger: logger) {
-            _ = try await authService.logout()
+        
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            _ = try await repository.logout()
+        } catch {
+            errorMessage = error.localizedDescription
         }
-
-        session.isAuthenticated = false
-        userStorage.clear()
-    }
-    
-    @MainActor
-    func deleteMe() async {
-        session.isRegistered = false
-        session.isAuthenticated = false
-
-        userStorage.clear()
+       
+        isLoading = false
     }
 }
