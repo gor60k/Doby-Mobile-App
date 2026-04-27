@@ -4,20 +4,26 @@ struct PrimaryButton: View {
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
     let title: String
+    let icon: String
     let isEnabled: Bool
     let action: () -> Void
     let buttonColor: Color?
+    let size: PrimaryButtonSize
     
     init(
         title: String,
+        icon: String = "",
         isEnabled: Bool = true,
         action: @escaping() -> Void,
-        buttonColor: Color? = nil
+        buttonColor: Color? = nil,
+        size: PrimaryButtonSize = .large
     ) {
         self.title = title
+        self.icon = icon
         self.isEnabled = isEnabled
         self.action = action
         self.buttonColor = buttonColor
+        self.size = size
     }
     
     private var resolvedColor: Color {
@@ -29,14 +35,17 @@ struct PrimaryButton: View {
         Button {
             action()
         } label: {
+            if !icon.isEmpty {
+                Image(systemName: icon)
+                    .font(size.font)
+            }
+            
             Text(title)
-                .font(.system(.title2, design: .rounded))
+                .font(size.font)
                 .fontWeight(.medium)
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 14)
+        .frame(maxWidth: .infinity, alignment: .center)
+        .padding(.vertical, size.verticalPadding)
         .glassEffect(
             .regular
                 .tint(isEnabled ? resolvedColor : Color.secondary)
@@ -51,7 +60,7 @@ struct PrimaryButton: View {
 #Preview {
     PrimaryButton(
         title: "text",
-        isEnabled: true,
+        icon: "plus",
         action: {},
     )
     .withAppEnvironment()

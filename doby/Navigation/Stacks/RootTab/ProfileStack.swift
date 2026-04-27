@@ -20,6 +20,8 @@ struct ProfileStack: View {
                         PetSettingsView()
                     case .petProfile(let id):
                         PetProfileView(petId: id)
+                    case .petAdding:
+                        PetAddingView()
                     }
                 }
         }
