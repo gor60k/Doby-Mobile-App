@@ -6,12 +6,7 @@ import PhotosUI
 
 @Observable
 final class PetAddingViewModel {
-    private let repository: PetRepository
-    
-    private var session = SessionService.shared
-    private var keychain = KeychainService.shared
-    private var petStorage = PetStorage.shared
-    private var logService = LogService.shared
+    private let repository: PetRepositoryProtocol
     
     var petType: PetType = .dog
     var name: String = ""
@@ -43,12 +38,7 @@ final class PetAddingViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(
-        repository: PetRepository = .init(
-            service: PetService(),
-            storage: PetStorage.shared
-        ),
-    ) {
+    init(repository: PetRepositoryProtocol) {
         self.repository = repository
     }
     
@@ -68,8 +58,6 @@ final class PetAddingViewModel {
         isLoading = true
         errorMessage = nil
         
-        logService.network.info("НАЧАЛО СОЗДАНИЯ ПИТОМЦА")
-        
         do {
             let input = CreatePetInput(
                 petType: petType,
@@ -78,12 +66,9 @@ final class PetAddingViewModel {
                 warningTags: warningTagsViewModel.tags,
                 specificTags: featureTagsViewModel.tags,
             )
-            logService.network.info("ОТПРАВКА ЗАПРОСА")
             
             _ = try await repository.createPet(input: input)
-            logService.network.info("ПОЛУЧЕНИЕ ОТВЕТА")
         } catch {
-            logService.network.error("ОШИБКА СОЗДАНИЯ ПИТОМЦА: \(error.localizedDescription)")
             errorMessage = error.localizedDescription
         }
         

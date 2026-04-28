@@ -14,4 +14,8 @@ final class PetService: PetServiceProtocol {
     func fetchById(ownerUUID: UUID, petId: Int) async throws -> PetResponse {
         try await apiClient.request(FetchByIdEndpoint(ownerUUID: ownerUUID, petId: petId))
     }
+    
+    func delete(_ petId: Int) async throws -> EmptyResponse {
+        try await apiClient.request(DeleteEndpoint(petId: petId))
+    }
 }

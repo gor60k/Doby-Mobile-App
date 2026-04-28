@@ -1,8 +1,12 @@
+import os
+
 final class AuthRepository: AuthRepositoryProtocol {
     private let service: AuthService
     private let storage: UserStorage
     private let session: SessionService
     private let keychain: KeychainService
+    
+    private var logService = LogService.shared
     
     init(
         service: AuthService,
@@ -18,13 +22,15 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     func register(input: RegisterInput) async throws -> User {
         let request = RegisterRequestMapper.map(input: input)
-        let responce = try await service.register(request)
-        let user = UserMapper.map(dto: responce.user)
+        let response = try await service.register(request)
+        let user = UserMapper.map(dto: response.user)
         
         saveTokens(
-            accessToken: responce.access_token,
-            refreshToken: responce.refresh_token
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token
         )
+        
+        logService.network.info("ACCETS: \(response.access_token) | REFRESH: \(response.refresh_token)")
         
         session.isAuthenticated = true
         session.isRegistered = true
@@ -44,7 +50,10 @@ final class AuthRepository: AuthRepositoryProtocol {
             refreshToken: response.refresh_token
         )
         
+        logService.network.info("ACCETS: \(response.access_token) | REFRESH: \(response.refresh_token)")
+        
         session.isAuthenticated = true
+        session.isRegistered = true
         
         storage.save(user)
         
@@ -62,6 +71,8 @@ final class AuthRepository: AuthRepositoryProtocol {
         keychain.deleteToken(for: KeychainService.TokenKey.refreshToken)
         keychain.save(token: accessToken, for: KeychainService.TokenKey.accessToken)
         keychain.save(token: refreshToken, for: KeychainService.TokenKey.refreshToken)
+        
+        logService.network.info("ACCETS: \(accessToken) | REFRESH: \(refreshToken)")
     }
 
     private func deleteTokens() {

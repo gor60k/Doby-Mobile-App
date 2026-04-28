@@ -9,13 +9,13 @@ struct PetMapper {
             ownerUUID: response.owner_uuid,
             name: response.name,
             age: response.age,
-            height: response.height,
-            weight: response.weight,
+            height: response.height ?? 0,
+            weight: response.weight ?? 0,
             breedName: response.breed_name,
             dietType: response.diet_type,
-            dietPatterns: response.diet_patterns,
+            dietPatterns: response.diet_pattern,
             warningTags: response.warning_tags,
-            specificTags: response.specific_tags,
+            specificTags: response.specific_features,
             dietAdditionalInfo: response.diet_additional_info,
             photos: mapPhotos(response.photos)
         )

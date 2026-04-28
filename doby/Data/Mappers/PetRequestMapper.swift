@@ -6,7 +6,7 @@ struct PetRequestMapper {
             name: input.name,
             age: input.age,
             warning_tags: input.warningTags,
-            specific_tags: input.specificTags
+            specific_features: input.specificTags
         )
     }
     

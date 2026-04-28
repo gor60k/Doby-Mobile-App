@@ -5,5 +5,5 @@ struct PetRequest: Encodable {
     let name: String
     let age: Int
     let warning_tags: [String]
-    let specific_tags: [String]
+    let specific_features: [String]
 }
