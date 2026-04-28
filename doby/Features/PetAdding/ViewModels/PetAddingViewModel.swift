@@ -38,7 +38,7 @@ final class PetAddingViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(repository: PetRepositoryProtocol) {
+    init(repository: PetRepositoryProtocol = PetRepository()) {
         self.repository = repository
     }
     

@@ -4,7 +4,7 @@ struct PetView: View {
     @EnvironmentObject private var router: PetRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    private let viewModel = PetViewModel()
+    @State private var viewModel = PetViewModel()
 
     @State private var isEditing = false
     @State private var selectedPetIDs: Set<Int> = []
@@ -66,7 +66,7 @@ struct PetView: View {
             ToolbarItem(placement: .bottomBar) {
                 if isEditing {
                     Button("Удалить") {
-                        // TODO: delete selected pets
+//                        viewModel.delete(petId:)
                     }
                     .tint(.red)
                 }

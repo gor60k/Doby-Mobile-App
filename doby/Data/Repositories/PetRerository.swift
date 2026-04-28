@@ -3,17 +3,14 @@ import os
 
 final class PetRepository: PetRepositoryProtocol {
     private let service: PetService
-    private let storage: PetStorage
-    private let logService: LogService
+    let storage: PetStorage
     
     init(
-        service: PetService,
-        storage: PetStorage,
-        logService: LogService
+        service: PetService = PetService(),
+        storage: PetStorage = .shared
     ) {
         self.service = service
         self.storage = storage
-        self.logService = logService
     }
     
     func createPet(input: CreatePetInput) async throws -> Pet {

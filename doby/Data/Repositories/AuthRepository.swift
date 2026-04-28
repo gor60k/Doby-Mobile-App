@@ -9,9 +9,9 @@ final class AuthRepository: AuthRepositoryProtocol {
     private var logService = LogService.shared
     
     init(
-        service: AuthService,
-        storage: UserStorage,
-        session: SessionService,
+        service: AuthService = AuthService(),
+        storage: UserStorage = .shared,
+        session: SessionService = .shared,
         keychain: KeychainService = .shared
     ) {
         self.service = service
