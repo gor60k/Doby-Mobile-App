@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PetProfileGallaryView: View {
     @Binding var currentPage: Int
-    let items: [PetAvaratSlide]
+    let items: [PetPhoto]
     
     var body: some View {
         ZStack {
@@ -10,7 +10,7 @@ struct PetProfileGallaryView: View {
                 currentPage: $currentPage,
                 items: items,
             ) { slide in
-                Image(slide.image)
+                Image(slide.imageURL)
                     .resizable()
                     .scaledToFill()
             }

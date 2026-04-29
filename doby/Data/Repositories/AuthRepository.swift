@@ -20,7 +20,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         self.keychain = keychain
     }
     
-    func register(input: RegisterInput) async throws -> User {
+    func register(input: RegisterInput) async throws{
         let request = RegisterRequestMapper.map(input: input)
         let response = try await service.register(request)
         let user = UserMapper.map(dto: response.user)
@@ -30,17 +30,15 @@ final class AuthRepository: AuthRepositoryProtocol {
             refreshToken: response.refresh_token
         )
         
-        logService.network.info("ACCETS: \(response.access_token) | REFRESH: \(response.refresh_token)")
+        logService.network.info("ACCESS: \(response.access_token) | REFRESH: \(response.refresh_token)")
         
         session.isAuthenticated = true
         session.isRegistered = true
         
         storage.save(user)
-        
-        return user
     }
     
-    func login(input: LoginInput) async throws -> User {
+    func login(input: LoginInput) async throws {
         let request = LoginRequestMapper.map(input: input)
         let response = try await service.login(request)
         let user = UserMapper.map(dto: response.user)
@@ -50,14 +48,14 @@ final class AuthRepository: AuthRepositoryProtocol {
             refreshToken: response.refresh_token
         )
         
-        logService.network.info("ACCETS: \(response.access_token) | REFRESH: \(response.refresh_token)")
+        logService.network.info("ACCESS: \(response.access_token) | REFRESH: \(response.refresh_token)")
+        
+        print(user)
         
         session.isAuthenticated = true
         session.isRegistered = true
         
         storage.save(user)
-        
-        return user
     }
     
     func logout() async throws {

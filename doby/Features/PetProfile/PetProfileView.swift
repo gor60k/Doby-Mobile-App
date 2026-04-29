@@ -3,13 +3,17 @@ import SwiftUI
 struct PetProfileView: View {
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    @State private var viewModel = PetProfileViewModel()
-    
-    private let petStorage = PetStorage.shared
+    @State private var viewModel: PetProfileViewModel
     
     let petId: Int
-    private var pet: Pet? {
-        petStorage.pet(by: petId)
+    
+    init(petId: Int) {
+        self.petId = petId
+        _viewModel = State(initialValue: PetProfileViewModel(
+            petId: petId,
+            repository: PetRepository(),
+            userRepository: UserRepository()
+        ))
     }
     
     enum PetDetailsTab: String, CaseIterable {
@@ -31,7 +35,12 @@ struct PetProfileView: View {
                     currentPage: $viewModel.currentPage,
                     items: viewModel.slides
                 )
-                PetProfileLabelView(name: pet?.name ?? "", species: pet?.breedName ?? "", age: pet?.age ?? 0, gender: .male)
+                PetProfileLabelView(
+                    name: viewModel.pet?.name ?? "",
+                    species: viewModel.pet?.breedName ?? "",
+                    age: viewModel.pet?.age ?? 0,
+                    gender: .male
+                )
                 
                 PrimaryCollapsibleSection(title: "Подробнее") {
                     VStack(spacing: 10) {
@@ -90,6 +99,9 @@ struct PetProfileView: View {
         }
         .background(.primaryBackground)
         .scrollIndicators(.hidden)
+        .task {
+            await viewModel.fetchPet()
+        }
         .ignoresSafeArea(edges: .top)
     }
 }

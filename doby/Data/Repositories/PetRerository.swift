@@ -1,46 +1,47 @@
 import SwiftUI
-import os
+import Foundation
+import Observation
 
+@Observable
 final class PetRepository: PetRepositoryProtocol {
-    private let service: PetService
-    let storage: PetStorage
+    private var service: PetServiceProtocol
+    private var storage: PetStorage
+    
+    var pets: [Pet] { storage.pets }
     
     init(
-        service: PetService = PetService(),
-        storage: PetStorage = .shared
+        service: PetServiceProtocol = PetService(),
+        storage: PetStorage = PetStorage()
     ) {
         self.service = service
         self.storage = storage
     }
     
-    func createPet(input: CreatePetInput) async throws -> Pet {
+    func createPet(input: CreatePetInput) async throws {
         let request = PetRequestMapper.map(input: input)
         let response = try await service.create(request)
         let pet = PetMapper.map(response: response)
-    
-        storage.appendPet(pet)
         
-        return pet
+        storage.update(pet)
     }
     
-    func fetchPet(ownerUUID: UUID, petId: Int) async throws -> Pet {
+    func fetchPets(ownerUUID: String) async throws {
+        let response = try await service.fetchAll(ownerUUID)
+        let pets = PetMapper.map(response: response)
+        
+        storage.set(pets)
+    }
+    
+    func fetchPet(ownerUUID: String, petId: Int) async throws {
         let response = try await service.fetchById(ownerUUID: ownerUUID, petId: petId)
         let pet = PetMapper.map(response: response)
         
-        storage.appendPet(pet)
-        
-        return pet
+        storage.update(pet)
     }
     
-    func getPets() -> [Pet] {
-        storage.pets
-    }
-    
-    func deletePet(petId: Int) async throws -> EmptyResponse {
-        let response = try await service.delete(petId)
-        
-        storage.removePet(by: petId)
-        
-        return response
+    func deletePet(id: Int) async throws {
+        _ = try await service.delete(id)
+        storage.remove(id: id)
     }
 }
+

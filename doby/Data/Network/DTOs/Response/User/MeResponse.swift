@@ -1,7 +1,8 @@
 import Foundation
 
 struct MeResponse: Decodable, Encodable {
-    let uuid: UUID
+//    let uuid: UUID
+    let uuid: String
     var username: String
     var first_name: String?
     var last_name: String?
@@ -10,8 +11,4 @@ struct MeResponse: Decodable, Encodable {
     var phone: String?
     var city: CityDTO?
     var bio: String?
-}
-
-extension MeResponse: UserProtocol {
-    var sitter_profile: SitterProfileDTO? { nil }
 }

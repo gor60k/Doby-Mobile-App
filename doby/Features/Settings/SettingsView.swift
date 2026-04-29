@@ -49,9 +49,14 @@ struct SettingsView: View {
                 Button(action: {
                     Task {
                         await authViewModel.logout()
-                        await MainActor.run {
-                            appRoute.goToAuth()
+                        
+                        if authViewModel.errorMessage == nil {
+                            await MainActor.run {
+//                                appRoute.refreshStartDestination(for: )
+                                appRoute.goToAuth()
+                            }
                         }
+                        
                     }
                 }) {
                     Text("Выйти")

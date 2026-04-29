@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct User: Codable {
-    let uuid: UUID
+//    let uuid: UUID
+    let uuid: String
     let username: String
     let firstName: String?
     let lastName: String?

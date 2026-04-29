@@ -1,5 +1,4 @@
 import Foundation
-import os
 import Observation
 
 @MainActor
@@ -7,27 +6,43 @@ import Observation
 final class PetViewModel {
     private let repository: PetRepositoryProtocol
     
-    private(set) var pets: [Pet] = []
+    var pets: [Pet] { repository.pets }
     
-    init(repository: PetRepositoryProtocol = PetRepository()) {
+    var isLoading = false
+    var error: String?
+    
+    init(repository: PetRepositoryProtocol) {
         self.repository = repository
-        loadPets()
     }
     
-//    var pets: [Pet] {
-//        
-//    }
-    
-    func loadPets() {
-        pets = repository.getPets()
+    func fetchPets(ownerUUID: String) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await repository.fetchPets(ownerUUID: ownerUUID)
+        } catch {
+            print(error.localizedDescription)
+            self.error = error.localizedDescription
+        }
     }
 
-    func pet(by id: Int) -> Pet? {
-        repository.getPets().first { $0.id == id }
+    func fetchPet(ownerUUID: String, petId: Int) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
+        } catch {
+            self.error = error.localizedDescription
+        }
     }
     
-    func delete(petId: Int) async throws {
-        _ = try await repository.deletePet(petId: petId)
-        pets.removeAll { $0.id == petId }
+    func deletePet(id: Int) async {
+        do {
+            try await repository.deletePet(id: id)
+        } catch {
+            self.error = error.localizedDescription
+        }
     }
 }

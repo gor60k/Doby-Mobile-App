@@ -20,6 +20,10 @@ struct PetMapper {
             photos: mapPhotos(response.photos)
         )
     }
+    
+    static func map(response: [PetResponse]) -> [Pet] {
+        response.map(map)
+    }
 
     private static func mapPetType(_ dto: PetTypeDTO) -> PetType {
         switch dto {

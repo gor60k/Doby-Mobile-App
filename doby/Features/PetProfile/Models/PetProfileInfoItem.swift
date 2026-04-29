@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum PetProfileInfoItem {
-    case weight(Double)
+    case weight(Int)
     case height(Int)
     case color(String)
     

@@ -1,5 +1,5 @@
 protocol AuthRepositoryProtocol {
-    func register(input: RegisterInput) async throws -> User
-    func login(input: LoginInput) async throws -> User
+    func register(input: RegisterInput) async throws
+    func login(input: LoginInput) async throws
     func logout() async throws
 }

@@ -33,7 +33,7 @@ struct TokenEndpoint: AuthorizedAPIEndpointProtocol {
     var body: Data? { try? JSONEncoder().encode(request) }
 }
 
-struct LogoutEndpoint: APIEndpointProtocol {
+struct LogoutEndpoint: AuthorizedAPIEndpointProtocol {
     typealias Response = EmptyResponse
 
     var baseURL: URL { APIConstants.baseURL }

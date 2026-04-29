@@ -4,10 +4,11 @@ struct PetView: View {
     @EnvironmentObject private var router: PetRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    @State private var viewModel = PetViewModel()
+    @State private var viewModel = PetViewModel(repository: PetRepository())
 
     @State private var isEditing = false
-    @State private var selectedPetIDs: Set<Int> = []
+    
+    let ownerUUID: String
     
     var body: some View {
         ScrollView {
@@ -15,14 +16,12 @@ struct PetView: View {
                 ForEach(viewModel.pets) { pet in
                     HStack {
                         if isEditing {
-                            Button(action: {
-                                if selectedPetIDs.contains(pet.id) {
-                                    selectedPetIDs.remove(pet.id)
-                                } else {
-                                    selectedPetIDs.insert(pet.id)
+                            Button(role: .destructive) {
+                                Task {
+                                    await viewModel.deletePet(id: pet.id)
                                 }
-                            }) {
-                                Image(systemName: selectedPetIDs.contains(pet.id) ? "checkmark.circle.fill" : "circle")
+                            } label: {
+                                Image(systemName: "trash")
                             }
                             .transition(.move(edge: .leading).combined(with: .opacity))
                         }
@@ -45,9 +44,6 @@ struct PetView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(isEditing ? "Готово" : "Изм.") {
                     withAnimation(.easeInOut) {
-                        if isEditing {
-                            selectedPetIDs.removeAll()
-                        }
                         isEditing.toggle()
                     }
                 }
@@ -62,23 +58,19 @@ struct PetView: View {
                     .tint(primaryColorService.primaryColor.color)
                 }
             }
-            
-            ToolbarItem(placement: .bottomBar) {
-                if isEditing {
-                    Button("Удалить") {
-//                        viewModel.delete(petId:)
-                    }
-                    .tint(.red)
-                }
-            }
         }
-        .toolbar(isEditing ? .hidden : .visible, for: .tabBar)
+        .refreshable {
+            await viewModel.fetchPets(ownerUUID: ownerUUID)
+        }
+        .task {
+            await viewModel.fetchPets(ownerUUID: ownerUUID)
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        PetView()
+        PetView(ownerUUID: "")
             .withAppEnvironment()
     }
 }

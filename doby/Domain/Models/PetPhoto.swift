@@ -1,4 +1,4 @@
-struct PetPhoto: Codable {
+struct PetPhoto: Codable, Identifiable {
     let id: Int
     let imageURL: String
     let orderNumber: Int

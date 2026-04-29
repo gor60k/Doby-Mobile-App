@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 struct PetAddingView: View {
-    @State private var viewModel = PetAddingViewModel()
+    @State private var viewModel = PetAddingViewModel(repository: PetRepository())
 
     var body: some View {
         Form {
@@ -47,6 +47,10 @@ struct PetAddingView: View {
             Button {
                 Task {
                     await viewModel.addPet()
+                    
+                    if viewModel.errorMessage == nil {
+                        
+                    }
                 }
             } label: {
                 HStack {

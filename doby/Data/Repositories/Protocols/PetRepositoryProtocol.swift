@@ -1,8 +1,9 @@
 import SwiftUI
 
 protocol PetRepositoryProtocol {
-    func createPet(input: CreatePetInput) async throws -> Pet
-    func fetchPet(ownerUUID: UUID, petId: Int) async throws -> Pet
-    func getPets() -> [Pet]
-    func deletePet(petId: Int) async throws -> EmptyResponse
+    var pets: [Pet] { get }
+    func createPet(input: CreatePetInput) async throws
+    func fetchPets(ownerUUID: String) async throws
+    func fetchPet(ownerUUID: String, petId: Int) async throws
+    func deletePet(id: Int) async throws
 }

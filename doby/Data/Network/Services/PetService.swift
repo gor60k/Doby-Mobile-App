@@ -11,7 +11,11 @@ final class PetService: PetServiceProtocol {
         try await apiClient.request(CreateEndpoint(request: request))
     }
     
-    func fetchById(ownerUUID: UUID, petId: Int) async throws -> PetResponse {
+    func fetchAll(_ ownerUUID: String) async throws -> [PetResponse] {
+        try await apiClient.request(FetchAllEndpoint(ownerUUID: ownerUUID))
+    }
+    
+    func fetchById(ownerUUID: String, petId: Int) async throws -> PetResponse {
         try await apiClient.request(FetchByIdEndpoint(ownerUUID: ownerUUID, petId: petId))
     }
     

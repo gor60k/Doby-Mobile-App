@@ -11,6 +11,7 @@ struct CreateEndpoint: AuthorizedAPIEndpointProtocol {
     var method: HTTPMethod { .post }
     var body: Data? {
         builder.addField(name: "pet_type", value: request.pet_type.rawValue)
+//        builder.addFile(name: "", filename: <#T##String#>, mimetype: <#T##String#>, fileData: <#T##Data#>)
         builder.addField(name: "name", value: request.name)
         builder.addField(name: "age", value: "\(request.age)")
         
@@ -29,14 +30,25 @@ struct CreateEndpoint: AuthorizedAPIEndpointProtocol {
     }
 }
 
+struct FetchAllEndpoint: AuthorizedAPIEndpointProtocol {
+    typealias Response = [PetResponse]
+    
+    let ownerUUID: String
+    
+    var baseURL: URL { APIConstants.baseURL }
+    var path: String { "/pets/\(ownerUUID)/all/" }
+    var method: HTTPMethod { .get }
+    var body: Data? { nil }
+}
+
 struct FetchByIdEndpoint: AuthorizedAPIEndpointProtocol {
     typealias Response = PetResponse
     
-    let ownerUUID: UUID
+    let ownerUUID: String
     let petId: Int
     
     var baseURL: URL { APIConstants.baseURL }
-    var path: String { "/pets/\(ownerUUID)/\(petId)" }
+    var path: String { "/pets/\(ownerUUID)/\(petId)/" }
     var method: HTTPMethod { .get }
     var body: Data? { nil }
 }
@@ -47,7 +59,7 @@ struct DeleteEndpoint: AuthorizedAPIEndpointProtocol {
     let petId: Int
     
     var baseURL: URL { APIConstants.baseURL }
-    var path: String { "/pets/\(petId)" }
+    var path: String { "/pets/\(petId)/" }
     var method: HTTPMethod { .delete }
     var body: Data? { nil }
 }

@@ -20,6 +20,10 @@ final class PetAddingViewModel {
     var description: String = ""
     var selectedPhotoItems: [PhotosPickerItem] = []
     var selectedPhotosData: [Data] = []
+    
+    var uploadedPhotoStrings: [String] {
+        selectedPhotosData.map { $0.base64EncodedString() }
+    }
 
     var feedingType: String = ""
     var feedingSchedule: String = ""
@@ -38,7 +42,7 @@ final class PetAddingViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(repository: PetRepositoryProtocol = PetRepository()) {
+    init(repository: PetRepositoryProtocol) {
         self.repository = repository
     }
     
@@ -61,14 +65,22 @@ final class PetAddingViewModel {
         do {
             let input = CreatePetInput(
                 petType: petType,
+                uploadedPhotos: uploadedPhotoStrings,
                 name: name,
                 age: age,
+                height: height,
+                weight: weight,
+                breedName: breedName,
+                dietType: feedingType,
+                dietPattern: feedingSchedule,
+                dietAdditionalInfo: feedingNotes,
                 warningTags: warningTagsViewModel.tags,
-                specificTags: featureTagsViewModel.tags,
+                specificTags: featureTagsViewModel.tags
             )
             
             _ = try await repository.createPet(input: input)
         } catch {
+            print(error.localizedDescription)
             errorMessage = error.localizedDescription
         }
         
