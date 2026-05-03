@@ -7,9 +7,14 @@ struct SignInView: View {
     
     private var session = SessionService.shared
     
-    @State private var viewModel = AuthViewModel()
+    @State private var viewModel: AuthViewModel
+    
     @State private var didEditEmail = false
     @State private var didEditPassword = false
+    
+    init() {
+        _viewModel = State(initialValue: AuthDIContainer.shared.makeAuthViewModel())
+    }
     
     var body: some View {
         ScrollView(showsIndicators: false) {

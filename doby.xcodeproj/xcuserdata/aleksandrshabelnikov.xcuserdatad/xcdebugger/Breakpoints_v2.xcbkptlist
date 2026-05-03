@@ -8,7 +8,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "EC246864-9EB1-406F-B6C0-0C1750B4FB2F"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "doby/DesignSytem/Font/AppFonts.swift"
@@ -62,8 +62,8 @@
             filePath = "doby/Features/Profile/ProfileView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>

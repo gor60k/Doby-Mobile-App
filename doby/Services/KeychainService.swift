@@ -1,17 +1,18 @@
 import Security
 import Foundation
 
-final class KeychainService {
+actor KeychainService: Sendable {
     enum TokenKey {
-        static let accessToken = "accessToken"
-        static let refreshToken = "refreshToken"
+        case accessToken
+        case refreshToken
     }
     
     static let shared = KeychainService()
+    
     private init() {}
     
     @discardableResult
-    func save(token: String, for key: String) -> Bool {
+    func save(token: String, for key: TokenKey) -> Bool {
         let data = Data(token.utf8)
         
         let baseQuery: [String: Any] = [
@@ -43,7 +44,7 @@ final class KeychainService {
         return addStatus == errSecSuccess
     }
     
-    func getToken(for key: String) -> String? {
+    func getToken(for key: TokenKey) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.doby.app",
@@ -61,7 +62,7 @@ final class KeychainService {
         return String(data: tokenData, encoding: .utf8)
     }
     
-    func authorizationHeaders(for key: String = TokenKey.accessToken) -> [String: String] {
+    func authorizationHeaders(for key: TokenKey = .accessToken) -> [String: String] {
         guard let token = getToken(for: key), !token.isEmpty else {
             return [:]
         }
@@ -69,7 +70,7 @@ final class KeychainService {
         return ["Authorization": "Bearer \(token)"]
     }
     
-    func deleteToken(for key: String) {
+    func deleteToken(for key: TokenKey) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: Bundle.main.bundleIdentifier ?? "com.doby.app",

@@ -39,7 +39,7 @@ final class AuthViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(repository: AuthRepositoryProtocol = AuthRepository()) {
+    init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
     

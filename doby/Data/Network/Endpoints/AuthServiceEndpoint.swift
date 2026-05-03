@@ -22,7 +22,7 @@ struct LoginEndpoint: APIEndpointProtocol {
     var body: Data? { try? JSONEncoder().encode(request) }
 }
 
-struct TokenEndpoint: AuthorizedAPIEndpointProtocol {
+struct TokenEndpoint: APIEndpointProtocol {
     typealias Response = TokenResponse
 
     let request: TokenRequest
@@ -33,20 +33,29 @@ struct TokenEndpoint: AuthorizedAPIEndpointProtocol {
     var body: Data? { try? JSONEncoder().encode(request) }
 }
 
-struct LogoutEndpoint: AuthorizedAPIEndpointProtocol {
-    typealias Response = EmptyResponse
+struct LogoutEndpoint: APIEndpointProtocol {
+    typealias Response = EmptyDTO
 
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/auth/logout/" }
     var method: HTTPMethod { .post }
-    var body: Data? { nil }
 }
 
-struct DeleteMeEndpoint: AuthorizedAPIEndpointProtocol {
-    typealias Response = EmptyResponse
+struct DeleteMeEndpoint: APIEndpointProtocol {
+    typealias Response = EmptyDTO
 
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/auth/delete/me/" }
     var method: HTTPMethod { .delete }
-    var body: Data? { nil }
+}
+
+struct RefreshEndpoint: APIEndpointProtocol {
+    typealias Response = RefreshResponse
+    
+    let request: RefreshRequest
+    
+    var baseURL: URL { APIConstants.baseURL }
+    var path: String { "/auth/token/refresh/" }
+    var method: HTTPMethod { .post }
+    var body: Data? { try? JSONEncoder().encode(request) }
 }

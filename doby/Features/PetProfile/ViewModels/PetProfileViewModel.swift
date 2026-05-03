@@ -4,26 +4,17 @@ import Observation
 @Observable
 final class PetProfileViewModel {
     private let repository: PetRepositoryProtocol
-    private let userRepository: UserRepositoryProtocol
-    
-    private let petId: Int
     
     var currentPage: Int = 0
     var pet: Pet?
-    var owner: User?
     
-    var slides: [PetAvaratSlide] = []
+    var slides: [PetPhoto] = []
     var infoItems: [PetProfileInfoItem] = []
     
     init(
-        petId: Int,
         repository: PetRepositoryProtocol,
-        userRepository: UserRepositoryProtocol,
     ) {
-        self.petId = petId
         self.repository = repository
-        self.userRepository = userRepository
-        self.owner = userRepository.getCurrentUser()
         
         loadLocalPet()
     }
@@ -32,8 +23,11 @@ final class PetProfileViewModel {
     var error: String?
     
     func fetchPet() async {
+        isLoading = true
+        defer { isLoading = false }
+        
         do {
-            try await repository.fetchPet(ownerUUID: owner!.uuid, petId: petId)
+            try await repository.fetchPet(ownerUUID: pet!.ownerUUID, petId: pet!.id)
             loadLocalPet()
         } catch {
             self.error = error.localizedDescription
@@ -41,18 +35,17 @@ final class PetProfileViewModel {
     }
     
     private func loadLocalPet() {
-        guard let pet = repository.pets.first(where: { $0.id == petId }) else { return }
+        guard let pet = repository.pets.first(where: { $0.id == pet!.id }) else { return }
         
         self.pet = pet
         
         self.slides = pet.photos.enumerated().map {
-            PetAvaratSlide(id: $0.offset, image: $0.element.imageURL)
+            PetPhoto(id: $0.element.id, imageURL: $0.element.imageURL, orderNumber: $0.element.orderNumber, isMain: $0.element.isMain)
         }
         
         self.infoItems = [
             .weight(pet.weight),
             .height(pet.height),
-            .color(pet.name)
         ]
     }
 }

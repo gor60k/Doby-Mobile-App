@@ -2,7 +2,11 @@ import SwiftUI
 import PhotosUI
 
 struct PetAddingView: View {
-    @State private var viewModel = PetAddingViewModel(repository: PetRepository())
+    @State private var viewModel: PetAddingViewModel
+    
+    init() {
+        _viewModel = State(initialValue: PetDIContainer.shared.makePetAddingViewModel())
+    }
 
     var body: some View {
         Form {

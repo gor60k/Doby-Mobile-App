@@ -6,7 +6,7 @@ final class UserStorage {
     static let shared = UserStorage()
     
     private let userStorageKey = "user"
-    private init() {}
+    init() {}
     
     var currentUser: User? {
         get {

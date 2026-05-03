@@ -9,11 +9,7 @@ struct PetProfileView: View {
     
     init(petId: Int) {
         self.petId = petId
-        _viewModel = State(initialValue: PetProfileViewModel(
-            petId: petId,
-            repository: PetRepository(),
-            userRepository: UserRepository()
-        ))
+        _viewModel = State(initialValue: PetDIContainer.shared.makePetProfileViewModel())
     }
     
     enum PetDetailsTab: String, CaseIterable {
@@ -35,6 +31,7 @@ struct PetProfileView: View {
                     currentPage: $viewModel.currentPage,
                     items: viewModel.slides
                 )
+                
                 PetProfileLabelView(
                     name: viewModel.pet?.name ?? "",
                     species: viewModel.pet?.breedName ?? "",
@@ -64,8 +61,8 @@ struct PetProfileView: View {
                 
                 PrimaryCollapsibleSection(title: "Мои особенности") {
                     LazyVGrid(columns: grid, alignment: .leading, spacing: 10) {
-                        ForEach(0..<5) { _ in
-                            Text("Легко обучаюсь")
+                        ForEach(viewModel.pet?.specificTags ?? [], id: \.self) { tag in
+                            Text(tag)
                                 .frame(maxWidth: .infinity)
                                 .font(.system(.body, design: .rounded))
                                 .foregroundColor(.secondary)
@@ -78,20 +75,51 @@ struct PetProfileView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
-                PrimaryCollapsibleSection(title: "Мое здоровье") {
-                    Text("Здоровье")
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                
                 PrimaryCollapsibleSection(title: "Что я ем") {
-                    Text("Питание")
+                    VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Тип питания")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+
+                            Text(viewModel.pet?.dietType ?? "-")
+                                .font(.system(.body, design: .rounded))
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Пищевые привычки")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+
+                            Text(viewModel.pet?.dietPatterns ?? "-")
+                                .font(.system(.body, design: .rounded))
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Дополнительная информация")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+
+                            Text(viewModel.pet?.dietAdditionalInfo ?? "-")
+                                .font(.system(.body, design: .rounded))
+                        }
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Важные предупреждения!") {
-                    Text("Я могу убежать")
+                    LazyVGrid(columns: grid, alignment: .leading, spacing: 10) {
+                        ForEach(viewModel.pet?.warningTags ?? [], id: \.self) { tag in
+                            Text(tag)
+                                .frame(maxWidth: .infinity)
+                                .font(.system(.body, design: .rounded))
+                                .foregroundColor(.secondary)
+                                .padding(8)
+                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.currentColor.color, lineWidth: 1))
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)

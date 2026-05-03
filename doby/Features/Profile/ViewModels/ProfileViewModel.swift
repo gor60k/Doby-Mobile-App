@@ -4,7 +4,7 @@ import Observation
 @MainActor
 @Observable
 class ProfileViewModel {
-    private let repository: UserRepositoryProtocol
+    private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
     
     var currentPage: Int = 0
@@ -14,14 +14,14 @@ class ProfileViewModel {
     }
     
     var user: User? {
-        repository.getCurrentUser()
+        userRepository.getCurrentUser()
     }
     
     init(
-        repository: UserRepositoryProtocol,
+        userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol
     ) {
-        self.repository = repository
+        self.userRepository = userRepository
         self.petRepository = petRepository
     }
     

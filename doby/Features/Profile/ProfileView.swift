@@ -4,15 +4,17 @@ struct ProfileView: View {
     @EnvironmentObject private var router: ProfileRouter
     @EnvironmentObject var primaryColorService: PrimaryColorService
     
-    @State private var viewModel = ProfileViewModel(
-        repository: UserRepository(),
-        petRepository: PetRepository()
-    )
+    @State private var viewModel: ProfileViewModel
+    
     private var session = SessionService.shared
     
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
     let options = ProfileDetailsTab.allCases
+    
+    init() {
+        _viewModel = State(initialValue: UserDIContainer.shared.makeProfileViewModel())
+    }
     
     var body: some View {
         ScrollView {

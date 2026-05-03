@@ -1,6 +1,8 @@
+import Foundation
+
 struct CreatePetInput {
     let petType: PetType
-    let uploadedPhotos: [String]
+    let uploadedPhotos: [Data]
     let name: String
     let age: Int
     let height: Int?

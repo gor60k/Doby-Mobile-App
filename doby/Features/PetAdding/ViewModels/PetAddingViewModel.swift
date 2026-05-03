@@ -20,10 +20,6 @@ final class PetAddingViewModel {
     var description: String = ""
     var selectedPhotoItems: [PhotosPickerItem] = []
     var selectedPhotosData: [Data] = []
-    
-    var uploadedPhotoStrings: [String] {
-        selectedPhotosData.map { $0.base64EncodedString() }
-    }
 
     var feedingType: String = ""
     var feedingSchedule: String = ""
@@ -55,6 +51,8 @@ final class PetAddingViewModel {
                 selectedPhotosData.append(data)
             }
         }
+        
+        print("Loaded photos count: \(selectedPhotosData.count)")
     }
     
     @MainActor
@@ -62,10 +60,12 @@ final class PetAddingViewModel {
         isLoading = true
         errorMessage = nil
         
+        await loadSelectedPhotos()
+        
         do {
             let input = CreatePetInput(
                 petType: petType,
-                uploadedPhotos: uploadedPhotoStrings,
+                uploadedPhotos: selectedPhotosData,
                 name: name,
                 age: age,
                 height: height,
@@ -77,6 +77,8 @@ final class PetAddingViewModel {
                 warningTags: warningTagsViewModel.tags,
                 specificTags: featureTagsViewModel.tags
             )
+            
+            print(input)
             
             _ = try await repository.createPet(input: input)
         } catch {

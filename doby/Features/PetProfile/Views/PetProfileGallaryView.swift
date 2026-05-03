@@ -1,4 +1,5 @@
 import SwiftUI
+import Kingfisher
 
 struct PetProfileGallaryView: View {
     @Binding var currentPage: Int
@@ -10,9 +11,13 @@ struct PetProfileGallaryView: View {
                 currentPage: $currentPage,
                 items: items,
             ) { slide in
-                Image(slide.imageURL)
+                KFImage(URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev\(slide.imageURL)"))
+                    .placeholder {
+                        SkeletonView()
+                    }
                     .resizable()
                     .scaledToFill()
+                    .clipped()
             }
             
             PrimaryGalleryPagination(
@@ -20,7 +25,7 @@ struct PetProfileGallaryView: View {
                 itemsCount: items.count
             )
         }
-        .frame(maxWidth: .infinity, maxHeight: 350, alignment: .bottom)
+        .frame(alignment: .bottom)
     }
 }
 
@@ -42,5 +47,26 @@ struct PrimaryGalleryPagination: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
         .padding(.horizontal)
         .padding(.bottom, 24)
+    }
+}
+
+struct SkeletonView: View {
+    var body: some View {
+        TimelineView(.animation) { timeline in
+            let phase = timeline.date.timeIntervalSinceReferenceDate
+            let pulse = 0.5 + 0.5 * sin(phase * 2)
+
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.gray.opacity(0.15))
+                .overlay(
+                    Image(systemName: "pawprint.fill")
+                        .font(.system(size: 34))
+                        .foregroundStyle(Color.gray.opacity(0.6))
+                        .scaleEffect(0.95 + pulse * 0.08)
+                        .opacity(0.6 + pulse * 0.3)
+                )
+                .scaleEffect(0.98 + pulse * 0.02)
+                .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: pulse)
+        }
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		082A5ABE2FA4C0B200B56A6D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 082A5ABD2FA4C0B200B56A6D /* Alamofire */; };
+		082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 082CE80B2FA35E480085F31A /* Kingfisher */; };
 		088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21652F44A6F8002E5A40 /* PhoneNumberKit */; };
 		088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */; };
 /* End PBXBuildFile section */
@@ -27,6 +29,19 @@
 			remoteInfo = doby;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		082A5AC22FA4C0B200B56A6D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08A280DD2F4104B600B54BD2 /* doby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = doby.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +85,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */,
+				082A5ABE2FA4C0B200B56A6D /* Alamofire in Frameworks */,
 				088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */,
 				088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */,
 			);
@@ -92,12 +109,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		082CE80A2FA35E480085F31A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		08A280D42F4104B600B54BD2 = {
 			isa = PBXGroup;
 			children = (
 				08A280DF2F4104B600B54BD2 /* doby */,
 				08A280ED2F4104B700B54BD2 /* dobyTests */,
 				08A280F72F4104B700B54BD2 /* dobyUITests */,
+				082CE80A2FA35E480085F31A /* Frameworks */,
 				08A280DE2F4104B600B54BD2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,6 +147,7 @@
 				08A280D92F4104B600B54BD2 /* Sources */,
 				08A280DA2F4104B600B54BD2 /* Frameworks */,
 				08A280DB2F4104B600B54BD2 /* Resources */,
+				082A5AC22FA4C0B200B56A6D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,6 +160,8 @@
 			packageProductDependencies = (
 				088F21652F44A6F8002E5A40 /* PhoneNumberKit */,
 				088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */,
+				082CE80B2FA35E480085F31A /* Kingfisher */,
+				082A5ABD2FA4C0B200B56A6D /* Alamofire */,
 			);
 			productName = doby;
 			productReference = 08A280DD2F4104B600B54BD2 /* doby.app */;
@@ -219,6 +247,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
+				088CAE882FA35C8000EE438D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				082A5ABC2FA4C02900B56A6D /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 08A280DE2F4104B600B54BD2 /* Products */;
@@ -607,6 +637,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		082A5ABC2FA4C02900B56A6D /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.11.2;
+			};
+		};
+		088CAE882FA35C8000EE438D /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.8.1;
+			};
+		};
 		088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit";
@@ -618,6 +664,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		082A5ABD2FA4C0B200B56A6D /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 082A5ABC2FA4C02900B56A6D /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		082CE80B2FA35E480085F31A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 088CAE882FA35C8000EE438D /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		088F21652F44A6F8002E5A40 /* PhoneNumberKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;

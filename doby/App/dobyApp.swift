@@ -16,7 +16,6 @@ struct dobyApp: App {
                 .environmentObject(primaryColorService)
                 .environment(session)
                 .preferredColorScheme(themeService.colorScheme)
-//                .tint(primaryColorService.primaryColor.color)
         }
     }
 }

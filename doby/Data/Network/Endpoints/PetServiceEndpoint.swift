@@ -1,36 +1,62 @@
 import Foundation
+import Alamofire
 
-struct CreateEndpoint: AuthorizedAPIEndpointProtocol {
+struct CreateEndpoint: APIEndpointProtocol {
     typealias Response = PetResponse
     
     let request: PetRequest
-    var builder = MultypartFormDataBuilder()
     
+    var isMultipart: Bool { true }
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/pets/" }
     var method: HTTPMethod { .post }
-    var body: Data? {
-        builder.addField(name: "pet_type", value: request.pet_type.rawValue)
-//        builder.addFile(name: "", filename: <#T##String#>, mimetype: <#T##String#>, fileData: <#T##Data#>)
-        builder.addField(name: "name", value: request.name)
-        builder.addField(name: "age", value: "\(request.age)")
+    
+    func encodeMultipart(to formData: MultipartFormData) {
+        formData.append(Data(request.pet_type.rawValue.utf8), withName: "pet_type")
+        formData.append(Data(request.name.utf8), withName: "name")
+        formData.append(Data("\(request.age)".utf8), withName: "age")
+        formData.append(Data(request.breed_name.utf8), withName: "breed_name")
         
-        request.warning_tags.forEach {
-            builder.addField(name: "warning_tags", value: $0)
+        request.uploaded_photos.enumerated().forEach { index, data in
+            formData.append(
+                data,
+                withName: "uploaded_photos",
+                fileName: "photo_\(index).jpeg",
+                mimeType: "image/jpeg"
+            )
         }
         
-        request.specific_features.forEach {
-            builder.addField(name: "specific_features", value: $0)
+        request.warning_tags.forEach { tag in
+            formData.append(Data(tag.utf8), withName: "warning_tags")
         }
         
-        return builder.build()
-    }
-    var additionalHeaders: [String: String] {
-        ["Content-Type" : builder.contentType]
+        request.specific_features.forEach { feature in
+            formData.append(Data(feature.utf8), withName: "specific_features")
+        }
+                
+        if let height = request.height {
+            formData.append(Data(String(height).utf8), withName: "height")
+        }
+        
+        if let weight = request.weight {
+            formData.append(Data(String(weight).utf8), withName: "weight")
+        }
+        
+        if let dietType = request.diet_type {
+            formData.append(Data(request.diet_type!.utf8), withName: "diet_type")
+        }
+        
+        if let dietPattern = request.diet_pattern {
+            formData.append(Data(request.diet_pattern!.utf8), withName: "diet_pattern")
+        }
+        
+        if let diet_additional_info = request.diet_additional_info {
+            formData.append(Data(request.diet_additional_info!.utf8), withName: "diet_additional_info")
+        }
     }
 }
 
-struct FetchAllEndpoint: AuthorizedAPIEndpointProtocol {
+struct FetchAllEndpoint: APIEndpointProtocol {
     typealias Response = [PetResponse]
     
     let ownerUUID: String
@@ -38,10 +64,9 @@ struct FetchAllEndpoint: AuthorizedAPIEndpointProtocol {
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/pets/\(ownerUUID)/all/" }
     var method: HTTPMethod { .get }
-    var body: Data? { nil }
 }
 
-struct FetchByIdEndpoint: AuthorizedAPIEndpointProtocol {
+struct FetchByIdEndpoint: APIEndpointProtocol {
     typealias Response = PetResponse
     
     let ownerUUID: String
@@ -50,16 +75,14 @@ struct FetchByIdEndpoint: AuthorizedAPIEndpointProtocol {
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/pets/\(ownerUUID)/\(petId)/" }
     var method: HTTPMethod { .get }
-    var body: Data? { nil }
 }
 
-struct DeleteEndpoint: AuthorizedAPIEndpointProtocol {
-    typealias Response = EmptyResponse
+struct DeleteEndpoint: APIEndpointProtocol {
+    typealias Response = EmptyDTO
     
     let petId: Int
     
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/pets/\(petId)/" }
     var method: HTTPMethod { .delete }
-    var body: Data? { nil }
 }

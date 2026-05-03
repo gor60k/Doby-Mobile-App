@@ -6,10 +6,15 @@ struct SignUpView: View {
     
     private let session = SessionService.shared
     
-    @State private var viewModel = AuthViewModel()
+    @State private var viewModel: AuthViewModel
+    
     @State private var didEditEmail = false
     @State private var didEditPassword = false
     @State private var didEditConfirmPassword = false
+    
+    init() {
+        _viewModel = State(initialValue: AuthDIContainer.shared.makeAuthViewModel())
+    }
     
     private var isPasswordValid: Bool {
         viewModel.password.count >= 8

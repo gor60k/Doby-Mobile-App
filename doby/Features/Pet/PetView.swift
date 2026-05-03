@@ -4,11 +4,16 @@ struct PetView: View {
     @EnvironmentObject private var router: PetRouter
     @EnvironmentObject private var primaryColorService: PrimaryColorService
     
-    @State private var viewModel = PetViewModel(repository: PetRepository())
+    @State private var viewModel: PetViewModel
 
     @State private var isEditing = false
     
     let ownerUUID: String
+    
+    init(ownerUUID: String) {
+        _viewModel = State(initialValue: PetDIContainer.shared.makePetViewModel())
+        self.ownerUUID = ownerUUID
+    }
     
     var body: some View {
         ScrollView {
@@ -28,6 +33,7 @@ struct PetView: View {
                         
                         PetCard(
                             id: pet.id,
+                            imageURL: pet.photos.first?.imageURL,
                             name: pet.name,
                             breedName: pet.breedName,
                             age: pet.age

@@ -6,9 +6,14 @@ struct SettingsView: View {
     @EnvironmentObject private var appRoute: AppRouter
     
     @State private var viewModel = SettingsViewModel()
-    @State private var authViewModel = AuthViewModel()
+    @State private var authViewModel: AuthViewModel
+    
     @State private var selectedAvatarItem: PhotosPickerItem?
     @State private var selectedAvatarImage: UIImage?
+    
+    init() {
+        _authViewModel = State(initialValue: AuthDIContainer.shared.makeAuthViewModel())
+    }
     
     var body: some View {
         Form {
@@ -52,7 +57,6 @@ struct SettingsView: View {
                         
                         if authViewModel.errorMessage == nil {
                             await MainActor.run {
-//                                appRoute.refreshStartDestination(for: )
                                 appRoute.goToAuth()
                             }
                         }
@@ -66,7 +70,6 @@ struct SettingsView: View {
                 
                 Button(action: {
                     Task {
-//                        await authViewModel.deleteMe()
                         await MainActor.run {
                             appRoute.goToWelcome()
                         }
