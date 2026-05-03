@@ -56,33 +56,3 @@ struct CreateEndpoint: APIEndpointProtocol {
     }
 }
 
-struct FetchAllEndpoint: APIEndpointProtocol {
-    typealias Response = [PetResponse]
-    
-    let ownerUUID: String
-    
-    var baseURL: URL { APIConstants.baseURL }
-    var path: String { "/pets/\(ownerUUID)/all/" }
-    var method: HTTPMethod { .get }
-}
-
-struct FetchByIdEndpoint: APIEndpointProtocol {
-    typealias Response = PetResponse
-    
-    let ownerUUID: String
-    let petId: Int
-    
-    var baseURL: URL { APIConstants.baseURL }
-    var path: String { "/pets/\(ownerUUID)/\(petId)/" }
-    var method: HTTPMethod { .get }
-}
-
-struct DeleteEndpoint: APIEndpointProtocol {
-    typealias Response = EmptyDTO
-    
-    let petId: Int
-    
-    var baseURL: URL { APIConstants.baseURL }
-    var path: String { "/pets/\(petId)/" }
-    var method: HTTPMethod { .delete }
-}
