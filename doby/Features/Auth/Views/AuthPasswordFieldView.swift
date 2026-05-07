@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AuthPasswordFieldView: View {
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) private var primaryColorService
 
     let title: String
     let placeholder: String
@@ -36,7 +36,7 @@ struct AuthPasswordFieldView: View {
                 } label: {
                     Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
                         .frame(height: 22)
-                        .foregroundColor(primaryColorService.currentColor.color)
+                        .foregroundColor(primaryColorService.primaryColor.color)
                 }
             }
         }

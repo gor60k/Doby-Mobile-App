@@ -1,9 +1,11 @@
 import SwiftUI
 import Foundation
 import Combine
+import Observation
 
-final class AuthRouter: ObservableObject {
-    @Published var path = NavigationPath()
+@Observable
+final class AuthRouter {
+    var path = NavigationPath()
 
     func push(_ route: AuthRoute) {
         path.append(route)

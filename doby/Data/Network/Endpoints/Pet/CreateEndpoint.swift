@@ -43,15 +43,15 @@ struct CreateEndpoint: APIEndpointProtocol {
         }
         
         if let dietType = request.diet_type {
-            formData.append(Data(request.diet_type!.utf8), withName: "diet_type")
+            formData.append(Data(dietType.utf8), withName: "diet_type")
         }
         
         if let dietPattern = request.diet_pattern {
-            formData.append(Data(request.diet_pattern!.utf8), withName: "diet_pattern")
+            formData.append(Data(dietPattern.utf8), withName: "diet_pattern")
         }
         
-        if let diet_additional_info = request.diet_additional_info {
-            formData.append(Data(request.diet_additional_info!.utf8), withName: "diet_additional_info")
+        if let dietAdditionalInfo = request.diet_additional_info {
+            formData.append(Data(dietAdditionalInfo.utf8), withName: "diet_additional_info")
         }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PetProfileLabelView: View {
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     let name: String
     let species: String
@@ -33,13 +33,13 @@ struct PetProfileLabelView: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background(RoundedRectangle(cornerRadius: 12).fill(primaryColorService.currentColor.color))
+                .background(RoundedRectangle(cornerRadius: 12).fill(primaryColorService.primaryColor.color))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .glassEffect(
             .regular
-                .tint(primaryColorService.currentColor.color.opacity(0.1)),
+                .tint(primaryColorService.primaryColor.color.opacity(0.1)),
             in: RoundedRectangle(cornerRadius: 16)
         )
         .padding(.horizontal, 16)

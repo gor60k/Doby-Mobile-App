@@ -1,15 +1,22 @@
 import SwiftUI
 
 struct ProfileStack: View {
-    @StateObject private var router = ProfileRouter()
+    @Environment(AuthContainer.self) private var authContainer
+    @Environment(UserContainer.self) private var userContainer
+    @Environment(PetContainer.self) private var petContainer
+    
+    @State private var router = ProfileRouter()
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            ProfileView()
+            ProfileView(
+                userRepository: userContainer.repository,
+                petRepository: petContainer.repository
+            )
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
                     case .settings:
-                        SettingsView()
+                        SettingsView(repository: authContainer.repository)
                     case .settingsAppearance:
                         SettingsAppearensView()
                     case .settingsPrivacy:
@@ -19,12 +26,15 @@ struct ProfileStack: View {
                     case .petSettings:
                         PetSettingsView()
                     case .petProfile(let id):
-                        PetProfileView(petId: id)
+                        PetProfileView(
+                            repository: petContainer.repository,
+                            petId: id
+                        )
                     case .petAdding:
-                        PetAddingView()
+                        PetAddingView(repository: petContainer.repository)
                     }
                 }
         }
-        .environmentObject(router)
+        .environment(router)
     }
 }

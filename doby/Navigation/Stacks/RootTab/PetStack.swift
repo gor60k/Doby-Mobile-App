@@ -1,25 +1,29 @@
 import SwiftUI
 
 struct PetStack: View {
-    @StateObject private var petRouter = PetRouter()
-    @State private var repository: UserRepositoryProtocol
+    @Environment(PetContainer.self) private var container
     
-    init(repository: UserRepositoryProtocol = UserRepository()) {
-        self.repository = repository
-    }
+    @State private var userStorage = UserStorage()
+    @State private var petRouter = PetRouter()
     
     var body: some View {
         NavigationStack(path: $petRouter.path) {
-            PetView(ownerUUID: repository.getCurrentUser()!.uuid)
+            PetView(
+                repository: container.repository,
+                ownerUUID: userStorage.currentUser?.uuid ?? ""
+            )
                 .navigationDestination(for: PetRoute.self) { route in
                     switch route {
                     case .petAdding:
-                        PetAddingView()
+                        PetAddingView(repository: container.repository)
                     case .profile(let id):
-                        PetProfileView(petId: id)
+                        PetProfileView(
+                            repository: container.repository,
+                            petId: id
+                        )
                     }
                 }
         }
-        .environmentObject(petRouter)
+        .environment(petRouter)
     }
 }

@@ -13,8 +13,10 @@ final class PetProfileViewModel {
     
     init(
         repository: PetRepositoryProtocol,
+        pet: Pet? = nil
     ) {
         self.repository = repository
+        self.pet = pet
         
         loadLocalPet()
     }
@@ -27,7 +29,8 @@ final class PetProfileViewModel {
         defer { isLoading = false }
         
         do {
-            try await repository.fetchPet(ownerUUID: pet!.ownerUUID, petId: pet!.id)
+            guard let pet else { return }
+            try await repository.fetchPet(ownerUUID: pet.ownerUUID, petId: pet.id)
             loadLocalPet()
         } catch {
             self.error = error.localizedDescription
@@ -35,8 +38,8 @@ final class PetProfileViewModel {
     }
     
     private func loadLocalPet() {
-        guard let pet = repository.pets.first(where: { $0.id == pet!.id }) else { return }
-        
+        guard let currentPet = pet else { return }
+        guard let pet = repository.pets.first(where: { $0.id == currentPet.id }) else { return }
         self.pet = pet
         
         self.slides = pet.photos.enumerated().map {

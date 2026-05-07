@@ -1,9 +1,11 @@
 import SwiftUI
 import Foundation
 import Combine
+import Observation
 
-final class ProfileRouter: ObservableObject {
-    @Published var path = NavigationPath()
+@Observable
+final class ProfileRouter {
+    var path = NavigationPath()
 
     func push(_ route: ProfileRoute) {
         path.append(route)

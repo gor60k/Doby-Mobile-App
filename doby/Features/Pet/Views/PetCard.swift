@@ -2,8 +2,8 @@ import SwiftUI
 import Kingfisher
 
 struct PetCard: View {
-    @EnvironmentObject private var router: PetRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PetRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     let id: Int
     let imageURL: String?

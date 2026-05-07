@@ -4,8 +4,8 @@ import PhotosUI
 struct PetAddingView: View {
     @State private var viewModel: PetAddingViewModel
     
-    init() {
-        _viewModel = State(initialValue: PetDIContainer.shared.makePetAddingViewModel())
+    init(repository: PetRepositoryProtocol) {
+        _viewModel = State(initialValue: PetAddingViewModel(repository: repository))
     }
 
     var body: some View {
@@ -79,9 +79,4 @@ struct PetAddingView: View {
             }
         }
     }
-}
-
-#Preview {
-    PetAddingView()
-        .withAppEnvironment()
 }

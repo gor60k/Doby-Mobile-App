@@ -2,19 +2,22 @@ import SwiftUI
 
 @main
 struct dobyApp: App {
-    @StateObject private var appRouter = AppRouter()
-    @StateObject private var themeService = ThemeService()
-    @StateObject private var primaryColorService = PrimaryColorService()
-
-    private let session = SessionService.shared
+    @State private var container = AppContainer()
+    @State private var appRouter = AppRouter()
+    @State private var themeService = ThemeService()
+    @State private var primaryColorService = PrimaryColorService()
 
     var body: some Scene {
         WindowGroup {
-            AppRootView(session: session)
-                .environmentObject(appRouter)
-                .environmentObject(themeService)
-                .environmentObject(primaryColorService)
-                .environment(session)
+            AppRootView()
+                .environment(container.infrastructure.sessionService)
+                .environment(container)
+                .environment(container.auth)
+                .environment(container.pet)
+                .environment(container.user)
+                .environment(appRouter)
+                .environment(themeService)
+                .environment(primaryColorService)
                 .preferredColorScheme(themeService.colorScheme)
         }
     }

@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct AuthBottomBarView: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
-    @EnvironmentObject var router: AuthRouter
+    @Environment(PrimaryColorService.self) var primaryColorService
+    @Environment(AuthRouter.self) var router
     
     var body: some View {
         HStack {
@@ -16,7 +16,7 @@ struct AuthBottomBarView: View {
             }) {
                 Text("Зарегистрироваться")
                     .font(.system(.caption, design: .rounded))
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
                     .underline()
             }
         }

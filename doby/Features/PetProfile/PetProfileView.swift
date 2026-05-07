@@ -1,15 +1,17 @@
 import SwiftUI
 
 struct PetProfileView: View {
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State private var viewModel: PetProfileViewModel
-    
     let petId: Int
     
-    init(petId: Int) {
+    init(
+        repository: PetRepositoryProtocol,
+        petId: Int
+    ) {
         self.petId = petId
-        _viewModel = State(initialValue: PetDIContainer.shared.makePetProfileViewModel())
+        _viewModel = State(initialValue: PetProfileViewModel(repository: repository))
     }
     
     enum PetDetailsTab: String, CaseIterable {
@@ -67,7 +69,7 @@ struct PetProfileView: View {
                                 .font(.system(.body, design: .rounded))
                                 .foregroundColor(.secondary)
                                 .padding(8)
-                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.currentColor.color, lineWidth: 1))
+                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.primaryColor.color, lineWidth: 1))
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -81,25 +83,25 @@ struct PetProfileView: View {
                             Text("Тип питания")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-
+                            
                             Text(viewModel.pet?.dietType ?? "-")
                                 .font(.system(.body, design: .rounded))
                         }
-
+                        
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Пищевые привычки")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-
+                            
                             Text(viewModel.pet?.dietPatterns ?? "-")
                                 .font(.system(.body, design: .rounded))
                         }
-
+                        
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Дополнительная информация")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-
+                            
                             Text(viewModel.pet?.dietAdditionalInfo ?? "-")
                                 .font(.system(.body, design: .rounded))
                         }
@@ -116,7 +118,7 @@ struct PetProfileView: View {
                                 .font(.system(.body, design: .rounded))
                                 .foregroundColor(.secondary)
                                 .padding(8)
-                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.currentColor.color, lineWidth: 1))
+                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.primaryColor.color, lineWidth: 1))
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -132,9 +134,4 @@ struct PetProfileView: View {
         }
         .ignoresSafeArea(edges: .top)
     }
-}
-
-#Preview {
-    PetProfileView(petId: 0)
-        .withAppEnvironment()
 }

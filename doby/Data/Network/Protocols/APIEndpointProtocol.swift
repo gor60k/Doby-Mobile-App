@@ -27,6 +27,10 @@ extension APIEndpointProtocol {
         request.httpMethod = method.rawValue
         request.httpBody = body
         
+        if body != nil {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        
         headers?.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         
         return request

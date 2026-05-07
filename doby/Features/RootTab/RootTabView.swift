@@ -1,15 +1,12 @@
 import SwiftUI
 
 struct RootTabView: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
-    @EnvironmentObject private var appRouter: AppRouter
-
-    @EnvironmentObject private var petRouter: PetRouter
-    @EnvironmentObject private var profileRouter: ProfileRouter
-
-    private let session = SessionService.shared
+    @Environment(PrimaryColorService.self) var primaryColorService
+    @Environment(AppRouter.self) private var appRouter
 
     var body: some View {
+        @Bindable var appRouter = appRouter
+        
         TabView(selection: $appRouter.selectedTab) {
             PetStack()
                 .tabItem { Label(RootTab.pet.title, systemImage: RootTab.pet.icon) }
@@ -27,11 +24,6 @@ struct RootTabView: View {
                 .tabItem { Label(RootTab.profile.title, systemImage: RootTab.profile.icon) }
                 .tag(RootTab.profile)
         }
-        .tint(primaryColorService.currentColor.color)
+        .tint(primaryColorService.primaryColor.color)
     }
-}
-
-#Preview {
-    RootTabView()
-        .withAppEnvironment()
 }

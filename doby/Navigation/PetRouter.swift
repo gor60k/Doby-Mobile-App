@@ -1,9 +1,11 @@
 import SwiftUI
 import Foundation
 import Combine
+import Observation
 
-final class PetRouter: ObservableObject {
-    @Published var path = NavigationPath()
+@Observable
+final class PetRouter {
+    var path = NavigationPath()
 
     func push(_ route: PetRoute) {
         path.append(route)

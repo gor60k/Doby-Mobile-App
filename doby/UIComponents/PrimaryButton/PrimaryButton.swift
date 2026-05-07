@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PrimaryButton: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     let title: String
     let icon: String

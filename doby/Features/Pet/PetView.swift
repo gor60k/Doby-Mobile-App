@@ -1,17 +1,19 @@
 import SwiftUI
 
 struct PetView: View {
-    @EnvironmentObject private var router: PetRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PetRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
-    @State private var viewModel: PetViewModel
-
+    @State var viewModel: PetViewModel
     @State private var isEditing = false
     
     let ownerUUID: String
     
-    init(ownerUUID: String) {
-        _viewModel = State(initialValue: PetDIContainer.shared.makePetViewModel())
+    init(
+        repository: PetRepositoryProtocol,
+        ownerUUID: String
+    ) {
+        _viewModel = State(initialValue: PetViewModel(repository: repository))
         self.ownerUUID = ownerUUID
     }
     
@@ -71,12 +73,5 @@ struct PetView: View {
         .task {
             await viewModel.fetchPets(ownerUUID: ownerUUID)
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        PetView(ownerUUID: "")
-            .withAppEnvironment()
     }
 }

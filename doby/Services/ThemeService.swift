@@ -1,12 +1,17 @@
 import SwiftUI
-import Combine
+import Observation
 
-final class ThemeService: ObservableObject {
-    @AppStorage("theme") var storedTheme: String = AppTheme.system.rawValue
-    
+@Observable
+final class ThemeService {
     var theme: AppTheme {
-        get { AppTheme(rawValue: storedTheme) ?? .system }
-        set { storedTheme = newValue.rawValue }
+        didSet {
+            UserDefaults.standard.set(theme.rawValue, forKey: "theme")
+        }
+    }
+    
+    init() {
+        let savedTheme = UserDefaults.standard.string(forKey: "theme") ?? AppTheme.system.rawValue
+        self.theme = AppTheme(rawValue: savedTheme) ?? .system
     }
     
     var colorScheme: ColorScheme? {

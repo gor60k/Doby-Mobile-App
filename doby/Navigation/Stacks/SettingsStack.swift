@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct SettingsStack: View {
-    @StateObject private var router = SettingsRouter()
+    @Environment(AuthContainer.self) private var container
+    
+    @State private var router = SettingsRouter()
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            SettingsView()
+            SettingsView(repository: container.repository)
                 .navigationDestination(for: SettingsRoute.self) { route in
                     switch route {
                     case .appearance:
@@ -19,6 +21,6 @@ struct SettingsStack: View {
                     }
                 }
         }
-        .environmentObject(router)
+        .environment(router)
     }
 }

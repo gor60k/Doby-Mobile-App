@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @EnvironmentObject var router: AppRouter
+    @Environment(AppRouter.self) var router
     
     @State private var viewModel = WelcomeViewModel()
     

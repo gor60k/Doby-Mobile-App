@@ -2,8 +2,8 @@ import SwiftUI
 import PhotosUI
 
 struct SettingsView: View {
-    @EnvironmentObject private var router: ProfileRouter
-    @EnvironmentObject private var appRoute: AppRouter
+    @Environment(ProfileRouter.self) private var router
+    @Environment(AppRouter.self) private var appRoute
     
     @State private var viewModel = SettingsViewModel()
     @State private var authViewModel: AuthViewModel
@@ -11,8 +11,8 @@ struct SettingsView: View {
     @State private var selectedAvatarItem: PhotosPickerItem?
     @State private var selectedAvatarImage: UIImage?
     
-    init() {
-        _authViewModel = State(initialValue: AuthDIContainer.shared.makeAuthViewModel())
+    init(repository: AuthRepositoryProtocol) {
+        _authViewModel = State(initialValue: AuthViewModel(repository: repository))
     }
     
     var body: some View {
@@ -54,13 +54,7 @@ struct SettingsView: View {
                 Button(action: {
                     Task {
                         await authViewModel.logout()
-                        
-                        if authViewModel.errorMessage == nil {
-                            await MainActor.run {
-                                appRoute.goToAuth()
-                            }
-                        }
-                        
+                        appRoute.goToAuth()
                     }
                 }) {
                     Text("Выйти")
@@ -93,9 +87,4 @@ struct SettingsView: View {
             }
         }
     }
-}
-
-#Preview {
-    SettingsView()
-        .withAppEnvironment()
 }

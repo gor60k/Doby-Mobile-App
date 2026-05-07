@@ -1,9 +1,11 @@
 import SwiftUI
 import Foundation
 import Combine
+import Observation
 
-final class SettingsRouter: ObservableObject {
-    @Published var path = NavigationPath()
+@Observable
+final class SettingsRouter {
+    var path = NavigationPath()
     
     func push(_ route: SettingsRoute) {
         path.append(route)

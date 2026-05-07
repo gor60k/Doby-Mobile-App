@@ -2,7 +2,7 @@ import Foundation
 
 struct PetMapper {
 
-    static func map(response: PetResponse) -> Pet {
+    nonisolated static func map(response: PetResponse) -> Pet {
         return Pet(
             id: response.id,
             petType: mapPetType(response.pet_type),
@@ -21,18 +21,18 @@ struct PetMapper {
         )
     }
     
-    static func map(response: [PetResponse]) -> [Pet] {
+    nonisolated static func map(response: [PetResponse]) -> [Pet] {
         response.map(map)
     }
 
-    private static func mapPetType(_ dto: PetTypeDTO) -> PetType {
+    nonisolated private static func mapPetType(_ dto: PetTypeDTO) -> PetType {
         switch dto {
         case .dog: return .dog
         case .cat: return .cat
         }
     }
 
-    private static func mapPhotos(_ dtos: [PetPhotoDTO]) -> [PetPhoto] {
+    nonisolated private static func mapPhotos(_ dtos: [PetPhotoDTO]) -> [PetPhoto] {
         return dtos.map { dto in
             PetPhoto(
                 id: dto.id,

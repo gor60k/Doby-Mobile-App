@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PetProfileInfoCardView: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     let item: PetProfileInfoItem
     
@@ -12,12 +12,12 @@ struct PetProfileInfoCardView: View {
                 .foregroundColor(.secondary)
             Text(item.formattedVale)
                 .font(.system(.headline, design: .rounded))
-                .foregroundColor(primaryColorService.currentColor.color)
+                .foregroundColor(primaryColorService.primaryColor.color)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 16).fill(primaryColorService.currentColor.color.opacity(0.1))
+            RoundedRectangle(cornerRadius: 16).fill(primaryColorService.primaryColor.color.opacity(0.1))
         )
     }
 }

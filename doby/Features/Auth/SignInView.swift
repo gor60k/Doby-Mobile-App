@@ -2,8 +2,8 @@ import SwiftUI
 import AuthenticationServices
 
 struct SignInView: View {
-    @EnvironmentObject private var router: AppRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(AppRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     private var session = SessionService.shared
     
@@ -12,8 +12,8 @@ struct SignInView: View {
     @State private var didEditEmail = false
     @State private var didEditPassword = false
     
-    init() {
-        _viewModel = State(initialValue: AuthDIContainer.shared.makeAuthViewModel())
+    init(repository: AuthRepositoryProtocol) {
+        _viewModel = State(initialValue: AuthViewModel(repository: repository))
     }
     
     var body: some View {
@@ -53,7 +53,7 @@ struct SignInView: View {
                             
                         }
                         .buttonStyle(.plain)
-                        .foregroundColor(primaryColorService.currentColor.color)
+                        .foregroundColor(primaryColorService.primaryColor.color)
                         .font(.system(.subheadline, design: .rounded))
                         .underline()
                     }
@@ -114,9 +114,4 @@ struct SignInView: View {
         .scrollDismissesKeyboard(.interactively)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-}
-
-#Preview {
-    SignInView()
-        .withAppEnvironment()
 }

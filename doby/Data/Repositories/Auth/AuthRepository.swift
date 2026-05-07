@@ -32,8 +32,8 @@ final class AuthRepository: AuthRepositoryProtocol {
         
         logService.network.info("ACCESS: \(response.access_token) | REFRESH: \(response.refresh_token)")
         
-        session.isAuthenticated = true
-        session.isRegistered = true
+        session.setAuthenticated(true)
+        session.setRegistered(true)
         
         storage.save(user)
     }
@@ -52,8 +52,8 @@ final class AuthRepository: AuthRepositoryProtocol {
         
         print(user)
         
-        session.isAuthenticated = true
-        session.isRegistered = true
+        session.setAuthenticated(true)
+        session.setRegistered(true)
         
         storage.save(user)
     }
@@ -61,7 +61,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     func logout() async throws {
         try await service.logout()
         deleteTokens()
-        session.isAuthenticated = false
+        session.logout()
     }
     
     func refresh(input: RefreshInput) async throws {
@@ -77,7 +77,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         keychain.save(token: accessToken, for: .accessToken)
         keychain.save(token: refreshToken, for: .refreshToken)
         
-        logService.network.info("ACCETS: \(accessToken) | REFRESH: \(refreshToken)")
+        logService.network.info("ACCESS: \(accessToken) | REFRESH: \(refreshToken)")
     }
 
     private func deleteTokens() {

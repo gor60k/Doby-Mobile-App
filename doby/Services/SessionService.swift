@@ -4,32 +4,30 @@ import Observation
 @Observable
 final class SessionService {
     static let shared = SessionService()
-    private let authStorageKey: String = "isAuthenticated"
-    private let regStorageKey: String = "isRegistered"
     
-    private init() {}
+    private let authStorageKey = "isAuthenticated"
+    private let regStorageKey = "isRegistered"
     
-    var isRegistered: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: regStorageKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: regStorageKey)
-            print("REG STATUS UPDATED:", newValue)
-        }
+    private(set) var isRegistered: Bool
+    private(set) var isAuthenticated: Bool
+    
+    private init() {
+        self.isRegistered = UserDefaults.standard.bool(forKey: regStorageKey)
+        self.isAuthenticated = UserDefaults.standard.bool(forKey: authStorageKey)
     }
     
-    var isAuthenticated: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: authStorageKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: authStorageKey)
-            print("AUTH STATUS UPDATED:", newValue)
-        }
+    func setAuthenticated(_ value: Bool) {
+        isAuthenticated = value
+        UserDefaults.standard.set(value, forKey: authStorageKey)
     }
     
-    func removeKey(_ key: String) {
-        UserDefaults.standard.removeObject(forKey: key)
+    func setRegistered(_ value: Bool) {
+        isRegistered = value
+        UserDefaults.standard.set(value, forKey: regStorageKey)
+    }
+    
+    func logout() {
+        isAuthenticated = false
+        UserDefaults.standard.removeObject(forKey: authStorageKey)
     }
 }

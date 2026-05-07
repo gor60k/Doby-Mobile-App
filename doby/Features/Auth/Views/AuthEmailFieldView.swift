@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AuthEmailFieldView: View {
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     let title: String
     let isValid: Bool
