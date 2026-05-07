@@ -11,6 +11,8 @@ struct dobyApp: App {
         WindowGroup {
             AppRootView()
                 .environment(container.infrastructure.sessionService)
+                .environment(container.infrastructure.userStorage)
+                .environment(container.infrastructure.petStorage)
                 .environment(container)
                 .environment(container.auth)
                 .environment(container.pet)

@@ -5,37 +5,50 @@ import Observation
 final class UserStorage {
     static let shared = UserStorage()
     
-    private let userStorageKey = "user"
-    init() {}
+    private let key = "user"
     
-    var currentUser: User? {
-        get {
-            guard let data = UserDefaults.standard.data(forKey: userStorageKey) else { return nil }
-            return try? JSONDecoder().decode(User.self, from: data)
-        }
-        set {
-            guard let newValue else {
-                UserDefaults.standard.removeObject(forKey: userStorageKey)
-                return
-            }
-            
-            if let data = try? JSONEncoder().encode(newValue) {
-                UserDefaults.standard.set(data, forKey: userStorageKey)
-            }
-        }
+    private(set) var currentUser: User?
+    
+    init() {
+        load()
     }
     
-    func save(_ user: User) {
+    func set(_ user: User?) {
         currentUser = user
+        save()
     }
     
-    func update(_ updateBlock: (inout User) -> Void) {
+    func update(_ block: (inout User) -> Void) {
         guard var user = currentUser else { return }
-        updateBlock(&user)
+        block(&user)
         currentUser = user
+        save()
     }
     
     func clear() {
         currentUser = nil
+        save()
+    }
+    
+    private func load() {
+        guard let data = UserDefaults.standard.data(forKey: key),
+              let user = try? JSONDecoder().decode(User.self, from: data)
+        else {
+            currentUser = nil
+            return
+        }
+        
+        currentUser = user
+    }
+    
+    private func save() {
+        guard let currentUser else {
+            UserDefaults.standard.removeObject(forKey: key)
+            return
+        }
+        
+        guard let data = try? JSONEncoder().encode(currentUser) else { return }
+        
+        UserDefaults.standard.set(data, forKey: key)
     }
 }

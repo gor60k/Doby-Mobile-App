@@ -2,8 +2,9 @@ import SwiftUI
 
 struct PetStack: View {
     @Environment(PetContainer.self) private var container
+    @Environment(UserStorage.self) private var userStorage
     
-    @State private var userStorage = UserStorage()
+//    @State private var userStorage = UserStorage()
     @State private var petRouter = PetRouter()
     
     var body: some View {
@@ -19,6 +20,7 @@ struct PetStack: View {
                     case .profile(let id):
                         PetProfileView(
                             repository: container.repository,
+                            userStorage: userStorage,
                             petId: id
                         )
                     }

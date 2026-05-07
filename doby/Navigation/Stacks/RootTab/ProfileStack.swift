@@ -4,6 +4,7 @@ struct ProfileStack: View {
     @Environment(AuthContainer.self) private var authContainer
     @Environment(UserContainer.self) private var userContainer
     @Environment(PetContainer.self) private var petContainer
+    @Environment(UserStorage.self) private var userStorage
     
     @State private var router = ProfileRouter()
     
@@ -28,6 +29,7 @@ struct ProfileStack: View {
                     case .petProfile(let id):
                         PetProfileView(
                             repository: petContainer.repository,
+                            userStorage: userStorage,
                             petId: id
                         )
                     case .petAdding:

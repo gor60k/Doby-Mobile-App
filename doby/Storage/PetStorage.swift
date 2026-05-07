@@ -3,6 +3,8 @@ import Observation
 
 @Observable
 final class PetStorage {
+    static let shared = PetStorage()
+    
     private let key = "pets"
     
     var pets: [Pet] = []

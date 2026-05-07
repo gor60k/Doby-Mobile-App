@@ -35,7 +35,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.save(user)
+        storage.set(user)
     }
     
     func login(input: LoginInput) async throws {
@@ -55,7 +55,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.save(user)
+        storage.set(user)
     }
     
     func logout() async throws {

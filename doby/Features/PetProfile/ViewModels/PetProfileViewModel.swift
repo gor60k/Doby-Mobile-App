@@ -4,51 +4,76 @@ import Observation
 @Observable
 final class PetProfileViewModel {
     private let repository: PetRepositoryProtocol
+    private let userStorage: UserStorage
     
-    var currentPage: Int = 0
-    var pet: Pet?
+    var currentPage = 0
     
-    var slides: [PetPhoto] = []
-    var infoItems: [PetProfileInfoItem] = []
+    private(set) var pet: Pet?
+    private let petId: Int
+    
+    var user: User? { userStorage.currentUser }
+    
+    private(set) var slides: [PetPhoto] = []
+    private(set) var infoItems: [PetProfileInfoItem] = []
     
     init(
         repository: PetRepositoryProtocol,
-        pet: Pet? = nil
+        userStorage: UserStorage,
+        petId: Int
     ) {
         self.repository = repository
-        self.pet = pet
+        self.userStorage = userStorage
+        self.petId = petId
         
-        loadLocalPet()
+        syncPetFromRepository()
     }
     
-    var isLoading = false
+    private(set) var isLoading = false
     var error: String?
     
     func fetchPet() async {
+        guard let petId = pet?.id else { return }
+        guard let ownerUUID = user?.uuid else {
+            error = "User not found"
+            return
+        }
+        
         isLoading = true
+        error = nil
         defer { isLoading = false }
         
         do {
-            guard let pet else { return }
-            try await repository.fetchPet(ownerUUID: pet.ownerUUID, petId: pet.id)
-            loadLocalPet()
+            try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
+            syncPetFromRepository()
         } catch {
             self.error = error.localizedDescription
         }
     }
     
-    private func loadLocalPet() {
-        guard let currentPet = pet else { return }
-        guard let pet = repository.pets.first(where: { $0.id == currentPet.id }) else { return }
-        self.pet = pet
+    private func syncPetFromRepository() {
+//        guard let petId = pet?.id else { return }
+        guard let updatedPet = repository.pets.first(where: { $0.id == petId }) else { return }
         
-        self.slides = pet.photos.enumerated().map {
-            PetPhoto(id: $0.element.id, imageURL: $0.element.imageURL, orderNumber: $0.element.orderNumber, isMain: $0.element.isMain)
+        pet = updatedPet
+        slides = makeSlides(from: updatedPet)
+        infoItems = makeInfoItems(from: updatedPet)
+    }
+    
+    private func makeSlides(from pet: Pet) -> [PetPhoto] {
+        pet.photos.map {
+            PetPhoto(
+                id: $0.id,
+                imageURL: $0.imageURL,
+                orderNumber: $0.orderNumber,
+                isMain: $0.isMain
+            )
         }
-        
-        self.infoItems = [
+    }
+    
+    private func makeInfoItems(from pet: Pet) -> [PetProfileInfoItem] {
+        [
             .weight(pet.weight),
-            .height(pet.height),
+            .height(pet.height)
         ]
     }
 }
