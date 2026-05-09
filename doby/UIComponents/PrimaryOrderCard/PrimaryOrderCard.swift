@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PrimaryOrderCard: View {
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     let order: Order
 
@@ -10,7 +10,7 @@ struct PrimaryOrderCard: View {
         case .scheduled:
             return .gray
         case .inProgress:
-            return primaryColorService.currentColor.color
+            return primaryColorService.primaryColor.color
         case .completed:
             return .green
         case .canceled:

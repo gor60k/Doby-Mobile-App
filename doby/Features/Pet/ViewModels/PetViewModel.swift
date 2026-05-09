@@ -1,19 +1,48 @@
 import Foundation
-import os
 import Observation
 
 @MainActor
 @Observable
 final class PetViewModel {
-    private var petStorage = PetStorage.shared
+    private let repository: PetRepositoryProtocol
     
-    private(set) var pets: [Pet] = []
+    var pets: [Pet] { repository.pets }
     
-    init() {
-        loadPets()
+    var isLoading = false
+    var error: String?
+    
+    init(repository: PetRepositoryProtocol) {
+        self.repository = repository
     }
     
-    func loadPets() {
-        pets = petStorage.pets
+    func fetchPets(ownerUUID: String) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await repository.fetchPets(ownerUUID: ownerUUID)
+        } catch {
+            print(error.localizedDescription)
+            self.error = error.localizedDescription
+        }
+    }
+
+    func fetchPet(ownerUUID: String, petId: Int) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
+    func deletePet(id: Int) async {
+        do {
+            try await repository.deletePet(id: id)
+        } catch {
+            self.error = error.localizedDescription
+        }
     }
 }

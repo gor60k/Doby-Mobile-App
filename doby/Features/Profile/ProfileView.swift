@@ -1,15 +1,26 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject private var router: ProfileRouter
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(ProfileRouter.self) private var router
+    @Environment(PrimaryColorService.self) var primaryColorService
     
-    @State private var viewModel = ProfileViewModel()
+    @State private var viewModel: ProfileViewModel
+    
     private var session = SessionService.shared
     
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
     let options = ProfileDetailsTab.allCases
+    
+    init(
+        userRepository: UserRepositoryProtocol,
+        petRepository: PetRepositoryProtocol
+    ) {
+        _viewModel = State(initialValue: ProfileViewModel(
+            userRepository: userRepository,
+            petRepository: petRepository
+        ))
+    }
     
     var body: some View {
         ScrollView {
@@ -59,12 +70,5 @@ struct ProfileView: View {
             onEditTap: { router.push(.settings) },
             onQRScanTap: {}
         )
-    }
-}
-
-#Preview {
-    NavigationStack {
-        ProfileView()
-            .withAppEnvironment()
     }
 }

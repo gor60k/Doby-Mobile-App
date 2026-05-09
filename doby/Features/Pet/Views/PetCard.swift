@@ -1,10 +1,12 @@
 import SwiftUI
+import Kingfisher
 
 struct PetCard: View {
-    @EnvironmentObject private var router: PetRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PetRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     let id: Int
+    let imageURL: String?
     let name: String
     let breedName: String
     let age: Int
@@ -14,10 +16,14 @@ struct PetCard: View {
             router.push(.profile(id: id))
         }) {
             HStack(spacing: 12) {
-                Image(systemName: "pawprint.circle.fill")
+                KFImage(URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev\(imageURL ?? "")"))
+                    .placeholder {
+                        ProgressView()
+                    }
                     .resizable()
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 80, height: 80)
+                    .clipShape(Circle())
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(name)

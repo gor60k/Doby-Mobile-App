@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsPrivacyView: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     @State private var viewModel = SettingsViewModel()
     
@@ -15,7 +15,7 @@ struct SettingsPrivacyView: View {
             
             Button(action: {}) {
                 Text("Сменить пароль")
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
             }
         }
         .navigationTitle("Приватность")

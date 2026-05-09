@@ -5,55 +5,54 @@ import Observation
 final class PetStorage {
     static let shared = PetStorage()
     
-    private let petStorageKey = "pets"
-    private init() {}
+    private let key = "pets"
     
-    var pets: [Pet] {
-        get {
-            guard let data = UserDefaults.standard.data(forKey: petStorageKey),
-                  let decoded = try? JSONDecoder().decode([Pet].self, from: data) else {
-                return []
-            }
-            return decoded
-        }
-        set {
-            if let data = try? JSONEncoder().encode(newValue) {
-                UserDefaults.standard.set(data, forKey: petStorageKey)
-            }
-        }
+    var pets: [Pet] = []
+    
+    init() {
+        load()
     }
     
-    func setPets(_ pets: [Pet]) {
-        self.pets = pets
+    func set(_ pets: [Pet]) {
+        save(pets)
     }
     
-    func pet(by id: Int) -> Pet? {
-        pets.first { $0.id == id }
-    }
-    
-    func appendPet(_ pet: Pet) {
-        var currentPets = pets
-        currentPets.append(pet)
-        self.pets = currentPets
-    }
-    
-    func upsert(_ pet: Pet) {
-        var currentPets = pets
-        
-        if let index = currentPets.firstIndex(where: { $0.id == pet.id }) {
-            currentPets[index] = pet
+    func add(_ pet: Pet) {
+        if let index = pets.firstIndex(where: { $0.id == pet.id }) {
+            pets[index] = pet
         } else {
-            currentPets.append(pet)
+            pets.append(pet)
         }
-        
-        self.pets = currentPets
+        save(pets)
     }
     
-    func removePet(by id: Int) {
+    func update(_ pet: Pet) {
+        if let index = pets.firstIndex(where: { $0.id == pet.id }) {
+            pets[index] = pet
+        } else {
+            pets.append(pet)
+        }
+        save(pets)
+    }
+    
+    func remove(id: Int) {
         pets.removeAll { $0.id == id }
+        save(pets)
     }
     
-    func clear() {
-        pets = []
+    private func load() {
+        guard let data = UserDefaults.standard.data(forKey: key),
+              let decoded = try? JSONDecoder().decode([Pet].self, from: data) else {
+            self.pets = []
+            return
+        }
+        pets = decoded
+    }
+    
+    private func save(_ pets: [Pet]) {
+        self.pets = pets
+        
+        guard let data = try? JSONEncoder().encode(pets) else { return }
+        UserDefaults.standard.set(data, forKey: key)
     }
 }

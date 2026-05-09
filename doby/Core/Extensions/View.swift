@@ -3,9 +3,9 @@ import SwiftUI
 extension View {
     func withAppEnvironment() -> some View {
         self
-            .environmentObject(AppRouter())
-            .environmentObject(ThemeService())
-            .environmentObject(PrimaryColorService())
+            .environment(AppRouter())
+            .environment(ThemeService())
+            .environment(PrimaryColorService())
             .environment(SessionService.shared)
     }
 }

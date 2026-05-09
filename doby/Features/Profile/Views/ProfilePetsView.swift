@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct ProfilePetsView: View {
-    @EnvironmentObject private var router: ProfileRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(ProfileRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State var currentPage: Int = 0
     @State var pets: [Pet]

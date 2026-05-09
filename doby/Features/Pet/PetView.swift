@@ -1,21 +1,47 @@
 import SwiftUI
 
 struct PetView: View {
-    @EnvironmentObject private var router: PetRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(PetRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
-    private let viewModel = PetViewModel()
+    @State var viewModel: PetViewModel
+    @State private var isEditing = false
+    
+    let ownerUUID: String
+    
+    init(
+        repository: PetRepositoryProtocol,
+        ownerUUID: String
+    ) {
+        _viewModel = State(initialValue: PetViewModel(repository: repository))
+        self.ownerUUID = ownerUUID
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
                 ForEach(viewModel.pets) { pet in
-                    PetCard(
-                        id: pet.id,
-                        name: pet.name,
-                        breedName: pet.breedName,
-                        age: pet.age
-                    )
+                    HStack {
+                        if isEditing {
+                            Button(role: .destructive) {
+                                Task {
+                                    await viewModel.deletePet(id: pet.id)
+                                }
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .transition(.move(edge: .leading).combined(with: .opacity))
+                        }
+                        
+                        PetCard(
+                            id: pet.id,
+                            imageURL: pet.photos.first?.imageURL,
+                            name: pet.name,
+                            breedName: pet.breedName,
+                            age: pet.age
+                        )
+                    }
+                    .animation(.easeInOut, value: isEditing)
                 }
             }
             .padding()
@@ -24,23 +50,28 @@ struct PetView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Изм.", action: {})
-                    .tint(.primary)
+                Button(isEditing ? "Готово" : "Изм.") {
+                    withAnimation(.easeInOut) {
+                        isEditing.toggle()
+                    }
+                }
+                .tint(.primary)
             }
             
             ToolbarItem(placement: .topBarLeading) {
-                Button("Добавить", systemImage: "plus", action: {
-                    router.push(.petAdding)
-                })
+                if !isEditing {
+                    Button("Добавить", systemImage: "plus") {
+                        router.push(.petAdding)
+                    }
                     .tint(primaryColorService.primaryColor.color)
+                }
             }
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        PetView()
-            .withAppEnvironment()
+        .refreshable {
+            await viewModel.fetchPets(ownerUUID: ownerUUID)
+        }
+        .task {
+            await viewModel.fetchPets(ownerUUID: ownerUUID)
+        }
     }
 }

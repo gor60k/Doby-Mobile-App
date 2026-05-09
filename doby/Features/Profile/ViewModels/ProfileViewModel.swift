@@ -4,24 +4,25 @@ import Observation
 @MainActor
 @Observable
 class ProfileViewModel {
-    private let userStorage = UserStorage.shared
-    private let petStorage = PetStorage.shared
+    private let userRepository: UserRepositoryProtocol
+    private let petRepository: PetRepositoryProtocol
     
     var currentPage: Int = 0
-    private(set) var pets: [Pet] = []
-    private(set) var user: User?
     
-    init() {
-        loadUser()
-        loadPets()
+    var pets: [Pet] {
+        petRepository.pets
     }
     
-    func loadUser() {
-        user = userStorage.currentUser
+    var user: User? {
+        userRepository.getCurrentUser()
     }
     
-    func loadPets() {
-        pets = petStorage.pets
+    init(
+        userRepository: UserRepositoryProtocol,
+        petRepository: PetRepositoryProtocol
+    ) {
+        self.userRepository = userRepository
+        self.petRepository = petRepository
     }
     
     var orders = [

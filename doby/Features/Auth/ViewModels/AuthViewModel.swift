@@ -4,7 +4,7 @@ import Observation
 
 @Observable
 final class AuthViewModel {
-    private let repository: AuthRepository
+    private let repository: AuthRepositoryProtocol
     
     var email: String = ""
     var password: String = ""
@@ -39,13 +39,7 @@ final class AuthViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(
-        repository: AuthRepository = .init(
-            service: AuthService(),
-            storage: UserStorage.shared,
-            session: SessionService.shared
-        )
-    ) {
+    init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
     
@@ -53,13 +47,11 @@ final class AuthViewModel {
     func register() async {
         guard isEmailValid else {
             errorMessage = "Некорректный email"
-            print("REGISTER STOP: invalid email")
             return
         }
         
         guard isRegisterPasswordValid else {
             errorMessage = "Пароли не совпадают или слишком короткие"
-            print("REGISTER STOP: invalid password")
             return
         }
         
@@ -84,13 +76,11 @@ final class AuthViewModel {
     func login() async {
         guard isEmailValid else {
             errorMessage = "Некорректный email"
-            print("LOGIN STOP: invalid email")
             return
         }
         
         guard isLoginPasswordValid else {
             errorMessage = "Введите пароль"
-            print("LOGIN STOP: empty password")
             return
         }
         

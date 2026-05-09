@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProfileServiceButton: View {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     let serviceTitle: String
     let servicePrice: String
@@ -11,18 +11,18 @@ struct ProfileServiceButton: View {
         Button(action: action) {
             HStack {
                 Text(serviceTitle)
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
                 Spacer()
                 
                 Text("\(servicePrice)₽")
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
                 
                 Image(systemName: "chevron.right")
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
             }
             .frame(maxWidth: .infinity)
             .padding(10)
-            .background(RoundedRectangle(cornerRadius: 10).fill(primaryColorService.currentColor.color.opacity(0.1)))
+            .background(RoundedRectangle(cornerRadius: 10).fill(primaryColorService.primaryColor.color.opacity(0.1)))
         }
         .buttonStyle(.plain)
     }

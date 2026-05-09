@@ -6,12 +6,7 @@ import PhotosUI
 
 @Observable
 final class PetAddingViewModel {
-    private let repository: PetRepository
-    
-    private var session = SessionService.shared
-    private var keychain = KeychainService.shared
-    private var petStorage = PetStorage.shared
-    private var logService = LogService.shared
+    private let repository: PetRepositoryProtocol
     
     var petType: PetType = .dog
     var name: String = ""
@@ -43,12 +38,7 @@ final class PetAddingViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    init(
-        repository: PetRepository = .init(
-            service: PetService(),
-            storage: PetStorage.shared
-        ),
-    ) {
+    init(repository: PetRepositoryProtocol) {
         self.repository = repository
     }
     
@@ -61,6 +51,8 @@ final class PetAddingViewModel {
                 selectedPhotosData.append(data)
             }
         }
+        
+        print("Loaded photos count: \(selectedPhotosData.count)")
     }
     
     @MainActor
@@ -68,22 +60,29 @@ final class PetAddingViewModel {
         isLoading = true
         errorMessage = nil
         
-        logService.network.info("НАЧАЛО СОЗДАНИЯ ПИТОМЦА")
+        await loadSelectedPhotos()
         
         do {
             let input = CreatePetInput(
                 petType: petType,
+                uploadedPhotos: selectedPhotosData,
                 name: name,
                 age: age,
+                height: height,
+                weight: weight,
+                breedName: breedName,
+                dietType: feedingType,
+                dietPattern: feedingSchedule,
+                dietAdditionalInfo: feedingNotes,
                 warningTags: warningTagsViewModel.tags,
-                specificTags: featureTagsViewModel.tags,
+                specificTags: featureTagsViewModel.tags
             )
-            logService.network.info("ОТПРАВКА ЗАПРОСА")
+            
+            print(input)
             
             _ = try await repository.createPet(input: input)
-            logService.network.info("ПОЛУЧЕНИЕ ОТВЕТА")
         } catch {
-            logService.network.error("ОШИБКА СОЗДАНИЯ ПИТОМЦА: \(error.localizedDescription)")
+            print(error.localizedDescription)
             errorMessage = error.localizedDescription
         }
         

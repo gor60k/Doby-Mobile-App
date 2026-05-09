@@ -20,7 +20,7 @@ struct PrimaryCollapsibleSection<Content: View>: View {
 }
 
 struct PlainDisclosureGroupStyle: DisclosureGroupStyle {
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     var chevronIcon: String = "chevron.up"
     func makeBody(configuration: Configuration) -> some View {
@@ -33,7 +33,7 @@ struct PlainDisclosureGroupStyle: DisclosureGroupStyle {
                 configuration.label
                 Spacer()
                 Image(systemName: chevronIcon)
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
                     .rotationEffect(.degrees(configuration.isExpanded ? 180 : 90))
                     .animation(.easeInOut(duration: 0.2), value: configuration.isExpanded)
             }

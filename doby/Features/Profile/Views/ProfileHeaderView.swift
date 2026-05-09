@@ -6,12 +6,6 @@ struct ProfileHeaderView: View {
     var body: some View {
         VStack {
             let fullName = "\(user?.firstName ?? "") \(user?.lastName ?? "")"
-            
-//            Image(systemName: "person.circle.fill")
-//                .resizable()
-//                .scaledToFill()
-//                .frame(width: 100, height: 100)
-//                .foregroundColor(Color(.secondarySystemBackground))
             Circle()
                 .fill(Color.secondary.opacity(0.12))
                 .overlay {

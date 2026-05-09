@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct SettingsAppearensView: View {
-    @EnvironmentObject private var themeService: ThemeService
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(ThemeService.self) private var themeService
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     @State var themeSelection: AppTheme = .system
     @State var primaryColorSelection: AppPrimaryColor = .yellow
@@ -36,11 +36,11 @@ struct SettingsAppearensView: View {
                     primaryColorService.setPrimaryColor(newValue)
                 }
                 .onAppear {
-                    primaryColorSelection = primaryColorService.currentColor
+                    primaryColorSelection = primaryColorService.primaryColor
                 }
                 
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(primaryColorService.currentColor.color)
+                    .fill(primaryColorService.primaryColor.color)
                     .frame(maxWidth: .infinity)
                     .frame(height: 40)
             }
@@ -48,10 +48,4 @@ struct SettingsAppearensView: View {
         .navigationTitle("Внешний вид")
         .navigationBarTitleDisplayMode(.inline)
     }
-}
-
-#Preview {
-    SettingsAppearensView()
-        .environmentObject(ThemeService())
-        .environmentObject(PrimaryColorService())
 }

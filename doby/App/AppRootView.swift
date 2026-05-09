@@ -1,29 +1,26 @@
 import SwiftUI
 
 struct AppRootView: View {
-    @EnvironmentObject private var appRouter: AppRouter
+    @Environment(AppRouter.self) private var appRouter
+    @Environment(SessionService.self) private var sessionService
     
-    let session: SessionService
     @State private var hasResolvedInitialRoute = false
     @State private var shouldAnimateRootTransitions = false
     
     var body: some View {
         ZStack {
-            if hasResolvedInitialRoute {
+            if let _ = appRouter.startDestination {
                 CurrentFlowView()
             } else {
-                Color.clear
-                    .ignoresSafeArea()
+                ProgressView()
+                    .transition(.opacity)
             }
         }
         .animation(shouldAnimateRootTransitions ? .easeInOut(duration: 0.3) : nil, value: appRouter.startDestination)
-        .onAppear {
-            guard !hasResolvedInitialRoute else { return }
-            appRouter.setInitialStartDestination(for: session)
-            hasResolvedInitialRoute = true
-            DispatchQueue.main.async {
-                shouldAnimateRootTransitions = true
-            }
+        .task {
+            print("Start logic: \(Date())")
+            appRouter.setInitialStartDestination(for: sessionService)
+            print("End logic: \(Date())")
         }
     }
 }

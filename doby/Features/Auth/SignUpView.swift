@@ -1,15 +1,20 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @EnvironmentObject private var router: AppRouter
-    @EnvironmentObject private var primaryColorService: PrimaryColorService
+    @Environment(AppRouter.self) private var router
+    @Environment(PrimaryColorService.self) private var primaryColorService
     
     private let session = SessionService.shared
     
-    @State private var viewModel = AuthViewModel()
+    @State var viewModel: AuthViewModel
+    
     @State private var didEditEmail = false
     @State private var didEditPassword = false
     @State private var didEditConfirmPassword = false
+    
+    init(repository: AuthRepositoryProtocol) {
+        _viewModel = State(initialValue: AuthViewModel(repository: repository))
+    }
     
     private var isPasswordValid: Bool {
         viewModel.password.count >= 8
@@ -91,9 +96,4 @@ struct SignUpView: View {
         }
         .padding(.horizontal, 16)
     }
-}
-
-#Preview {
-    SignUpView()
-        .withAppEnvironment()
 }

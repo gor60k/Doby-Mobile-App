@@ -1,18 +1,23 @@
 import SwiftUI
-import Combine
+import Observation
 
-final class AppRouter: ObservableObject {
+@MainActor
+@Observable
+final class AppRouter {
     enum StartDestination {
         case welcome
         case auth
         case rootTab
     }
 
-    @Published var startDestination: StartDestination = .welcome
-    @Published var selectedTab: RootTab = .profile
+    var startDestination: StartDestination? = nil
+    var selectedTab: RootTab = .profile
 
     func setInitialStartDestination(for session: SessionService) {
-        startDestination = startDestination(for: session)
+        let destination = startDestination(for: session)
+        withAnimation(.easeInOut(duration: 0.3)) {
+            self.startDestination = destination
+        }
     }
 
     func goToWelcome() {

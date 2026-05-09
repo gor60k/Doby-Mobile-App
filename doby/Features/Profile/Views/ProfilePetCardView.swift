@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct ProfilePetCardView: View {
-    @EnvironmentObject var router: ProfileRouter
-    @EnvironmentObject var primaryColorService: PrimaryColorService
+    @Environment(ProfileRouter.self) var router
+    @Environment(PrimaryColorService.self) var primaryColorService
     
     let id: Int
     let name: String
@@ -15,14 +15,14 @@ struct ProfilePetCardView: View {
                 Image(systemName: "pawprint.fill")
                     .resizable()
                     .frame(width: 80, height: 80)
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
             VStack(alignment: .leading) {
                 Text(name)
                     .font(.system(.title2, design: .rounded, weight: .semibold))
-                    .foregroundColor(primaryColorService.currentColor.color)
+                    .foregroundColor(primaryColorService.primaryColor.color)
 
                 Text(breedName)
                     .font(.system(.subheadline, design: .rounded))
@@ -61,13 +61,13 @@ struct ProfilePetCardView: View {
                 }
                 .padding(.vertical, 6)
                 .padding(.horizontal, 12)
-                .background(RoundedRectangle(cornerRadius: 12).fill(primaryColorService.currentColor.color))
+                .background(RoundedRectangle(cornerRadius: 12).fill(primaryColorService.primaryColor.color))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(12)
         }
         .frame(maxWidth: .infinity, maxHeight: 200)
-        .background(primaryColorService.currentColor.color.opacity(0.1))
+        .background(primaryColorService.primaryColor.color.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
