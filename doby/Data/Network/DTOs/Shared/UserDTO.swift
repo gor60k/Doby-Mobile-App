@@ -1,6 +1,7 @@
 import Foundation
 
-struct UserDTO: Codable, Sendable {
+nonisolated
+struct UserDTO: Codable {
     let uuid: String
     var username: String
     var first_name: String?

@@ -3,6 +3,7 @@ import Foundation
 
 actor TokenManager {
     private var refreshTask: Task<String, Error>?
+    nonisolated private let sessionService: SessionService = .shared
     
     func getValidToken(keychain: KeychainService) async -> String? {
         if let task = refreshTask {
@@ -22,6 +23,7 @@ actor TokenManager {
             }
             
             guard let refreshToken = await keychain.getToken(for: .refreshToken) else {
+                await handleInvalidSession()
                 throw AFError.responseValidationFailed(reason: .unacceptableStatusCode(code: 401))
             }
             
@@ -39,5 +41,9 @@ actor TokenManager {
     
     private func resetTask() {
         self.refreshTask = nil
+    }
+    
+    private func handleInvalidSession() async {
+        await MainActor.run { self.sessionService.invalidSession() }
     }
 }

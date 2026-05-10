@@ -8,22 +8,21 @@ final class AuthSession {
     }
     
     func refresh(refresh: String) async throws -> RefreshResponse {
-        print("📡 [AuthSession] Отправка сетевого запроса на /auth/refresh...")
+        let baseUrl = APIConstants.baseURL
         
         do {
             let response = try await session.request(
-                "auth/refresh", // Убедись, что здесь полный URL или корректный BaseURL
+                "\(baseUrl)/auth/token/refresh",
                 method: .post,
-                parameters: ["refresh": refresh]
+                parameters: ["refresh": refresh],
+                encoding: JSONEncoding.default
             )
             .validate()
             .serializingDecodable(RefreshResponse.self)
             .value
             
-            print("✅ [AuthSession] Сервер успешно вернул новые токены")
             return response
         } catch {
-            print("❌ [AuthSession] Сетевая ошибка при рефреше: \(error)")
             throw error
         }
     }

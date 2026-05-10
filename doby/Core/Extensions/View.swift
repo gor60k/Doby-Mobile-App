@@ -1,11 +1,34 @@
 import SwiftUI
 
 extension View {
-    func withAppEnvironment() -> some View {
-        self
-            .environment(AppRouter())
-            .environment(ThemeService())
-            .environment(PrimaryColorService())
-            .environment(SessionService.shared)
+
+    @MainActor
+    func withAppEnvironment(
+        container: AppContainer? = nil,
+        appRouter: AppRouter? = nil,
+        themeService: ThemeService? = nil,
+        primaryColorService: PrimaryColorService? = nil
+    ) -> some View {
+
+        let container = container ?? AppContainer()
+        let appRouter = appRouter ?? AppRouter()
+        let themeService = themeService ?? ThemeService()
+        let primaryColorService = primaryColorService ?? PrimaryColorService()
+
+        return self
+            .environment(container.infrastructure.sessionService)
+            .environment(container.infrastructure.userStorage)
+            .environment(container.infrastructure.petStorage)
+
+            .environment(container)
+            .environment(container.auth)
+            .environment(container.pet)
+            .environment(container.user)
+
+            .environment(appRouter)
+            .environment(themeService)
+            .environment(primaryColorService)
+
+            .preferredColorScheme(themeService.colorScheme)
     }
 }

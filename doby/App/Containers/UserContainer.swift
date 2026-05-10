@@ -10,6 +10,7 @@ final class UserContainer {
         let storage = UserStorage()
         
         self.repository = UserRepository(
+            service: UserService(apiClient: apiClient),
             storage: storage)
     }
 }

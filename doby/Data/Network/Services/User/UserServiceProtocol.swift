@@ -1,3 +1,3 @@
 protocol UserServiceProtocol {
-    func me() async throws -> MeResponse
+    func me() async throws -> UserDTO
 }

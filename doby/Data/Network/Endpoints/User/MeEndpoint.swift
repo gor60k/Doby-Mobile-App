@@ -1,7 +1,7 @@
 import Foundation
 
 struct MeEndpoint: APIEndpointProtocol {
-    typealias Response = MeResponse
+    typealias Response = UserDTO
     
     var baseURL: URL {APIConstants.baseURL}
     var path: String { "/users/me/" }

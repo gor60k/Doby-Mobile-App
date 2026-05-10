@@ -11,7 +11,7 @@ final class UserService: UserServiceProtocol {
         self.apiClient = apiClient
     }
     
-    func me() async throws -> MeResponse {
+    func me() async throws -> UserDTO {
         try await apiClient.request(MeEndpoint())
     }
 }

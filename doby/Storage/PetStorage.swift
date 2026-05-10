@@ -40,6 +40,11 @@ final class PetStorage {
         save(pets)
     }
     
+    func clear() {
+        pets.removeAll()
+        save(pets)
+    }
+    
     private func load() {
         guard let data = UserDefaults.standard.data(forKey: key),
               let decoded = try? JSONDecoder().decode([Pet].self, from: data) else {

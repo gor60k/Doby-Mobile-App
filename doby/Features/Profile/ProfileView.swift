@@ -70,5 +70,13 @@ struct ProfileView: View {
             onEditTap: { router.push(.settings) },
             onQRScanTap: {}
         )
+        .refreshable {
+            await viewModel.fetchUser()
+            await viewModel.fetchPets()
+        }
+        .task {
+            await viewModel.fetchUser()
+            await viewModel.fetchPets()
+        }
     }
 }
