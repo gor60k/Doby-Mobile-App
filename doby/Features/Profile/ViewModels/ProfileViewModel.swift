@@ -9,13 +9,9 @@ class ProfileViewModel {
     
     var currentPage: Int = 0
     
-    var pets: [Pet] {
-        petRepository.pets
-    }
+    var pets: [Pet] { petRepository.pets }
     
-    var user: User? {
-        userRepository.getCurrentUser()
-    }
+    var user: User? { userRepository.user }
     
     var isLoading = false
     var error: String?

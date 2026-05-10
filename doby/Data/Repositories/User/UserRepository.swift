@@ -1,5 +1,7 @@
 import Foundation
+import Observation
 
+@Observable
 final class UserRepository: UserRepositoryProtocol {
     private var service: UserServiceProtocol
     private let storage: UserStorage

@@ -5,14 +5,16 @@ import Observation
 @Observable
 final class PetViewModel {
     private let repository: PetRepositoryProtocol
+    let storage: PetStorage
     
-    var pets: [Pet] { repository.pets }
+    var pets: [Pet] { storage.pets }
     
     var isLoading = false
     var error: String?
     
     init(repository: PetRepositoryProtocol) {
         self.repository = repository
+        self.storage = repository.storage
     }
     
     func fetchPets(ownerUUID: String) async {

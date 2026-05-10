@@ -5,13 +5,13 @@ import Observation
 @Observable
 final class PetRepository: PetRepositoryProtocol {
     private var service: PetServiceProtocol
-    private var storage: PetStorage
+    var storage: PetStorage
     
     var pets: [Pet] { storage.pets }
     
     init(
         service: PetServiceProtocol,
-        storage: PetStorage = PetStorage()
+        storage: PetStorage
     ) {
         self.service = service
         self.storage = storage

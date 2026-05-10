@@ -7,11 +7,10 @@ final class PetContainer {
     
     init(apiClient: APIClientProtocol) {
         let service = PetService(apiClient: apiClient)
-        let storage = PetStorage()
         
         self.repository = PetRepository(
             service: service,
-            storage: storage
+            storage: .shared
         )
     }
 }

@@ -14,6 +14,7 @@ final class PetStorage {
     }
     
     func set(_ pets: [Pet]) {
+        self.pets = pets
         save(pets)
     }
     
