@@ -7,14 +7,17 @@ final class PetViewModel {
     private let repository: PetRepositoryProtocol
     let storage: PetStorage
     
-    var pets: [Pet] { storage.pets }
+//    var pets: [Pet] { storage.pets }
     
     var isLoading = false
     var error: String?
     
-    init(repository: PetRepositoryProtocol) {
+    init(
+        repository: PetRepositoryProtocol,
+        storage: PetStorage = .shared
+    ) {
         self.repository = repository
-        self.storage = repository.storage
+        self.storage = storage
     }
     
     func fetchPets(ownerUUID: String) async {

@@ -20,7 +20,7 @@ struct PetView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
-                ForEach(viewModel.pets) { pet in
+                ForEach(viewModel.storage.pets) { pet in
                     HStack {
                         if isEditing {
                             Button(role: .destructive) {
@@ -70,8 +70,8 @@ struct PetView: View {
         .refreshable {
             await viewModel.fetchPets(ownerUUID: ownerUUID)
         }
-        .task {
-            await viewModel.fetchPets(ownerUUID: ownerUUID)
-        }
+//        .task {
+//            await viewModel.fetchPets(ownerUUID: ownerUUID)
+//        }
     }
 }

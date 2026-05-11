@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
 final class PetStorage {
     static let shared = PetStorage()
@@ -15,7 +16,7 @@ final class PetStorage {
     
     func set(_ pets: [Pet]) {
         self.pets = pets
-        save(pets)
+        save()
     }
     
     func add(_ pet: Pet) {
@@ -24,7 +25,7 @@ final class PetStorage {
         } else {
             pets.append(pet)
         }
-        save(pets)
+        save()
     }
     
     func update(_ pet: Pet) {
@@ -33,17 +34,17 @@ final class PetStorage {
         } else {
             pets.append(pet)
         }
-        save(pets)
+        save()
     }
     
     func remove(id: Int) {
         pets.removeAll { $0.id == id }
-        save(pets)
+        save()
     }
     
     func clear() {
         pets.removeAll()
-        save(pets)
+        save()
     }
     
     private func load() {
@@ -55,9 +56,7 @@ final class PetStorage {
         pets = decoded
     }
     
-    private func save(_ pets: [Pet]) {
-        self.pets = pets
-        
+    private func save() {
         guard let data = try? JSONEncoder().encode(pets) else { return }
         UserDefaults.standard.set(data, forKey: key)
     }

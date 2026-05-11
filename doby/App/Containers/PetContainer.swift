@@ -1,6 +1,8 @@
 import Alamofire
 import Observation
 
+
+//TODO: - доделать фикс реактивности данных петов
 @Observable
 final class PetContainer {
     let repository: PetRepositoryProtocol
