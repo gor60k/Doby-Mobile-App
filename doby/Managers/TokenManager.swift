@@ -27,12 +27,23 @@ actor TokenManager {
                 throw AFError.responseValidationFailed(reason: .unacceptableStatusCode(code: 401))
             }
             
-            let tokens = try await session.refresh(refresh: refreshToken)
-            
-            keychain.save(token: tokens.access, for: .accessToken)
-            keychain.save(token: tokens.refresh, for: .refreshToken)
-            
-            return tokens.access
+            do {
+                let tokens = try await session.refresh(refresh: refreshToken)
+                
+                keychain.save(token: tokens.access, for: .accessToken)
+                keychain.save(token: tokens.refresh, for: .refreshToken)
+                
+                return tokens.access
+            } catch {
+                if let afError = error.asAFError,
+                   case let .responseValidationFailed(reason) = afError,
+                   case let .unacceptableStatusCode(code) = reason,
+                   code == 401 || code == 500 {
+                    await handleInvalidSession()
+                }
+                
+                throw error
+            }
         }
         
         refreshTask = task
