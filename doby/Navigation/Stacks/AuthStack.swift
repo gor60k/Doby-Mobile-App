@@ -1,17 +1,19 @@
 import SwiftUI
 
 struct AuthStack: View {
-    @Environment(AuthContainer.self) private var container
+    @Environment(\.appContainer) private var appContainer
     
     @State private var router = AuthRouter()
     
+    private var repository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
+    
     var body: some View {
         NavigationStack(path: $router.path) {
-            SignInView(repository: container.repository)
+            SignInView(repository: repository)
                 .navigationDestination(for: AuthRoute.self) { route in
                     switch route {
                     case .signUp:
-                        SignUpView(repository: container.repository)
+                        SignUpView(repository: repository)
                     }
                 }
         }

@@ -23,7 +23,7 @@ struct SettingsPrivacyView: View {
     }
 }
 
-#Preview {
-    SettingsPrivacyView()
-        .withAppEnvironment()
-}
+//#Preview {
+//    SettingsPrivacyView()
+//        .withAppEnvironment()
+//}

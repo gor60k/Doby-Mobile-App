@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct AppRootView: View {
+    @Environment(\.appContainer) private var appContainer
     @Environment(AppRouter.self) private var appRouter
-    @Environment(SessionService.self) private var sessionService
     
     @State private var hasResolvedInitialRoute = false
     @State private var shouldAnimateRootTransitions = false
@@ -19,7 +19,7 @@ struct AppRootView: View {
         .animation(shouldAnimateRootTransitions ? .easeInOut(duration: 0.3) : nil, value: appRouter.startDestination)
         .task {
             print("Start logic: \(Date())")
-            appRouter.setInitialStartDestination(for: sessionService)
+            appRouter.setInitialStartDestination(for: appContainer.services.sessionService)
             print("End logic: \(Date())")
         }
     }

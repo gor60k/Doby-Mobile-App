@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct PetView: View {
+    @Environment(\.petStorage) private var storage
+    
     @Environment(PetRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
@@ -20,7 +22,7 @@ struct PetView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
-                ForEach(viewModel.storage.pets) { pet in
+                ForEach(storage.pets) { pet in
                     HStack {
                         if isEditing {
                             Button(role: .destructive) {
@@ -70,8 +72,5 @@ struct PetView: View {
         .refreshable {
             await viewModel.fetchPets(ownerUUID: ownerUUID)
         }
-//        .task {
-//            await viewModel.fetchPets(ownerUUID: ownerUUID)
-//        }
     }
 }

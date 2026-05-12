@@ -1,11 +1,7 @@
 import Alamofire
 
-final class InfrastructureContainer {
-    lazy var monitors = [NetworkLogService()]
-    lazy var session: Session = Session(eventMonitors: monitors)
-    lazy var tokenManager: TokenManager = TokenManager()
-    lazy var keychainService: KeychainService = KeychainService.shared
-    lazy var sessionService: SessionService = SessionService.shared
-    lazy var userStorage: UserStorage = UserStorage.shared
-    lazy var petStorage: PetStorage = PetStorage.shared
+@MainActor
+struct InfrastructureContainer {
+    let session: Session
+    let tokenManager: TokenManager
 }

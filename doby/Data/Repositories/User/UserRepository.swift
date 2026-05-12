@@ -10,10 +10,9 @@ final class UserRepository: UserRepositoryProtocol {
     
     init(
         service: UserServiceProtocol,
-        storage: UserStorage = UserStorage()
     ) {
         self.service = service
-        self.storage = storage
+        self.storage = UserStorage()
     }
     
     //TODO: - убрать эту функцию после замены на фетч

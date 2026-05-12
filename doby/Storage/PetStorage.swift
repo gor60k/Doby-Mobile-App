@@ -1,7 +1,7 @@
 import Foundation
 import Observation
 
-//@MainActor
+@MainActor
 @Observable
 final class PetStorage {
     static let shared = PetStorage()

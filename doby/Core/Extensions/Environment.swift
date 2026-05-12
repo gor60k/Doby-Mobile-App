@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension EnvironmentValues {
-    @Entry var appContainer: NAppContainer = NAppContainer()
+    @Entry var appContainer: AppContainer = AppContainer()
     
     @Entry var userStorage: UserStorage = UserStorage()
     @Entry var petStorage: PetStorage = PetStorage()

@@ -1,3 +1,4 @@
+@MainActor
 struct ServiceContainer {
     let authService: AuthService
     let sessionService: SessionService

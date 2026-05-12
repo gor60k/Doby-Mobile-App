@@ -4,7 +4,7 @@ import Observation
 
 //TODO: - доделать фикс реактивности данных петов
 @Observable
-final class PetContainer {
+final class OldPetContainer {
     let repository: PetRepositoryProtocol
     
     init(apiClient: APIClientProtocol) {

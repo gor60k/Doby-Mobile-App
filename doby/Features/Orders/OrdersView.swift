@@ -26,9 +26,9 @@ struct OrdersView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        OrdersView()
-            .withAppEnvironment()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        OrdersView()
+//            .withAppEnvironment()
+//    }
+//}

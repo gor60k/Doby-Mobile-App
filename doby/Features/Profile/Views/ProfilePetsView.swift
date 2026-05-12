@@ -80,7 +80,7 @@ struct ProfilePetsView: View {
     }
 }
 
-#Preview {
-    ProfilePetsView(currentPage: 0, pets: [])
-        .withAppEnvironment()
-}
+//#Preview {
+//    ProfilePetsView(currentPage: 0, pets: [])
+//        .withAppEnvironment()
+//}

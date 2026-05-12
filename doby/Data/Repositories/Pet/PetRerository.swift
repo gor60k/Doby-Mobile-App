@@ -1,6 +1,7 @@
 import SwiftUI
 import Foundation
 
+@MainActor
 final class PetRepository: PetRepositoryProtocol {
     private var service: PetServiceProtocol
     var storage: PetStorage

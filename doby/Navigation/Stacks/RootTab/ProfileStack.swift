@@ -1,23 +1,25 @@
 import SwiftUI
 
 struct ProfileStack: View {
-    @Environment(AuthContainer.self) private var authContainer
-    @Environment(UserContainer.self) private var userContainer
-    @Environment(PetContainer.self) private var petContainer
-    @Environment(UserStorage.self) private var userStorage
+    @Environment(\.appContainer) private var appContainer
+    @Environment(\.userStorage) private var userStorage
+    
+    private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
+    private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
+    private var petRepository: PetRepositoryProtocol { appContainer.repositories.petRepository }
     
     @State private var router = ProfileRouter()
     
     var body: some View {
         NavigationStack(path: $router.path) {
             ProfileView(
-                userRepository: userContainer.repository,
-                petRepository: petContainer.repository
+                userRepository: userRepository,
+                petRepository: petRepository
             )
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
                     case .settings:
-                        SettingsView(repository: authContainer.repository)
+                        SettingsView(repository: authRepository)
                     case .settingsAppearance:
                         SettingsAppearensView()
                     case .settingsPrivacy:
@@ -28,12 +30,12 @@ struct ProfileStack: View {
                         PetSettingsView()
                     case .petProfile(let id):
                         PetProfileView(
-                            repository: petContainer.repository,
+                            repository: petRepository,
                             userStorage: userStorage,
                             petId: id
                         )
                     case .petAdding:
-                        PetAddingView(repository: petContainer.repository)
+                        PetAddingView(repository: petRepository)
                     }
                 }
         }

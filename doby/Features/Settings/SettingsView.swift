@@ -98,8 +98,8 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    SettingsView(repository: MockAuthRepository())
-        .withAppEnvironment()
-        .environment(ProfileRouter())
-}
+//#Preview {
+//    SettingsView(repository: MockAuthRepository())
+//        .withAppEnvironment()
+//        .environment(ProfileRouter())
+//}

@@ -5,19 +5,12 @@ import Observation
 @Observable
 final class PetViewModel {
     private let repository: PetRepositoryProtocol
-    let storage: PetStorage
-    
-//    var pets: [Pet] { storage.pets }
     
     var isLoading = false
     var error: String?
     
-    init(
-        repository: PetRepositoryProtocol,
-        storage: PetStorage = .shared
-    ) {
+    init(repository: PetRepositoryProtocol) {
         self.repository = repository
-        self.storage = storage
     }
     
     func fetchPets(ownerUUID: String) async {
@@ -44,6 +37,9 @@ final class PetViewModel {
     }
     
     func deletePet(id: Int) async {
+        isLoading = true
+        defer { isLoading = false }
+        
         do {
             try await repository.deletePet(id: id)
         } catch {
