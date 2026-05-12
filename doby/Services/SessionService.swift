@@ -16,7 +16,7 @@ final class SessionService {
     private(set) var isRegistered: Bool
     private(set) var isAuthenticated: Bool
     
-    private init() {
+    init() {
         self.isRegistered = UserDefaults.standard.bool(forKey: regStorageKey)
         self.isAuthenticated = UserDefaults.standard.bool(forKey: authStorageKey)
     }

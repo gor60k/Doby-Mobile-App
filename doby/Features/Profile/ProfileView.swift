@@ -80,3 +80,9 @@ struct ProfileView: View {
         }
     }
 }
+
+//#Preview {
+//    ProfileView(userRepository: <#T##UserRepositoryProtocol#>, petRepository: <#T##PetRepositoryProtocol#>)
+//        .withAppEnvironment()
+//        .environment(ProfileRouter())
+//}

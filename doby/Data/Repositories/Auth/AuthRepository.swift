@@ -10,9 +10,9 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     init(
         service: AuthServiceProtocol,
-        storage: UserStorage = .shared,
-        session: SessionService = .shared,
-        keychain: KeychainService = .shared
+        storage: UserStorage,
+        session: SessionService,
+        keychain: KeychainService
     ) {
         self.service = service
         self.storage = storage

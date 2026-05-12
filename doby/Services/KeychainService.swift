@@ -9,7 +9,7 @@ actor KeychainService: Sendable {
     
     static let shared = KeychainService()
     
-    private init() {}
+    init() {}
     
     @discardableResult
     nonisolated func save(token: String, for key: TokenKey) -> Bool {

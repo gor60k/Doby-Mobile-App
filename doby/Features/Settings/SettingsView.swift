@@ -1,6 +1,9 @@
 import SwiftUI
 import PhotosUI
 
+//TODO: - реализовать изменение данных пользователя
+//TODO: - добавить кнопку в тулбар для подтверждения изменения данных✅
+//TODO: - вынести тулбар в отдельный модифаер
 struct SettingsView: View {
     @Environment(ProfileRouter.self) private var router
     @Environment(AppRouter.self) private var appRoute
@@ -78,13 +81,25 @@ struct SettingsView: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Настройки")
         .navigationBarTitleDisplayMode(.inline)
-        .task(id: selectedAvatarItem) {
-            guard let selectedAvatarItem else { return }
-            guard let data = try? await selectedAvatarItem.loadTransferable(type: Data.self),
-                  let image = UIImage(data: data) else { return }
-            await MainActor.run {
-                selectedAvatarImage = image
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Готово", action: {})
+                    .tint(.primary)
             }
         }
+//        .task(id: selectedAvatarItem) {
+//            guard let selectedAvatarItem else { return }
+//            guard let data = try? await selectedAvatarItem.loadTransferable(type: Data.self),
+//                  let image = UIImage(data: data) else { return }
+//            await MainActor.run {
+//                selectedAvatarImage = image
+//            }
+//        }
     }
+}
+
+#Preview {
+    SettingsView(repository: MockAuthRepository())
+        .withAppEnvironment()
+        .environment(ProfileRouter())
 }
