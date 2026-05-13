@@ -34,14 +34,13 @@ struct SettingsView: View {
             )
             
             SettingsPersonalInfoView(
-                name: $viewModel.name,
-                surname: $viewModel.surname,
+                name: $viewModel.firstName,
+                surname: $viewModel.lastName,
                 phone: $viewModel.phone,
                 city: $viewModel.city
             )
             
             SettingsAccountInfoView(
-                username: $viewModel.username,
                 email: $viewModel.email
             )
             
@@ -91,7 +90,12 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Готово", action: {})
+                Button("Готово", action: {
+                    Task {
+                        await viewModel.updateUser()
+                        router.pop()
+                    }
+                })
                     .tint(.primary)
             }
         }

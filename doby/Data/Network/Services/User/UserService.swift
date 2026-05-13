@@ -14,4 +14,8 @@ final class UserService: UserServiceProtocol {
     func me() async throws -> UserDTO {
         try await apiClient.request(MeEndpoint())
     }
+    
+    func update(_ request: UpdateUserRequest) async throws -> UserDTO {
+        try await apiClient.request(UpdateUser(request: request))
+    }
 }

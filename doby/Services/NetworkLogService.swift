@@ -3,28 +3,26 @@ import Foundation
 
 final class NetworkLogService: EventMonitor {
     func requestDidFinish(_ request: Request) {
-        print("[OUTGOING]: \(request.description)")
+        print("Request Description: \(request.description)")
     }
-    
-    func request(_ request: DataRequest, didParseResponse response: DataResponse<Data?, AFError>) {
-        print("𓂸 𓂸 𓂸NETWORK LOG START𓂸 𓂸 𓂸")
-        if let url = response.response?.url {
-            print("URL: \(url.absoluteString)")
+
+    func request<Value>(
+        _ request: DataRequest,
+        didParseResponse response: DataResponse<Value, AFError>
+    ) {
+        print("URL:", response.request?.url?.absoluteString ?? "")
+
+        if let status = response.response?.statusCode {
+            print("Status:", status)
         }
-        
-        if let statusCode = response.response?.statusCode {
-            print("Status Code: \(statusCode)")
+
+        if let data = response.data,
+           let body = String(data: data, encoding: .utf8) {
+            print("Body:", body)
         }
-        
-        switch response.result {
-        case .success(let value):
-            print("Success: \(value)")
-        case .failure(let error):
-            print("Error: \(error.localizedDescription)")
-            if let data = response.data, let str = String(data: data, encoding: .utf8) {
-                print("Server Error Body: \(str)")
-            }
+
+        if let error = response.error {
+            print("Error:", error)
         }
-        print("𓂸 𓂸 𓂸NETWORK LOG END𓂸 𓂸 𓂸")
     }
 }

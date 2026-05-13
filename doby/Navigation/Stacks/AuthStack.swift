@@ -6,14 +6,21 @@ struct AuthStack: View {
     @State private var router = AuthRouter()
     
     private var repository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
+    private var sessionService: SessionService { appContainer.services.sessionService }
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            SignInView(repository: repository)
+            SignInView(
+                repository: repository,
+                sessionService: sessionService
+            )
                 .navigationDestination(for: AuthRoute.self) { route in
                     switch route {
                     case .signUp:
-                        SignUpView(repository: repository)
+                        SignUpView(
+                            repository: repository,
+                            sessionSerive: sessionService
+                        )
                     }
                 }
         }

@@ -26,4 +26,20 @@ final class UserRepository: UserRepositoryProtocol {
         
         storage.currentUser = user
     }
+    
+    func updateUser(input: UpdateUserInput) async throws {
+        let request = UpdateUserRequestMapper.map(input: input)
+        let response = try await service.update(request)
+        let user = UserMapper.map(dto: response)
+        
+        storage.update { currentUser in
+            currentUser.firstName = user.firstName
+            currentUser.lastName = user.lastName
+            currentUser.patronymic = user.patronymic
+            currentUser.phone = user.phone
+            currentUser.avatar = user.avatar
+            currentUser.city = user.city
+            currentUser.bio = user.bio
+        }
+    }
 }

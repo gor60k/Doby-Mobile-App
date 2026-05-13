@@ -10,6 +10,8 @@ final class NetworkContainer {
     private let mainSession: Session
     private let infrastructure: InfrastructureContainer
     
+    private let monitors = [NetworkLogService()]
+    
     init(infrastructure: InfrastructureContainer) {
         self.infrastructure = infrastructure
         
@@ -22,7 +24,10 @@ final class NetworkContainer {
         )
         self.authInterceptor = interceptor
         
-        let session = Session(interceptor: interceptor)
+        let session = Session(
+            interceptor: interceptor,
+            eventMonitors: monitors
+        )
         self.mainSession = session
         
         self.apiClient = APIClient(session: session)

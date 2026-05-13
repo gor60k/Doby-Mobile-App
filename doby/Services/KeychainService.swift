@@ -1,6 +1,8 @@
 import Security
 import Foundation
 
+
+//TODO: - убрать shared и передавать экзепляр сервиса при сборке приложения
 actor KeychainService: Sendable {
     enum TokenKey {
         case accessToken

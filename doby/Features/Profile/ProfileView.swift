@@ -6,15 +6,13 @@ struct ProfileView: View {
     
     @State private var viewModel: ProfileViewModel
     
-    private var session = SessionService.shared
-    
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
     let options = ProfileDetailsTab.allCases
     
     init(
         userRepository: UserRepositoryProtocol,
-        petRepository: PetRepositoryProtocol
+        petRepository: PetRepositoryProtocol,
     ) {
         _viewModel = State(initialValue: ProfileViewModel(
             userRepository: userRepository,
@@ -74,15 +72,5 @@ struct ProfileView: View {
             await viewModel.fetchUser()
             await viewModel.fetchPets()
         }
-        .task {
-            await viewModel.fetchUser()
-            await viewModel.fetchPets()
-        }
     }
 }
-
-//#Preview {
-//    ProfileView(userRepository: <#T##UserRepositoryProtocol#>, petRepository: <#T##PetRepositoryProtocol#>)
-//        .withAppEnvironment()
-//        .environment(ProfileRouter())
-//}

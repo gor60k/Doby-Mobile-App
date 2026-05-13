@@ -7,16 +7,20 @@ final class SettingsViewModel {
     private let userRepository: UserRepositoryProtocol
     private let userStorage: UserStorage
     
-    var username: String = ""
-    var name: String = ""
-    var surname: String = ""
+    var avatar: String = ""
+
     var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
+    
+    var firstName: String = ""
+    var lastName: String = ""
+    var patronymic: String = ""
+    var phone: String = ""
+    var bio: String = ""
     
     var password: String = ""
     var newPassword: String = ""
     var confirmNewPassword: String = ""
-    
-    var phone: String = ""
+
     var email: String = ""
     
     var isLoading = false
@@ -45,6 +49,27 @@ final class SettingsViewModel {
         }
     }
     
+    func updateUser() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            let input = UpdateUserInput(
+                firstName: firstName,
+                lastName: lastName,
+                patronymic: patronymic,
+                phone: phone,
+                avatar: avatar,
+                city: city,
+                bio: bio,
+            )
+            
+            _ = try await userRepository.updateUser(input: input)
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
     func logout() async {
         isLoading = true
         defer { isLoading = false }
@@ -58,10 +83,9 @@ final class SettingsViewModel {
     
     private func loadCurrentUser() {
         guard let user = userStorage.currentUser else { return }
-        
-        username = user.username
-        name = user.firstName ?? ""
-        surname = user.lastName ?? ""
+    
+        firstName = user.firstName ?? ""
+        lastName = user.lastName ?? ""
         phone = user.phone ?? ""
         email = user.username
     }

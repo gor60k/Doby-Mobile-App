@@ -1,7 +1,3 @@
-
-
-import Foundation
-
 struct UserMapper {
     static func map(dto: UserDTO) -> User {
         User(
