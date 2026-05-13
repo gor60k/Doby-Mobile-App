@@ -24,6 +24,6 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await service.me()
         let user = UserMapper.map(dto: response)
         
-        storage.set(user)
+        storage.currentUser = user
     }
 }

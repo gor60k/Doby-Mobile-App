@@ -12,7 +12,7 @@ final class OldPetContainer {
         
         self.repository = PetRepository(
             service: service,
-            storage: .shared
+            storage: PetStorage()
         )
     }
 }

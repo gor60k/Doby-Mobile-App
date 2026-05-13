@@ -6,6 +6,7 @@ final class NetworkContainer {
     
     private let authSession: AuthSession
     private let authInterceptor: AuthInterceptor
+    private let authService: AuthServiceProtocol
     private let mainSession: Session
     private let infrastructure: InfrastructureContainer
     
@@ -25,5 +26,8 @@ final class NetworkContainer {
         self.mainSession = session
         
         self.apiClient = APIClient(session: session)
+        
+        let authService = AuthService(apiClient: apiClient)
+        self.authService = authService
     }
 }

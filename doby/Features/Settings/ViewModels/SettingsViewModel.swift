@@ -3,8 +3,9 @@ import Observation
 
 @Observable
 final class SettingsViewModel {
-    private var session = SessionService.shared
-    private var userStorage = UserStorage.shared
+    private let authRepository: AuthRepositoryProtocol
+    private let userRepository: UserRepositoryProtocol
+    private let userStorage: UserStorage
     
     var username: String = ""
     var name: String = ""
@@ -18,11 +19,44 @@ final class SettingsViewModel {
     var phone: String = ""
     var email: String = ""
     
-    init() {
+    var isLoading = false
+    var error: String?
+    
+    init(
+        authRespository: AuthRepositoryProtocol,
+        userRepository: UserRepositoryProtocol,
+        userStorage: UserStorage
+    ) {
+        self.authRepository = authRespository
+        self.userRepository = userRepository
+        self.userStorage = userStorage
+        
         loadCurrentUser()
     }
     
-    func loadCurrentUser() {
+    func fetchUser() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await userRepository.fetchUser()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
+    func logout() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await authRepository.logout()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
+    private func loadCurrentUser() {
         guard let user = userStorage.currentUser else { return }
         
         username = user.username

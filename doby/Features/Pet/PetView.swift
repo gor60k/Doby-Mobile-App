@@ -2,7 +2,6 @@ import SwiftUI
 
 struct PetView: View {
     @Environment(\.petStorage) private var storage
-    
     @Environment(PetRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     

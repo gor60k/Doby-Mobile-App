@@ -3,7 +3,12 @@ import Foundation
 
 actor TokenManager {
     private var refreshTask: Task<String, Error>?
-    nonisolated private let sessionService: SessionService = .shared
+//    nonisolated private let sessionService: SessionService = .shared
+    private let sessionService: SessionService
+    
+    init(sessionService: SessionService) {
+        self.sessionService = sessionService
+    }
     
     func getValidToken(keychain: KeychainService) async -> String? {
         if let task = refreshTask {

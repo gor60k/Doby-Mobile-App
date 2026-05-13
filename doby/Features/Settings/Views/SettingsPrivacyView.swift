@@ -3,7 +3,11 @@ import SwiftUI
 struct SettingsPrivacyView: View {
     @Environment(PrimaryColorService.self) var primaryColorService
     
-    @State private var viewModel = SettingsViewModel()
+    @State private var viewModel: SettingsPrivacyViewModel
+    
+    init() {
+        _viewModel = State(initialValue: SettingsPrivacyViewModel())
+    }
     
     var body: some View {
         Form {
@@ -22,8 +26,3 @@ struct SettingsPrivacyView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-//#Preview {
-//    SettingsPrivacyView()
-//        .withAppEnvironment()
-//}

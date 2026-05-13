@@ -4,8 +4,6 @@ import Observation
 @MainActor
 @Observable
 final class PetStorage {
-    static let shared = PetStorage()
-    
     private let key = "pets"
     
     var pets: [Pet] = []

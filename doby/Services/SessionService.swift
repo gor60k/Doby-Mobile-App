@@ -4,11 +4,9 @@ import Observation
 @MainActor
 @Observable
 final class SessionService {
-    static let shared = SessionService()
-    
     private var keychainService: KeychainService = .shared
-    private var userStorage: UserStorage = .shared
-    private var petStorage: PetStorage = .shared
+    private var userStorage: UserStorage
+    private var petStorage: PetStorage
     
     private let authStorageKey = "isAuthenticated"
     private let regStorageKey = "isRegistered"
@@ -16,7 +14,13 @@ final class SessionService {
     private(set) var isRegistered: Bool
     private(set) var isAuthenticated: Bool
     
-    init() {
+    init(
+        userStorage: UserStorage,
+        petStorage: PetStorage
+    ) {
+        self.userStorage = userStorage
+        self.petStorage = petStorage
+        
         self.isRegistered = UserDefaults.standard.bool(forKey: regStorageKey)
         self.isAuthenticated = UserDefaults.standard.bool(forKey: authStorageKey)
     }
@@ -35,7 +39,7 @@ final class SessionService {
         isAuthenticated = false
         UserDefaults.standard.removeObject(forKey: authStorageKey)
         
-        userStorage.clear()
+        userStorage.currentUser = nil
         petStorage.clear()
     }
     
@@ -45,7 +49,7 @@ final class SessionService {
         keychainService.deleteToken(for: .accessToken)
         keychainService.deleteToken(for: .refreshToken)
         
-        userStorage.clear()
+        userStorage.currentUser = nil
         petStorage.clear()
     }
 }

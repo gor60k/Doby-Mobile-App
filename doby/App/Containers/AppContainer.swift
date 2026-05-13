@@ -12,21 +12,25 @@ final class AppContainer {
         let storage = StorageContainer()
         self.storage = storage
         
+        self.services = ServiceContainer(
+            sessionService: SessionService(
+                userStorage: storage.user,
+                petStorage: storage.pet
+            ),
+            keychainService: KeychainService(),
+            logService: LogService()
+        )
+        
         let infrastructure = InfrastructureContainer(
             session: .default,
-            tokenManager: TokenManager()
+            tokenManager: TokenManager(
+                sessionService: services.sessionService
+            )
         )
         self.infrastructure = infrastructure
         
         let network = NetworkContainer(infrastructure: infrastructure)
         self.network = network
-        
-        self.services = ServiceContainer(
-            authService: AuthService(apiClient: network.apiClient),
-            sessionService: SessionService(),
-            keychainService: KeychainService(),
-            logService: LogService()
-        )
         
         self.repositories = RepositoryContainer(
             authRepository: AuthRepository(
