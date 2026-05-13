@@ -6,8 +6,6 @@ import Observation
 final class PetViewModel {
     private let repository: PetRepositoryProtocol
     
-    var pets: [Pet] { repository.pets }
-    
     var isLoading = false
     var error: String?
     
@@ -39,6 +37,9 @@ final class PetViewModel {
     }
     
     func deletePet(id: Int) async {
+        isLoading = true
+        defer { isLoading = false }
+        
         do {
             try await repository.deletePet(id: id)
         } catch {

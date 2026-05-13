@@ -10,13 +10,6 @@ protocol OldAPIEndpointProtocol {
     var headers: [String: String]? { get }
 }
 
-enum HTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case put = "PUT"
-    case delete = "DELETE"
-}
-
 struct EmptyResponse: Decodable {}
 
 extension OldAPIEndpointProtocol {

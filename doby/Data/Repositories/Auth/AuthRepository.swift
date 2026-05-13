@@ -10,9 +10,9 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     init(
         service: AuthServiceProtocol,
-        storage: UserStorage = .shared,
-        session: SessionService = .shared,
-        keychain: KeychainService = .shared
+        storage: UserStorage,
+        session: SessionService,
+        keychain: KeychainService
     ) {
         self.service = service
         self.storage = storage
@@ -35,7 +35,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.set(user)
+        storage.currentUser = user
     }
     
     func login(input: LoginInput) async throws {
@@ -55,7 +55,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.set(user)
+        storage.currentUser = user
     }
     
     func logout() async throws {

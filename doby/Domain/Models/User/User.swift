@@ -1,14 +1,13 @@
 import SwiftUI
 
 struct User: Codable {
-//    let uuid: UUID
     let uuid: String
-    let username: String
-    let firstName: String?
-    let lastName: String?
-    let patronymic: String?
-    let avatar: String?
-    let phone: String?
-    let city: City?
-    let bio: String?
+    var username: String
+    var firstName: String?
+    var lastName: String?
+    var patronymic: String?
+    var avatar: String?
+    var phone: String?
+    var city: City?
+    var bio: String?
 }

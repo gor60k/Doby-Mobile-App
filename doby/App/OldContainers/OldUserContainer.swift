@@ -2,7 +2,7 @@ import Alamofire
 import Observation
 
 @Observable
-final class UserContainer {
+final class OldUserContainer {
     let repository: UserRepositoryProtocol
     
     init(apiClient: APIClientProtocol) {
@@ -10,6 +10,8 @@ final class UserContainer {
         let storage = UserStorage()
         
         self.repository = UserRepository(
-            storage: storage)
+            service: UserService(apiClient: apiClient),
+//            storage: storage
+        )
     }
 }

@@ -1,6 +1,8 @@
 import Security
 import Foundation
 
+
+//TODO: - убрать shared и передавать экзепляр сервиса при сборке приложения
 actor KeychainService: Sendable {
     enum TokenKey {
         case accessToken
@@ -9,7 +11,7 @@ actor KeychainService: Sendable {
     
     static let shared = KeychainService()
     
-    private init() {}
+    init() {}
     
     @discardableResult
     nonisolated func save(token: String, for key: TokenKey) -> Bool {

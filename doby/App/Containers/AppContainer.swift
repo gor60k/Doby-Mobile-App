@@ -1,22 +1,51 @@
-import Observation
+import Alamofire
 
-@Observable
+@MainActor
 final class AppContainer {
+    let storage: StorageContainer
+    let services: ServiceContainer
     let infrastructure: InfrastructureContainer
     let network: NetworkContainer
-    let auth: AuthContainer
-    let pet: PetContainer
-    let user: UserContainer
+    let repositories: RepositoryContainer
     
     init() {
-        self.infrastructure = InfrastructureContainer()
-        self.network = NetworkContainer(infrastructure: infrastructure)
-        self.auth = AuthContainer(
-            apiClient: network.apiClient,
-            sessionService: infrastructure.sessionService,
-            keychainService: infrastructure.keychainService
+        let storage = StorageContainer()
+        self.storage = storage
+        
+        self.services = ServiceContainer(
+            sessionService: SessionService(
+                userStorage: storage.user,
+                petStorage: storage.pet
+            ),
+            keychainService: KeychainService(),
+            logService: LogService()
         )
-        self.pet = PetContainer(apiClient: network.apiClient)
-        self.user = UserContainer(apiClient: network.apiClient)
+        
+        let infrastructure = InfrastructureContainer(
+            session: .default,
+            tokenManager: TokenManager(
+                sessionService: services.sessionService
+            )
+        )
+        self.infrastructure = infrastructure
+        
+        let network = NetworkContainer(infrastructure: infrastructure)
+        self.network = network
+        
+        self.repositories = RepositoryContainer(
+            authRepository: AuthRepository(
+                service: AuthService(apiClient: network.apiClient),
+                storage: storage.user,
+                session: services.sessionService,
+                keychain: services.keychainService
+            ),
+            userRepository: UserRepository(
+                service: UserService(apiClient: network.apiClient),
+            ),
+            petRepository: PetRepository(
+                service: PetService(apiClient: network.apiClient),
+                storage: storage.pet
+            )
+        )
     }
 }

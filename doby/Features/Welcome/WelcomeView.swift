@@ -46,7 +46,7 @@ struct WelcomeView: View {
     }
 }
 
-#Preview {
-    WelcomeView()
-        .withAppEnvironment()
-}
+//#Preview {
+//    WelcomeView()
+//        .withAppEnvironment()
+//}

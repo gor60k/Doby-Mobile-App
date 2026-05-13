@@ -57,11 +57,11 @@ struct PrimaryButton: View {
     }
 }
 
-#Preview {
-    PrimaryButton(
-        title: "text",
-        icon: "plus",
-        action: {},
-    )
-    .withAppEnvironment()
-}
+//#Preview {
+//    PrimaryButton(
+//        title: "text",
+//        icon: "plus",
+//        action: {},
+//    )
+//    .withAppEnvironment()
+//}

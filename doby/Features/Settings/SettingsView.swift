@@ -1,18 +1,29 @@
 import SwiftUI
 import PhotosUI
 
+//TODO: - реализовать изменение данных пользователя
+//TODO: - добавить кнопку в тулбар для подтверждения изменения данных✅
+//TODO: - вынести тулбар в отдельный модифаер
 struct SettingsView: View {
     @Environment(ProfileRouter.self) private var router
     @Environment(AppRouter.self) private var appRoute
+    @Environment(\.userStorage) private var userStorage
     
-    @State private var viewModel = SettingsViewModel()
-    @State private var authViewModel: AuthViewModel
+    @State private var viewModel: SettingsViewModel
     
     @State private var selectedAvatarItem: PhotosPickerItem?
     @State private var selectedAvatarImage: UIImage?
     
-    init(repository: AuthRepositoryProtocol) {
-        _authViewModel = State(initialValue: AuthViewModel(repository: repository))
+    init(
+        authRepository: AuthRepositoryProtocol,
+        userRepository: UserRepositoryProtocol,
+        userStorage: UserStorage
+    ) {
+        _viewModel = State(initialValue: SettingsViewModel(
+            authRespository: authRepository,
+            userRepository: userRepository,
+            userStorage: userStorage
+        ))
     }
     
     var body: some View {
@@ -23,14 +34,13 @@ struct SettingsView: View {
             )
             
             SettingsPersonalInfoView(
-                name: $viewModel.name,
-                surname: $viewModel.surname,
+                name: $viewModel.firstName,
+                surname: $viewModel.lastName,
                 phone: $viewModel.phone,
                 city: $viewModel.city
             )
             
             SettingsAccountInfoView(
-                username: $viewModel.username,
                 email: $viewModel.email
             )
             
@@ -53,7 +63,7 @@ struct SettingsView: View {
             Section("Аккаунт") {
                 Button(action: {
                     Task {
-                        await authViewModel.logout()
+                        await viewModel.logout()
                         appRoute.goToAuth()
                     }
                 }) {
@@ -78,6 +88,17 @@ struct SettingsView: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Настройки")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Готово", action: {
+                    Task {
+                        await viewModel.updateUser()
+                        router.pop()
+                    }
+                })
+                    .tint(.primary)
+            }
+        }
         .task(id: selectedAvatarItem) {
             guard let selectedAvatarItem else { return }
             guard let data = try? await selectedAvatarItem.loadTransferable(type: Data.self),

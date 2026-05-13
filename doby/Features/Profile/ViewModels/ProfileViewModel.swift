@@ -9,13 +9,12 @@ class ProfileViewModel {
     
     var currentPage: Int = 0
     
-    var pets: [Pet] {
-        petRepository.pets
-    }
+    var pets: [Pet] { petRepository.pets }
     
-    var user: User? {
-        userRepository.getCurrentUser()
-    }
+    var user: User? { userRepository.user }
+    
+    var isLoading = false
+    var error: String?
     
     init(
         userRepository: UserRepositoryProtocol,
@@ -47,4 +46,26 @@ class ProfileViewModel {
             status: .completed
         ),
     ]
+    
+    func fetchUser() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await userRepository.fetchUser()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
+    func fetchPets() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await petRepository.fetchPets(ownerUUID: user?.uuid ?? "")
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
 }

@@ -5,7 +5,7 @@ final class LogService {
 
     static let shared = LogService()
 
-    private init() {}
+    init() {}
 
     // MARK: - категории логов
     let network = Logger(subsystem: "com.doby.app", category: "network")

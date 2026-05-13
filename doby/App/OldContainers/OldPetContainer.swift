@@ -1,17 +1,18 @@
 import Alamofire
 import Observation
 
+
+//TODO: - доделать фикс реактивности данных петов
 @Observable
-final class PetContainer {
+final class OldPetContainer {
     let repository: PetRepositoryProtocol
     
     init(apiClient: APIClientProtocol) {
         let service = PetService(apiClient: apiClient)
-        let storage = PetStorage()
         
         self.repository = PetRepository(
             service: service,
-            storage: storage
+            storage: PetStorage()
         )
     }
 }

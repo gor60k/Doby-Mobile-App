@@ -1,17 +1,16 @@
 import SwiftUI
 import Foundation
-import Observation
 
-@Observable
+@MainActor
 final class PetRepository: PetRepositoryProtocol {
     private var service: PetServiceProtocol
-    private var storage: PetStorage
+    var storage: PetStorage
     
     var pets: [Pet] { storage.pets }
     
     init(
         service: PetServiceProtocol,
-        storage: PetStorage = PetStorage()
+        storage: PetStorage
     ) {
         self.service = service
         self.storage = storage
@@ -43,7 +42,9 @@ final class PetRepository: PetRepositoryProtocol {
     
     func deletePet(id: Int) async throws {
         _ = try await service.delete(id)
-        storage.remove(id: id)
+        await MainActor.run {
+            storage.remove(id: id)
+        }
     }
 }
 

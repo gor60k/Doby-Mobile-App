@@ -10,17 +10,12 @@ struct dobyApp: App {
     var body: some Scene {
         WindowGroup {
             AppRootView()
-                .environment(container.infrastructure.sessionService)
-                .environment(container.infrastructure.userStorage)
-                .environment(container.infrastructure.petStorage)
-                .environment(container)
-                .environment(container.auth)
-                .environment(container.pet)
-                .environment(container.user)
-                .environment(appRouter)
-                .environment(themeService)
-                .environment(primaryColorService)
-                .preferredColorScheme(themeService.colorScheme)
+                .appEnvironment(
+                    container: container,
+                    appRouter: appRouter,
+                    themeService: themeService,
+                    primaryColorService: primaryColorService
+                )
         }
     }
 }

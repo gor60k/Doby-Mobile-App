@@ -51,6 +51,7 @@ struct ProfilePetsView: View {
                         ) { pet in
                             ProfilePetCardView(
                                 id: pet.id,
+                                imageURL: pet.photos.first?.imageURL,
                                 name: pet.name,
                                 breedName: pet.breedName,
                                 age: pet.age
@@ -79,7 +80,7 @@ struct ProfilePetsView: View {
     }
 }
 
-#Preview {
-    ProfilePetsView(currentPage: 0, pets: [])
-        .withAppEnvironment()
-}
+//#Preview {
+//    ProfilePetsView(currentPage: 0, pets: [])
+//        .withAppEnvironment()
+//}

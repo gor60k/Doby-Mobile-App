@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct PetStack: View {
-    @Environment(PetContainer.self) private var container
-    @Environment(UserStorage.self) private var userStorage
+    @Environment(\.appContainer) private var appContainer
+    @Environment(\.userStorage) private var userStorage
+    
+    private var repository: PetRepositoryProtocol { appContainer.repositories.petRepository }
     
 //    @State private var userStorage = UserStorage()
     @State private var petRouter = PetRouter()
@@ -10,16 +12,16 @@ struct PetStack: View {
     var body: some View {
         NavigationStack(path: $petRouter.path) {
             PetView(
-                repository: container.repository,
+                repository: repository,
                 ownerUUID: userStorage.currentUser?.uuid ?? ""
             )
                 .navigationDestination(for: PetRoute.self) { route in
                     switch route {
                     case .petAdding:
-                        PetAddingView(repository: container.repository)
+                        PetAddingView(repository: repository)
                     case .profile(let id):
                         PetProfileView(
-                            repository: container.repository,
+                            repository: repository,
                             userStorage: userStorage,
                             petId: id
                         )

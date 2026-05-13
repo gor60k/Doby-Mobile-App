@@ -2,7 +2,7 @@ import Alamofire
 import Observation
 
 @Observable
-final class AuthContainer {
+final class OldAuthContainer {
     let repository: AuthRepositoryProtocol
     
     init(

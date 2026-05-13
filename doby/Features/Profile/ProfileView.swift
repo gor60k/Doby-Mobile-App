@@ -6,15 +6,13 @@ struct ProfileView: View {
     
     @State private var viewModel: ProfileViewModel
     
-    private var session = SessionService.shared
-    
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
     let options = ProfileDetailsTab.allCases
     
     init(
         userRepository: UserRepositoryProtocol,
-        petRepository: PetRepositoryProtocol
+        petRepository: PetRepositoryProtocol,
     ) {
         _viewModel = State(initialValue: ProfileViewModel(
             userRepository: userRepository,
@@ -70,5 +68,9 @@ struct ProfileView: View {
             onEditTap: { router.push(.settings) },
             onQRScanTap: {}
         )
+        .refreshable {
+            await viewModel.fetchUser()
+            await viewModel.fetchPets()
+        }
     }
 }
