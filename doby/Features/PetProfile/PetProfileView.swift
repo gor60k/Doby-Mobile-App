@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PetProfileView: View {
-    @Environment(UserStorage.self) private var userStorage
+    @Environment(\.userStorage) private var userStorage
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State private var viewModel: PetProfileViewModel
