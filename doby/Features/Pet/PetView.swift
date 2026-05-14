@@ -49,24 +49,8 @@ struct PetView: View {
         }
         .navigationTitle("Питомцы")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(isEditing ? "Готово" : "Изм.") {
-                    withAnimation(.easeInOut) {
-                        isEditing.toggle()
-                    }
-                }
-                .tint(.primary)
-            }
-            
-            ToolbarItem(placement: .topBarLeading) {
-                if !isEditing {
-                    Button("Добавить", systemImage: "plus") {
-                        router.push(.petAdding)
-                    }
-                    .tint(primaryColorService.primaryColor.color)
-                }
-            }
+        .petToolbar(isEditing: $isEditing) {
+            router.push(.petAdding)
         }
         .refreshable {
             await viewModel.fetchPets(ownerUUID: ownerUUID)
