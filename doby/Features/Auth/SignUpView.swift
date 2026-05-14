@@ -3,8 +3,8 @@ import SwiftUI
 struct SignUpView: View {
     @Environment(AppRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
-    
-    private let session = SessionService.shared
+
+    private let sessionSerive: SessionService
     
     @State var viewModel: AuthViewModel
     
@@ -12,8 +12,12 @@ struct SignUpView: View {
     @State private var didEditPassword = false
     @State private var didEditConfirmPassword = false
     
-    init(repository: AuthRepositoryProtocol) {
+    init(
+        repository: AuthRepositoryProtocol,
+        sessionSerive: SessionService
+    ) {
         _viewModel = State(initialValue: AuthViewModel(repository: repository))
+        self.sessionSerive = sessionSerive
     }
     
     private var isPasswordValid: Bool {
@@ -30,7 +34,7 @@ struct SignUpView: View {
             
             if viewModel.errorMessage == nil {
                 await MainActor.run {
-                    router.refreshStartDestination(for: session)
+                    router.refreshStartDestination(for: sessionSerive)
                     router.goToRootTab()
                 }
             }
