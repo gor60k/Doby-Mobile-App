@@ -1,9 +1,6 @@
 import SwiftUI
 import PhotosUI
 
-//TODO: - реализовать изменение данных пользователя
-//TODO: - добавить кнопку в тулбар для подтверждения изменения данных✅
-//TODO: - вынести тулбар в отдельный модифаер
 struct SettingsView: View {
     @Environment(ProfileRouter.self) private var router
     @Environment(AppRouter.self) private var appRoute
@@ -39,6 +36,8 @@ struct SettingsView: View {
                 phone: $viewModel.phone,
                 city: $viewModel.city
             )
+            
+            SettingsBIOView(bio: $viewModel.bio)
             
             SettingsAccountInfoView(
                 email: $viewModel.email
@@ -108,4 +107,20 @@ struct SettingsView: View {
             }
         }
     }
+}
+
+#Preview {
+    SettingsView(
+        authRepository: MockAuthRepository(),
+        userRepository: MockUserRepository(),
+        userStorage: UserStorage()
+    )
+    .appEnvironment(
+        container: AppContainer(),
+        appRouter: AppRouter(),
+        themeService: ThemeService(),
+        primaryColorService: PrimaryColorService()
+    )
+    .environment(ProfileRouter())
+    .environment(UserStorage())
 }
