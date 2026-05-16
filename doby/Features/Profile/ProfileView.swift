@@ -50,7 +50,8 @@ struct ProfileView: View {
                     aboutValue: .about,
                     feedbackValue: .feedback,
                     options: options,
-                    title: { $0.rawValue }
+                    title: { $0.rawValue },
+                    bio: viewModel.user?.bio ?? ""
                 )
             }
             .padding(.horizontal)
@@ -79,4 +80,18 @@ struct ProfileView: View {
             await viewModel.fetchPets()
         }
     }
+}
+
+#Preview {
+    ProfileView(
+        userRepository: MockUserRepository(),
+        petRepository: MockPetRepository()
+    )
+    .appEnvironment(
+        container: AppContainer(),
+        appRouter: AppRouter(),
+        themeService: ThemeService(),
+        primaryColorService: PrimaryColorService()
+    )
+    .environment(ProfileRouter())
 }
