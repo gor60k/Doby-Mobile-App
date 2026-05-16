@@ -4,6 +4,6 @@ struct UpdateUserInput {
     let patronymic: String?
     let phone: String?
     let avatar: String?
-    let city: City?
+    let city: Int?
     let bio: String?
 }
