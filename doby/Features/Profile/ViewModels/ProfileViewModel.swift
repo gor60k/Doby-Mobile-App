@@ -9,7 +9,8 @@ class ProfileViewModel {
     
     var currentPage: Int = 0
     
-    var pets: [Pet] { petRepository.pets }
+//    var pets: [Pet] { petRepository.pets }
+    var pets: [Pet] = []
     
     var user: User? { userRepository.user }
     

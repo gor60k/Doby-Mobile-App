@@ -3,6 +3,7 @@ import os
 final class AuthRepository: AuthRepositoryProtocol {
     private let service: AuthServiceProtocol
     private let storage: UserStorage
+    private let petStorage: PetStorage
     private let session: SessionService
     private let keychain: KeychainService
     
@@ -11,11 +12,13 @@ final class AuthRepository: AuthRepositoryProtocol {
     init(
         service: AuthServiceProtocol,
         storage: UserStorage,
+        petStorage: PetStorage,
         session: SessionService,
         keychain: KeychainService
     ) {
         self.service = service
         self.storage = storage
+        self.petStorage = petStorage
         self.session = session
         self.keychain = keychain
     }
@@ -36,6 +39,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setRegistered(true)
         
         storage.currentUser = user
+        petStorage.pets = user.pets ?? []
     }
     
     func login(input: LoginInput) async throws {
@@ -56,6 +60,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setRegistered(true)
         
         storage.currentUser = user
+        petStorage.pets = user.pets ?? []
     }
     
     func logout() async throws {

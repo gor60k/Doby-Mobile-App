@@ -36,11 +36,14 @@ final class AppContainer {
             authRepository: AuthRepository(
                 service: AuthService(apiClient: network.apiClient),
                 storage: storage.user,
+                petStorage: storage.pet,
                 session: services.sessionService,
                 keychain: services.keychainService
             ),
             userRepository: UserRepository(
                 service: UserService(apiClient: network.apiClient),
+                storage: storage.user,
+                petStorage: storage.pet
             ),
             petRepository: PetRepository(
                 service: PetService(apiClient: network.apiClient),

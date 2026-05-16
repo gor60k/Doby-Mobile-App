@@ -21,7 +21,7 @@ struct PetView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
-                ForEach(storage.pets) { pet in
+                ForEach(viewModel.pets) { pet in
                     HStack {
                         if isEditing {
                             Button(role: .destructive) {

@@ -51,7 +51,6 @@ final class PetProfileViewModel {
     }
     
     private func syncPetFromRepository() {
-//        guard let petId = pet?.id else { return }
         guard let updatedPet = repository.pets.first(where: { $0.id == petId }) else { return }
         
         pet = updatedPet
