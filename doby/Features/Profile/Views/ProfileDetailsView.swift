@@ -7,6 +7,7 @@ struct ProfileDetailsView<Selection: Hashable>: View {
     let options: [Selection]
     let title: (Selection) -> String
     let bio: String
+    let buttonAction: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -17,7 +18,10 @@ struct ProfileDetailsView<Selection: Hashable>: View {
             )
 
             switch selection {
-            case aboutValue: ProfileAboutView(bio: bio)
+            case aboutValue: ProfileAboutView(
+                bio: bio,
+                action: buttonAction
+            )
             case feedbackValue:
                 VStack(spacing: 10) {
                     ForEach(0..<3, id: \.self) { _ in

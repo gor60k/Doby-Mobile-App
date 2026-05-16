@@ -51,7 +51,8 @@ struct ProfileView: View {
                     feedbackValue: .feedback,
                     options: options,
                     title: { $0.rawValue },
-                    bio: viewModel.user?.bio ?? ""
+                    bio: viewModel.user?.bio ?? "",
+                    buttonAction: { router.push(.settings) }
                 )
             }
             .padding(.horizontal)

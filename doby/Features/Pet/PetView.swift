@@ -21,28 +21,41 @@ struct PetView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
-                ForEach(viewModel.pets) { pet in
-                    HStack {
-                        if isEditing {
-                            Button(role: .destructive) {
-                                Task {
-                                    await viewModel.deletePet(id: pet.id)
-                                }
-                            } label: {
-                                Image(systemName: "trash")
-                            }
-                            .transition(.move(edge: .leading).combined(with: .opacity))
+                if viewModel.pets.isEmpty {
+                    PrimaryEmptyView(
+                        icon: "pawprint.circle.fill",
+                        title: "У вас пока нет питомцев",
+                        description: "Добавьте своего первого питомца, чтобы начать",
+                        buttonTitle: "Добавить питомца",
+                        buttonIcon: "plus",
+                        action: {
+                            router.push(.petAdding)
                         }
-                        
-                        PetCard(
-                            id: pet.id,
-                            imageURL: pet.photos.first?.imageURL,
-                            name: pet.name,
-                            breedName: pet.breedName,
-                            age: pet.age
-                        )
+                    )
+                } else {
+                    ForEach(viewModel.pets) { pet in
+                        HStack {
+                            if isEditing {
+                                Button(role: .destructive) {
+                                    Task {
+                                        await viewModel.deletePet(id: pet.id)
+                                    }
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .transition(.move(edge: .leading).combined(with: .opacity))
+                            }
+                            
+                            PetCard(
+                                id: pet.id,
+                                imageURL: pet.photos.first?.imageURL,
+                                name: pet.name,
+                                breedName: pet.breedName,
+                                age: pet.age
+                            )
+                        }
+                        .animation(.easeInOut, value: isEditing)
                     }
-                    .animation(.easeInOut, value: isEditing)
                 }
             }
             .padding()

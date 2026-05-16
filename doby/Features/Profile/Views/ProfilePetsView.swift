@@ -9,38 +9,16 @@ struct ProfilePetsView: View {
     
     var body: some View {
         if pets.isEmpty {
-            VStack(spacing: 16) {
-                Spacer()
-                
-                Image(systemName: "pawprint.circle.fill")
-                    .font(.system(size: 64))
-                    .foregroundColor(primaryColorService.primaryColor.color)
-                
-                VStack(spacing: 8) {
-                    Text("У вас пока нет питомцев")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                    
-                    Text("Добавьте своего первого питомца, чтобы начать")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
+            PrimaryEmptyView(
+                icon: "pawprint.circle.fill",
+                title: "У вас пока нет питомцев",
+                description: "Добавьте своего первого питомца, чтобы начать",
+                buttonTitle: "Добавить питомца",
+                buttonIcon: "plus",
+                action: {
+                    router.push(.petAdding)
                 }
-                
-                PrimaryButton(
-                    title: "Добавить питомца",
-                    icon: "plus",
-                    action: {
-                        router.push(.petAdding)
-                    },
-                    size: .medium
-                )
-                
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 16)
+            )
         } else {
             ZStack(alignment: .topTrailing) {
                 VStack {
