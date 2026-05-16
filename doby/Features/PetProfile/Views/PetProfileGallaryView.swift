@@ -5,13 +5,15 @@ struct PetProfileGallaryView: View {
     @Binding var currentPage: Int
     let items: [PetPhoto]
     
+    private let baseURL = APIConstants.baseURL
+    
     var body: some View {
         ZStack {
             PrimarySlider(
                 currentPage: $currentPage,
                 items: items,
             ) { slide in
-                KFImage(URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev\(slide.imageURL)"))
+                KFImage(URL(string:"\(baseURL)\(slide.imageURL)"))
                     .placeholder {
                         ProgressView()
                     }
