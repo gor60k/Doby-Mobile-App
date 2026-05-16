@@ -16,11 +16,8 @@ struct AppRootView: View {
                     .transition(.opacity)
             }
         }
-        .animation(shouldAnimateRootTransitions ? .easeInOut(duration: 0.3) : nil, value: appRouter.startDestination)
         .task {
-            print("Start logic: \(Date())")
             appRouter.setInitialStartDestination(for: appContainer.services.sessionService)
-            print("End logic: \(Date())")
         }
     }
 }

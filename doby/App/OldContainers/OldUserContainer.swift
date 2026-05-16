@@ -1,17 +1,18 @@
-import Alamofire
-import Observation
-
-@Observable
-final class OldUserContainer {
-    let repository: UserRepositoryProtocol
-    
-    init(apiClient: APIClientProtocol) {
-        let _service = UserService(apiClient: apiClient)
-        let storage = UserStorage()
-        
-        self.repository = UserRepository(
-            service: UserService(apiClient: apiClient),
-//            storage: storage
-        )
-    }
-}
+//import Alamofire
+//import Observation
+//
+//@Observable
+//final class OldUserContainer {
+//    let repository: UserRepositoryProtocol
+//    
+//    init(apiClient: APIClientProtocol) {
+//        let _service = UserService(apiClient: apiClient)
+//        let storage = UserStorage()
+//        
+//        self.repository = UserRepository(
+//            service: UserService(apiClient: apiClient),
+//            storage: storage,
+//            petStorage: PetStorage()
+//        )
+//    }
+//}
