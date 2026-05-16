@@ -25,10 +25,3 @@ struct OrdersView: View {
         .ordersTopBar(selectedTab: $selectedTab)
     }
 }
-
-//#Preview {
-//    NavigationStack {
-//        OrdersView()
-//            .withAppEnvironment()
-//    }
-//}
