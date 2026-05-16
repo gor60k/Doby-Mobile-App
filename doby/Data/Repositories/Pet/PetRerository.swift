@@ -6,7 +6,7 @@ import Observation
 @Observable
 final class PetRepository: PetRepositoryProtocol {
     private var service: PetServiceProtocol
-    var storage: PetStorage
+    private var storage: PetStorage
     
     private(set) var pets: [Pet] = []
     
