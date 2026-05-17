@@ -1,7 +1,6 @@
 import SwiftUI
 
 protocol PetRepositoryProtocol {
-    var storage: PetStorage { get }
     var pets: [Pet] { get }
     func createPet(input: CreatePetInput) async throws
     func fetchPets(ownerUUID: String) async throws

@@ -6,11 +6,14 @@ import Observation
 final class PetViewModel {
     private let repository: PetRepositoryProtocol
     
+    var pets: [Pet] = []
+    
     var isLoading = false
     var error: String?
     
     init(repository: PetRepositoryProtocol) {
         self.repository = repository
+        self.pets = repository.pets
     }
     
     func fetchPets(ownerUUID: String) async {
@@ -20,7 +23,6 @@ final class PetViewModel {
         do {
             try await repository.fetchPets(ownerUUID: ownerUUID)
         } catch {
-            print(error.localizedDescription)
             self.error = error.localizedDescription
         }
     }

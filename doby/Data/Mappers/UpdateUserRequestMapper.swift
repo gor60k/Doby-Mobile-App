@@ -6,7 +6,7 @@ struct UpdateUserRequestMapper {
             patronymic: input.patronymic,
             phone: input.phone,
             avatar: input.avatar,
-            city: input.city.map(mapCity),
+            city: input.city,
             bio: input.bio
         )
     }

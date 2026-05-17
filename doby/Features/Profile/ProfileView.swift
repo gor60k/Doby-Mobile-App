@@ -5,6 +5,8 @@ struct ProfileView: View {
     @Environment(PrimaryColorService.self) var primaryColorService
     
     @State private var viewModel: ProfileViewModel
+    @State private var profilePetsViewModel: ProfilePetsViewModel
+    @State private var profileOrdersViewModel: ProfileOrdersViewModel
     
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
@@ -18,6 +20,10 @@ struct ProfileView: View {
             userRepository: userRepository,
             petRepository: petRepository
         ))
+        _profilePetsViewModel = State(initialValue: ProfilePetsViewModel(
+            petRepository: petRepository
+        ))
+        _profileOrdersViewModel = State(initialValue: ProfileOrdersViewModel())
     }
     
     var body: some View {
@@ -30,8 +36,8 @@ struct ProfileView: View {
             // MARK: - Секция с питомцами юзера
             PrimaryCollapsibleSection(title: "Мои питомцы") {
                 ProfilePetsView(
-                    currentPage: viewModel.currentPage,
-                    pets: viewModel.pets
+                    currentPage: profilePetsViewModel.currentPage,
+                    pets: profilePetsViewModel.pets
                 )
             }
             .padding(.horizontal)
@@ -44,7 +50,9 @@ struct ProfileView: View {
                     aboutValue: .about,
                     feedbackValue: .feedback,
                     options: options,
-                    title: { $0.rawValue }
+                    title: { $0.rawValue },
+                    bio: viewModel.user?.bio ?? "",
+                    buttonAction: { router.push(.settings) }
                 )
             }
             .padding(.horizontal)
@@ -53,7 +61,7 @@ struct ProfileView: View {
             // MARK: - Секция с историей заказов
             PrimaryCollapsibleSection(title: "История заказов") {
                 VStack(spacing: 12) {
-                    ForEach(viewModel.orders, id: \.self) { order in
+                    ForEach(profileOrdersViewModel.orders, id: \.self) { order in
                         PrimaryOrderCard(order: order)
                     }
                 }
@@ -73,4 +81,17 @@ struct ProfileView: View {
             await viewModel.fetchPets()
         }
     }
+}
+
+#Preview {
+    ProfileView(
+        userRepository: MockUserRepository(),
+        petRepository: MockPetRepository()
+    )
+    .appEnvironment(
+        container: AppContainer(),
+        themeService: ThemeService(),
+        primaryColorService: PrimaryColorService()
+    )
+    .environment(ProfileRouter())
 }

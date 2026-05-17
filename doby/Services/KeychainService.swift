@@ -9,7 +9,7 @@ actor KeychainService: Sendable {
         case refreshToken
     }
     
-    static let shared = KeychainService()
+//    static let shared = KeychainService()
     
     init() {}
     

@@ -2,10 +2,22 @@ import SwiftUI
 import PhotosUI
 
 struct PetAddingView: View {
+    @Environment(PetRouter.self) private var router
+    
     @State private var viewModel: PetAddingViewModel
     
     init(repository: PetRepositoryProtocol) {
         _viewModel = State(initialValue: PetAddingViewModel(repository: repository))
+    }
+    
+    private func addPet() {
+        Task {
+            await viewModel.addPet()
+            
+            if viewModel.errorMessage == nil {
+                router.pop()
+            }
+        }
     }
 
     var body: some View {
@@ -40,43 +52,13 @@ struct PetAddingView: View {
             PetAddingFeatureView(
                 featureTagsViewModel: $viewModel.featureTagsViewModel
             )
-            
-            submitSection
-        }
-    }
-
-    @ViewBuilder
-    private var submitSection: some View {
-        Section {
-            Button {
-                Task {
-                    await viewModel.addPet()
-                    
-                    if viewModel.errorMessage == nil {
-                        
-                    }
-                }
-            } label: {
-                HStack {
-                    Spacer()
-                    if viewModel.isLoading {
-                        ProgressView()
-                    } else {
-                        Text("Добавить питомца")
-                            .fontWeight(.semibold)
-                    }
-                    Spacer()
-                }
-            }
-            .disabled(viewModel.isLoading || viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        }
-
-        if let errorMessage = viewModel.errorMessage {
-            Section {
-                Text(errorMessage)
-                    .foregroundStyle(.red)
-                    .font(.footnote)
-            }
+        
+            PetAddingSubmitView(
+                addPet: {
+                    addPet()
+                },
+                isLoading: viewModel.isLoading
+            )
         }
     }
 }

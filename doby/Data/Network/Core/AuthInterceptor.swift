@@ -1,15 +1,17 @@
 import Alamofire
 import Foundation
 
-
+// TODO: - зарефакторить этот класс, вынести излишнюю логику:
+// - фильтрация authEndpoints (логика исключений для auth-ручек)
+// - асинхронный Task внутри adapt (лучше вынести в отдельный async-хелпер/метод)
+// - логика refresh токена в retry (можно выделить в TokenManager/RetryPolicy)
+// - проверка URL через contains (хрупкая строковая логика)
+// - формирование shortToken (сейчас не используется)
 final class AuthInterceptor: RequestInterceptor {
-    private let session: AuthSession
     private let tokenManager: TokenManager
-    private let keychain = KeychainService.shared
     
-    init(session: AuthSession, tokenManager: TokenManager) {
-        self.session = session
-        self.tokenManager = tokenManager
+    init(tokenManager: TokenManager) {
+       self.tokenManager = tokenManager
     }
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
@@ -25,7 +27,7 @@ final class AuthInterceptor: RequestInterceptor {
         }
 
         Task {
-            if let token = await tokenManager.getValidToken(keychain: keychain) {
+            if let token = await tokenManager.getValidToken() {
                 var request = urlRequest
                 request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
                 
@@ -53,7 +55,7 @@ final class AuthInterceptor: RequestInterceptor {
 
         Task {
             do {
-                _ = try await tokenManager.refreshToken(session: self.session, keychain: keychain)
+                _ = try await tokenManager.refreshToken()
                 completion(.retry)
             } catch {
                 completion(.doNotRetryWithError(error))

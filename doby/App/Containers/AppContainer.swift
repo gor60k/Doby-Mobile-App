@@ -4,43 +4,46 @@ import Alamofire
 final class AppContainer {
     let storage: StorageContainer
     let services: ServiceContainer
-    let infrastructure: InfrastructureContainer
+    
+    let auth: AuthContainer
     let network: NetworkContainer
     let repositories: RepositoryContainer
     
     init() {
+        let rawSession = Session.default
+        
         let storage = StorageContainer()
         self.storage = storage
         
         self.services = ServiceContainer(
-            sessionService: SessionService(
-                userStorage: storage.user,
-                petStorage: storage.pet
-            ),
+            sessionService: SessionService(),
             keychainService: KeychainService(),
             logService: LogService()
         )
         
-        let infrastructure = InfrastructureContainer(
-            session: .default,
-            tokenManager: TokenManager(
-                sessionService: services.sessionService
-            )
-        )
-        self.infrastructure = infrastructure
+        let baseAPIClient = APIClient(session: rawSession)
         
-        let network = NetworkContainer(infrastructure: infrastructure)
+        let auth = AuthContainer(
+            apiClient: baseAPIClient,
+            services: services
+        )
+        self.auth = auth
+        
+        let network = NetworkContainer(interceptor: auth.authInterceptor)
         self.network = network
         
         self.repositories = RepositoryContainer(
             authRepository: AuthRepository(
-                service: AuthService(apiClient: network.apiClient),
+                service: auth.authSerive,
                 storage: storage.user,
+                petStorage: storage.pet,
                 session: services.sessionService,
                 keychain: services.keychainService
             ),
             userRepository: UserRepository(
                 service: UserService(apiClient: network.apiClient),
+                storage: storage.user,
+                petStorage: storage.pet
             ),
             petRepository: PetRepository(
                 service: PetService(apiClient: network.apiClient),

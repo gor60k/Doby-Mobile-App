@@ -58,6 +58,8 @@ final class PetAddingViewModel {
     @MainActor
     func addPet() async {
         isLoading = true
+        defer { isLoading = false }
+        
         errorMessage = nil
         
         await loadSelectedPhotos()
@@ -78,14 +80,9 @@ final class PetAddingViewModel {
                 specificTags: featureTagsViewModel.tags
             )
             
-            print(input)
-            
             _ = try await repository.createPet(input: input)
         } catch {
-            print(error.localizedDescription)
             errorMessage = error.localizedDescription
         }
-        
-        isLoading = false
     }
 }

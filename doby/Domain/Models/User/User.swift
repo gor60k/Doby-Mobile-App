@@ -10,4 +10,5 @@ struct User: Codable {
     var phone: String?
     var city: City?
     var bio: String?
+    var pets: [Pet]?
 }

@@ -1,13 +1,12 @@
 import SwiftUI
 import PhotosUI
 
-//TODO: - реализовать изменение данных пользователя
-//TODO: - добавить кнопку в тулбар для подтверждения изменения данных✅
-//TODO: - вынести тулбар в отдельный модифаер
 struct SettingsView: View {
     @Environment(ProfileRouter.self) private var router
-    @Environment(AppRouter.self) private var appRoute
     @Environment(\.userStorage) private var userStorage
+    @Environment(\.appContainer) private var appContainer
+    
+    private var sessionService: SessionService { appContainer.services.sessionService }
     
     @State private var viewModel: SettingsViewModel
     
@@ -40,6 +39,8 @@ struct SettingsView: View {
                 city: $viewModel.city
             )
             
+            SettingsBIOView(bio: $viewModel.bio)
+            
             SettingsAccountInfoView(
                 email: $viewModel.email
             )
@@ -64,7 +65,7 @@ struct SettingsView: View {
                 Button(action: {
                     Task {
                         await viewModel.logout()
-                        appRoute.goToAuth()
+                        sessionService.setAuthenticated(false)
                     }
                 }) {
                     Text("Выйти")
@@ -75,7 +76,8 @@ struct SettingsView: View {
                 Button(action: {
                     Task {
                         await MainActor.run {
-                            appRoute.goToWelcome()
+                            sessionService.setAuthenticated(false)
+                            sessionService.setRegistered(false)
                         }
                     }
                 }) {
@@ -108,4 +110,19 @@ struct SettingsView: View {
             }
         }
     }
+}
+
+#Preview {
+    SettingsView(
+        authRepository: MockAuthRepository(),
+        userRepository: MockUserRepository(),
+        userStorage: UserStorage()
+    )
+    .appEnvironment(
+        container: AppContainer(),
+        themeService: ThemeService(),
+        primaryColorService: PrimaryColorService()
+    )
+    .environment(ProfileRouter())
+    .environment(UserStorage())
 }

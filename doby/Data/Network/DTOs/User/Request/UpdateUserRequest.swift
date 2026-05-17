@@ -6,6 +6,6 @@ struct UpdateUserRequest: Codable {
     let patronymic: String?
     let phone: String?
     let avatar: String?
-    let city: CityDTO?
+    let city: Int?
     let bio: String?
 }

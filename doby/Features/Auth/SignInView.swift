@@ -2,18 +2,21 @@ import SwiftUI
 import AuthenticationServices
 
 struct SignInView: View {
-    @Environment(AppRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
-    private var session = SessionService.shared
+    private let sessionService: SessionService
     
     @State private var viewModel: AuthViewModel
     
     @State private var didEditEmail = false
     @State private var didEditPassword = false
     
-    init(repository: AuthRepositoryProtocol) {
+    init(
+        repository: AuthRepositoryProtocol,
+        sessionService: SessionService
+    ) {
         _viewModel = State(initialValue: AuthViewModel(repository: repository))
+        self.sessionService = sessionService
     }
     
     var body: some View {
@@ -68,8 +71,7 @@ struct SignInView: View {
                                 
                                 if viewModel.errorMessage == nil {
                                     await MainActor.run {
-                                        router.refreshStartDestination(for: session)
-                                        router.goToRootTab()
+                                        sessionService.setAuthenticated(true)
                                     }
                                 }
                             }
@@ -87,15 +89,6 @@ struct SignInView: View {
                     onRequest: { request in
                     },
                     onCompletion: { result in
-                        Task {
-                            
-                            if viewModel.errorMessage == nil {
-                                await MainActor.run {
-                                    router.refreshStartDestination(for: session)
-                                    router.goToRootTab()
-                                }
-                            }
-                        }
                     }
                 )
                 .frame(height: 54)

@@ -5,19 +5,18 @@ import Observation
 final class UserRepository: UserRepositoryProtocol {
     private var service: UserServiceProtocol
     private let storage: UserStorage
+    private let petStorage: PetStorage
     
     var user: User? { storage.currentUser }
     
     init(
         service: UserServiceProtocol,
+        storage: UserStorage,
+        petStorage: PetStorage
     ) {
         self.service = service
-        self.storage = UserStorage()
-    }
-    
-    //TODO: - убрать эту функцию после замены на фетч
-    func getCurrentUser() -> User? {
-        return storage.currentUser
+        self.storage = storage
+        self.petStorage = petStorage
     }
     
     func fetchUser() async throws {
@@ -25,6 +24,7 @@ final class UserRepository: UserRepositoryProtocol {
         let user = UserMapper.map(dto: response)
         
         storage.currentUser = user
+        petStorage.pets = user.pets ?? []
     }
     
     func updateUser(input: UpdateUserInput) async throws {

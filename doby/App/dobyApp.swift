@@ -3,7 +3,6 @@ import SwiftUI
 @main
 struct dobyApp: App {
     @State private var container = AppContainer()
-    @State private var appRouter = AppRouter()
     @State private var themeService = ThemeService()
     @State private var primaryColorService = PrimaryColorService()
 
@@ -12,7 +11,6 @@ struct dobyApp: App {
             AppRootView()
                 .appEnvironment(
                     container: container,
-                    appRouter: appRouter,
                     themeService: themeService,
                     primaryColorService: primaryColorService
                 )

@@ -11,12 +11,14 @@ struct PetCard: View {
     let breedName: String
     let age: Int
     
+    private let baseURL = APIConstants.baseURL
+    
     var body: some View {
         Button(action: {
             router.push(.profile(id: id))
         }) {
             HStack(spacing: 12) {
-                KFImage(URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev\(imageURL ?? "")"))
+                KFImage(URL(string: "\(baseURL)\(imageURL ?? "")"))
                     .placeholder {
                         ProgressView()
                     }

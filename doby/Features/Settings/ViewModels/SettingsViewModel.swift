@@ -10,6 +10,7 @@ final class SettingsViewModel {
     var avatar: String = ""
 
     var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
+    var cityId: Int = 1
     
     var firstName: String = ""
     var lastName: String = ""
@@ -55,13 +56,13 @@ final class SettingsViewModel {
         
         do {
             let input = UpdateUserInput(
-                firstName: firstName,
-                lastName: lastName,
-                patronymic: patronymic,
-                phone: phone,
-                avatar: avatar,
-                city: city,
-                bio: bio,
+                firstName: firstName.nilIfEmpty,
+                lastName: lastName.nilIfEmpty,
+                patronymic: patronymic.nilIfEmpty,
+                phone: phone.nilIfEmpty,
+                avatar: avatar.nilIfEmpty,
+                city: cityId,
+                bio: bio.nilIfEmpty,
             )
             
             _ = try await userRepository.updateUser(input: input)

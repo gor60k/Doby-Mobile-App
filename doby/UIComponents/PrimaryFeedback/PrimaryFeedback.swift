@@ -59,6 +59,4 @@ struct PrimaryFeedback: View {
         PrimaryFeedback()
     }
     .padding()
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-    .background(Color(.systemGroupedBackground))
 }
