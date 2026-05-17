@@ -1,28 +1,23 @@
 import SwiftUI
 
 struct CurrentFlowView: View {
-    @Environment(AppRouter.self) private var router
+    @Environment(\.appContainer) private var appContainer
     
+    private var sessionService: SessionService { appContainer.services.sessionService }
+
     var body: some View {
-        Group {
-            switch router.startDestination {
-            case .welcome:
+        ZStack {
+            if !sessionService.isRegistered {
                 WelcomeStack()
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .leading).combined(with: .opacity),
-                        removal: .move(edge: .trailing).combined(with: .opacity)
-                    ))
-            case .auth:
+                    .transition(.opacity)
+            } else if !sessionService.isAuthenticated {
                 AuthStack()
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    ))
-            case .rootTab:
+                    .transition(.opacity)
+            } else {
                 RootTabStack()
-            case nil:
-                ProgressView()
+                    .transition(.opacity)
             }
         }
+        .animation(.easeInOut(duration: 0.25), value: sessionService.isAuthenticated)
     }
 }

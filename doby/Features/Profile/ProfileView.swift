@@ -90,7 +90,6 @@ struct ProfileView: View {
     )
     .appEnvironment(
         container: AppContainer(),
-        appRouter: AppRouter(),
         themeService: ThemeService(),
         primaryColorService: PrimaryColorService()
     )

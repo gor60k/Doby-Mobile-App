@@ -2,7 +2,6 @@ import SwiftUI
 import AuthenticationServices
 
 struct SignInView: View {
-    @Environment(AppRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     private let sessionService: SessionService
@@ -72,8 +71,7 @@ struct SignInView: View {
                                 
                                 if viewModel.errorMessage == nil {
                                     await MainActor.run {
-                                        router.refreshStartDestination(for: sessionService)
-                                        router.goToRootTab()
+                                        sessionService.setAuthenticated(true)
                                     }
                                 }
                             }
@@ -91,15 +89,6 @@ struct SignInView: View {
                     onRequest: { request in
                     },
                     onCompletion: { result in
-                        Task {
-                            
-                            if viewModel.errorMessage == nil {
-                                await MainActor.run {
-                                    router.refreshStartDestination(for: sessionService)
-                                    router.goToRootTab()
-                                }
-                            }
-                        }
                     }
                 )
                 .frame(height: 54)

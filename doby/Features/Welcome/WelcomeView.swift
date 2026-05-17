@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @Environment(AppRouter.self) var router
+    @Environment(\.appContainer) private var appContainer
+    
+    private var sessionService: SessionService { appContainer.services.sessionService }
     
     @State private var viewModel = WelcomeViewModel()
     
@@ -33,7 +35,7 @@ struct WelcomeView: View {
                     isEnabled: viewModel.isLastSlide,
                     action: {
                         if viewModel.isLastSlide {
-                            router.goToAuth()
+                            sessionService.setRegistered(true)
                         }
                     },
                 )

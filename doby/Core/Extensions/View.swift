@@ -4,7 +4,6 @@ extension View {
     @MainActor
     func appEnvironment(
         container: AppContainer,
-        appRouter: AppRouter,
         themeService: ThemeService,
         primaryColorService: PrimaryColorService
     ) -> some View {
@@ -14,7 +13,6 @@ extension View {
             .environment(\.userStorage, container.storage.user)
             .environment(\.petStorage, container.storage.pet)
         
-            .environment(appRouter)
             .environment(themeService)
             .environment(primaryColorService)
         

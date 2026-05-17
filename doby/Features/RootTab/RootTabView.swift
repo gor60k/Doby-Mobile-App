@@ -2,12 +2,11 @@ import SwiftUI
 
 struct RootTabView: View {
     @Environment(PrimaryColorService.self) var primaryColorService
-    @Environment(AppRouter.self) private var appRouter
+    
+    @State private var selectedTab: RootTab = .profile
 
     var body: some View {
-        @Bindable var appRouter = appRouter
-        
-        TabView(selection: $appRouter.selectedTab) {
+        TabView(selection: $selectedTab) {
             PetStack()
                 .tabItem { Label(RootTab.pet.title, systemImage: RootTab.pet.icon) }
                 .tag(RootTab.pet)

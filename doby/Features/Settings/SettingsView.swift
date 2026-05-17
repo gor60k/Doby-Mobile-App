@@ -3,8 +3,10 @@ import PhotosUI
 
 struct SettingsView: View {
     @Environment(ProfileRouter.self) private var router
-    @Environment(AppRouter.self) private var appRoute
     @Environment(\.userStorage) private var userStorage
+    @Environment(\.appContainer) private var appContainer
+    
+    private var sessionService: SessionService { appContainer.services.sessionService }
     
     @State private var viewModel: SettingsViewModel
     
@@ -63,7 +65,7 @@ struct SettingsView: View {
                 Button(action: {
                     Task {
                         await viewModel.logout()
-                        appRoute.goToAuth()
+                        sessionService.setAuthenticated(false)
                     }
                 }) {
                     Text("Выйти")
@@ -74,7 +76,8 @@ struct SettingsView: View {
                 Button(action: {
                     Task {
                         await MainActor.run {
-                            appRoute.goToWelcome()
+                            sessionService.setAuthenticated(false)
+                            sessionService.setRegistered(false)
                         }
                     }
                 }) {
@@ -117,7 +120,6 @@ struct SettingsView: View {
     )
     .appEnvironment(
         container: AppContainer(),
-        appRouter: AppRouter(),
         themeService: ThemeService(),
         primaryColorService: PrimaryColorService()
     )

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @Environment(AppRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
 
     private let sessionSerive: SessionService
@@ -34,8 +33,7 @@ struct SignUpView: View {
             
             if viewModel.errorMessage == nil {
                 await MainActor.run {
-                    router.refreshStartDestination(for: sessionSerive)
-                    router.goToRootTab()
+                    sessionSerive.isAuthenticated = true
                 }
             }
         }
