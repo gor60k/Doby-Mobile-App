@@ -66,7 +66,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     func logout() async throws {
         try await service.logout()
         deleteTokens()
-        session.logout()
+        session.setAuthenticated(false)
     }
     
     func refresh(input: RefreshInput) async throws {
