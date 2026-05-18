@@ -4,14 +4,14 @@ import Observation
 @Observable
 final class UserRepository: UserRepositoryProtocol {
     private var service: UserServiceProtocol
-    private let storage: UserStorage
+    private var storage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
     
-    var user: User? { storage.currentUser }
+    var user: User? { storage.user }
     
     init(
         service: UserServiceProtocol,
-        storage: UserStorage,
+        storage: UserStorageProtocol,
         petStorage: PetStorageProtocol
     ) {
         self.service = service
@@ -23,7 +23,7 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await service.me()
         let user = UserMapper.map(dto: response)
         
-        storage.currentUser = user
+        storage.user = user
         petStorage.pets = user.pets ?? []
     }
     

@@ -83,7 +83,7 @@ final class SettingsViewModel {
     }
     
     private func loadCurrentUser() {
-        guard let user = userStorage.currentUser else { return }
+        guard let user = userStorage.user else { return }
     
         firstName = user.firstName ?? ""
         lastName = user.lastName ?? ""

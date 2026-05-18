@@ -2,12 +2,18 @@ import Observation
 
 @MainActor
 @Observable
-final class StorageContainer {
-    let user: UserStorage
-    let pet: PetStorageProtocol
+final class StorageContainer<
+    UserStorageType: UserStorageProtocol,
+    PetStorageType: PetStorageProtocol
+> {
+    let user: UserStorageType
+    let pet: PetStorageType
     
-    init(pet: PetStorageProtocol) {
-        self.user = UserStorage()
+    init(
+        user: UserStorageType,
+        pet: PetStorageType
+    ) {
+        self.user = user
         self.pet = pet
     }
 }

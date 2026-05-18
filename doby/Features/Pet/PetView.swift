@@ -82,10 +82,6 @@ struct PetView: View {
         storage: PetStorage(),
         ownerUUID: ""
     )
-    .appEnvironment(
-        container: AppContainer(),
-        themeService: ThemeService(),
-        primaryColorService: PrimaryColorService()
-    )
+    .PreviewAppEnvironment()
     .environment(PetRouter())
 }

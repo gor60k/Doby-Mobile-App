@@ -1,19 +1,26 @@
 import Alamofire
 
 @MainActor
-final class AppContainer {
-    let storage: StorageContainer
+final class AppContainer<
+    UserStorageType: UserStorageProtocol,
+    PetStorageType: PetStorageProtocol
+> {
+    let storage: StorageContainer<UserStorageType, PetStorageType>
     let services: ServiceContainer
     
     let auth: AuthContainer
     let network: NetworkContainer
     let repositories: RepositoryContainer
     
-    init() {
+    init(
+        userStorage: UserStorageType,
+        petStorage: PetStorageType
+    ) {
         let rawSession = Session.default
         
         let storage = StorageContainer(
-            pet: PetStorage()
+            user: userStorage,
+            pet: petStorage
         )
         self.storage = storage
         

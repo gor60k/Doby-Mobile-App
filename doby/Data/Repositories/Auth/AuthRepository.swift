@@ -2,7 +2,7 @@ import os
 
 final class AuthRepository: AuthRepositoryProtocol {
     private let service: AuthServiceProtocol
-    private let storage: UserStorage
+    private var storage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
     private let session: SessionService
     private let keychain: KeychainService
@@ -11,7 +11,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     init(
         service: AuthServiceProtocol,
-        storage: UserStorage,
+        storage: UserStorageProtocol,
         petStorage: PetStorageProtocol,
         session: SessionService,
         keychain: KeychainService
@@ -38,7 +38,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.currentUser = user
+        storage.user = user
         petStorage.pets = user.pets ?? []
     }
     
@@ -59,7 +59,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.currentUser = user
+        storage.user = user
         petStorage.pets = user.pets ?? []
     }
     

@@ -1,34 +1,41 @@
 import Foundation
 import Observation
 
+//TODO: - поправить сохранение данных, сейчас они сохраняются некоректно и не держаться между сессиями
 @MainActor
 @Observable
-final class UserStorage {
-    private let key = "user"
+final class UserStorage: UserStorageProtocol {
+    private let actor = UserStorageActor()
     
-    var currentUser: User? {
-        didSet {
-            save()
+    var user: User?
+    
+    init() {
+        Task {
+            await load()
         }
     }
     
-    init() {
-        self.currentUser = UserDefaults.standard.data(forKey: key)
-            .flatMap { try? JSONDecoder().decode(User.self, from: $0) }
+    func load() async {
+        let loaded = await actor.load()
+        self.user = loaded
+    }
+    
+    func set(_ user: User?) {
+        self.user = user
+        persist()
     }
     
     func update(_ block: (inout User) -> Void) {
-        guard var user = currentUser else { return }
+        guard var user else { return }
         block(&user)
-        currentUser = user
+        self.user = user
+        persist()
     }
     
-    private func save() {
-        if let currentUser {
-            let data = try? JSONEncoder().encode(currentUser)
-            UserDefaults.standard.set(data, forKey: key)
-        } else {
-            UserDefaults.standard.removeObject(forKey: key)
+    private func persist() {
+        let snapshot = user
+        Task {
+            await actor.save(snapshot)
         }
     }
 }

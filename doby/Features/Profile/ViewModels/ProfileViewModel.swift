@@ -6,18 +6,21 @@ import Observation
 class ProfileViewModel {
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
+    private let storage: UserStorage
     
-    var user: User? { userRepository.user }
+    var user: User? { storage.user }
     
     var isLoading = false
     var error: String?
     
     init(
         userRepository: UserRepositoryProtocol,
-        petRepository: PetRepositoryProtocol
+        petRepository: PetRepositoryProtocol,
+        storage: UserStorage
     ) {
         self.userRepository = userRepository
         self.petRepository = petRepository
+        self.storage = storage
     }
     
     func fetchUser() async {

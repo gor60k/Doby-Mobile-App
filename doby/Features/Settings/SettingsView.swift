@@ -3,7 +3,7 @@ import PhotosUI
 
 struct SettingsView: View {
     @Environment(ProfileRouter.self) private var router
-    @Environment(\.userStorage) private var userStorage
+    @Environment(UserStorage.self) private var userStorage
     @Environment(\.appContainer) private var appContainer
     
     private var sessionService: SessionService { appContainer.services.sessionService }
@@ -118,11 +118,7 @@ struct SettingsView: View {
         userRepository: MockUserRepository(),
         userStorage: UserStorage()
     )
-    .appEnvironment(
-        container: AppContainer(),
-        themeService: ThemeService(),
-        primaryColorService: PrimaryColorService()
-    )
+    .PreviewAppEnvironment()
     .environment(ProfileRouter())
     .environment(UserStorage())
 }

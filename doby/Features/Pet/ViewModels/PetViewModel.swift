@@ -7,9 +7,7 @@ final class PetViewModel {
     private let repository: PetRepositoryProtocol
     private let storage: PetStorage
     
-    var pets: [Pet] {
-        storage.pets
-    }
+    var pets: [Pet] { storage.pets }
     
     var isLoading = false
     var error: String?

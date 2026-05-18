@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @Environment(\.petStorage) private var petStorage
+    @Environment(PetStorage.self) private var petStorage
     @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) var primaryColorService
     
@@ -16,10 +16,12 @@ struct ProfileView: View {
     init(
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
+        storage: UserStorage
     ) {
         _viewModel = State(initialValue: ProfileViewModel(
             userRepository: userRepository,
-            petRepository: petRepository
+            petRepository: petRepository,
+            storage: storage
         ))
         _profilePetsViewModel = State(initialValue: ProfilePetsViewModel(
             petRepository: petRepository
@@ -87,13 +89,10 @@ struct ProfileView: View {
 #Preview {
     ProfileView(
         userRepository: MockUserRepository(),
-        petRepository: MockPetRepository()
+        petRepository: MockPetRepository(),
+        storage: UserStorage()
     )
-    .appEnvironment(
-        container: AppContainer(),
-        themeService: ThemeService(),
-        primaryColorService: PrimaryColorService()
-    )
-    .environment(ProfileRouter())
+    .PreviewAppEnvironment()
     .environment(PetStorage())
+    .environment(ProfileRouter())
 }

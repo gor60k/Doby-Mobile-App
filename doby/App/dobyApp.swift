@@ -1,8 +1,13 @@
 import SwiftUI
 
+typealias DefaultAppContainer = AppContainer<UserStorage, PetStorage>
+
 @main
 struct dobyApp: App {
-    @State private var container = AppContainer()
+    @State private var container: DefaultAppContainer = .init(
+        userStorage: UserStorage(),
+        petStorage: PetStorage()
+    )
     @State private var themeService = ThemeService()
     @State private var primaryColorService = PrimaryColorService()
 

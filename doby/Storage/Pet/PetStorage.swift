@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 
+//TODO: - поправить сохранение данных, сейчас они сохраняются некоректно и не держаться между сессиями
 @MainActor
 @Observable
 final class PetStorage: PetStorageProtocol {

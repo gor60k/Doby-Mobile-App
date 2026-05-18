@@ -13,7 +13,7 @@ final class PetProfileViewModel {
     
     private let petId: Int
     
-    var user: User? { userStorage.currentUser }
+    var user: User? { userStorage.user }
     
     private(set) var slides: [PetPhoto] = []
     private(set) var infoItems: [PetProfileInfoItem] = []

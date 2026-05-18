@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProfileStack: View {
     @Environment(\.appContainer) private var appContainer
-    @Environment(\.petStorage) private var petStorage
+    @Environment(PetStorage.self) private var petStorage
     
     private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
@@ -16,7 +16,8 @@ struct ProfileStack: View {
         NavigationStack(path: $router.path) {
             ProfileView(
                 userRepository: userRepository,
-                petRepository: petRepository
+                petRepository: petRepository,
+                storage: userStorage
             )
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
