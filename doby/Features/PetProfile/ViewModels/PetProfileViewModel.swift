@@ -4,11 +4,13 @@ import Observation
 @Observable
 final class PetProfileViewModel {
     private let repository: PetRepositoryProtocol
+    private let petStorage: PetStorage
     private let userStorage: UserStorage
     
     var currentPage = 0
     
     private(set) var pet: Pet?
+    
     private let petId: Int
     
     var user: User? { userStorage.currentUser }
@@ -19,13 +21,15 @@ final class PetProfileViewModel {
     init(
         repository: PetRepositoryProtocol,
         userStorage: UserStorage,
+        petStorage: PetStorage,
         petId: Int
     ) {
         self.repository = repository
         self.userStorage = userStorage
+        self.petStorage = petStorage
         self.petId = petId
         
-        syncPetFromRepository()
+        loadPet()
     }
     
     private(set) var isLoading = false
@@ -44,18 +48,18 @@ final class PetProfileViewModel {
         
         do {
             try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
-            syncPetFromRepository()
+            loadPet()
         } catch {
             self.error = error.localizedDescription
         }
     }
     
-    private func syncPetFromRepository() {
-        guard let updatedPet = repository.pets.first(where: { $0.id == petId }) else { return }
+    private func loadPet() {
+        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
         
-        pet = updatedPet
-        slides = makeSlides(from: updatedPet)
-        infoItems = makeInfoItems(from: updatedPet)
+        pet = loaded
+        slides = makeSlides(from: loaded)
+        infoItems = makeInfoItems(from: loaded)
     }
     
     private func makeSlides(from pet: Pet) -> [PetPhoto] {

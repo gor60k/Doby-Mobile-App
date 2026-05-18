@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @Environment(\.petStorage) private var petStorage
     @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) var primaryColorService
     
@@ -37,7 +38,7 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "Мои питомцы") {
                 ProfilePetsView(
                     currentPage: profilePetsViewModel.currentPage,
-                    pets: profilePetsViewModel.pets
+                    pets: petStorage.pets
                 )
             }
             .padding(.horizontal)
@@ -94,4 +95,5 @@ struct ProfileView: View {
         primaryColorService: PrimaryColorService()
     )
     .environment(ProfileRouter())
+    .environment(PetStorage())
 }

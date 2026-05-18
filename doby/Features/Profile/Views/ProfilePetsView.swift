@@ -5,7 +5,7 @@ struct ProfilePetsView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State var currentPage: Int = 0
-    @State var pets: [Pet]
+    let pets: [Pet]
     
     var body: some View {
         if pets.isEmpty {

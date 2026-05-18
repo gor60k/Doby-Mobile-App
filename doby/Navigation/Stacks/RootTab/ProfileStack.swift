@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileStack: View {
     @Environment(\.appContainer) private var appContainer
+    @Environment(\.petStorage) private var petStorage
     
     private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
@@ -37,6 +38,7 @@ struct ProfileStack: View {
                         PetProfileView(
                             repository: petRepository,
                             userStorage: userStorage,
+                            petStorage: petStorage,
                             petId: id
                         )
                     case .petAdding:

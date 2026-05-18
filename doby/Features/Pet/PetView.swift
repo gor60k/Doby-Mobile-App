@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PetView: View {
-    @Environment(\.petStorage) private var storage
     @Environment(PetRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
@@ -12,9 +11,13 @@ struct PetView: View {
     
     init(
         repository: PetRepositoryProtocol,
+        storage: PetStorage,
         ownerUUID: String
     ) {
-        _viewModel = State(initialValue: PetViewModel(repository: repository))
+        _viewModel = State(initialValue: PetViewModel(
+            repository: repository,
+            storage: storage
+        ))
         self.ownerUUID = ownerUUID
     }
     

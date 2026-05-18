@@ -8,16 +8,12 @@ final class PetRepository: PetRepositoryProtocol {
     private var service: PetServiceProtocol
     private var storage: PetStorage
     
-    private(set) var pets: [Pet] = []
-    
     init(
         service: PetServiceProtocol,
         storage: PetStorage
     ) {
         self.service = service
         self.storage = storage
-        
-        self.pets = storage.pets
     }
     
     func createPet(input: CreatePetInput) async throws {
@@ -26,7 +22,6 @@ final class PetRepository: PetRepositoryProtocol {
         let pet = PetMapper.map(response: response)
         
         storage.update(pet)
-        self.pets.append(pet)
     }
     
     func fetchPets(ownerUUID: String) async throws {
@@ -34,7 +29,6 @@ final class PetRepository: PetRepositoryProtocol {
         let pets = PetMapper.map(response: response)
         
         storage.set(pets)
-        self.pets = pets
     }
     
     func fetchPet(ownerUUID: String, petId: Int) async throws {
@@ -42,14 +36,12 @@ final class PetRepository: PetRepositoryProtocol {
         let pet = PetMapper.map(response: response)
         
         storage.update(pet)
-        self.pets.append(pet)
     }
     
     func deletePet(id: Int) async throws {
         _ = try await service.delete(id)
         
         storage.remove(id: id)
-        self.pets.removeAll { $0.id == id }
     }
 }
 

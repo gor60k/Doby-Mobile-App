@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PetProfileView: View {
-    @Environment(\.userStorage) private var userStorage
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State private var viewModel: PetProfileViewModel
@@ -10,12 +9,14 @@ struct PetProfileView: View {
     init(
         repository: PetRepositoryProtocol,
         userStorage: UserStorage,
+        petStorage: PetStorage,
         petId: Int
     ) {
         self.petId = petId
         _viewModel = State(initialValue: PetProfileViewModel(
             repository: repository,
             userStorage: userStorage,
+            petStorage: petStorage,
             petId: petId
         ))
     }
