@@ -7,13 +7,17 @@ struct PetProfileGallaryView: View {
     
     private let baseURL = APIConstants.baseURL
     
+    private func getFullImageURL(imageURL: String) -> URL? {
+        return URL(string: baseURL.absoluteString)?.appendingPathComponent(imageURL)
+    }
+    
     var body: some View {
         ZStack {
             PrimarySlider(
                 currentPage: $currentPage,
                 items: items,
             ) { slide in
-                KFImage(URL(string:"\(baseURL)\(slide.imageURL)"))
+                KFImage(getFullImageURL(imageURL: slide.imageURL))
                     .placeholder {
                         ProgressView()
                     }

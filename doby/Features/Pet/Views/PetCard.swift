@@ -13,12 +13,18 @@ struct PetCard: View {
     
     private let baseURL = APIConstants.baseURL
     
+    private var fullImageURL: URL? {
+        guard let imageURL else { return nil}
+        
+        return URL(string: baseURL.absoluteString)?.appendingPathComponent(imageURL)
+    }
+    
     var body: some View {
         Button(action: {
             router.push(.profile(id: id))
         }) {
             HStack(spacing: 12) {
-                KFImage(URL(string: "\(baseURL)\(imageURL ?? "")"))
+                KFImage(fullImageURL)
                     .placeholder {
                         ProgressView()
                     }
