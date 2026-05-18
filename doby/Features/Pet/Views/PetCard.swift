@@ -11,7 +11,7 @@ struct PetCard: View {
     let breedName: String
     let age: Int
     
-    private let baseURL = APIConstants.baseURL
+    private let baseURL = APIConstants.getImageBaseURL()
     
     private var fullImageURL: URL? {
         guard let imageURL else { return nil}

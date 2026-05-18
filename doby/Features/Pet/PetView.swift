@@ -25,16 +25,18 @@ struct PetView: View {
         ScrollView {
             VStack(spacing: 8) {
                 if viewModel.pets.isEmpty {
-                    PrimaryEmptyView(
-                        icon: "pawprint.circle.fill",
-                        title: "У вас пока нет питомцев",
-                        description: "Добавьте своего первого питомца, чтобы начать",
-                        buttonTitle: "Добавить питомца",
-                        buttonIcon: "plus",
-                        action: {
-                            router.push(.petAdding)
-                        }
-                    )
+                    VStack(alignment: .center) {
+                        PrimaryEmptyView(
+                            icon: "pawprint.circle.fill",
+                            title: "У вас пока нет питомцев",
+                            description: "Добавьте своего первого питомца, чтобы начать",
+                            buttonTitle: "Добавить питомца",
+                            buttonIcon: "plus",
+                            action: {
+                                router.push(.petAdding)
+                            }
+                        )
+                    }
                 } else {
                     ForEach(viewModel.pets) { pet in
                         HStack {
@@ -72,4 +74,18 @@ struct PetView: View {
             await viewModel.fetchPets(ownerUUID: ownerUUID)
         }
     }
+}
+
+#Preview {
+    PetView(
+        repository: MockPetRepository(),
+        storage: PetStorage(),
+        ownerUUID: ""
+    )
+    .appEnvironment(
+        container: AppContainer(),
+        themeService: ThemeService(),
+        primaryColorService: PrimaryColorService()
+    )
+    .environment(PetRouter())
 }

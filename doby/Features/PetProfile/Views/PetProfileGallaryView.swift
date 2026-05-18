@@ -5,7 +5,7 @@ struct PetProfileGallaryView: View {
     @Binding var currentPage: Int
     let items: [PetPhoto]
     
-    private let baseURL = APIConstants.baseURL
+    private let baseURL = APIConstants.getImageBaseURL()
     
     private func getFullImageURL(imageURL: String) -> URL? {
         return URL(string: baseURL.absoluteString)?.appendingPathComponent(imageURL)

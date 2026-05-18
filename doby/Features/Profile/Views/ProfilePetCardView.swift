@@ -11,10 +11,18 @@ struct ProfilePetCardView: View {
     let breedName: String
     let age: Int
     
+    private let baseURL: URL = APIConstants.getImageBaseURL()
+    
+    private var fullImageURL: URL? {
+        guard let imageURL else { return nil }
+        
+        return URL(string: baseURL.absoluteString)?.appendingPathComponent(imageURL)
+    }
+    
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
             VStack {
-                KFImage(URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev\(imageURL ?? "")"))
+                KFImage(fullImageURL)
                     .placeholder {
                         ProgressView()
                     }
@@ -76,16 +84,3 @@ struct ProfilePetCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
-//
-//#Preview {
-//    VStack {
-//        ProfilePetCardView(
-//            id: 0,
-//            name: "pet.name",
-//            breedName: "pet.breedName",
-//            age: 0
-//        )
-//    }
-//    .withAppEnvironment()
-//    .padding()
-//}
