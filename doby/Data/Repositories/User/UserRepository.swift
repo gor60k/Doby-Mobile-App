@@ -5,14 +5,14 @@ import Observation
 final class UserRepository: UserRepositoryProtocol {
     private var service: UserServiceProtocol
     private let storage: UserStorage
-    private let petStorage: PetStorage
+    private var petStorage: PetStorageProtocol
     
     var user: User? { storage.currentUser }
     
     init(
         service: UserServiceProtocol,
         storage: UserStorage,
-        petStorage: PetStorage
+        petStorage: PetStorageProtocol
     ) {
         self.service = service
         self.storage = storage

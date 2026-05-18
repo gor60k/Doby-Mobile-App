@@ -3,7 +3,7 @@ import os
 final class AuthRepository: AuthRepositoryProtocol {
     private let service: AuthServiceProtocol
     private let storage: UserStorage
-    private let petStorage: PetStorage
+    private var petStorage: PetStorageProtocol
     private let session: SessionService
     private let keychain: KeychainService
     
@@ -12,7 +12,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     init(
         service: AuthServiceProtocol,
         storage: UserStorage,
-        petStorage: PetStorage,
+        petStorage: PetStorageProtocol,
         session: SessionService,
         keychain: KeychainService
     ) {

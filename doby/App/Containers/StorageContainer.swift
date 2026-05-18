@@ -4,10 +4,10 @@ import Observation
 @Observable
 final class StorageContainer {
     let user: UserStorage
-    let pet: PetStorage
+    let pet: PetStorageProtocol
     
-    init() {
+    init(pet: PetStorageProtocol) {
         self.user = UserStorage()
-        self.pet = PetStorage()
+        self.pet = pet
     }
 }

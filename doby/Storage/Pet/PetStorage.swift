@@ -3,10 +3,8 @@ import Observation
 
 @MainActor
 @Observable
-final class PetStorage {
+final class PetStorage: PetStorageProtocol {
     private let actor = PetStorageActor()
-    
-//    private let key = "pets"
     
     var pets: [Pet] = []
     
@@ -14,7 +12,6 @@ final class PetStorage {
         Task {
             await load()
         }
-//        load()
     }
     
     func load() async {
@@ -24,15 +21,6 @@ final class PetStorage {
     
     func set(_ pets: [Pet]) {
         self.pets = pets
-        persist()
-    }
-    
-    func add(_ pet: Pet) {
-        if let index = pets.firstIndex(where: { $0.id == pet.id }) {
-            pets[index] = pet
-        } else {
-            pets.append(pet)
-        }
         persist()
     }
     
@@ -46,7 +34,6 @@ final class PetStorage {
     }
     
     func remove(id: Int) {
-//        pets.removeAll { $0.id == id }
         pets = pets.filter { $0.id != id }
         persist()
     }
@@ -55,20 +42,6 @@ final class PetStorage {
         pets.removeAll()
         persist()
     }
-    
-//    private func load() {
-//        guard let data = UserDefaults.standard.data(forKey: key),
-//              let decoded = try? JSONDecoder().decode([Pet].self, from: data) else {
-//            self.pets = []
-//            return
-//        }
-//        pets = decoded
-//    }
-    
-//    private func save() {
-//        guard let data = try? JSONEncoder().encode(pets) else { return }
-//        UserDefaults.standard.set(data, forKey: key)
-//    }
     
     private func persist() {
         let snapshot = pets

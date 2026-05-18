@@ -12,7 +12,9 @@ final class AppContainer {
     init() {
         let rawSession = Session.default
         
-        let storage = StorageContainer()
+        let storage = StorageContainer(
+            pet: PetStorage()
+        )
         self.storage = storage
         
         self.services = ServiceContainer(
