@@ -13,6 +13,7 @@ struct UpdateUserRequestMapper {
     
     nonisolated private static func mapCity(_ input: City) -> CityDTO {
         CityDTO(
+            id: input.id,
             name: input.name,
             translit: input.translit
         )

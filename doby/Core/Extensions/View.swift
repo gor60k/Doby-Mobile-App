@@ -7,7 +7,8 @@ extension View {
         appEnvironment(
             container: .init(
                 userStorage: UserStorage(),
-                petStorage: PetStorage()
+                petStorage: PetStorage(),
+                cityStorage: CityStorage()
             ),
             themeService: ThemeService(),
             primaryColorService: PrimaryColorService()
@@ -25,6 +26,7 @@ extension View {
         
             .environment(container.storage.pet)
             .environment(container.storage.user)
+            .environment(container.storage.city)
         
             .environment(themeService)
             .environment(primaryColorService)

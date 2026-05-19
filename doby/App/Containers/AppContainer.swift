@@ -3,9 +3,10 @@ import Alamofire
 @MainActor
 final class AppContainer<
     UserStorageType: UserStorageProtocol,
-    PetStorageType: PetStorageProtocol
+    PetStorageType: PetStorageProtocol,
+    CityStorageType: CityStorageProtocol
 > {
-    let storage: StorageContainer<UserStorageType, PetStorageType>
+    let storage: StorageContainer<UserStorageType, PetStorageType, CityStorageType>
     let services: ServiceContainer
     
     let auth: AuthContainer
@@ -14,13 +15,15 @@ final class AppContainer<
     
     init(
         userStorage: UserStorageType,
-        petStorage: PetStorageType
+        petStorage: PetStorageType,
+        cityStorage: CityStorageType
     ) {
         let rawSession = Session.default
         
         let storage = StorageContainer(
             user: userStorage,
-            pet: petStorage
+            pet: petStorage,
+            city: cityStorage
         )
         self.storage = storage
         
@@ -51,8 +54,9 @@ final class AppContainer<
             ),
             userRepository: UserRepository(
                 service: UserService(apiClient: network.apiClient),
-                storage: storage.user,
-                petStorage: storage.pet
+                userStorage: storage.user,
+                petStorage: storage.pet,
+                cityStorage: storage.city
             ),
             petRepository: PetRepository(
                 service: PetService(apiClient: network.apiClient),

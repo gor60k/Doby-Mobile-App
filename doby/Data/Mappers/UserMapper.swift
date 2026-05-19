@@ -15,6 +15,7 @@ struct UserMapper {
     
     nonisolated private static func mapCity(_ dto: CityDTO) -> City {
         City(
+            id: dto.id,
             name: dto.name,
             translit: dto.translit
         )

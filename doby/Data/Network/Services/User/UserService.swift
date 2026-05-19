@@ -18,4 +18,8 @@ final class UserService: UserServiceProtocol {
     func update(_ request: UpdateUserRequest) async throws -> UserDTO {
         try await apiClient.request(UpdateUser(request: request))
     }
+    
+    func cities() async throws -> [CityDTO] {
+        try await apiClient.request(CitiesEndpoint())
+    }
 }

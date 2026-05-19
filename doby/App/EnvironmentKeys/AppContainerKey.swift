@@ -3,7 +3,8 @@ import SwiftUI
 struct AppContainerKey: EnvironmentKey {
     static let defaultValue: DefaultAppContainer = .init(
         userStorage: UserStorage(),
-        petStorage: PetStorage()
+        petStorage: PetStorage(),
+        cityStorage: CityStorage()
     )
 }
 

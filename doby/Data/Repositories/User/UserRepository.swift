@@ -4,25 +4,27 @@ import Observation
 @Observable
 final class UserRepository: UserRepositoryProtocol {
     private var service: UserServiceProtocol
-    private var storage: UserStorageProtocol
+    private var userStorage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
+    private var cityStorage: CityStorageProtocol
     
     init(
         service: UserServiceProtocol,
-        storage: UserStorageProtocol,
-        petStorage: PetStorageProtocol
+        userStorage: UserStorageProtocol,
+        petStorage: PetStorageProtocol,
+        cityStorage: CityStorageProtocol
     ) {
         self.service = service
-        self.storage = storage
+        self.userStorage = userStorage
         self.petStorage = petStorage
+        self.cityStorage = cityStorage
     }
     
     func fetchUser() async throws {
         let response = try await service.me()
         let user = UserMapper.map(dto: response)
         
-        storage.user = user
-//        petStorage.pets = user.pets ?? []
+        userStorage.user = user
     }
     
     func updateUser(input: UpdateUserInput) async throws {
@@ -30,7 +32,7 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await service.update(request)
         let user = UserMapper.map(dto: response)
         
-        storage.update { currentUser in
+        userStorage.update { currentUser in
             currentUser.firstName = user.firstName
             currentUser.lastName = user.lastName
             currentUser.patronymic = user.patronymic
@@ -39,5 +41,12 @@ final class UserRepository: UserRepositoryProtocol {
             currentUser.city = user.city
             currentUser.bio = user.bio
         }
+    }
+    
+    func fetchCities() async throws {
+        let response = try await service.cities()
+        let cities = CityMapper.map(dto: response)
+        
+        cityStorage.cities = cities
     }
 }
