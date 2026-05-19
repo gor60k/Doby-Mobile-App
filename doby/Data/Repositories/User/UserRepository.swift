@@ -7,8 +7,6 @@ final class UserRepository: UserRepositoryProtocol {
     private var storage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
     
-    var user: User? { storage.user }
-    
     init(
         service: UserServiceProtocol,
         storage: UserStorageProtocol,
@@ -24,7 +22,7 @@ final class UserRepository: UserRepositoryProtocol {
         let user = UserMapper.map(dto: response)
         
         storage.user = user
-        petStorage.pets = user.pets ?? []
+//        petStorage.pets = user.pets ?? []
     }
     
     func updateUser(input: UpdateUserInput) async throws {
