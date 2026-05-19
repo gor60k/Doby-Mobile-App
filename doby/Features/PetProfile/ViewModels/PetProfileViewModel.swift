@@ -4,12 +4,13 @@ import Observation
 @Observable
 final class PetProfileViewModel {
     private let repository: PetRepositoryProtocol
-    private let petStorage: PetStorage
-    private let userStorage: UserStorage
+    private let petStorage: PetStorageProtocol
+    private let userStorage: UserStorageProtocol
     
     var currentPage = 0
     
-    private(set) var pet: Pet?
+    var pet: Pet?
+    var petDescription: String = "Бакс — дружелюбный и энергичный пёс, который обожает долгие прогулки, игры с мячом и внимание людей. Любит вкусняшки, быстро учится новым командам и всегда рад новым знакомствам."
     
     private let petId: Int
     
@@ -20,8 +21,8 @@ final class PetProfileViewModel {
     
     init(
         repository: PetRepositoryProtocol,
-        userStorage: UserStorage,
-        petStorage: PetStorage,
+        userStorage: UserStorageProtocol,
+        petStorage: PetStorageProtocol,
         petId: Int
     ) {
         self.repository = repository

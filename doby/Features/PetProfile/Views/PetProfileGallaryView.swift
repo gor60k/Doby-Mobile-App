@@ -33,6 +33,7 @@ struct PetProfileGallaryView: View {
             )
         }
         .frame(alignment: .bottom)
+        .frame(height: 350)
     }
 }
 

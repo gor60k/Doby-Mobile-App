@@ -1,33 +1,28 @@
 import SwiftUI
 
-struct ProfileAboutView: View {
+struct PetProfileAboutView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     
-    let bio: String
+    let description: String
     let action: () -> Void
-
+    
     var body: some View {
         Group {
-            if bio.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            if description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 PrimaryEmptyView(
-                    icon: "person.text.rectangle",
-                    title: "Расскажите о себе",
-                    description: "Добавьте пару слов о себе, интересах или опыте — это поможет другим узнать вас лучше.",
+                    icon: "pawprint.fill",
+                    title: "Расскажите о своем питомце",
+                    description: "Добавьте пару слов о питомце, его характере и о его особенностях — это поможет другим узнать вашего любимца лучше",
                     buttonTitle: "Заполнить профиль",
                     buttonIcon: "pencil",
                     action: action
                 )
             } else {
-                Text(bio)
+                Text(description)
                     .font(.body)
                     .foregroundStyle(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
-}
-
-#Preview {
-    ProfileAboutView(bio: "", action: {})
-        .environment(PrimaryColorService())
 }
