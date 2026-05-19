@@ -11,12 +11,20 @@ struct ProfileView: View {
     
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
+    
     let options = ProfileDetailsTab.allCases
+    
+    let openSettings: () -> Void
+    let openPetAdding: () -> Void
+    let openPetProfile: (Int) -> Void
     
     init(
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
-        storage: UserStorage
+        storage: UserStorage,
+        openSettings: @escaping () -> Void,
+        openPetAdding: @escaping () -> Void,
+        opentPetProfile: @escaping (Int) -> Void,
     ) {
         _viewModel = State(initialValue: ProfileViewModel(
             userRepository: userRepository,
@@ -27,6 +35,10 @@ struct ProfileView: View {
             petRepository: petRepository
         ))
         _profileOrdersViewModel = State(initialValue: ProfileOrdersViewModel())
+        
+        self.openSettings = openSettings
+        self.openPetAdding = openPetAdding
+        self.openPetProfile = opentPetProfile
     }
     
     var body: some View {
@@ -45,7 +57,11 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "Мои питомцы") {
                 ProfilePetsView(
                     currentPage: profilePetsViewModel.currentPage,
-                    pets: petStorage.pets
+                    pets: petStorage.pets,
+                    openPetAdding: { openPetAdding() },
+                    openPetProfile: { id in
+                        openPetProfile(id)
+                    }
                 )
             }
             .padding(.horizontal)
@@ -60,7 +76,7 @@ struct ProfileView: View {
                     options: options,
                     title: { $0.rawValue },
                     bio: viewModel.user?.bio ?? "",
-                    buttonAction: { router.push(.settings) }
+                    buttonAction: { openSettings() }
                 )
             }
             .padding(.horizontal)
@@ -81,12 +97,11 @@ struct ProfileView: View {
         .ignoresSafeArea(edges: .top)
         .scrollIndicators(.hidden)
         .profileToolbar(
-            onEditTap: { router.push(.settings) },
+            onEditTap: { openSettings() },
             onQRScanTap: {}
         )
         .refreshable {
             await viewModel.fetchUser()
-//            await viewModel.fetchPets()
         }
     }
 }
@@ -95,7 +110,10 @@ struct ProfileView: View {
     ProfileView(
         userRepository: MockUserRepository(),
         petRepository: MockPetRepository(),
-        storage: UserStorage()
+        storage: UserStorage(),
+        openSettings: {},
+        openPetAdding: {},
+        opentPetProfile: { id in }
     )
     .PreviewAppEnvironment()
     .environment(PetStorage())

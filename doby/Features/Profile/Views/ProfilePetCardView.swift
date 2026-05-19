@@ -2,7 +2,6 @@ import SwiftUI
 import Kingfisher
 
 struct ProfilePetCardView: View {
-    @Environment(ProfileRouter.self) var router
     @Environment(PrimaryColorService.self) var primaryColorService
     
     let id: Int
@@ -10,6 +9,8 @@ struct ProfilePetCardView: View {
     let name: String
     let breedName: String
     let age: Int
+    
+    let openPetProfile: (Int) -> Void
     
     private let baseURL: URL = APIConstants.getImageBaseURL()
     
@@ -65,7 +66,7 @@ struct ProfilePetCardView: View {
                 Spacer()
                 
                 Button(action: {
-                    router.push(.petProfile(petId: id))
+                    openPetProfile(id)
                 }) {
                     Text("Подробнее")
                         .font(.system(.caption, design: .rounded))

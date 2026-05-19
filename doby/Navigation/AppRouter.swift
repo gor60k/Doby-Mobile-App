@@ -1,21 +1,19 @@
 import SwiftUI
-import Foundation
-import Combine
 import Observation
 
 @Observable
-final class SettingsRouter {
+class AppRouter<Route: Hashable> {
     var path = NavigationPath()
     
-    func push(_ route: SettingsRoute) {
+    func push(_ route: Route) {
         path.append(route)
     }
-    
+
     func pop() {
         guard !path.isEmpty else { return }
         path.removeLast()
     }
-    
+
     func popToRoot() {
         guard !path.isEmpty else { return }
         path = NavigationPath()

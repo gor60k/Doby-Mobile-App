@@ -3,13 +3,13 @@ import SwiftUI
 struct AuthStack: View {
     @Environment(\.appContainer) private var appContainer
     
-    @State private var router = AuthRouter()
+    @State private var authRouter = AuthRouter()
     
     private var repository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
     private var sessionService: SessionService { appContainer.services.sessionService }
     
     var body: some View {
-        NavigationStack(path: $router.path) {
+        NavigationStack(path: $authRouter.path) {
             SignInView(
                 repository: repository,
                 sessionService: sessionService
@@ -24,6 +24,6 @@ struct AuthStack: View {
                     }
                 }
         }
-        .environment(router)
+        .environment(authRouter)
     }
 }

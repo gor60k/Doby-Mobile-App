@@ -14,7 +14,10 @@ struct PetStack: View {
             PetView(
                 repository: repository,
                 storage: petStorage,
-                ownerUUID: userStorage.user?.uuid ?? ""
+                ownerUUID: userStorage.user?.uuid ?? "",
+                openPetAdding: { petRouter.push(.petAdding) },
+                openPetProfile: { id in
+                    petRouter.push(.profile(id: id)) }
             )
                 .navigationDestination(for: PetRoute.self) { route in
                     switch route {
@@ -25,8 +28,13 @@ struct PetStack: View {
                             repository: repository,
                             userStorage: userStorage,
                             petStorage: petStorage,
-                            petId: id
+                            petId: id,
+                            openSettings: { id in
+                                petRouter.push(.petSettings(id: id))
+                            }
                         )
+                    case .petSettings(let id):
+                        PetSettingsView()
                     }
                 }
         }

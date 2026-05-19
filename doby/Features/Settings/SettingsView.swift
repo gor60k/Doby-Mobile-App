@@ -13,6 +13,11 @@ struct SettingsView: View {
     @State private var selectedAvatarItem: PhotosPickerItem?
     @State private var selectedAvatarImage: UIImage?
     
+    // MARK: - Функции для перехода на дочерние экраны
+    let openSettingsAppearance: () -> Void
+    let openSettingsPrivacy: () -> Void
+    let openSettingsNotifications: () -> Void
+    
     private func logout() {
         Task {
             await viewModel.logout()
@@ -31,7 +36,11 @@ struct SettingsView: View {
         authRepository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
         userStorage: UserStorageProtocol,
-        cityStorage: CityStorageProtocol
+        cityStorage: CityStorageProtocol,
+        
+        openSettingsAppearance: @escaping () -> Void,
+        openSettingsPrivacy: @escaping () -> Void,
+        openSettingsNotifications: @escaping () -> Void
     ) {
         _viewModel = State(initialValue: SettingsViewModel(
             authRespository: authRepository,
@@ -39,6 +48,10 @@ struct SettingsView: View {
             userStorage: userStorage,
             cityStorage: cityStorage
         ))
+        
+        self.openSettingsAppearance = openSettingsAppearance
+        self.openSettingsPrivacy = openSettingsPrivacy
+        self.openSettingsNotifications = openSettingsNotifications
     }
     
     var body: some View {
@@ -62,20 +75,14 @@ struct SettingsView: View {
                 email: $viewModel.email
             )
             
-            SettingsPetServicesView(action: {
-                router.push(.petSettings)
-            })
+//            SettingsPetServicesView(action: {
+//                router.push(.petSettings())
+//            })
             
             SettingsAppView(
-                appearanceAction: {
-                    router.push(.settingsAppearance)
-                },
-                privacyAction: {
-                    router.push(.settingsPrivacy)
-                },
-                notificationsAction: {
-                    router.push(.settingsNotifications)
-                }
+                appearanceAction: { openSettingsAppearance() },
+                privacyAction: { openSettingsPrivacy() },
+                notificationsAction: { openSettingsNotifications() }
             )
             
             Section("Аккаунт") {
@@ -109,7 +116,10 @@ struct SettingsView: View {
         authRepository: MockAuthRepository(),
         userRepository: MockUserRepository(),
         userStorage: UserStorage(),
-        cityStorage: CityStorage()
+        cityStorage: CityStorage(),
+        openSettingsAppearance: {},
+        openSettingsPrivacy: {},
+        openSettingsNotifications: {}
     )
     .PreviewAppEnvironment()
     .environment(ProfileRouter())

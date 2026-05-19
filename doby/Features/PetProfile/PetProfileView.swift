@@ -6,18 +6,24 @@ struct PetProfileView: View {
     @State private var viewModel: PetProfileViewModel
     let petId: Int
     
+    // MARK: - Функции для перехода к дочерним экранам
+    let openSettings: (Int) -> Void
+    
     init(
         repository: PetRepositoryProtocol,
         userStorage: UserStorageProtocol,
         petStorage: PetStorageProtocol,
-        petId: Int
+        petId: Int,
+        openSettings: @escaping (Int) -> Void
     ) {
         self.petId = petId
+        self.openSettings = openSettings
+        
         _viewModel = State(initialValue: PetProfileViewModel(
             repository: repository,
             userStorage: userStorage,
             petStorage: petStorage,
-            petId: petId
+            petId: petId,
         ))
     }
     
@@ -99,6 +105,7 @@ struct PetProfileView: View {
             await viewModel.fetchPet()
         }
         .ignoresSafeArea(edges: .top)
+        .petProfileToolbar(onEdit: { openSettings(petId) })
     }
 }
 
@@ -107,7 +114,8 @@ struct PetProfileView: View {
         repository: MockPetRepository(),
         userStorage: UserStorage(),
         petStorage: MockPetStorage(),
-        petId: 1
+        petId: 1,
+        openSettings: { id in }
     )
     .PreviewAppEnvironment()
 }

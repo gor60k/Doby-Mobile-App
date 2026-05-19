@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PetView: View {
-    @Environment(PetRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State var viewModel: PetViewModel
@@ -9,16 +8,24 @@ struct PetView: View {
     
     let ownerUUID: String
     
+    // MARK: - Функции для переходов к дочерним экранам
+    let openPetAdding: () -> Void
+    let openPetProfile: (Int) -> Void
+    
     init(
         repository: PetRepositoryProtocol,
         storage: PetStorage,
-        ownerUUID: String
+        ownerUUID: String,
+        openPetAdding: @escaping () -> Void,
+        openPetProfile: @escaping (Int) -> Void
     ) {
         _viewModel = State(initialValue: PetViewModel(
             repository: repository,
             storage: storage
         ))
         self.ownerUUID = ownerUUID
+        self.openPetAdding = openPetAdding
+        self.openPetProfile = openPetProfile
     }
     
     var body: some View {
@@ -32,9 +39,7 @@ struct PetView: View {
                             description: "Добавьте своего первого питомца, чтобы начать",
                             buttonTitle: "Добавить питомца",
                             buttonIcon: "plus",
-                            action: {
-                                router.push(.petAdding)
-                            }
+                            action: { openPetAdding() }
                         )
                     }
                 } else {
@@ -56,7 +61,8 @@ struct PetView: View {
                                 imageURL: pet.photos.first?.imageURL,
                                 name: pet.name,
                                 breedName: pet.breedName,
-                                age: pet.age
+                                age: pet.age,
+                                openPetProfile: { openPetProfile(pet.id) }
                             )
                         }
                         .animation(.easeInOut, value: isEditing)
@@ -68,7 +74,7 @@ struct PetView: View {
         .navigationTitle("Питомцы")
         .navigationBarTitleDisplayMode(.inline)
         .petToolbar(isEditing: $isEditing) {
-            router.push(.petAdding)
+            openPetAdding()
         }
         .refreshable {
             await viewModel.fetchPets(ownerUUID: ownerUUID)
@@ -80,8 +86,9 @@ struct PetView: View {
     PetView(
         repository: MockPetRepository(),
         storage: PetStorage(),
-        ownerUUID: ""
+        ownerUUID: "",
+        openPetAdding: {},
+        openPetProfile: { id in }
     )
     .PreviewAppEnvironment()
-    .environment(PetRouter())
 }

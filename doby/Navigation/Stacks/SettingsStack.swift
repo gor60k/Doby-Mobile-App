@@ -8,15 +8,18 @@ struct SettingsStack: View {
     private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
     
-    @State private var router = SettingsRouter()
+    @State private var settingsRouter = SettingsRouter()
     
     var body: some View {
-        NavigationStack(path: $router.path) {
+        NavigationStack(path: $settingsRouter.path) {
             SettingsView(
                 authRepository: authRepository,
                 userRepository: userRepository,
                 userStorage: userStorage,
-                cityStorage: cityStorage
+                cityStorage: cityStorage,
+                openSettingsAppearance: { settingsRouter.push(.appearance) },
+                openSettingsPrivacy: { settingsRouter.push(.privacy) },
+                openSettingsNotifications: { settingsRouter.push(.notifications) }
             )
                 .navigationDestination(for: SettingsRoute.self) { route in
                     switch route {
@@ -31,6 +34,6 @@ struct SettingsStack: View {
                     }
                 }
         }
-        .environment(router)
+        .environment(settingsRouter)
     }
 }

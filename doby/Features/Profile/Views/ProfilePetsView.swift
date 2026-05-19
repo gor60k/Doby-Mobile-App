@@ -1,11 +1,15 @@
 import SwiftUI
 
 struct ProfilePetsView: View {
-    @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State var currentPage: Int = 0
+    
     let pets: [Pet]
+    
+    // MARK: - Функции для перехода на дочерние экраны
+    let openPetAdding: () -> Void
+    let openPetProfile: (Int) -> Void
     
     var body: some View {
         if pets.isEmpty {
@@ -15,9 +19,7 @@ struct ProfilePetsView: View {
                 description: "Добавьте своего первого питомца, чтобы начать",
                 buttonTitle: "Добавить питомца",
                 buttonIcon: "plus",
-                action: {
-                    router.push(.petAdding)
-                }
+                action: { openPetAdding() }
             )
         } else {
             ZStack(alignment: .topTrailing) {
@@ -32,7 +34,10 @@ struct ProfilePetsView: View {
                                 imageURL: pet.photos.first?.imageURL,
                                 name: pet.name,
                                 breedName: pet.breedName,
-                                age: pet.age
+                                age: pet.age,
+                                openPetProfile: { id in
+                                    openPetProfile(id)
+                                }
                             )
                         }
                         .frame(height: 200)
@@ -45,9 +50,7 @@ struct ProfilePetsView: View {
                 }
                 .overlay(alignment: .topTrailing) {
                     UtilityButton(
-                        action: {
-                            router.push(.petAdding)
-                        },
+                        action: { openPetAdding() },
                         icon: "plus"
                     )
                     .padding(.vertical, 16)
@@ -57,8 +60,3 @@ struct ProfilePetsView: View {
         }
     }
 }
-
-//#Preview {
-//    ProfilePetsView(currentPage: 0, pets: [])
-//        .withAppEnvironment()
-//}
