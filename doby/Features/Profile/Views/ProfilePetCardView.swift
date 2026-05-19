@@ -27,8 +27,8 @@ struct ProfilePetCardView: View {
                         ProgressView()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 80)
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: 80)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             

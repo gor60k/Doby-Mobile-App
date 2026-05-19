@@ -1,24 +1,30 @@
-import SwiftUI
+import Foundation
 
 actor PetStorageActor {
     
-    private let fileURL: URL
+    private let storageKey: String
+    private let defaults: UserDefaults
     
-    init(filename: String = "pets.json") {
-        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        self.fileURL = url.appendingPathComponent(filename)
+    init(
+        storageKey: String = "pets",
+        defaults: UserDefaults = .standard
+    ) {
+        self.storageKey = storageKey
+        self.defaults = defaults
     }
     
     func load() -> [Pet] {
         guard
-            let data = try? Data(contentsOf: fileURL),
+            let data = defaults.data(forKey: storageKey),
             let pets = try? JSONDecoder().decode([Pet].self, from: data)
         else { return [] }
+        
         return pets
     }
     
     func save(_ pets: [Pet]) {
         guard let data = try? JSONEncoder().encode(pets) else { return }
-        try? data.write(to: fileURL, options: [.atomic])
+        
+        defaults.set(data, forKey: storageKey)
     }
 }

@@ -1,24 +1,31 @@
 import SwiftUI
 
 actor UserStorageActor {
-    private let fileURL: URL
     
-    init(filename: String = "user.json") {
-        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        self.fileURL = url.appendingPathComponent(filename)
+    private let storageKey: String
+    private let defaults: UserDefaults
+    
+    init(
+        storageKey: String = "user",
+        defaults: UserDefaults = .standard
+    ) {
+        self.storageKey = storageKey
+        self.defaults = defaults
     }
     
     func load() -> User? {
         guard
-            let data = try? Data(contentsOf: fileURL),
+            let data = defaults.data(forKey: storageKey),
             let user = try? JSONDecoder().decode(User.self, from: data)
         else { return nil }
+        
         return user
     }
     
     func save(_ user: User?) {
         guard let data = try? JSONEncoder().encode(user) else { return }
-        try? data.write(to: fileURL, options: [.atomic])
+        
+        defaults.set(data, forKey: storageKey)
     }
     
 }

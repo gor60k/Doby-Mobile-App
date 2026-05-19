@@ -32,7 +32,12 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             // MARK: - Шапка профиля
-            ProfileHeaderView(user: viewModel.user)
+            ProfileHeaderView(
+                uuid: viewModel.user?.uuid,
+                username: viewModel.user?.username,
+                firstName: viewModel.user?.firstName,
+                lastName: viewModel.user?.lastName
+            )
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             
@@ -81,7 +86,7 @@ struct ProfileView: View {
         )
         .refreshable {
             await viewModel.fetchUser()
-            await viewModel.fetchPets()
+//            await viewModel.fetchPets()
         }
     }
 }
