@@ -3,12 +3,12 @@ import SwiftUI
 struct ProfileStack: View {
     @Environment(\.appContainer) private var appContainer
     @Environment(PetStorage.self) private var petStorage
+    @Environment(UserStorage.self) private var userStorage
+    @Environment(CityStorage.self) private var cityStorage
     
     private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
     private var petRepository: PetRepositoryProtocol { appContainer.repositories.petRepository }
-    
-    private var userStorage: UserStorage { appContainer.storage.user }
     
     @State private var router = ProfileRouter()
     
@@ -25,7 +25,8 @@ struct ProfileStack: View {
                         SettingsView(
                             authRepository: authRepository,
                             userRepository: userRepository,
-                            userStorage: userStorage
+                            userStorage: userStorage,
+                            cityStorage: cityStorage
                         )
                     case .settingsAppearance:
                         SettingsAppearensView()

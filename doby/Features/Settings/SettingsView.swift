@@ -13,15 +13,31 @@ struct SettingsView: View {
     @State private var selectedAvatarItem: PhotosPickerItem?
     @State private var selectedAvatarImage: UIImage?
     
+    private func logout() {
+        Task {
+            await viewModel.logout()
+            sessionService.setAuthenticated(false)
+        }
+    }
+    
+    private func saveChanges() {
+        Task {
+            await viewModel.updateUser()
+            router.pop()
+        }
+    }
+    
     init(
         authRepository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
-        userStorage: UserStorage
+        userStorage: UserStorageProtocol,
+        cityStorage: CityStorageProtocol
     ) {
         _viewModel = State(initialValue: SettingsViewModel(
             authRespository: authRepository,
             userRepository: userRepository,
-            userStorage: userStorage
+            userStorage: userStorage,
+            cityStorage: cityStorage
         ))
     }
     
@@ -36,7 +52,8 @@ struct SettingsView: View {
                 name: $viewModel.firstName,
                 surname: $viewModel.lastName,
                 phone: $viewModel.phone,
-                city: $viewModel.city
+                selectedCityId: $viewModel.selectedCityId,
+                cities: viewModel.cities,
             )
             
             SettingsBIOView(bio: $viewModel.bio)
@@ -62,45 +79,17 @@ struct SettingsView: View {
             )
             
             Section("Аккаунт") {
-                Button(action: {
-                    Task {
-                        await viewModel.logout()
-                        sessionService.setAuthenticated(false)
-                    }
-                }) {
-                    Text("Выйти")
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                Button("Выйти") {
+                    logout()
                 }
-                
-                Button(action: {
-                    Task {
-                        await MainActor.run {
-                            sessionService.setAuthenticated(false)
-                            sessionService.setRegistered(false)
-                        }
-                    }
-                }) {
-                    Text("Удалить аккаунт")
-                        .foregroundColor(.red)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                }
+                .foregroundColor(.red)
+                .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Настройки")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Готово", action: {
-                    Task {
-                        await viewModel.updateUser()
-                        router.pop()
-                    }
-                })
-                    .tint(.primary)
-            }
-        }
+        .settingsToolbar(onSave: { saveChanges() })
         .task(id: selectedAvatarItem) {
             guard let selectedAvatarItem else { return }
             guard let data = try? await selectedAvatarItem.loadTransferable(type: Data.self),
@@ -109,6 +98,9 @@ struct SettingsView: View {
                 selectedAvatarImage = image
             }
         }
+        .task {
+            await viewModel.fetchCities()
+        }
     }
 }
 
@@ -116,7 +108,8 @@ struct SettingsView: View {
     SettingsView(
         authRepository: MockAuthRepository(),
         userRepository: MockUserRepository(),
-        userStorage: UserStorage()
+        userStorage: UserStorage(),
+        cityStorage: CityStorage()
     )
     .PreviewAppEnvironment()
     .environment(ProfileRouter())

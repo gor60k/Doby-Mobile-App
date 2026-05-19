@@ -2,12 +2,11 @@ import SwiftUI
 
 struct SettingsStack: View {
     @Environment(\.appContainer) private var appContainer
+    @Environment(UserStorage.self) private var userStorage
+    @Environment(CityStorage.self) private var cityStorage
     
     private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
-    
-    private var userStorage: UserStorage { appContainer.storage.user }
-    
     
     @State private var router = SettingsRouter()
     
@@ -16,7 +15,8 @@ struct SettingsStack: View {
             SettingsView(
                 authRepository: authRepository,
                 userRepository: userRepository,
-                userStorage: userStorage
+                userStorage: userStorage,
+                cityStorage: cityStorage
             )
                 .navigationDestination(for: SettingsRoute.self) { route in
                     switch route {

@@ -5,12 +5,13 @@ import Observation
 final class SettingsViewModel {
     private let authRepository: AuthRepositoryProtocol
     private let userRepository: UserRepositoryProtocol
-    private let userStorage: UserStorage
+    private let userStorage: UserStorageProtocol
+    private let cityStorage: CityStorageProtocol
     
     var avatar: String = ""
 
-    var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
-    var cityId: Int = 1
+    var selectedCityId: Int?
+    var cities: [City] { cityStorage.cities }
     
     var firstName: String = ""
     var lastName: String = ""
@@ -30,11 +31,13 @@ final class SettingsViewModel {
     init(
         authRespository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
-        userStorage: UserStorage
+        userStorage: UserStorageProtocol,
+        cityStorage: CityStorageProtocol
     ) {
         self.authRepository = authRespository
         self.userRepository = userRepository
         self.userStorage = userStorage
+        self.cityStorage = cityStorage
         
         loadCurrentUser()
     }
@@ -45,6 +48,17 @@ final class SettingsViewModel {
         
         do {
             try await userRepository.fetchUser()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
+    func fetchCities() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            _ = try await userRepository.fetchCities()
         } catch {
             self.error = error.localizedDescription
         }
@@ -61,7 +75,7 @@ final class SettingsViewModel {
                 patronymic: patronymic.nilIfEmpty,
                 phone: phone.nilIfEmpty,
                 avatar: avatar.nilIfEmpty,
-                city: cityId,
+                city: selectedCityId,
                 bio: bio.nilIfEmpty,
             )
             
@@ -89,5 +103,7 @@ final class SettingsViewModel {
         lastName = user.lastName ?? ""
         phone = user.phone ?? ""
         email = user.username
+        bio = user.bio ?? ""
+        selectedCityId = user.city?.id
     }
 }
