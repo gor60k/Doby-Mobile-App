@@ -24,6 +24,7 @@ struct PetAddingView: View {
         Form {
             PetAddingInfoView(
                 petType: $viewModel.petType,
+                petGender: $viewModel.petGender,
                 name: $viewModel.name,
                 breedName: $viewModel.breedName,
                 age: $viewModel.age
@@ -61,4 +62,10 @@ struct PetAddingView: View {
             )
         }
     }
+}
+
+#Preview {
+    PetAddingView(repository: MockPetRepository())
+        .PreviewAppEnvironment()
+        .environment(PetRouter())
 }

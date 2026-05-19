@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PetAddingInfoView: View {
     @Binding var petType: PetType
+    @Binding var petGender: Gender
     @Binding var name: String
     @Binding var breedName: String
     @Binding var age: Int
@@ -13,6 +14,12 @@ struct PetAddingInfoView: View {
             Picker("Тип питомца", selection: $petType) {
                 Text("Собака").tag(PetType.dog)
                 Text("Кошка").tag(PetType.cat)
+            }
+            .pickerStyle(.segmented)
+            
+            Picker("Пол питомца", selection: $petGender) {
+                Text("Мальчик").tag(Gender.male)
+                Text("Девочка").tag(Gender.female)
             }
             .pickerStyle(.segmented)
 
@@ -30,6 +37,7 @@ struct PetAddingInfoView: View {
 #Preview {
     PetAddingInfoView(
         petType: .constant(.dog),
+        petGender: .constant(Gender.male),
         name: .constant(""),
         breedName: .constant(""),
         age: .constant(10)

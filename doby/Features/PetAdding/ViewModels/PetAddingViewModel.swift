@@ -14,6 +14,8 @@ final class PetAddingViewModel {
     var age: Int = 0
     var breedName: String = ""
     
+    var petGender: Gender = .female
+    
     // MARK: - высота и вес обязательные поля
     var height: Int?
     var weight: Int?
