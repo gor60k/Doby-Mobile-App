@@ -36,9 +36,9 @@ struct PetAddingView: View {
             )
             
             PetAddingNutritionView(
-                feedingType: $viewModel.feedingType,
-                feedingSchedule: $viewModel.feedingSchedule,
-                feedingNotes: $viewModel.feedingNotes
+                feedingType: $viewModel.dietType,
+                feedingSchedule: $viewModel.dietPattern,
+                feedingNotes: $viewModel.dietAdditionalInfo
             )
             
             PetAddingPhotoView(

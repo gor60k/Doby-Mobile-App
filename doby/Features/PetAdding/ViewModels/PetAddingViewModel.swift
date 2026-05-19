@@ -8,28 +8,31 @@ import PhotosUI
 final class PetAddingViewModel {
     private let repository: PetRepositoryProtocol
     
+    // MARK: - Обязательные поля
     var petType: PetType = .dog
     var name: String = ""
     var age: Int = 0
-    var height: Int = 0
-    var weight: Int = 0
     var breedName: String = ""
+    
+    // MARK: - высота и вес обязательные поля
+    var height: Int?
+    var weight: Int?
+    var description: String = ""
+    
     var dietType: String = ""
     var dietPattern: String = ""
-
-    var description: String = ""
+    var dietAdditionalInfo: String = ""
+    
     var selectedPhotoItems: [PhotosPickerItem] = []
     var selectedPhotosData: [Data] = []
 
-    var feedingType: String = ""
-    var feedingSchedule: String = ""
-    var feedingNotes: String = ""
-    
+    // MARK: - Обязательные теги
     var warningTagsViewModel = PrimaryTagsViewModel(
         type: .warning,
         placeholder: "Например: аллергия"
     )
     
+    // MARK: - Обязательные теги
     var featureTagsViewModel = PrimaryTagsViewModel(
         type: .feature,
         placeholder: "Например: любит детей"
@@ -73,9 +76,9 @@ final class PetAddingViewModel {
                 height: height,
                 weight: weight,
                 breedName: breedName,
-                dietType: feedingType,
-                dietPattern: feedingSchedule,
-                dietAdditionalInfo: feedingNotes,
+                dietType: dietType,
+                dietPattern: dietPattern,
+                dietAdditionalInfo: dietAdditionalInfo,
                 warningTags: warningTagsViewModel.tags,
                 specificTags: featureTagsViewModel.tags
             )

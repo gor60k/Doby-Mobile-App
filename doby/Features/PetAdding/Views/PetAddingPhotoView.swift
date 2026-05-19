@@ -6,7 +6,9 @@ struct PetAddingPhotoView: View {
     @Binding var selectedPhotoItems: [PhotosPickerItem]
     
     var body: some View {
-        Section("Фотографии") {
+        Section(
+            header: PrimaryFormSectionHeader(title: "Фотографии", isRequired: true)
+        ) {
             PhotosPicker(
                 selection: $selectedPhotoItems,
                 maxSelectionCount: 10,

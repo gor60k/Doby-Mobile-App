@@ -4,7 +4,9 @@ struct PetAddingWarningView: View {
     @Binding var warningTagsViewModel: PrimaryTagsViewModel
 
     var body: some View {
-        Section("Особые предупреждения") {
+        Section(
+            header: PrimaryFormSectionHeader(title: "Особые предупреждения", isRequired: true)
+        ) {
             PrimaryTagsView(
                 viewModel: warningTagsViewModel
             )

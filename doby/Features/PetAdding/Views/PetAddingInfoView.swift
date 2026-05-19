@@ -7,7 +7,9 @@ struct PetAddingInfoView: View {
     @Binding var age: Int
     
     var body: some View {
-        Section("Основная информация") {
+        Section(
+            header: PrimaryFormSectionHeader(title: "Основная информация", isRequired: true)
+        ) {
             Picker("Тип питомца", selection: $petType) {
                 Text("Собака").tag(PetType.dog)
                 Text("Кошка").tag(PetType.cat)
@@ -23,4 +25,13 @@ struct PetAddingInfoView: View {
             Stepper("Возраст: \(age) лет", value: $age, in: 0...30)
         }
     }
+}
+
+#Preview {
+    PetAddingInfoView(
+        petType: .constant(.dog),
+        name: .constant(""),
+        breedName: .constant(""),
+        age: .constant(10)
+    )
 }
