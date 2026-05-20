@@ -13,7 +13,24 @@ final class PetSettingsViewModel {
     
     var height: Int?
     var weight: Int?
-    var description: String = "Описание"
+    var description: String = ""
+    
+    var dietType: String = ""
+    var dietPattern: String = ""
+    var dietAdditionalInfo: String = ""
+    
+    var warningTags: [String] = []
+    var featureTags: [String] = []
+    
+    var warningTagsViewModel = PrimaryTagsViewModel(
+        type: .warning,
+        placeholder: "Например: аллергия"
+    )
+    
+    var featureTagsViewModel = PrimaryTagsViewModel(
+        type: .feature,
+        placeholder: "Например: любит детей"
+    )
     
     var isLoading = false
     var error: String?
@@ -51,5 +68,29 @@ final class PetSettingsViewModel {
         age = loaded.age
         height = loaded.height
         weight = loaded.weight
+        description = loaded.additionalInfo
+        
+        dietType = loaded.dietType
+        dietPattern = loaded.dietPatterns
+        dietAdditionalInfo = loaded.dietAdditionalInfo
+        
+        warningTags = loaded.warningTags
+        featureTags = loaded.specificTags
+        warningTagsViewModel.tags = warningTags
+        featureTagsViewModel.tags = featureTags
+    }
+}
+
+extension PetSettingsViewModel {
+    static var mock: PetSettingsViewModel {
+        let repository = MockPetRepository()
+        let storage = PetStorage()
+        
+        return PetSettingsViewModel(
+            petRepository: repository,
+            petStorage: storage,
+            petId: 1,
+            ownerUUID: ""
+        )
     }
 }

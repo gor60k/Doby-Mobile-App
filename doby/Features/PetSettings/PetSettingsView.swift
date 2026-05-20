@@ -1,23 +1,19 @@
 import SwiftUI
 
 struct PetSettingsView: View {
-    @State private var viewMode: PetSettingsViewModel
+    @State private var viewModel: PetSettingsViewModel
     
     let petId: Int
     let ownerUUID: String
     
     @State var age: Int = 0
     
-    @State var height: Int?
-    @State var weight: Int?
-    @State var description: String = ""
-    
     init(
         viewModel: PetSettingsViewModel,
         petId: Int,
         ownerUUID: String
     ) {
-        _viewMode = State(initialValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
         
         self.petId = petId
         self.ownerUUID = ownerUUID
@@ -30,12 +26,33 @@ struct PetSettingsView: View {
             }
             
             PetSettingsDetailsView(
-                height: $viewMode.height,
-                weight: $viewMode.weight,
-                description: $viewMode.description
+                height: $viewModel.height,
+                weight: $viewModel.weight,
+                description: $viewModel.description
             )
-        }
-        .task {
+            
+            PetSettingsDietView(
+                dietType: $viewModel.dietType,
+                dietPattern: $viewModel.dietPattern,
+                dietAdditionalInfo: $viewModel.dietAdditionalInfo
+            )
+            
+            PetSettingsTagsView(
+                viewModel: $viewModel.warningTagsViewModel,
+                title: "Особые предупреждения"
+            )
+            
+            PetSettingsTagsView(
+                viewModel: $viewModel.featureTagsViewModel,
+                title: "Особенности")
         }
     }
+}
+
+#Preview {
+    PetSettingsView(
+        viewModel: .mock,
+        petId: 1,
+        ownerUUID: ""
+    )
 }

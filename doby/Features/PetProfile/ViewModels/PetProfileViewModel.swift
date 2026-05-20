@@ -10,7 +10,7 @@ final class PetProfileViewModel {
     var currentPage = 0
     
     var pet: Pet?
-    var petDescription: String = "Бакс — дружелюбный и энергичный пёс, который обожает долгие прогулки, игры с мячом и внимание людей. Любит вкусняшки, быстро учится новым командам и всегда рад новым знакомствам."
+    var description: String?
     
     private let petId: Int
     
@@ -61,6 +61,7 @@ final class PetProfileViewModel {
         pet = loaded
         slides = makeSlides(from: loaded)
         infoItems = makeInfoItems(from: loaded)
+        description = loaded.additionalInfo
     }
     
     private func makeSlides(from pet: Pet) -> [PetPhoto] {

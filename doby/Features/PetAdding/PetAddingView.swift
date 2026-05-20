@@ -46,12 +46,14 @@ struct PetAddingView: View {
                 selectedPhotoItems: $viewModel.selectedPhotoItems
             )
             
-            PetAddingWarningView(
-                warningTagsViewModel: $viewModel.warningTagsViewModel
+            PetAddingTagsView(
+                viewModel: $viewModel.warningTagsViewModel,
+                title: "Особые предупреждения"
             )
             
-            PetAddingFeatureView(
-                featureTagsViewModel: $viewModel.featureTagsViewModel
+            PetAddingTagsView(
+                viewModel: $viewModel.featureTagsViewModel,
+                title: "Особенности"
             )
         
             PetAddingSubmitView(
@@ -63,9 +65,3 @@ struct PetAddingView: View {
         }
     }
 }
-
-//#Preview {
-//    PetAddingView(viewModel: <#T##PetAddingViewModel#>)
-//        .PreviewAppEnvironment()
-//        .environment(PetRouter())
-//}

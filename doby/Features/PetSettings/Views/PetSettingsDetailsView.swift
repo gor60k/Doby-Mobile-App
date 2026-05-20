@@ -11,11 +11,15 @@ struct PetSettingsDetailsView: View {
                 Text("Рост")
                 Spacer()
                 TextField("см", text: $height.stringValue)
+                    .multilineTextAlignment(.trailing)
+                    .keyboardType(.numberPad)
             }
             HStack {
                 Text("Вес")
                 Spacer()
                 TextField("кг", text: $weight.stringValue)
+                    .multilineTextAlignment(.trailing)
+                    .keyboardType(.numberPad)
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text("Описание")
@@ -27,5 +31,15 @@ struct PetSettingsDetailsView: View {
                 .lineLimit(4...8)
             }
         }
+    }
+}
+
+#Preview {
+    Form {
+        PetSettingsDetailsView(
+            height: .constant(100),
+            weight: .constant(100),
+            description: .constant("Пенисы")
+        )
     }
 }

@@ -61,7 +61,7 @@ struct PetProfileView: View {
                             feedbackValue: .feedback,
                             options: options,
                             title: { $0.rawValue },
-                            description: viewModel.petDescription,
+                            description: viewModel.description ?? "",
                             buttonAction: {}
                         )
                     }

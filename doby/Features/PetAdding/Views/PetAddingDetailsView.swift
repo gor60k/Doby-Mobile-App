@@ -44,3 +44,14 @@ extension Binding where Value == Int? {
         )
     }
 }
+
+#Preview {
+    Form {
+        PetAddingDetailsView(
+            height: .constant(100),
+            weight: .constant(100),
+            description: .constant("")
+        )
+        .PreviewAppEnvironment()
+    }
+}
