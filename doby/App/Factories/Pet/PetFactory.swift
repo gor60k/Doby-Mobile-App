@@ -21,4 +21,13 @@ extension AppContainer {
             petId: petId
         )
     }
+    
+    func makePetSettingsViewModel(petId: Int, ownerUUID: String) -> PetSettingsViewModel {
+        PetSettingsViewModel(
+            petRepository: petRepository,
+            petStorage: petStorage,
+            petId: petId,
+            ownerUUID: ownerUUID
+        )
+    }
 }

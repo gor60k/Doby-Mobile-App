@@ -5,6 +5,8 @@ struct PetStack: View {
     @Environment(UserStorage.self) private var userStorage
     @Environment(PetStorage.self) private var petStorage
     
+    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
+    
     @State private var petRouter = PetRouter()
     
     var body: some View {
@@ -29,7 +31,14 @@ struct PetStack: View {
                             }
                         )
                     case .petSettings(let id):
-                        PetSettingsView()
+                        PetSettingsView(
+                            viewModel: appContainer.makePetSettingsViewModel(
+                                petId: id,
+                                ownerUUID: ownerUUID
+                            ),
+                            petId: id,
+                            ownerUUID: ownerUUID
+                        )
                     }
                 }
         }

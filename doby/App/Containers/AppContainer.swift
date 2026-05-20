@@ -2,17 +2,21 @@ import Alamofire
 
 @MainActor
 final class AppContainer {
+    // MARK: - Хранилища
     let userStorage = UserStorage()
     let petStorage = PetStorage()
     let cityStorage = CityStorage()
     
+    // MARK: - Сервисы инфраструктуры
     let keychainService = KeychainService()
     let sessionService = SessionService()
     let tokenManager: TokenManager
     
+    // MARK: - API
     let apiClient: APIClient
     let authApiClient: APIClient
     
+    // MARK: - Репозитории
     let authRepository: AuthRepositoryProtocol
     let userRepository: UserRepositoryProtocol
     let petRepository: PetRepositoryProtocol

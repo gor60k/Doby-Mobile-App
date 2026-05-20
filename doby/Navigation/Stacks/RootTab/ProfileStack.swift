@@ -1,6 +1,5 @@
 import SwiftUI
 
-//TODO: - разобраться с маршрутизацией питев
 struct ProfileStack: View {
     @Environment(\.appContainer) private var appContainer
     @Environment(PetStorage.self) private var petStorage
@@ -10,6 +9,7 @@ struct ProfileStack: View {
     private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
     private var petRepository: PetRepositoryProtocol { appContainer.petRepository }
+    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
     
     @State private var profileRouter = ProfileRouter()
     @State private var petRouter = PetRouter()
@@ -43,8 +43,15 @@ struct ProfileStack: View {
                         SettingsPrivacyView()
                     case .settingsNotifications:
                         SettingsNotificationsView()
-                    case .petSettings:
-                        PetSettingsView()
+                    case .petSettings(let id):
+                        PetSettingsView(
+                            viewModel: appContainer.makePetSettingsViewModel(
+                                petId: id,
+                                ownerUUID: ownerUUID
+                            ),
+                            petId: id,
+                            ownerUUID: ownerUUID
+                        )
                     case .petProfile(let id):
                         PetProfileView(
                             viewModel: appContainer.makePetProfileViewModel(petId: id),
@@ -60,6 +67,5 @@ struct ProfileStack: View {
                 }
         }
         .environment(profileRouter)
-        .environment(petRouter)
     }
 }

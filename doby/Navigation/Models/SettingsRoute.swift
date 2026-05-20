@@ -4,5 +4,5 @@ enum SettingsRoute: Hashable {
     case appearance
     case privacy
     case notifications
-    case petSettings
+    case petSettings(id: Int)
 }

@@ -7,6 +7,7 @@ struct SettingsStack: View {
     
     private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
     private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
+    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
     
     @State private var settingsRouter = SettingsRouter()
     
@@ -27,8 +28,15 @@ struct SettingsStack: View {
                         SettingsPrivacyView()
                     case .notifications:
                         SettingsNotificationsView()
-                    case .petSettings:
-                        PetSettingsView()
+                    case .petSettings(let id):
+                        PetSettingsView(
+                            viewModel: appContainer.makePetSettingsViewModel(
+                                petId: id,
+                                ownerUUID: ownerUUID
+                            ),
+                            petId: id,
+                            ownerUUID: ownerUUID
+                        )
                     }
                 }
         }
