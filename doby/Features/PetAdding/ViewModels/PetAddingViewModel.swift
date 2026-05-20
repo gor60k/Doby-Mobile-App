@@ -9,12 +9,12 @@ final class PetAddingViewModel {
     private let repository: PetRepositoryProtocol
     
     // MARK: - Обязательные поля
-    var petType: PetType = .dog
+    var petType: PetType?
     var name: String = ""
     var age: Int = 0
     var breedName: String = ""
     
-    var petGender: Gender = .female
+    var petGender: Gender?
     
     // MARK: - высота и вес обязательные поля
     var height: Int?
@@ -71,15 +71,17 @@ final class PetAddingViewModel {
         
         do {
             let input = CreatePetInput(
-                petType: petType,
+                petType: petType ?? .dog,
                 uploadedPhotos: selectedPhotosData,
                 name: name,
                 age: age,
+                gender: petGender ?? .male,
                 height: height,
                 weight: weight,
                 breedName: breedName,
                 dietType: dietType,
                 dietPattern: dietPattern,
+                additionalInfo: description,
                 dietAdditionalInfo: dietAdditionalInfo,
                 warningTags: warningTagsViewModel.tags,
                 specificTags: featureTagsViewModel.tags

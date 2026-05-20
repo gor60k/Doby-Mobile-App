@@ -12,6 +12,13 @@ struct Pet: Codable, Identifiable {
     let ownerUUID: String
     let name: String
     let age: Int
+    let gender: Gender
+    var sex: String {
+        switch gender {
+        case .male: return "Мальчик"
+        case .female: return "Девочка"
+        }
+    }
     let height: Int
     let weight: Int
     let breedName: String
@@ -19,6 +26,7 @@ struct Pet: Codable, Identifiable {
     let dietPatterns: String
     let warningTags: [String]
     let specificTags: [String]
+    let additionalInfo: String
     let dietAdditionalInfo: String
     let photos: [PetPhoto]
 }

@@ -6,6 +6,7 @@ final class MockPetStorage {
             ownerUUID: "",
             name: "Варя",
             age: 4,
+            gender: .female,
             height: 20,
             weight: 6,
             breedName: "Вест Хайлен Уайт Терьер",
@@ -25,6 +26,7 @@ final class MockPetStorage {
                 "Дружелюбна к детям",
                 "Знает команды"
             ],
+            additionalInfo: "",
             dietAdditionalInfo: "Аллергия на курицу. Нельзя сладкое и трубчатые кости. В период линьки принимает витамины для шерсти.",
             photos: [
                 PetPhoto(

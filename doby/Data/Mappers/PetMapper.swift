@@ -9,6 +9,7 @@ struct PetMapper {
             ownerUUID: response.owner_uuid,
             name: response.name,
             age: response.age,
+            gender: mapGener(response.sex),
             height: response.height ?? 0,
             weight: response.weight ?? 0,
             breedName: response.breed_name,
@@ -16,6 +17,7 @@ struct PetMapper {
             dietPatterns: response.diet_pattern,
             warningTags: response.warning_tags,
             specificTags: response.specific_features,
+            additionalInfo: response.additional_info,
             dietAdditionalInfo: response.diet_additional_info,
             photos: mapPhotos(response.photos)
         )
@@ -29,6 +31,13 @@ struct PetMapper {
         switch dto {
         case .dog: return .dog
         case .cat: return .cat
+        }
+    }
+    
+    nonisolated private static func mapGener(_ dto: GenderDTO) -> Gender {
+        switch dto {
+        case .male: return .male
+        case .female: return .female
         }
     }
 

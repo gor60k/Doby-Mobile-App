@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct PetAddingInfoView: View {
-    @Binding var petType: PetType
-    @Binding var petGender: Gender
+    @Binding var petType: PetType?
+    @Binding var petGender: Gender?
     @Binding var name: String
     @Binding var breedName: String
     @Binding var age: Int
