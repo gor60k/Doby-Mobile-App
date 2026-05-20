@@ -4,16 +4,16 @@ import Foundation
 actor TokenManager {
     private var refreshTask: Task<String, Error>?
     
-    private let authService: AuthAPIProtocol
+    private let authAPI: AuthAPIProtocol
     private let keychainService: KeychainService
     private let sessionService: SessionService
     
     init(
-        authService: AuthAPIProtocol,
+        authAPI: AuthAPIProtocol,
         keychainService: KeychainService,
         sessionService: SessionService
     ) {
-        self.authService = authService
+        self.authAPI = authAPI
         self.keychainService = keychainService
         self.sessionService = sessionService
     }
@@ -42,7 +42,7 @@ actor TokenManager {
             
             do {
                 let request = RefreshRequest(refresh: refreshToken)
-                let response = try await authService.refresh(request)
+                let response = try await authAPI.refresh(request)
                 
                 keychainService.save(token: response.access, for: .accessToken)
                 keychainService.save(token: response.refresh, for: .refreshToken)

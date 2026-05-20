@@ -1,7 +1,7 @@
 import os
 
 final class AuthRepository: AuthRepositoryProtocol {
-    private let service: AuthAPIProtocol
+    private let api: AuthAPIProtocol
     private var storage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
     private let session: SessionService
@@ -10,13 +10,13 @@ final class AuthRepository: AuthRepositoryProtocol {
     private var logService = LogService.shared
     
     init(
-        service: AuthAPIProtocol,
+        api: AuthAPIProtocol,
         storage: UserStorageProtocol,
         petStorage: PetStorageProtocol,
         session: SessionService,
         keychain: KeychainService
     ) {
-        self.service = service
+        self.api = api
         self.storage = storage
         self.petStorage = petStorage
         self.session = session
@@ -25,7 +25,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     func register(input: RegisterInput) async throws {
         let request = RegisterRequestMapper.map(input: input)
-        let response = try await service.register(request)
+        let response = try await api.register(request)
         let user = UserMapper.map(dto: response.user)
         
         saveTokens(
@@ -44,7 +44,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     func login(input: LoginInput) async throws {
         let request = LoginRequestMapper.map(input: input)
-        let response = try await service.login(request)
+        let response = try await api.login(request)
         let user = UserMapper.map(dto: response.user)
         
         saveTokens(
@@ -64,14 +64,14 @@ final class AuthRepository: AuthRepositoryProtocol {
     }
     
     func logout() async throws {
-        try await service.logout()
+        try await api.logout()
         deleteTokens()
         session.setAuthenticated(false)
     }
     
     func refresh(input: RefreshInput) async throws {
         let request = RefreshRequestMapper.map(input: input)
-        let response = try await service.refresh(request)
+        let response = try await api.refresh(request)
         
         saveTokens(accessToken: response.access, refreshToken: response.refresh)
     }

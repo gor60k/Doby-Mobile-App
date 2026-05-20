@@ -29,7 +29,7 @@ final class AppContainer {
         apiClient = AppContainer.makeAuthorizedClient(tokenManager: tokenManager)
         
         authRepository = AuthRepository(
-            service: AuthAPI(apiClient: authApiClient),
+            api: AuthAPI(apiClient: authApiClient),
             storage: userStorage,
             petStorage: petStorage,
             session: sessionService,
@@ -37,14 +37,14 @@ final class AppContainer {
         )
         
         userRepository = UserRepository(
-            service: UserAPI(apiClient: apiClient),
+            api: UserAPI(apiClient: apiClient),
             userStorage: userStorage,
             petStorage: petStorage,
             cityStorage: cityStorage
         )
         
         petRepository = PetRepository(
-            service: PetAPI(apiClient: apiClient),
+            api: PetAPI(apiClient: apiClient),
             storage: petStorage
         )
     }
