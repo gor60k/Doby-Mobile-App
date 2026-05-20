@@ -4,15 +4,15 @@ import Observation
 @Observable
 final class UserRepository: UserRepositoryProtocol {
     private var api: UserAPIProtocol
-    private var userStorage: UserStorageProtocol
-    private var petStorage: PetStorageProtocol
-    private var cityStorage: CityStorageProtocol
+    private var userStorage: UserStorage
+    private var petStorage: PetStorage
+    private var cityStorage: CityStorage
     
     init(
         api: UserAPIProtocol,
-        userStorage: UserStorageProtocol,
-        petStorage: PetStorageProtocol,
-        cityStorage: CityStorageProtocol
+        userStorage: UserStorage,
+        petStorage: PetStorage,
+        cityStorage: CityStorage
     ) {
         self.api = api
         self.userStorage = userStorage

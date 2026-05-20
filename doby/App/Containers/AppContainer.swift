@@ -21,7 +21,7 @@ final class AppContainer {
         authApiClient = AppContainer.makePlainClient()
         
         tokenManager = TokenManager(
-            authService: AuthAPI(apiClient: authApiClient),
+            authAPI: AuthAPI(apiClient: authApiClient),
             keychainService: keychainService,
             sessionService: sessionService
         )

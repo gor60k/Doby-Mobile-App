@@ -35,8 +35,8 @@ struct SettingsView: View {
     init(
         authRepository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
-        userStorage: UserStorageProtocol,
-        cityStorage: CityStorageProtocol,
+        userStorage: UserStorage,
+        cityStorage: CityStorage,
         
         openSettingsAppearance: @escaping () -> Void,
         openSettingsPrivacy: @escaping () -> Void,

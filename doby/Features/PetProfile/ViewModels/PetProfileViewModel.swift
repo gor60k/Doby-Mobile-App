@@ -4,8 +4,8 @@ import Observation
 @Observable
 final class PetProfileViewModel {
     private let repository: PetRepositoryProtocol
-    private let petStorage: PetStorageProtocol
-    private let userStorage: UserStorageProtocol
+    private let petStorage: PetStorage
+    private let userStorage: UserStorage
     
     var currentPage = 0
     
@@ -21,8 +21,8 @@ final class PetProfileViewModel {
     
     init(
         repository: PetRepositoryProtocol,
-        userStorage: UserStorageProtocol,
-        petStorage: PetStorageProtocol,
+        userStorage: UserStorage,
+        petStorage: PetStorage,
         petId: Int
     ) {
         self.repository = repository

@@ -5,8 +5,8 @@ import Observation
 final class SettingsViewModel {
     private let authRepository: AuthRepositoryProtocol
     private let userRepository: UserRepositoryProtocol
-    private let userStorage: UserStorageProtocol
-    private let cityStorage: CityStorageProtocol
+    private let userStorage: UserStorage
+    private let cityStorage: CityStorage
     
     var avatar: String = ""
 
@@ -31,8 +31,8 @@ final class SettingsViewModel {
     init(
         authRespository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
-        userStorage: UserStorageProtocol,
-        cityStorage: CityStorageProtocol
+        userStorage: UserStorage,
+        cityStorage: CityStorage
     ) {
         self.authRepository = authRespository
         self.userRepository = userRepository

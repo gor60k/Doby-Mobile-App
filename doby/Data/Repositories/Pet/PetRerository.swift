@@ -6,11 +6,11 @@ import Observation
 @Observable
 final class PetRepository: PetRepositoryProtocol {
     private var api: PetAPIProtocol
-    private var storage: PetStorageProtocol
+    private var storage: PetStorage
     
     init(
         api: PetAPIProtocol,
-        storage: PetStorageProtocol
+        storage: PetStorage
     ) {
         self.api = api
         self.storage = storage

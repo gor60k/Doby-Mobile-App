@@ -6,7 +6,7 @@ import Observation
 class ProfileViewModel {
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
-    private let storage: UserStorageProtocol
+    private let storage: UserStorage
     
     var user: User? { storage.user }
     
@@ -16,7 +16,7 @@ class ProfileViewModel {
     init(
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
-        storage: UserStorageProtocol
+        storage: UserStorage
     ) {
         self.userRepository = userRepository
         self.petRepository = petRepository

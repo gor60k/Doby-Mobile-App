@@ -2,8 +2,8 @@ import os
 
 final class AuthRepository: AuthRepositoryProtocol {
     private let api: AuthAPIProtocol
-    private var storage: UserStorageProtocol
-    private var petStorage: PetStorageProtocol
+    private var storage: UserStorage
+    private var petStorage: PetStorage
     private let session: SessionService
     private let keychain: KeychainService
     
@@ -11,8 +11,8 @@ final class AuthRepository: AuthRepositoryProtocol {
     
     init(
         api: AuthAPIProtocol,
-        storage: UserStorageProtocol,
-        petStorage: PetStorageProtocol,
+        storage: UserStorage,
+        petStorage: PetStorage,
         session: SessionService,
         keychain: KeychainService
     ) {

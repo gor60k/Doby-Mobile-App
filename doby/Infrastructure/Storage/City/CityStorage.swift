@@ -3,7 +3,7 @@ import Observation
 
 @MainActor
 @Observable
-final class CityStorage: CityStorageProtocol {
+final class CityStorage {
     private let actor = CityStorageActor()
     
     var cities: [City] = []

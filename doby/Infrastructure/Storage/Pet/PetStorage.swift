@@ -3,7 +3,7 @@ import Observation
 
 @MainActor
 @Observable
-final class PetStorage: PetStorageProtocol {
+final class PetStorage {
     private let actor = PetStorageActor()
     
     var pets: [Pet] = []

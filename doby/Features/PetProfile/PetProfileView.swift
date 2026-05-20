@@ -11,8 +11,8 @@ struct PetProfileView: View {
     
     init(
         repository: PetRepositoryProtocol,
-        userStorage: UserStorageProtocol,
-        petStorage: PetStorageProtocol,
+        userStorage: UserStorage,
+        petStorage: PetStorage,
         petId: Int,
         openSettings: @escaping (Int) -> Void
     ) {
@@ -113,7 +113,7 @@ struct PetProfileView: View {
     PetProfileView(
         repository: MockPetRepository(),
         userStorage: UserStorage(),
-        petStorage: MockPetStorage(),
+        petStorage: PetStorage(),
         petId: 1,
         openSettings: { id in }
     )

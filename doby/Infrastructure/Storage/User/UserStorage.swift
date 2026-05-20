@@ -3,7 +3,7 @@ import Observation
 
 @MainActor
 @Observable
-final class UserStorage: UserStorageProtocol {
+final class UserStorage {
     private let actor = UserStorageActor()
     
     var user: User?
