@@ -5,11 +5,7 @@ extension View {
     @MainActor
     func PreviewAppEnvironment() -> some View {
         appEnvironment(
-            container: .init(
-                userStorage: UserStorage(),
-                petStorage: PetStorage(),
-                cityStorage: CityStorage()
-            ),
+            container: AppContainer(),
             themeService: ThemeService(),
             primaryColorService: PrimaryColorService()
         )
@@ -17,16 +13,16 @@ extension View {
 
     @MainActor
     func appEnvironment(
-        container: DefaultAppContainer,
+        container: AppContainer,
         themeService: ThemeService,
         primaryColorService: PrimaryColorService
     ) -> some View {
         self
             .environment(\.appContainer, container)
         
-            .environment(container.storage.pet)
-            .environment(container.storage.user)
-            .environment(container.storage.city)
+            .environment(container.petStorage)
+            .environment(container.userStorage)
+            .environment(container.cityStorage)
         
             .environment(themeService)
             .environment(primaryColorService)

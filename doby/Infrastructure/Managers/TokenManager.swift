@@ -4,12 +4,12 @@ import Foundation
 actor TokenManager {
     private var refreshTask: Task<String, Error>?
     
-    private let authService: AuthServiceProtocol
+    private let authService: AuthAPIProtocol
     private let keychainService: KeychainService
     private let sessionService: SessionService
     
     init(
-        authService: AuthServiceProtocol,
+        authService: AuthAPIProtocol,
         keychainService: KeychainService,
         sessionService: SessionService
     ) {

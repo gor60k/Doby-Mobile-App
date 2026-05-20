@@ -5,11 +5,11 @@ import Observation
 @MainActor
 @Observable
 final class PetRepository: PetRepositoryProtocol {
-    private var service: PetServiceProtocol
+    private var service: PetAPIProtocol
     private var storage: PetStorageProtocol
     
     init(
-        service: PetServiceProtocol,
+        service: PetAPIProtocol,
         storage: PetStorageProtocol
     ) {
         self.service = service

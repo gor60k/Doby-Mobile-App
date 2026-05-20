@@ -1,6 +1,6 @@
 import Foundation
 
-final class PetService: PetServiceProtocol {
+final class PetAPI: PetAPIProtocol {
     private let apiClient: APIClientProtocol
     
     init(apiClient: APIClientProtocol) {

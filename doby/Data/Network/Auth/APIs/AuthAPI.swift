@@ -1,6 +1,6 @@
 import Foundation
 
-final class AuthService: AuthServiceProtocol {
+final class AuthAPI: AuthAPIProtocol {
     private let apiClient: APIClientProtocol
 
     init(apiClient: APIClientProtocol) {

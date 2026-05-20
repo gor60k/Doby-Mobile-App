@@ -3,13 +3,13 @@ import Observation
 
 @Observable
 final class UserRepository: UserRepositoryProtocol {
-    private var service: UserServiceProtocol
+    private var service: UserAPIProtocol
     private var userStorage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
     private var cityStorage: CityStorageProtocol
     
     init(
-        service: UserServiceProtocol,
+        service: UserAPIProtocol,
         userStorage: UserStorageProtocol,
         petStorage: PetStorageProtocol,
         cityStorage: CityStorageProtocol

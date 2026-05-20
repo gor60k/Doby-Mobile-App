@@ -1,15 +1,11 @@
 import SwiftUI
 
 struct AppContainerKey: EnvironmentKey {
-    static let defaultValue: DefaultAppContainer = .init(
-        userStorage: UserStorage(),
-        petStorage: PetStorage(),
-        cityStorage: CityStorage()
-    )
+    static let defaultValue: AppContainer = .init()
 }
 
 extension EnvironmentValues {
-    var appContainer: DefaultAppContainer {
+    var appContainer: AppContainer {
         get { self[AppContainerKey.self] }
         set { self[AppContainerKey.self] = newValue }
     }

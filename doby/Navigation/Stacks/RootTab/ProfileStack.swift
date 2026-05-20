@@ -7,9 +7,9 @@ struct ProfileStack: View {
     @Environment(UserStorage.self) private var userStorage
     @Environment(CityStorage.self) private var cityStorage
     
-    private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
-    private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
-    private var petRepository: PetRepositoryProtocol { appContainer.repositories.petRepository }
+    private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
+    private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
+    private var petRepository: PetRepositoryProtocol { appContainer.petRepository }
     
     @State private var profileRouter = ProfileRouter()
     @State private var petRouter = PetRouter()

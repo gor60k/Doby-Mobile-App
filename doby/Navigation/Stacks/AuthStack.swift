@@ -5,8 +5,8 @@ struct AuthStack: View {
     
     @State private var authRouter = AuthRouter()
     
-    private var repository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
-    private var sessionService: SessionService { appContainer.services.sessionService }
+    private var repository: AuthRepositoryProtocol { appContainer.authRepository }
+    private var sessionService: SessionService { appContainer.sessionService }
     
     var body: some View {
         NavigationStack(path: $authRouter.path) {

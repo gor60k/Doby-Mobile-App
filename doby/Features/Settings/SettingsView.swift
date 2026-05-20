@@ -6,7 +6,7 @@ struct SettingsView: View {
     @Environment(UserStorage.self) private var userStorage
     @Environment(\.appContainer) private var appContainer
     
-    private var sessionService: SessionService { appContainer.services.sessionService }
+    private var sessionService: SessionService { appContainer.sessionService }
     
     @State private var viewModel: SettingsViewModel
     

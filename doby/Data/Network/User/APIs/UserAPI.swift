@@ -1,9 +1,8 @@
 import Foundation
 import Observation
 
-//TODO: - переделать этот сервис под актуальнуб логику сети
 @Observable
-final class UserService: UserServiceProtocol {
+final class UserAPI: UserAPIProtocol {
     
     private let apiClient: APIClientProtocol
     

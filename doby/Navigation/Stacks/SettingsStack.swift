@@ -5,8 +5,8 @@ struct SettingsStack: View {
     @Environment(UserStorage.self) private var userStorage
     @Environment(CityStorage.self) private var cityStorage
     
-    private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
-    private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
+    private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
+    private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
     
     @State private var settingsRouter = SettingsRouter()
     

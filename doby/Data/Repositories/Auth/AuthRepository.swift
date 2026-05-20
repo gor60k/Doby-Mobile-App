@@ -1,7 +1,7 @@
 import os
 
 final class AuthRepository: AuthRepositoryProtocol {
-    private let service: AuthServiceProtocol
+    private let service: AuthAPIProtocol
     private var storage: UserStorageProtocol
     private var petStorage: PetStorageProtocol
     private let session: SessionService
@@ -10,7 +10,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     private var logService = LogService.shared
     
     init(
-        service: AuthServiceProtocol,
+        service: AuthAPIProtocol,
         storage: UserStorageProtocol,
         petStorage: PetStorageProtocol,
         session: SessionService,

@@ -5,7 +5,7 @@ struct PetStack: View {
     @Environment(UserStorage.self) private var userStorage
     @Environment(PetStorage.self) private var petStorage
     
-    private var repository: PetRepositoryProtocol { appContainer.repositories.petRepository }
+    private var repository: PetRepositoryProtocol { appContainer.petRepository }
     
     @State private var petRouter = PetRouter()
     
