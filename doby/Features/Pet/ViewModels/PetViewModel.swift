@@ -53,3 +53,14 @@ final class PetViewModel {
         }
     }
 }
+
+extension PetViewModel {
+    static var mock: PetViewModel {
+        let storage = PetStorage()
+        
+        return PetViewModel(
+            repository: MockPetRepository(),
+            storage: storage
+        )
+    }
+}

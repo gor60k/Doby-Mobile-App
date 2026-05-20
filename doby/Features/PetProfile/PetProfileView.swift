@@ -10,21 +10,14 @@ struct PetProfileView: View {
     let openSettings: (Int) -> Void
     
     init(
-        repository: PetRepositoryProtocol,
-        userStorage: UserStorage,
-        petStorage: PetStorage,
+        viewModel: PetProfileViewModel,
         petId: Int,
         openSettings: @escaping (Int) -> Void
     ) {
         self.petId = petId
         self.openSettings = openSettings
         
-        _viewModel = State(initialValue: PetProfileViewModel(
-            repository: repository,
-            userStorage: userStorage,
-            petStorage: petStorage,
-            petId: petId,
-        ))
+        _viewModel = State(initialValue: viewModel)
     }
     
     enum PetDetailsTab: String, CaseIterable {
@@ -109,13 +102,13 @@ struct PetProfileView: View {
     }
 }
 
-#Preview {
-    PetProfileView(
-        repository: MockPetRepository(),
-        userStorage: UserStorage(),
-        petStorage: PetStorage(),
-        petId: 1,
-        openSettings: { id in }
-    )
-    .PreviewAppEnvironment()
-}
+//#Preview {
+//    PetProfileView(
+//        repository: MockPetRepository(),
+//        userStorage: UserStorage(),
+//        petStorage: PetStorage(),
+//        petId: 1,
+//        openSettings: { id in }
+//    )
+//    .PreviewAppEnvironment()
+//}

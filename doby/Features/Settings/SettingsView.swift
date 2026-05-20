@@ -33,21 +33,13 @@ struct SettingsView: View {
     }
     
     init(
-        authRepository: AuthRepositoryProtocol,
-        userRepository: UserRepositoryProtocol,
-        userStorage: UserStorage,
-        cityStorage: CityStorage,
+        viewModel: SettingsViewModel,
         
         openSettingsAppearance: @escaping () -> Void,
         openSettingsPrivacy: @escaping () -> Void,
         openSettingsNotifications: @escaping () -> Void
     ) {
-        _viewModel = State(initialValue: SettingsViewModel(
-            authRespository: authRepository,
-            userRepository: userRepository,
-            userStorage: userStorage,
-            cityStorage: cityStorage
-        ))
+        _viewModel = State(initialValue: viewModel)
         
         self.openSettingsAppearance = openSettingsAppearance
         self.openSettingsPrivacy = openSettingsPrivacy
@@ -111,17 +103,17 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    SettingsView(
-        authRepository: MockAuthRepository(),
-        userRepository: MockUserRepository(),
-        userStorage: UserStorage(),
-        cityStorage: CityStorage(),
-        openSettingsAppearance: {},
-        openSettingsPrivacy: {},
-        openSettingsNotifications: {}
-    )
-    .PreviewAppEnvironment()
-    .environment(ProfileRouter())
-    .environment(UserStorage())
-}
+//#Preview {
+//    SettingsView(
+//        authRepository: MockAuthRepository(),
+//        userRepository: MockUserRepository(),
+//        userStorage: UserStorage(),
+//        cityStorage: CityStorage(),
+//        openSettingsAppearance: {},
+//        openSettingsPrivacy: {},
+//        openSettingsNotifications: {}
+//    )
+//    .PreviewAppEnvironment()
+//    .environment(ProfileRouter())
+//    .environment(UserStorage())
+//}

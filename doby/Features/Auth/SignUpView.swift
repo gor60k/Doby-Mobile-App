@@ -2,8 +2,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
-
-    private let sessionSerive: SessionService
+    @Environment(SessionService.self) private var sessionSerive
     
     @State var viewModel: AuthViewModel
     
@@ -11,12 +10,8 @@ struct SignUpView: View {
     @State private var didEditPassword = false
     @State private var didEditConfirmPassword = false
     
-    init(
-        repository: AuthRepositoryProtocol,
-        sessionSerive: SessionService
-    ) {
-        _viewModel = State(initialValue: AuthViewModel(repository: repository))
-        self.sessionSerive = sessionSerive
+    init(viewMode: AuthViewModel) {
+        _viewModel = State(initialValue: viewMode)
     }
     
     private var isPasswordValid: Bool {

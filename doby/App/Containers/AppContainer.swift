@@ -69,4 +69,61 @@ private extension AppContainer {
     }
 }
 
+extension AppContainer {
+    // MARK: - Авторизационные фабрики
+    func makeAuthViewModel() -> AuthViewModel {
+        AuthViewModel(repository: authRepository)
+    }
+    
+    // MARK: - Фабрики питомцев
+    func makePetViewModel() -> PetViewModel {
+        PetViewModel(
+            repository: petRepository,
+            storage: petStorage
+        )
+    }
+    
+    func makePetAddingViewModel() -> PetAddingViewModel {
+        PetAddingViewModel(repository: petRepository)
+    }
+    
+    func makePetProfileViewModel(petId: Int) -> PetProfileViewModel {
+        PetProfileViewModel(
+            repository: petRepository,
+            userStorage: userStorage,
+            petStorage: petStorage,
+            petId: petId
+        )
+    }
+    
+    // MARK: - Фабрики юзера
+    // фабрики профиля
+    func makeProfileViewModel() -> ProfileViewModel {
+        ProfileViewModel(
+            userRepository: userRepository,
+            petRepository: petRepository,
+            storage: userStorage
+        )
+    }
+    
+    func makeProfilePetsViewModel() -> ProfilePetsViewModel {
+        ProfilePetsViewModel(petRepository: petRepository)
+    }
+    
+    func makeProfileOrdersViewModel() -> ProfileOrdersViewModel {
+        ProfileOrdersViewModel()
+    }
+    
+    // MARK: - Фабрики настроек
+    // фабрика общих настроек
+    func makeSettingsViewModel() -> SettingsViewModel {
+        SettingsViewModel(
+            authRespository: authRepository,
+            userRepository: userRepository,
+            userStorage: userStorage,
+            cityStorage: cityStorage
+        )
+    }
+}
+
 

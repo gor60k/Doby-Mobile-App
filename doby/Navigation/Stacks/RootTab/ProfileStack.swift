@@ -17,9 +17,10 @@ struct ProfileStack: View {
     var body: some View {
         NavigationStack(path: $profileRouter.path) {
             ProfileView(
-                userRepository: userRepository,
-                petRepository: petRepository,
-                storage: userStorage,
+                viewModel: appContainer.makeProfileViewModel(),
+                profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
+                profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
+                
                 openSettings: { profileRouter.push(.settings) },
                 openPetAdding: { profileRouter.push(.petAdding) },
                 opentPetProfile: { id in
@@ -30,10 +31,8 @@ struct ProfileStack: View {
                     switch route {
                     case .settings:
                         SettingsView(
-                            authRepository: authRepository,
-                            userRepository: userRepository,
-                            userStorage: userStorage,
-                            cityStorage: cityStorage,
+                            viewModel: appContainer.makeSettingsViewModel(),
+                            
                             openSettingsAppearance: { profileRouter.push(.settingsAppearance) },
                             openSettingsPrivacy: { profileRouter.push(.settingsPrivacy) },
                             openSettingsNotifications: { profileRouter.push(.settingsNotifications) }
@@ -48,16 +47,15 @@ struct ProfileStack: View {
                         PetSettingsView()
                     case .petProfile(let id):
                         PetProfileView(
-                            repository: petRepository,
-                            userStorage: userStorage,
-                            petStorage: petStorage,
+                            viewModel: appContainer.makePetProfileViewModel(petId: id),
+                            
                             petId: id,
                             openSettings: { id in
                                 profileRouter.push(.petSettings(id: id))
                             }
                         )
                     case .petAdding:
-                        PetAddingView(repository: petRepository)
+                        PetAddingView(viewModel: appContainer.makePetAddingViewModel())
                     }
                 }
         }

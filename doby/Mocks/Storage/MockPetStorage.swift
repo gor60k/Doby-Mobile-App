@@ -1,4 +1,4 @@
-final class MockPetStorage: PetStorageProtocol {
+final class MockPetStorage {
     var pets: [Pet] = [
         Pet(
             id: 1,

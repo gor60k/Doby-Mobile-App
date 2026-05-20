@@ -6,8 +6,8 @@ struct PetAddingView: View {
     
     @State private var viewModel: PetAddingViewModel
     
-    init(repository: PetRepositoryProtocol) {
-        _viewModel = State(initialValue: PetAddingViewModel(repository: repository))
+    init(viewModel: PetAddingViewModel) {
+        _viewModel = State(initialValue: viewModel)
     }
     
     private func addPet() {
@@ -64,8 +64,8 @@ struct PetAddingView: View {
     }
 }
 
-#Preview {
-    PetAddingView(repository: MockPetRepository())
-        .PreviewAppEnvironment()
-        .environment(PetRouter())
-}
+//#Preview {
+//    PetAddingView(viewModel: <#T##PetAddingViewModel#>)
+//        .PreviewAppEnvironment()
+//        .environment(PetRouter())
+//}

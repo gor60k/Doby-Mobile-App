@@ -19,22 +19,17 @@ struct ProfileView: View {
     let openPetProfile: (Int) -> Void
     
     init(
-        userRepository: UserRepositoryProtocol,
-        petRepository: PetRepositoryProtocol,
-        storage: UserStorage,
+        viewModel: ProfileViewModel,
+        profilePetsViewModel: ProfilePetsViewModel,
+        profileOrdersViewModel: ProfileOrdersViewModel,
+        
         openSettings: @escaping () -> Void,
         openPetAdding: @escaping () -> Void,
         opentPetProfile: @escaping (Int) -> Void,
     ) {
-        _viewModel = State(initialValue: ProfileViewModel(
-            userRepository: userRepository,
-            petRepository: petRepository,
-            storage: storage
-        ))
-        _profilePetsViewModel = State(initialValue: ProfilePetsViewModel(
-            petRepository: petRepository
-        ))
-        _profileOrdersViewModel = State(initialValue: ProfileOrdersViewModel())
+        _viewModel = State(initialValue: viewModel)
+        _profilePetsViewModel = State(initialValue: profilePetsViewModel)
+        _profileOrdersViewModel = State(initialValue: profileOrdersViewModel)
         
         self.openSettings = openSettings
         self.openPetAdding = openPetAdding
@@ -106,16 +101,16 @@ struct ProfileView: View {
     }
 }
 
-#Preview {
-    ProfileView(
-        userRepository: MockUserRepository(),
-        petRepository: MockPetRepository(),
-        storage: UserStorage(),
-        openSettings: {},
-        openPetAdding: {},
-        opentPetProfile: { id in }
-    )
-    .PreviewAppEnvironment()
-    .environment(PetStorage())
-    .environment(ProfileRouter())
-}
+//#Preview {
+//    ProfileView(
+//        userRepository: MockUserRepository(),
+//        petRepository: MockPetRepository(),
+//        storage: UserStorage(),
+//        openSettings: {},
+//        openPetAdding: {},
+//        opentPetProfile: { id in }
+//    )
+//    .PreviewAppEnvironment()
+//    .environment(PetStorage())
+//    .environment(ProfileRouter())
+//}

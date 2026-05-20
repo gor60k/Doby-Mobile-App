@@ -13,16 +13,12 @@ struct PetView: View {
     let openPetProfile: (Int) -> Void
     
     init(
-        repository: PetRepositoryProtocol,
-        storage: PetStorage,
+        viewModel: PetViewModel,
         ownerUUID: String,
         openPetAdding: @escaping () -> Void,
         openPetProfile: @escaping (Int) -> Void
     ) {
-        _viewModel = State(initialValue: PetViewModel(
-            repository: repository,
-            storage: storage
-        ))
+        _viewModel = State(initialValue: viewModel)
         self.ownerUUID = ownerUUID
         self.openPetAdding = openPetAdding
         self.openPetProfile = openPetProfile
@@ -84,8 +80,7 @@ struct PetView: View {
 
 #Preview {
     PetView(
-        repository: MockPetRepository(),
-        storage: PetStorage(),
+        viewModel: .mock,
         ownerUUID: "",
         openPetAdding: {},
         openPetProfile: { id in }

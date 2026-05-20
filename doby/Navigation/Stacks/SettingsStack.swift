@@ -13,10 +13,8 @@ struct SettingsStack: View {
     var body: some View {
         NavigationStack(path: $settingsRouter.path) {
             SettingsView(
-                authRepository: authRepository,
-                userRepository: userRepository,
-                userStorage: userStorage,
-                cityStorage: cityStorage,
+                viewModel: appContainer.makeSettingsViewModel(),
+                
                 openSettingsAppearance: { settingsRouter.push(.appearance) },
                 openSettingsPrivacy: { settingsRouter.push(.privacy) },
                 openSettingsNotifications: { settingsRouter.push(.notifications) }

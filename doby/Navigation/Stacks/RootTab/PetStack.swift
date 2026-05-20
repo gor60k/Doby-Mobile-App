@@ -5,15 +5,12 @@ struct PetStack: View {
     @Environment(UserStorage.self) private var userStorage
     @Environment(PetStorage.self) private var petStorage
     
-    private var repository: PetRepositoryProtocol { appContainer.petRepository }
-    
     @State private var petRouter = PetRouter()
     
     var body: some View {
         NavigationStack(path: $petRouter.path) {
             PetView(
-                repository: repository,
-                storage: petStorage,
+                viewModel: appContainer.makePetViewModel(),
                 ownerUUID: userStorage.user?.uuid ?? "",
                 openPetAdding: { petRouter.push(.petAdding) },
                 openPetProfile: { id in
@@ -22,12 +19,10 @@ struct PetStack: View {
                 .navigationDestination(for: PetRoute.self) { route in
                     switch route {
                     case .petAdding:
-                        PetAddingView(repository: repository)
+                        PetAddingView(viewModel: appContainer.makePetAddingViewModel())
                     case .profile(let id):
                         PetProfileView(
-                            repository: repository,
-                            userStorage: userStorage,
-                            petStorage: petStorage,
+                            viewModel: appContainer.makePetProfileViewModel(petId: id),
                             petId: id,
                             openSettings: { id in
                                 petRouter.push(.petSettings(id: id))
