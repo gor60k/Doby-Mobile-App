@@ -2,7 +2,8 @@ import SwiftUI
 
 struct AuthBottomBarView: View {
     @Environment(PrimaryColorService.self) var primaryColorService
-    @Environment(AuthRouter.self) var router
+    
+    let openSignUp: () -> Void
     
     var body: some View {
         HStack {
@@ -11,7 +12,7 @@ struct AuthBottomBarView: View {
                 .foregroundColor(.secondary)
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    router.push(.signUp)
+                    openSignUp()
                 }
             }) {
                 Text("Зарегистрироваться")

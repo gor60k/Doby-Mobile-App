@@ -103,14 +103,11 @@ struct ProfileView: View {
 
 //#Preview {
 //    ProfileView(
-//        userRepository: MockUserRepository(),
-//        petRepository: MockPetRepository(),
-//        storage: UserStorage(),
-//        openSettings: {},
-//        openPetAdding: {},
-//        opentPetProfile: { id in }
+//        viewModel: .mock,
+//        profilePetsViewModel: ,
+//        profileOrdersViewModel: <#T##ProfileOrdersViewModel#>,
+//        openSettings: <#T##() -> Void#>,
+//        openPetAdding: <#T##() -> Void#>,
+//        opentPetProfile: <#T##(Int) -> Void#>
 //    )
-//    .PreviewAppEnvironment()
-//    .environment(PetStorage())
-//    .environment(ProfileRouter())
 //}

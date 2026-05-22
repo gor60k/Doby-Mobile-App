@@ -35,11 +35,14 @@ struct PetAddingInfoView: View {
 }
 
 #Preview {
-    PetAddingInfoView(
-        petType: .constant(.dog),
-        petGender: .constant(Gender.male),
-        name: .constant(""),
-        breedName: .constant(""),
-        age: .constant(10)
-    )
+    Form {
+        PetAddingInfoView(
+            petType: .constant(.dog),
+            petGender: .constant(Gender.male),
+            name: .constant(""),
+            breedName: .constant(""),
+            age: .constant(10)
+        )
+        .PreviewAppEnvironment()
+    }
 }

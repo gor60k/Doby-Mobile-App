@@ -94,6 +94,9 @@ struct PetProfileView: View {
         }
         .background(.primaryBackground)
         .scrollIndicators(.hidden)
+        .refreshable {
+            await viewModel.fetchPet()
+        }
         .task {
             await viewModel.fetchPet()
         }
@@ -102,13 +105,11 @@ struct PetProfileView: View {
     }
 }
 
-//#Preview {
-//    PetProfileView(
-//        repository: MockPetRepository(),
-//        userStorage: UserStorage(),
-//        petStorage: PetStorage(),
-//        petId: 1,
-//        openSettings: { id in }
-//    )
-//    .PreviewAppEnvironment()
-//}
+#Preview {
+    PetProfileView(
+        viewModel: .mock,
+        petId: 1,
+        openSettings: {_ in }
+    )
+    .PreviewAppEnvironment()
+}

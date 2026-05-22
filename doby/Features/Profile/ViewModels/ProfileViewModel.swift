@@ -45,3 +45,17 @@ class ProfileViewModel {
         }
     }
 }
+
+extension ProfileViewModel {
+    static var mock: ProfileViewModel {
+        let userRepository = MockUserRepository()
+        let petRepository = MockPetRepository()
+        let storage = UserStorage()
+        
+        return ProfileViewModel(
+            userRepository: userRepository,
+            petRepository: petRepository,
+            storage: storage
+        )
+    }
+}

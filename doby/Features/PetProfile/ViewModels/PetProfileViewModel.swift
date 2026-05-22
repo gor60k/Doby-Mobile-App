@@ -82,3 +82,18 @@ final class PetProfileViewModel {
         ]
     }
 }
+
+extension PetProfileViewModel {
+    static var mock: PetProfileViewModel {
+        let repository = MockPetRepository()
+        let userStorage = UserStorage()
+        let petStorage = PetStorage.mock
+        
+        return PetProfileViewModel(
+            repository: repository,
+            userStorage: userStorage,
+            petStorage: petStorage,
+            petId: 1
+        )
+    }
+}

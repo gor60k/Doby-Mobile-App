@@ -65,3 +65,9 @@ struct PetAddingView: View {
         }
     }
 }
+
+#Preview {
+    PetAddingView(viewModel: .mock)
+        .PreviewAppEnvironment()
+        .environment(PetRouter())
+}

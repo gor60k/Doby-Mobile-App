@@ -93,3 +93,11 @@ final class PetAddingViewModel {
         }
     }
 }
+
+extension PetAddingViewModel {
+    static var mock: PetAddingViewModel {
+        let repository = MockPetRepository()
+        
+        return PetAddingViewModel(repository: repository)
+    }
+}

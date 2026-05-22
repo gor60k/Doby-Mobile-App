@@ -4,6 +4,7 @@ import AuthenticationServices
 struct SignInView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     @Environment(SessionService.self) private var sessionService
+    @Environment(AuthRouter.self) private var authRouter
     
     @State private var viewModel: AuthViewModel
     
@@ -73,7 +74,9 @@ struct SignInView: View {
                         }
                     )
                     
-                    AuthBottomBarView()
+                    AuthBottomBarView(
+                        openSignUp: { authRouter.push(.signUp) }
+                    )
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -102,4 +105,11 @@ struct SignInView: View {
         .scrollDismissesKeyboard(.interactively)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+}
+
+#Preview {
+    SignInView(viewModel: .mock)
+        .PreviewAppEnvironment()
+        .environment(SessionService())
+        .environment(AuthRouter())
 }

@@ -94,3 +94,9 @@ struct SignUpView: View {
         .padding(.horizontal, 16)
     }
 }
+
+#Preview {
+    SignUpView(viewMode: .mock)
+        .PreviewAppEnvironment()
+        .environment(SessionService())
+}
