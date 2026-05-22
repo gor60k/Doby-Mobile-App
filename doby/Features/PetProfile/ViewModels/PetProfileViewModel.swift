@@ -48,7 +48,7 @@ final class PetProfileViewModel {
         defer { isLoading = false }
         
         do {
-            try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
+            try await repository.fetchPet(with: petId, from: ownerUUID)
             loadPet()
         } catch {
             self.error = error.localizedDescription

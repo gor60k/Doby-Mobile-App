@@ -73,7 +73,7 @@ struct PetView: View {
             openPetAdding()
         }
         .refreshable {
-            await viewModel.fetchPets(ownerUUID: ownerUUID)
+            await viewModel.fetchPets()
         }
     }
 }

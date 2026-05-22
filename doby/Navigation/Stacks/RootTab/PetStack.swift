@@ -12,7 +12,7 @@ struct PetStack: View {
     var body: some View {
         NavigationStack(path: $petRouter.path) {
             PetView(
-                viewModel: appContainer.makePetViewModel(),
+                viewModel: appContainer.makePetViewModel(ownerUUID: ownerUUID),
                 ownerUUID: userStorage.user?.uuid ?? "",
                 openPetAdding: { petRouter.push(.petAdding) },
                 openPetProfile: { id in

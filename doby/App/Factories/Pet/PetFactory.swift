@@ -1,9 +1,10 @@
 extension AppContainer {
     // MARK: - PetView
-    func makePetViewModel() -> PetViewModel {
+    func makePetViewModel(ownerUUID: String) -> PetViewModel {
         PetViewModel(
             repository: petRepository,
-            storage: petStorage
+            storage: petStorage,
+            ownerUUID: ownerUUID
         )
     }
     

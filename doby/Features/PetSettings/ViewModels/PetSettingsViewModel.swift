@@ -54,11 +54,13 @@ final class PetSettingsViewModel {
         defer { isLoading = false }
         
         do {
-            try await petRepository.fetchPet(ownerUUID: ownerUUID, petId: petId)
+            try await petRepository.fetchPet(with: petId, from: ownerUUID)
         } catch {
             self.error = error.localizedDescription
         }
     }
+    
+    
     
     private func loadPet() {
         guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }

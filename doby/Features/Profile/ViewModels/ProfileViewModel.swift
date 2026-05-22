@@ -10,6 +10,8 @@ class ProfileViewModel {
     
     var user: User? { storage.user }
     
+    private var ownerUUID: String? { user?.uuid }
+    
     var isLoading = false
     var error: String?
     
@@ -35,11 +37,13 @@ class ProfileViewModel {
     }
     
     func fetchPets() async {
+        guard let ownerUUID else { return }
+        
         isLoading = true
         defer { isLoading = false }
         
         do {
-            try await petRepository.fetchPets(ownerUUID: user?.uuid ?? "")
+            try await petRepository.fetchPets(from: ownerUUID)
         } catch {
             self.error = error.localizedDescription
         }
