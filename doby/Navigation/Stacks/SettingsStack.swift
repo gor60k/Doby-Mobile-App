@@ -2,21 +2,23 @@ import SwiftUI
 
 struct SettingsStack: View {
     @Environment(\.appContainer) private var appContainer
+    @Environment(UserStorage.self) private var userStorage
+    @Environment(CityStorage.self) private var cityStorage
     
-    private var authRepository: AuthRepositoryProtocol { appContainer.repositories.authRepository }
-    private var userRepository: UserRepositoryProtocol { appContainer.repositories.userRepository }
+    private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
+    private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
+    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
     
-    private var userStorage: UserStorage { appContainer.storage.user }
-    
-    
-    @State private var router = SettingsRouter()
+    @State private var settingsRouter = SettingsRouter()
     
     var body: some View {
-        NavigationStack(path: $router.path) {
+        NavigationStack(path: $settingsRouter.path) {
             SettingsView(
-                authRepository: authRepository,
-                userRepository: userRepository,
-                userStorage: userStorage
+                viewModel: appContainer.makeSettingsViewModel(),
+                
+                openSettingsAppearance: { settingsRouter.push(.appearance) },
+                openSettingsPrivacy: { settingsRouter.push(.privacy) },
+                openSettingsNotifications: { settingsRouter.push(.notifications) }
             )
                 .navigationDestination(for: SettingsRoute.self) { route in
                     switch route {
@@ -26,11 +28,19 @@ struct SettingsStack: View {
                         SettingsPrivacyView()
                     case .notifications:
                         SettingsNotificationsView()
-                    case .petSettings:
-                        PetSettingsView()
+                    case .petSettings(let id):
+                        PetSettingsView(
+                            viewModel: appContainer.makePetSettingsViewModel(
+                                petId: id,
+                                ownerUUID: ownerUUID
+                            ),
+                            petId: id,
+                            ownerUUID: ownerUUID,
+                            openPetProfile: {}
+                        )
                     }
                 }
         }
-        .environment(router)
+        .environment(settingsRouter)
     }
 }

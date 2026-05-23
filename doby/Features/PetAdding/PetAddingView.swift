@@ -6,8 +6,8 @@ struct PetAddingView: View {
     
     @State private var viewModel: PetAddingViewModel
     
-    init(repository: PetRepositoryProtocol) {
-        _viewModel = State(initialValue: PetAddingViewModel(repository: repository))
+    init(viewModel: PetAddingViewModel) {
+        _viewModel = State(initialValue: viewModel)
     }
     
     private func addPet() {
@@ -24,6 +24,7 @@ struct PetAddingView: View {
         Form {
             PetAddingInfoView(
                 petType: $viewModel.petType,
+                petGender: $viewModel.petGender,
                 name: $viewModel.name,
                 breedName: $viewModel.breedName,
                 age: $viewModel.age
@@ -36,21 +37,23 @@ struct PetAddingView: View {
             )
             
             PetAddingNutritionView(
-                feedingType: $viewModel.feedingType,
-                feedingSchedule: $viewModel.feedingSchedule,
-                feedingNotes: $viewModel.feedingNotes
+                feedingType: $viewModel.dietType,
+                feedingSchedule: $viewModel.dietPattern,
+                feedingNotes: $viewModel.dietAdditionalInfo
             )
             
             PetAddingPhotoView(
                 selectedPhotoItems: $viewModel.selectedPhotoItems
             )
             
-            PetAddingWarningView(
-                warningTagsViewModel: $viewModel.warningTagsViewModel
+            PetAddingTagsView(
+                viewModel: $viewModel.warningTagsViewModel,
+                title: "Особые предупреждения"
             )
             
-            PetAddingFeatureView(
-                featureTagsViewModel: $viewModel.featureTagsViewModel
+            PetAddingTagsView(
+                viewModel: $viewModel.featureTagsViewModel,
+                title: "Особенности"
             )
         
             PetAddingSubmitView(
@@ -61,4 +64,10 @@ struct PetAddingView: View {
             )
         }
     }
+}
+
+#Preview {
+    PetAddingView(viewModel: .mock)
+        .PreviewAppEnvironment()
+        .environment(PetRouter())
 }

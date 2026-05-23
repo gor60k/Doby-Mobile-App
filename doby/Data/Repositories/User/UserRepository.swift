@@ -3,36 +3,36 @@ import Observation
 
 @Observable
 final class UserRepository: UserRepositoryProtocol {
-    private var service: UserServiceProtocol
-    private let storage: UserStorage
-    private let petStorage: PetStorage
-    
-    var user: User? { storage.currentUser }
+    private var api: UserAPIProtocol
+    private var userStorage: UserStorage
+    private var petStorage: PetStorage
+    private var cityStorage: CityStorage
     
     init(
-        service: UserServiceProtocol,
-        storage: UserStorage,
-        petStorage: PetStorage
+        api: UserAPIProtocol,
+        userStorage: UserStorage,
+        petStorage: PetStorage,
+        cityStorage: CityStorage
     ) {
-        self.service = service
-        self.storage = storage
+        self.api = api
+        self.userStorage = userStorage
         self.petStorage = petStorage
+        self.cityStorage = cityStorage
     }
     
     func fetchUser() async throws {
-        let response = try await service.me()
+        let response = try await api.me()
         let user = UserMapper.map(dto: response)
         
-        storage.currentUser = user
-        petStorage.pets = user.pets ?? []
+        userStorage.user = user
     }
     
     func updateUser(input: UpdateUserInput) async throws {
         let request = UpdateUserRequestMapper.map(input: input)
-        let response = try await service.update(request)
+        let response = try await api.update(request)
         let user = UserMapper.map(dto: response)
         
-        storage.update { currentUser in
+        userStorage.update { currentUser in
             currentUser.firstName = user.firstName
             currentUser.lastName = user.lastName
             currentUser.patronymic = user.patronymic
@@ -41,5 +41,12 @@ final class UserRepository: UserRepositoryProtocol {
             currentUser.city = user.city
             currentUser.bio = user.bio
         }
+    }
+    
+    func fetchCities() async throws {
+        let response = try await api.cities()
+        let cities = CityMapper.map(dto: response)
+        
+        cityStorage.cities = cities
     }
 }

@@ -1,6 +1,16 @@
 import SwiftUI
 
 extension View {
+    
+    @MainActor
+    func PreviewAppEnvironment() -> some View {
+        appEnvironment(
+            container: AppContainer(),
+            themeService: ThemeService(),
+            primaryColorService: PrimaryColorService()
+        )
+    }
+
     @MainActor
     func appEnvironment(
         container: AppContainer,
@@ -10,8 +20,11 @@ extension View {
         self
             .environment(\.appContainer, container)
         
-            .environment(\.userStorage, container.storage.user)
-            .environment(\.petStorage, container.storage.pet)
+            .environment(container.petStorage)
+            .environment(container.userStorage)
+            .environment(container.cityStorage)
+        
+            .environment(container.sessionService)
         
             .environment(themeService)
             .environment(primaryColorService)

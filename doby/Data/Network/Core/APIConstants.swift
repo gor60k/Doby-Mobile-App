@@ -9,3 +9,13 @@ enum APIConstants {
         #endif
     }()
 }
+
+extension APIConstants {
+    static func getImageBaseURL() -> URL {
+        if baseURL.lastPathComponent == "api" {
+            return baseURL.deletingLastPathComponent()
+        }
+        
+        return baseURL
+    }
+}

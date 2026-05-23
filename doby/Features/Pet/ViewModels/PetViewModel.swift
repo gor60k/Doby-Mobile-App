@@ -5,34 +5,41 @@ import Observation
 @Observable
 final class PetViewModel {
     private let repository: PetRepositoryProtocol
+    private let storage: PetStorage
+    private let ownerUUID: String
     
-    var pets: [Pet] = []
+    var pets: [Pet] { storage.pets }
     
     var isLoading = false
     var error: String?
     
-    init(repository: PetRepositoryProtocol) {
+    init(
+        repository: PetRepositoryProtocol,
+        storage: PetStorage,
+        ownerUUID: String
+    ) {
         self.repository = repository
-        self.pets = repository.pets
+        self.storage = storage
+        self.ownerUUID = ownerUUID
     }
     
-    func fetchPets(ownerUUID: String) async {
+    func fetchPets() async {
         isLoading = true
         defer { isLoading = false }
         
         do {
-            try await repository.fetchPets(ownerUUID: ownerUUID)
+            try await repository.fetchPets(from: ownerUUID)
         } catch {
             self.error = error.localizedDescription
         }
     }
 
-    func fetchPet(ownerUUID: String, petId: Int) async {
+    func fetchPet(petId: Int) async {
         isLoading = true
         defer { isLoading = false }
         
         do {
-            try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
+            try await repository.fetchPet(with: petId, from: ownerUUID)
         } catch {
             self.error = error.localizedDescription
         }
@@ -47,5 +54,17 @@ final class PetViewModel {
         } catch {
             self.error = error.localizedDescription
         }
+    }
+}
+
+extension PetViewModel {
+    static var mock: PetViewModel {
+        let storage = PetStorage()
+        
+        return PetViewModel(
+            repository: MockPetRepository(),
+            storage: storage,
+            ownerUUID: ""
+        )
     }
 }

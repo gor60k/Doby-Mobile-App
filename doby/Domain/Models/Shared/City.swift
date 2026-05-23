@@ -1,6 +1,7 @@
 import Foundation
 
-struct City: Decodable, Encodable, Equatable {
+struct City: Codable, Equatable, Hashable, Identifiable {
+    var id: Int
     var name: String
     var translit: String
 }

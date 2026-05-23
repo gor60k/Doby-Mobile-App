@@ -2,7 +2,6 @@ import SwiftUI
 import Kingfisher
 
 struct ProfilePetCardView: View {
-    @Environment(ProfileRouter.self) var router
     @Environment(PrimaryColorService.self) var primaryColorService
     
     let id: Int
@@ -10,17 +9,28 @@ struct ProfilePetCardView: View {
     let name: String
     let breedName: String
     let age: Int
+    let description: String?
+    
+    let openPetProfile: (Int) -> Void
+    
+    private let baseURL: URL = APIConstants.getImageBaseURL()
+    
+    private var fullImageURL: URL? {
+        guard let imageURL else { return nil }
+        
+        return URL(string: baseURL.absoluteString)?.appendingPathComponent(imageURL)
+    }
     
     var body: some View {
         HStack(alignment: .top, spacing: 0) {
             VStack {
-                KFImage(URL(string: "https://frowsier-hungerly-thad.ngrok-free.dev\(imageURL ?? "")"))
+                KFImage(fullImageURL)
                     .placeholder {
                         ProgressView()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 80)
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: 80)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
@@ -43,21 +53,28 @@ struct ProfilePetCardView: View {
                 Divider()
                     .padding(.vertical, 4)
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Обо мне")
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundColor(.secondary)
+                if let description, !description.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Обо мне")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundColor(.secondary)
 
-                    Text("Дружелюбный и энергичный, люблю грызть тапки")
+                        Text(description)
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundColor(.primary)
+                            .lineLimit(3)
+                    }
+                } else {
+                    Text("Описание не заполнено")
                         .font(.system(.footnote, design: .rounded))
                         .foregroundColor(.primary)
                         .lineLimit(3)
                 }
-                
+            
                 Spacer()
                 
                 Button(action: {
-                    router.push(.petProfile(petId: id))
+                    openPetProfile(id)
                 }) {
                     Text("Подробнее")
                         .font(.system(.caption, design: .rounded))
@@ -76,16 +93,3 @@ struct ProfilePetCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
-//
-//#Preview {
-//    VStack {
-//        ProfilePetCardView(
-//            id: 0,
-//            name: "pet.name",
-//            breedName: "pet.breedName",
-//            age: 0
-//        )
-//    }
-//    .withAppEnvironment()
-//    .padding()
-//}

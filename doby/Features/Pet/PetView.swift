@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct PetView: View {
-    @Environment(\.petStorage) private var storage
-    @Environment(PetRouter.self) private var router
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State var viewModel: PetViewModel
@@ -10,28 +8,36 @@ struct PetView: View {
     
     let ownerUUID: String
     
+    // MARK: - Функции для переходов к дочерним экранам
+    let openPetAdding: () -> Void
+    let openPetProfile: (Int) -> Void
+    
     init(
-        repository: PetRepositoryProtocol,
-        ownerUUID: String
+        viewModel: PetViewModel,
+        ownerUUID: String,
+        openPetAdding: @escaping () -> Void,
+        openPetProfile: @escaping (Int) -> Void
     ) {
-        _viewModel = State(initialValue: PetViewModel(repository: repository))
+        _viewModel = State(initialValue: viewModel)
         self.ownerUUID = ownerUUID
+        self.openPetAdding = openPetAdding
+        self.openPetProfile = openPetProfile
     }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 8) {
                 if viewModel.pets.isEmpty {
-                    PrimaryEmptyView(
-                        icon: "pawprint.circle.fill",
-                        title: "У вас пока нет питомцев",
-                        description: "Добавьте своего первого питомца, чтобы начать",
-                        buttonTitle: "Добавить питомца",
-                        buttonIcon: "plus",
-                        action: {
-                            router.push(.petAdding)
-                        }
-                    )
+                    VStack(alignment: .center) {
+                        PrimaryEmptyView(
+                            icon: "pawprint.circle.fill",
+                            title: "У вас пока нет питомцев",
+                            description: "Добавьте своего первого питомца, чтобы начать",
+                            buttonTitle: "Добавить питомца",
+                            buttonIcon: "plus",
+                            action: { openPetAdding() }
+                        )
+                    }
                 } else {
                     ForEach(viewModel.pets) { pet in
                         HStack {
@@ -51,7 +57,8 @@ struct PetView: View {
                                 imageURL: pet.photos.first?.imageURL,
                                 name: pet.name,
                                 breedName: pet.breedName,
-                                age: pet.age
+                                age: pet.age,
+                                openPetProfile: { openPetProfile(pet.id) }
                             )
                         }
                         .animation(.easeInOut, value: isEditing)
@@ -63,10 +70,20 @@ struct PetView: View {
         .navigationTitle("Питомцы")
         .navigationBarTitleDisplayMode(.inline)
         .petToolbar(isEditing: $isEditing) {
-            router.push(.petAdding)
+            openPetAdding()
         }
         .refreshable {
-            await viewModel.fetchPets(ownerUUID: ownerUUID)
+            await viewModel.fetchPets()
         }
     }
+}
+
+#Preview {
+    PetView(
+        viewModel: .mock,
+        ownerUUID: "",
+        openPetAdding: {},
+        openPetProfile: { id in }
+    )
+    .PreviewAppEnvironment()
 }

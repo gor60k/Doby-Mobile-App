@@ -3,20 +3,16 @@ import AuthenticationServices
 
 struct SignInView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
-    
-    private let sessionService: SessionService
+    @Environment(SessionService.self) private var sessionService
+    @Environment(AuthRouter.self) private var authRouter
     
     @State private var viewModel: AuthViewModel
     
     @State private var didEditEmail = false
     @State private var didEditPassword = false
     
-    init(
-        repository: AuthRepositoryProtocol,
-        sessionService: SessionService
-    ) {
-        _viewModel = State(initialValue: AuthViewModel(repository: repository))
-        self.sessionService = sessionService
+    init(viewModel: AuthViewModel) {
+        _viewModel = State(initialValue: viewModel)
     }
     
     var body: some View {
@@ -78,7 +74,9 @@ struct SignInView: View {
                         }
                     )
                     
-                    AuthBottomBarView()
+                    AuthBottomBarView(
+                        openSignUp: { authRouter.push(.signUp) }
+                    )
                 }
                 .frame(maxWidth: .infinity)
                 
@@ -107,4 +105,11 @@ struct SignInView: View {
         .scrollDismissesKeyboard(.interactively)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+}
+
+#Preview {
+    SignInView(viewModel: .mock)
+        .PreviewAppEnvironment()
+        .environment(SessionService())
+        .environment(AuthRouter())
 }

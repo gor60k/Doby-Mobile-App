@@ -116,3 +116,13 @@ final class AuthViewModel {
         isLoading = false
     }
 }
+
+extension AuthViewModel {
+    static var mock: AuthViewModel {
+        let reposirory = MockAuthRepository()
+        
+        return AuthViewModel(
+            repository: reposirory,
+        )
+    }
+}

@@ -26,3 +26,8 @@ struct RootTabView: View {
         .tint(primaryColorService.primaryColor.color)
     }
 }
+
+#Preview {
+    RootTabView()
+        .PreviewAppEnvironment()
+}

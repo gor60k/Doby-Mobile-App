@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 import Observation
 
 @Observable
@@ -6,11 +6,12 @@ final class SettingsViewModel {
     private let authRepository: AuthRepositoryProtocol
     private let userRepository: UserRepositoryProtocol
     private let userStorage: UserStorage
+    private let cityStorage: CityStorage
     
     var avatar: String = ""
 
-    var city: City = City(name: "Novorossiysk", translit: "novorossiysk")
-    var cityId: Int = 1
+    var selectedCityId: Int?
+    var cities: [City] { cityStorage.cities }
     
     var firstName: String = ""
     var lastName: String = ""
@@ -30,11 +31,13 @@ final class SettingsViewModel {
     init(
         authRespository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
-        userStorage: UserStorage
+        userStorage: UserStorage,
+        cityStorage: CityStorage
     ) {
         self.authRepository = authRespository
         self.userRepository = userRepository
         self.userStorage = userStorage
+        self.cityStorage = cityStorage
         
         loadCurrentUser()
     }
@@ -45,6 +48,17 @@ final class SettingsViewModel {
         
         do {
             try await userRepository.fetchUser()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+    
+    func fetchCities() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            _ = try await userRepository.fetchCities()
         } catch {
             self.error = error.localizedDescription
         }
@@ -61,7 +75,7 @@ final class SettingsViewModel {
                 patronymic: patronymic.nilIfEmpty,
                 phone: phone.nilIfEmpty,
                 avatar: avatar.nilIfEmpty,
-                city: cityId,
+                city: selectedCityId,
                 bio: bio.nilIfEmpty,
             )
             
@@ -83,11 +97,13 @@ final class SettingsViewModel {
     }
     
     private func loadCurrentUser() {
-        guard let user = userStorage.currentUser else { return }
+        guard let user = userStorage.user else { return }
     
         firstName = user.firstName ?? ""
         lastName = user.lastName ?? ""
         phone = user.phone ?? ""
         email = user.username
+        bio = user.bio ?? ""
+        selectedCityId = user.city?.id
     }
 }

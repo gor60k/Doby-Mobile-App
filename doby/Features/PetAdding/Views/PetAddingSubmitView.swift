@@ -17,8 +17,17 @@ struct PetAddingSubmitView: View {
                             .fontWeight(.semibold)
                     }
                 }
+                .frame(maxWidth: .infinity)
             }
-//            .disabled(viewModel.isLoading || viewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
+    }
+}
+
+#Preview {
+    Form {
+        PetAddingSubmitView(
+            addPet: {},
+            isLoading: false
+        )
     }
 }

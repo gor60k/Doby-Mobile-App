@@ -4,14 +4,17 @@ import Observation
 @Observable
 final class PetProfileViewModel {
     private let repository: PetRepositoryProtocol
+    private let petStorage: PetStorage
     private let userStorage: UserStorage
     
     var currentPage = 0
     
-    private(set) var pet: Pet?
+    var pet: Pet?
+    var description: String?
+    
     private let petId: Int
     
-    var user: User? { userStorage.currentUser }
+    var user: User? { userStorage.user }
     
     private(set) var slides: [PetPhoto] = []
     private(set) var infoItems: [PetProfileInfoItem] = []
@@ -19,13 +22,15 @@ final class PetProfileViewModel {
     init(
         repository: PetRepositoryProtocol,
         userStorage: UserStorage,
+        petStorage: PetStorage,
         petId: Int
     ) {
         self.repository = repository
         self.userStorage = userStorage
+        self.petStorage = petStorage
         self.petId = petId
         
-        syncPetFromRepository()
+        loadPet()
     }
     
     private(set) var isLoading = false
@@ -43,19 +48,20 @@ final class PetProfileViewModel {
         defer { isLoading = false }
         
         do {
-            try await repository.fetchPet(ownerUUID: ownerUUID, petId: petId)
-            syncPetFromRepository()
+            try await repository.fetchPet(with: petId, from: ownerUUID)
+            loadPet()
         } catch {
             self.error = error.localizedDescription
         }
     }
     
-    private func syncPetFromRepository() {
-        guard let updatedPet = repository.pets.first(where: { $0.id == petId }) else { return }
+    private func loadPet() {
+        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
         
-        pet = updatedPet
-        slides = makeSlides(from: updatedPet)
-        infoItems = makeInfoItems(from: updatedPet)
+        pet = loaded
+        slides = makeSlides(from: loaded)
+        infoItems = makeInfoItems(from: loaded)
+        description = loaded.additionalInfo
     }
     
     private func makeSlides(from pet: Pet) -> [PetPhoto] {
@@ -74,5 +80,20 @@ final class PetProfileViewModel {
             .weight(pet.weight),
             .height(pet.height)
         ]
+    }
+}
+
+extension PetProfileViewModel {
+    static var mock: PetProfileViewModel {
+        let repository = MockPetRepository()
+        let userStorage = UserStorage()
+        let petStorage = PetStorage.mock
+        
+        return PetProfileViewModel(
+            repository: repository,
+            userStorage: userStorage,
+            petStorage: petStorage,
+            petId: 1
+        )
     }
 }

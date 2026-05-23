@@ -1,23 +1,23 @@
 import SwiftUI
 
 struct PetProfileView: View {
-    @Environment(\.userStorage) private var userStorage
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State private var viewModel: PetProfileViewModel
     let petId: Int
     
+    // MARK: - Функции для перехода к дочерним экранам
+    let openSettings: (Int) -> Void
+    
     init(
-        repository: PetRepositoryProtocol,
-        userStorage: UserStorage,
-        petId: Int
+        viewModel: PetProfileViewModel,
+        petId: Int,
+        openSettings: @escaping (Int) -> Void
     ) {
         self.petId = petId
-        _viewModel = State(initialValue: PetProfileViewModel(
-            repository: repository,
-            userStorage: userStorage,
-            petId: petId
-        ))
+        self.openSettings = openSettings
+        
+        _viewModel = State(initialValue: viewModel)
     }
     
     enum PetDetailsTab: String, CaseIterable {
@@ -60,7 +60,9 @@ struct PetProfileView: View {
                             aboutValue: .about,
                             feedbackValue: .feedback,
                             options: options,
-                            title: { $0.rawValue }
+                            title: { $0.rawValue },
+                            description: viewModel.description ?? "",
+                            buttonAction: {}
                         )
                     }
                 }
@@ -68,66 +70,23 @@ struct PetProfileView: View {
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Мои особенности") {
-                    LazyVGrid(columns: grid, alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.pet?.specificTags ?? [], id: \.self) { tag in
-                            Text(tag)
-                                .frame(maxWidth: .infinity)
-                                .font(.system(.body, design: .rounded))
-                                .foregroundColor(.secondary)
-                                .padding(8)
-                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.primaryColor.color, lineWidth: 1))
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
+                    PetProfileTagsView(tags: viewModel.pet?.specificTags ?? [])
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Что я ем") {
-                    VStack(alignment: .leading, spacing: 12) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Тип питания")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Text(viewModel.pet?.dietType ?? "-")
-                                .font(.system(.body, design: .rounded))
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Пищевые привычки")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Text(viewModel.pet?.dietPatterns ?? "-")
-                                .font(.system(.body, design: .rounded))
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Дополнительная информация")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Text(viewModel.pet?.dietAdditionalInfo ?? "-")
-                                .font(.system(.body, design: .rounded))
-                        }
-                    }
+                    PetProfileDietView(
+                        dietType: viewModel.pet?.dietType ?? "-",
+                        dietPatterns: viewModel.pet?.dietPatterns ?? "-",
+                        dietAdditionalInfo: viewModel.pet?.dietAdditionalInfo ?? "-"
+                    )
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Важные предупреждения!") {
-                    LazyVGrid(columns: grid, alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.pet?.warningTags ?? [], id: \.self) { tag in
-                            Text(tag)
-                                .frame(maxWidth: .infinity)
-                                .font(.system(.body, design: .rounded))
-                                .foregroundColor(.secondary)
-                                .padding(8)
-                                .overlay(RoundedRectangle(cornerRadius: 16).stroke(primaryColorService.primaryColor.color, lineWidth: 1))
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
+                    PetProfileTagsView(tags: viewModel.pet?.warningTags ?? [])
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
@@ -135,9 +94,22 @@ struct PetProfileView: View {
         }
         .background(.primaryBackground)
         .scrollIndicators(.hidden)
+        .refreshable {
+            await viewModel.fetchPet()
+        }
         .task {
             await viewModel.fetchPet()
         }
         .ignoresSafeArea(edges: .top)
+        .petProfileToolbar(onEdit: { openSettings(petId) })
     }
+}
+
+#Preview {
+    PetProfileView(
+        viewModel: .mock,
+        petId: 1,
+        openSettings: {_ in }
+    )
+    .PreviewAppEnvironment()
 }

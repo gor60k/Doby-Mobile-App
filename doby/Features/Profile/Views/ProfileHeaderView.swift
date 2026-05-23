@@ -1,11 +1,33 @@
 import SwiftUI
 
 struct ProfileHeaderView: View {
-    @State var user: User?
+    let uuid: String?
+    let username: String?
+    let firstName: String?
+    let lastName: String?
+    let cityName: String?
+    
+    private var fullName: String {
+        if let firstName, !firstName.isEmpty {
+            if let lastName, !lastName.isEmpty {
+                return "\(firstName) \(lastName)"
+            }
+            return firstName
+        }
+        
+        if let username, !username.isEmpty {
+            return username
+        }
+        
+        return "Хвостик-\(uuid ?? "unknown")"
+    }
+    
+    private var subtitle: String {
+        return "42 года, \(cityName ?? "город не указан")"
+    }
     
     var body: some View {
         VStack {
-            let fullName = "\(user?.firstName ?? "") \(user?.lastName ?? "")"
             Circle()
                 .fill(Color.secondary.opacity(0.12))
                 .overlay {
@@ -16,25 +38,21 @@ struct ProfileHeaderView: View {
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
             
-            if let firstName = user?.firstName, !firstName.isEmpty {
-                HStack {
-                    Text(fullName)
-                        .style(AppTextStyle.Presets.titleSemibold)
-                }
-            } else if let username = user?.username, !username.isEmpty {
-                Text(username)
-                    .style(AppTextStyle.Presets.titleSemibold)
-            } else {
-                Text("Хвостик-\(user?.uuid)")
-                    .style(AppTextStyle.Presets.titleSemibold)
-            }
+            Text(fullName)
+                .style(AppTextStyle.Presets.titleSemibold)
             
-            Text("42 года, Краснодар, Юбилейный")
+            Text(subtitle)
                 .style(AppTextStyle.Presets.headlineRegular)
         }
     }
 }
 
 #Preview {
-    ProfileHeaderView()
+    ProfileHeaderView(
+        uuid: "228",
+        username: "",
+        firstName: "",
+        lastName: "",
+        cityName: ""
+    )
 }

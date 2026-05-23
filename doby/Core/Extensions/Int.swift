@@ -17,4 +17,11 @@ extension Int {
 
         return "\(self) \(suffix)"
     }
+    
+    var nilIfZero: Int? {
+        if self == 0 {
+            return nil
+        }
+        return self
+    }
 }

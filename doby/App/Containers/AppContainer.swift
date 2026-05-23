@@ -2,53 +2,75 @@ import Alamofire
 
 @MainActor
 final class AppContainer {
-    let storage: StorageContainer
-    let services: ServiceContainer
+    // MARK: - Хранилища
+    let userStorage = UserStorage()
+    let petStorage = PetStorage()
+    let cityStorage = CityStorage()
     
-    let auth: AuthContainer
-    let network: NetworkContainer
-    let repositories: RepositoryContainer
+    // MARK: - Сервисы инфраструктуры
+    let keychainService = KeychainService()
+    let sessionService = SessionService()
+    let tokenManager: TokenManager
+    
+    // MARK: - API
+    let apiClient: APIClient
+    let authApiClient: APIClient
+    
+    // MARK: - Репозитории
+    let authRepository: AuthRepositoryProtocol
+    let userRepository: UserRepositoryProtocol
+    let petRepository: PetRepositoryProtocol
     
     init() {
-        let rawSession = Session.default
+        authApiClient = AppContainer.makePlainClient()
         
-        let storage = StorageContainer()
-        self.storage = storage
-        
-        self.services = ServiceContainer(
-            sessionService: SessionService(),
-            keychainService: KeychainService(),
-            logService: LogService()
+        tokenManager = TokenManager(
+            authAPI: AuthAPI(apiClient: authApiClient),
+            keychainService: keychainService,
+            sessionService: sessionService
         )
         
-        let baseAPIClient = APIClient(session: rawSession)
+        apiClient = AppContainer.makeAuthorizedClient(tokenManager: tokenManager)
         
-        let auth = AuthContainer(
-            apiClient: baseAPIClient,
-            services: services
+        authRepository = AuthRepository(
+            api: AuthAPI(apiClient: authApiClient),
+            storage: userStorage,
+            petStorage: petStorage,
+            session: sessionService,
+            keychain: keychainService
         )
-        self.auth = auth
         
-        let network = NetworkContainer(interceptor: auth.authInterceptor)
-        self.network = network
+        userRepository = UserRepository(
+            api: UserAPI(apiClient: apiClient),
+            userStorage: userStorage,
+            petStorage: petStorage,
+            cityStorage: cityStorage
+        )
         
-        self.repositories = RepositoryContainer(
-            authRepository: AuthRepository(
-                service: auth.authSerive,
-                storage: storage.user,
-                petStorage: storage.pet,
-                session: services.sessionService,
-                keychain: services.keychainService
-            ),
-            userRepository: UserRepository(
-                service: UserService(apiClient: network.apiClient),
-                storage: storage.user,
-                petStorage: storage.pet
-            ),
-            petRepository: PetRepository(
-                service: PetService(apiClient: network.apiClient),
-                storage: storage.pet
-            )
+        petRepository = PetRepository(
+            api: PetAPI(apiClient: apiClient),
+            storage: petStorage
         )
     }
 }
+
+private extension AppContainer {
+    static func makePlainClient() -> APIClient {
+        let session = Session(eventMonitors: [NetworkLogService()])
+        
+        return APIClient(session: session)
+    }
+    
+    static func makeAuthorizedClient(tokenManager: TokenManager) -> APIClient {
+        let interceptor = AuthInterceptor(tokenManager: tokenManager)
+        
+        let session = Session(
+            interceptor: interceptor,
+            eventMonitors: [NetworkLogService()]
+        )
+        
+        return APIClient(session: session)
+    }
+}
+
+

@@ -5,9 +5,9 @@ struct CityAutocompleteView: View {
     @State private var searchText: String = ""
 
     let cities = [
-        City(name: "Москва", translit: "moskva"),
-        City(name: "Санкт-Петербург", translit: "sankt-peterburg"),
-        City(name: "Саратов", translit: "saratov")
+        City(id: 1, name: "Москва", translit: "moskva"),
+        City(id: 2, name: "Санкт-Петербург", translit: "sankt-peterburg"),
+        City(id: 3, name: "Саратов", translit: "saratov")
     ]
 
     var filteredCities: [City] {

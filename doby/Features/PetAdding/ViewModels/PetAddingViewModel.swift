@@ -8,28 +8,33 @@ import PhotosUI
 final class PetAddingViewModel {
     private let repository: PetRepositoryProtocol
     
-    var petType: PetType = .dog
+    // MARK: - Обязательные поля
+    var petType: PetType?
     var name: String = ""
     var age: Int = 0
-    var height: Int = 0
-    var weight: Int = 0
     var breedName: String = ""
+    
+    var petGender: Gender?
+    
+    // MARK: - высота и вес обязательные поля
+    var height: Int?
+    var weight: Int?
+    var description: String = ""
+    
     var dietType: String = ""
     var dietPattern: String = ""
-
-    var description: String = ""
+    var dietAdditionalInfo: String = ""
+    
     var selectedPhotoItems: [PhotosPickerItem] = []
     var selectedPhotosData: [Data] = []
 
-    var feedingType: String = ""
-    var feedingSchedule: String = ""
-    var feedingNotes: String = ""
-    
+    // MARK: - Обязательные теги
     var warningTagsViewModel = PrimaryTagsViewModel(
         type: .warning,
         placeholder: "Например: аллергия"
     )
     
+    // MARK: - Обязательные теги
     var featureTagsViewModel = PrimaryTagsViewModel(
         type: .feature,
         placeholder: "Например: любит детей"
@@ -66,16 +71,18 @@ final class PetAddingViewModel {
         
         do {
             let input = CreatePetInput(
-                petType: petType,
+                petType: petType ?? .dog,
                 uploadedPhotos: selectedPhotosData,
                 name: name,
                 age: age,
+                gender: petGender ?? .male,
                 height: height,
                 weight: weight,
                 breedName: breedName,
-                dietType: feedingType,
-                dietPattern: feedingSchedule,
-                dietAdditionalInfo: feedingNotes,
+                dietType: dietType,
+                dietPattern: dietPattern,
+                additionalInfo: description,
+                dietAdditionalInfo: dietAdditionalInfo,
                 warningTags: warningTagsViewModel.tags,
                 specificTags: featureTagsViewModel.tags
             )
@@ -84,5 +91,13 @@ final class PetAddingViewModel {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+}
+
+extension PetAddingViewModel {
+    static var mock: PetAddingViewModel {
+        let repository = MockPetRepository()
+        
+        return PetAddingViewModel(repository: repository)
     }
 }

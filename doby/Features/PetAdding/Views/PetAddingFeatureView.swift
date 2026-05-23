@@ -4,7 +4,9 @@ struct PetAddingFeatureView: View {
     @Binding var featureTagsViewModel: PrimaryTagsViewModel
 
     var body: some View {
-        Section("Особенности") {
+        Section(
+            header: PrimaryFormSectionHeader(title: "Особенности", isRequired: true)
+        ) {
             PrimaryTagsView(
                 viewModel: featureTagsViewModel
             )

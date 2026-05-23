@@ -4,7 +4,9 @@ struct SettingsPersonalInfoView: View {
     @Binding var name: String
     @Binding var surname: String
     @Binding var phone: String
-    @Binding var city: City
+    @Binding var selectedCityId: Int?
+    
+    let cities: [City]
     
     var body: some View {
         Section("Личные данные") {
@@ -17,9 +19,13 @@ struct SettingsPersonalInfoView: View {
             TextField("Номер телефона", text: $phone)
                 .keyboardType(.phonePad)
                 .textContentType(.telephoneNumber)
-            
-            TextField("Город", text: $city.name)
-                .textInputAutocapitalization(.words)
+
+            Picker("Город", selection: $selectedCityId) {
+                ForEach(cities) { city in
+                    Text(city.name)
+                        .tag(city.id)
+                }
+            }
         }
     }
 }

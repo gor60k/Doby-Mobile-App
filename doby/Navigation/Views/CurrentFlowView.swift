@@ -3,7 +3,7 @@ import SwiftUI
 struct CurrentFlowView: View {
     @Environment(\.appContainer) private var appContainer
     
-    private var sessionService: SessionService { appContainer.services.sessionService }
+    private var sessionService: SessionService { appContainer.sessionService }
 
     var body: some View {
         ZStack {

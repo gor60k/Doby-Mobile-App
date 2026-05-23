@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @Environment(PetStorage.self) private var petStorage
     @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) var primaryColorService
     
@@ -10,26 +11,41 @@ struct ProfileView: View {
     
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
+    
     let options = ProfileDetailsTab.allCases
     
+    let openSettings: () -> Void
+    let openPetAdding: () -> Void
+    let openPetProfile: (Int) -> Void
+    
     init(
-        userRepository: UserRepositoryProtocol,
-        petRepository: PetRepositoryProtocol,
+        viewModel: ProfileViewModel,
+        profilePetsViewModel: ProfilePetsViewModel,
+        profileOrdersViewModel: ProfileOrdersViewModel,
+        
+        openSettings: @escaping () -> Void,
+        openPetAdding: @escaping () -> Void,
+        opentPetProfile: @escaping (Int) -> Void,
     ) {
-        _viewModel = State(initialValue: ProfileViewModel(
-            userRepository: userRepository,
-            petRepository: petRepository
-        ))
-        _profilePetsViewModel = State(initialValue: ProfilePetsViewModel(
-            petRepository: petRepository
-        ))
-        _profileOrdersViewModel = State(initialValue: ProfileOrdersViewModel())
+        _viewModel = State(initialValue: viewModel)
+        _profilePetsViewModel = State(initialValue: profilePetsViewModel)
+        _profileOrdersViewModel = State(initialValue: profileOrdersViewModel)
+        
+        self.openSettings = openSettings
+        self.openPetAdding = openPetAdding
+        self.openPetProfile = opentPetProfile
     }
     
     var body: some View {
         ScrollView {
             // MARK: - Шапка профиля
-            ProfileHeaderView(user: viewModel.user)
+            ProfileHeaderView(
+                uuid: viewModel.user?.uuid,
+                username: viewModel.user?.username,
+                firstName: viewModel.user?.firstName,
+                lastName: viewModel.user?.lastName,
+                cityName: viewModel.user?.city?.name
+            )
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             
@@ -37,7 +53,11 @@ struct ProfileView: View {
             PrimaryCollapsibleSection(title: "Мои питомцы") {
                 ProfilePetsView(
                     currentPage: profilePetsViewModel.currentPage,
-                    pets: profilePetsViewModel.pets
+                    pets: petStorage.pets,
+                    openPetAdding: { openPetAdding() },
+                    openPetProfile: { id in
+                        openPetProfile(id)
+                    }
                 )
             }
             .padding(.horizontal)
@@ -52,7 +72,7 @@ struct ProfileView: View {
                     options: options,
                     title: { $0.rawValue },
                     bio: viewModel.user?.bio ?? "",
-                    buttonAction: { router.push(.settings) }
+                    buttonAction: { openSettings() }
                 )
             }
             .padding(.horizontal)
@@ -73,25 +93,22 @@ struct ProfileView: View {
         .ignoresSafeArea(edges: .top)
         .scrollIndicators(.hidden)
         .profileToolbar(
-            onEditTap: { router.push(.settings) },
+            onEditTap: { openSettings() },
             onQRScanTap: {}
         )
         .refreshable {
             await viewModel.fetchUser()
-            await viewModel.fetchPets()
         }
     }
 }
 
-#Preview {
-    ProfileView(
-        userRepository: MockUserRepository(),
-        petRepository: MockPetRepository()
-    )
-    .appEnvironment(
-        container: AppContainer(),
-        themeService: ThemeService(),
-        primaryColorService: PrimaryColorService()
-    )
-    .environment(ProfileRouter())
-}
+//#Preview {
+//    ProfileView(
+//        viewModel: .mock,
+//        profilePetsViewModel: ,
+//        profileOrdersViewModel: <#T##ProfileOrdersViewModel#>,
+//        openSettings: <#T##() -> Void#>,
+//        openPetAdding: <#T##() -> Void#>,
+//        opentPetProfile: <#T##(Int) -> Void#>
+//    )
+//}

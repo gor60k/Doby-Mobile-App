@@ -60,6 +60,16 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		0851C2002FBDA5EA007A309F /* OldContainers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OldContainers;
+			sourceTree = "<group>";
+		};
+		0851C20C2FBDA5F1007A309F /* OldNetwork */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OldNetwork;
+			sourceTree = "<group>";
+		};
 		08A280DF2F4104B600B54BD2 /* doby */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -116,9 +126,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		0851C1F92FBDA5DD007A309F /* legacy */ = {
+			isa = PBXGroup;
+			children = (
+				0851C2002FBDA5EA007A309F /* OldContainers */,
+				0851C20C2FBDA5F1007A309F /* OldNetwork */,
+			);
+			path = legacy;
+			sourceTree = "<group>";
+		};
 		08A280D42F4104B600B54BD2 = {
 			isa = PBXGroup;
 			children = (
+				0851C1F92FBDA5DD007A309F /* legacy */,
 				08A280DF2F4104B600B54BD2 /* doby */,
 				08A280ED2F4104B700B54BD2 /* dobyTests */,
 				08A280F72F4104B700B54BD2 /* dobyUITests */,
@@ -154,6 +174,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				0851C2002FBDA5EA007A309F /* OldContainers */,
+				0851C20C2FBDA5F1007A309F /* OldNetwork */,
 				08A280DF2F4104B600B54BD2 /* doby */,
 			);
 			name = doby;
