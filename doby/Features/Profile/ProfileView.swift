@@ -43,7 +43,8 @@ struct ProfileView: View {
                 uuid: viewModel.user?.uuid,
                 username: viewModel.user?.username,
                 firstName: viewModel.user?.firstName,
-                lastName: viewModel.user?.lastName
+                lastName: viewModel.user?.lastName,
+                cityName: viewModel.user?.city?.name
             )
                 .padding(.horizontal)
                 .padding(.bottom, 10)

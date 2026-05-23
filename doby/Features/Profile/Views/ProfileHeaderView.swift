@@ -5,6 +5,7 @@ struct ProfileHeaderView: View {
     let username: String?
     let firstName: String?
     let lastName: String?
+    let cityName: String?
     
     private var fullName: String {
         if let firstName, !firstName.isEmpty {
@@ -19,6 +20,10 @@ struct ProfileHeaderView: View {
         }
         
         return "Хвостик-\(uuid ?? "unknown")"
+    }
+    
+    private var subtitle: String {
+        return "42 года, \(cityName ?? "город не указан")"
     }
     
     var body: some View {
@@ -36,7 +41,7 @@ struct ProfileHeaderView: View {
             Text(fullName)
                 .style(AppTextStyle.Presets.titleSemibold)
             
-            Text("42 года, Краснодар, Юбилейный")
+            Text(subtitle)
                 .style(AppTextStyle.Presets.headlineRegular)
         }
     }
@@ -47,6 +52,7 @@ struct ProfileHeaderView: View {
         uuid: "228",
         username: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        cityName: ""
     )
 }

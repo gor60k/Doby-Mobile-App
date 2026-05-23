@@ -9,6 +9,7 @@ struct ProfilePetCardView: View {
     let name: String
     let breedName: String
     let age: Int
+    let description: String?
     
     let openPetProfile: (Int) -> Void
     
@@ -52,17 +53,24 @@ struct ProfilePetCardView: View {
                 Divider()
                     .padding(.vertical, 4)
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Обо мне")
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundColor(.secondary)
+                if let description, !description.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Обо мне")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundColor(.secondary)
 
-                    Text("Дружелюбный и энергичный, люблю грызть тапки")
+                        Text(description)
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundColor(.primary)
+                            .lineLimit(3)
+                    }
+                } else {
+                    Text("Описание не заполнено")
                         .font(.system(.footnote, design: .rounded))
                         .foregroundColor(.primary)
                         .lineLimit(3)
                 }
-                
+            
                 Spacer()
                 
                 Button(action: {

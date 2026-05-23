@@ -1,5 +1,7 @@
 import SwiftUI
 
+
+//TODO: добавить изменение недостоющих полей в форме и изменение фотографий питомца
 struct PetSettingsView: View {
     @State private var viewModel: PetSettingsViewModel
     

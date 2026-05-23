@@ -35,6 +35,7 @@ struct ProfilePetsView: View {
                                 name: pet.name,
                                 breedName: pet.breedName,
                                 age: pet.age,
+                                description: pet.additionalInfo,
                                 openPetProfile: { id in
                                     openPetProfile(id)
                                 }
