@@ -9,6 +9,10 @@ struct PetStack: View {
     
     @State private var petRouter = PetRouter()
     
+    private func openPetProfile() {
+        petRouter.pop()
+    }
+    
     var body: some View {
         NavigationStack(path: $petRouter.path) {
             PetView(
@@ -37,7 +41,8 @@ struct PetStack: View {
                                 ownerUUID: ownerUUID
                             ),
                             petId: id,
-                            ownerUUID: ownerUUID
+                            ownerUUID: ownerUUID,
+                            openPetProfile: openPetProfile
                         )
                     }
                 }

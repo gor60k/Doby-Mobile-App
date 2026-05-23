@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct PetSettingsDetailsView: View {
-    @Binding var height: Int?
-    @Binding var weight: Int?
+    @Binding var height: Int
+    @Binding var weight: Int
     @Binding var description: String
     
     var body: some View {
@@ -10,14 +10,14 @@ struct PetSettingsDetailsView: View {
             HStack {
                 Text("Рост")
                 Spacer()
-                TextField("см", text: $height.stringValue)
+                TextField("см", value: $height, format: .number)
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.numberPad)
             }
             HStack {
                 Text("Вес")
                 Spacer()
-                TextField("кг", text: $weight.stringValue)
+                TextField("кг", value: $weight, format: .number)
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.numberPad)
             }

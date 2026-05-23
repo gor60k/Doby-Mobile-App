@@ -22,4 +22,8 @@ final class PetAPI: PetAPIProtocol {
     func delete(_ petId: Int) async throws -> EmptyDTO {
         try await apiClient.request(DeleteEndpoint(petId: petId))
     }
+    
+    func updatePet(_ request: UpdatePetRequest, with petId: Int) async throws -> PetResponse {
+        try await apiClient.request(UpdatePetEndpoint(request: request, petId: petId))
+    }
 }

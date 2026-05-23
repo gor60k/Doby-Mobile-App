@@ -35,7 +35,8 @@ struct SettingsStack: View {
                                 ownerUUID: ownerUUID
                             ),
                             petId: id,
-                            ownerUUID: ownerUUID
+                            ownerUUID: ownerUUID,
+                            openPetProfile: {}
                         )
                     }
                 }

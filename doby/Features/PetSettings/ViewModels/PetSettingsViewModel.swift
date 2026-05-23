@@ -9,10 +9,16 @@ final class PetSettingsViewModel {
     let petId: Int
     let ownerUUID: String
     
+    var petType: PetType = .dog
+    var name: String = ""
     var age = 0
+    var gender: Gender = .male
     
-    var height: Int?
-    var weight: Int?
+    var uploadedPhotos: [Data] = []
+    var breedName: String = ""
+    
+    var height: Int = 0
+    var weight: Int = 0
     var description: String = ""
     
     var dietType: String = ""
@@ -60,7 +66,38 @@ final class PetSettingsViewModel {
         }
     }
     
-    
+    func updatePet() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        warningTags = warningTagsViewModel.tags
+        featureTags = featureTagsViewModel.tags
+        
+        do {
+            let input = UpdatePetInput(
+                petType: petType,
+                uploadedPhotos: uploadedPhotos,
+                name: name.nilIfEmpty,
+                age: age.nilIfZero,
+                gender: gender,
+                height: height.nilIfZero,
+                weight: weight.nilIfZero,
+                breedName: breedName.nilIfEmpty,
+                dietType: dietType.nilIfEmpty,
+                dietPattern: dietPattern.nilIfEmpty,
+                additionalInfo: description.nilIfEmpty,
+                dietAdditionalInfo: dietAdditionalInfo.nilIfEmpty,
+                warningTags: warningTags,
+                specificTags: featureTags
+            )
+            
+            print("ИНПУТ ПИТОМЦА", input)
+            
+            try await petRepository.updatePet(input, with: petId)
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
     
     private func loadPet() {
         guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }

@@ -43,5 +43,17 @@ final class PetRepository: PetRepositoryProtocol {
         
         storage.remove(id: id)
     }
+    
+    func updatePet(_ input: UpdatePetInput, with petId: Int) async throws {
+        let request = UpdatePetRequestMapper.map(from: input)
+        let response = try await api.updatePet(request, with: petId)
+        let pet = PetMapper.map(response: response)
+        
+        print("ОТПРАЛЕНО НА СЕРВЕР", request)
+        print("ОТВЕТ СЕРВЕРА", response)
+        print("МАПП ОТВЕТА", pet)
+        
+        storage.update(pet)
+    }
 }
 

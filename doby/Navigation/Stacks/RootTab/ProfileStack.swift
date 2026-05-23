@@ -14,6 +14,10 @@ struct ProfileStack: View {
     @State private var profileRouter = ProfileRouter()
     @State private var petRouter = PetRouter()
     
+    private func openPetProfile() {
+        profileRouter.pop()
+    }
+    
     var body: some View {
         NavigationStack(path: $profileRouter.path) {
             ProfileView(
@@ -50,7 +54,8 @@ struct ProfileStack: View {
                                 ownerUUID: ownerUUID
                             ),
                             petId: id,
-                            ownerUUID: ownerUUID
+                            ownerUUID: ownerUUID,
+                            openPetProfile: openPetProfile
                         )
                     case .petProfile(let id):
                         PetProfileView(

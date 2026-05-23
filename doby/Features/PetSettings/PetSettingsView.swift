@@ -8,15 +8,19 @@ struct PetSettingsView: View {
     
     @State var age: Int = 0
     
+    let openPetProfile: () -> Void
+    
     init(
         viewModel: PetSettingsViewModel,
         petId: Int,
-        ownerUUID: String
+        ownerUUID: String,
+        openPetProfile: @escaping () -> Void
     ) {
         _viewModel = State(initialValue: viewModel)
         
         self.petId = petId
         self.ownerUUID = ownerUUID
+        self.openPetProfile = openPetProfile
     }
     
     var body: some View {
@@ -44,7 +48,20 @@ struct PetSettingsView: View {
             
             PetSettingsTagsView(
                 viewModel: $viewModel.featureTagsViewModel,
-                title: "Особенности")
+                title: "Особенности"
+            )
+        }
+        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Готово") {
+                    Task {
+                        await viewModel.updatePet()
+                        openPetProfile()
+                    }
+                }
+            }
         }
     }
 }
@@ -53,6 +70,7 @@ struct PetSettingsView: View {
     PetSettingsView(
         viewModel: .mock,
         petId: 1,
-        ownerUUID: ""
+        ownerUUID: "",
+        openPetProfile: {}
     )
 }

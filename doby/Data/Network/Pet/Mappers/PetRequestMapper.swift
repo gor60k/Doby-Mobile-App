@@ -1,6 +1,5 @@
 struct PetRequestMapper {
-    
-    static func map(input: CreatePetInput) -> PetRequest {
+    nonisolated static func map(input: CreatePetInput) -> PetRequest {
         return PetRequest(
             pet_type: mapType(input.petType),
             uploaded_photos: input.uploadedPhotos,
@@ -19,14 +18,14 @@ struct PetRequestMapper {
         )
     }
     
-    private static func mapType(_ type: PetType) -> PetTypeDTO {
+    nonisolated private static func mapType(_ type: PetType) -> PetTypeDTO {
         switch type {
         case .dog: return .dog
         case .cat: return .cat
         }
     }
     
-    private static func mapGenger(_ gender: Gender) -> GenderDTO {
+    nonisolated private static func mapGenger(_ gender: Gender) -> GenderDTO {
         switch gender {
         case .male: return .male
         case .female: return .female

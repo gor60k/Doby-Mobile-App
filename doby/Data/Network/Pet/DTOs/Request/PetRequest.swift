@@ -1,7 +1,7 @@
 import Foundation
 
 nonisolated
-struct PetRequest: Encodable {
+struct PetRequest: Codable {
     let pet_type: PetTypeDTO
     let uploaded_photos: [Data]
     let name: String

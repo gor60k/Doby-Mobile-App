@@ -24,6 +24,8 @@ extension View {
             .environment(container.userStorage)
             .environment(container.cityStorage)
         
+            .environment(container.sessionService)
+        
             .environment(themeService)
             .environment(primaryColorService)
         
