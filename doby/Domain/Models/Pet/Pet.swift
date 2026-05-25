@@ -28,5 +28,5 @@ struct Pet: Codable, Identifiable {
     let specificTags: [String]
     let additionalInfo: String
     let dietAdditionalInfo: String
-    let photos: [PetPhoto]
+    var photos: [PetPhoto]
 }

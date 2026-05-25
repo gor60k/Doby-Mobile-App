@@ -1,14 +1,13 @@
 import SwiftUI
-
+import PhotosUI
 
 //TODO: добавить изменение недостоющих полей в форме и изменение фотографий питомца
 struct PetSettingsView: View {
     @State private var viewModel: PetSettingsViewModel
+    @State private var selectedPhotoItem: PhotosPickerItem?
     
     let petId: Int
     let ownerUUID: String
-    
-    @State var age: Int = 0
     
     let openPetProfile: () -> Void
     
@@ -27,9 +26,15 @@ struct PetSettingsView: View {
     
     var body: some View {
         Form {
-            Section("Основые данные питомца") {
-                Stepper("Возраст: \(age) лет", value: $age, in: 0...30)
-            }
+            PetSettingsPhotosPickerView(
+                selectedPhotoItem: $selectedPhotoItem,
+                selectedPhotoImage: $viewModel.selectedPhotoImage,
+                currentPhotoURL: viewModel.currentPhotoURL
+            )
+            
+//            Section("Основые данные питомца") {
+//                Stepper("Возраст: \(age) лет", value: $age, in: 0...30)
+//            }
             
             PetSettingsDetailsView(
                 height: $viewModel.height,
@@ -63,6 +68,13 @@ struct PetSettingsView: View {
                         openPetProfile()
                     }
                 }
+            }
+        }
+        .onChange(of: selectedPhotoItem) { _, newItem in
+            guard let newItem else { return }
+            
+            Task {
+                await viewModel.handlePhotoSelection(newItem)
             }
         }
     }

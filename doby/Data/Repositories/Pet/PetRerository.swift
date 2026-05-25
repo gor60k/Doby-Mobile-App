@@ -49,11 +49,17 @@ final class PetRepository: PetRepositoryProtocol {
         let response = try await api.updatePet(request, with: petId)
         let pet = PetMapper.map(response: response)
         
-        print("ОТПРАЛЕНО НА СЕРВЕР", request)
-        print("ОТВЕТ СЕРВЕРА", response)
-        print("МАПП ОТВЕТА", pet)
-        
         storage.update(pet)
+    }
+    
+    func uploadPetPhoto(_ input: PetPhotoInput, with petId: Int) async throws {
+        let request = PetPhotoRequestMapper.map(from: input)
+        let response = try await api.uploadPetPhoto(request, with: petId)
+        let petPhoto = PetPhotoResponseMapper.map(from: response)
+        
+        storage.patch(with: petId) { pet in
+            pet.photos.append(petPhoto)
+        }
     }
 }
 

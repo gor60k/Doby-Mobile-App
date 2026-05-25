@@ -35,6 +35,16 @@ final class PetStorage {
         persist()
     }
     
+    func patch(
+        with petId: Int,
+        mutate: (inout Pet) -> Void
+    ) {
+        guard let index = pets.firstIndex(where: { $0.id == petId }) else { return }
+        
+        mutate(&pets[index])
+        persist()
+    }
+    
     func remove(id: Int) {
         pets = pets.filter { $0.id != id }
         persist()

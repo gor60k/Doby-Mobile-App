@@ -1,6 +1,9 @@
+import SwiftUI
 import Foundation
 import Observation
+import PhotosUI
 
+//TODO: доделать логику добавления и изменения фото
 @Observable
 final class SettingsViewModel {
     private let authRepository: AuthRepositoryProtocol
@@ -9,6 +12,8 @@ final class SettingsViewModel {
     private let cityStorage: CityStorage
     
     var avatar: String = ""
+    var selectedAvatarImage: UIImage?
+    var isUploadingAvatar = false
 
     var selectedCityId: Int?
     var cities: [City] { cityStorage.cities }
@@ -64,6 +69,20 @@ final class SettingsViewModel {
         }
     }
     
+    func handleAvatarSelection(_ item: PhotosPickerItem) async {
+        guard let data = try? await item.loadTransferable(type: Data.self),
+              let image = UIImage(data: data)
+        else { return }
+        
+        await MainActor.run {
+            selectedAvatarImage = image
+        }
+        
+        await uploadedAvatar(data)
+    }
+    
+    
+    
     func updateUser() async {
         isLoading = true
         defer { isLoading = false }
@@ -105,5 +124,32 @@ final class SettingsViewModel {
         email = user.username
         bio = user.bio ?? ""
         selectedCityId = user.city?.id
+    }
+    
+    private func uploadedAvatar(_ data: Data) async {
+        isUploadingAvatar = true
+        defer { isUploadingAvatar = false }
+        
+        do {
+            
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+}
+
+extension SettingsViewModel {
+    static var mock: SettingsViewModel {
+        let authRepository = MockAuthRepository()
+        let userRepository = MockUserRepository()
+        let userStorage = UserStorage()
+        let cityStorage = CityStorage()
+        
+        return SettingsViewModel(
+            authRespository: authRepository,
+            userRepository: userRepository,
+            userStorage: userStorage,
+            cityStorage: cityStorage
+        )
     }
 }

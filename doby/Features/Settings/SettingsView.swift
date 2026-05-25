@@ -11,7 +11,6 @@ struct SettingsView: View {
     @State private var viewModel: SettingsViewModel
     
     @State private var selectedAvatarItem: PhotosPickerItem?
-    @State private var selectedAvatarImage: UIImage?
     
     // MARK: - Функции для перехода на дочерние экраны
     let openSettingsAppearance: () -> Void
@@ -50,7 +49,7 @@ struct SettingsView: View {
         Form {
             SettingsPhotosPickerView(
                 selectedAvatarItem: $selectedAvatarItem,
-                selectedAvatarImage: $selectedAvatarImage
+                selectedAvatarImage: $viewModel.selectedAvatarImage
             )
             
             SettingsPersonalInfoView(
@@ -91,11 +90,7 @@ struct SettingsView: View {
         .settingsToolbar(onSave: { saveChanges() })
         .task(id: selectedAvatarItem) {
             guard let selectedAvatarItem else { return }
-            guard let data = try? await selectedAvatarItem.loadTransferable(type: Data.self),
-                  let image = UIImage(data: data) else { return }
-            await MainActor.run {
-                selectedAvatarImage = image
-            }
+            await viewModel.handleAvatarSelection(selectedAvatarItem)
         }
         .task {
             await viewModel.fetchCities()
@@ -103,17 +98,15 @@ struct SettingsView: View {
     }
 }
 
-//#Preview {
-//    SettingsView(
-//        authRepository: MockAuthRepository(),
-//        userRepository: MockUserRepository(),
-//        userStorage: UserStorage(),
-//        cityStorage: CityStorage(),
-//        openSettingsAppearance: {},
-//        openSettingsPrivacy: {},
-//        openSettingsNotifications: {}
-//    )
-//    .PreviewAppEnvironment()
-//    .environment(ProfileRouter())
-//    .environment(UserStorage())
-//}
+#Preview {
+    SettingsView(
+        viewModel: .mock,
+        openSettingsAppearance: {},
+        openSettingsPrivacy: {},
+        openSettingsNotifications: {}
+    )
+    .PreviewAppEnvironment()
+    .environment(ProfileRouter())
+    .environment(UserStorage())
+}
+
