@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SettingsAppearensView: View {
+struct SettingsAppearensScreen: View {
     @Environment(ThemeService.self) private var themeService
     @Environment(PrimaryColorService.self) var primaryColorService
     

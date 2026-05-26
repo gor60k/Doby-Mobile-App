@@ -20,7 +20,7 @@ struct ProfileStack: View {
     
     var body: some View {
         NavigationStack(path: $profileRouter.path) {
-            ProfileView(
+            ProfileScreen(
                 viewModel: appContainer.makeProfileViewModel(),
                 profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
                 profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
@@ -34,7 +34,7 @@ struct ProfileStack: View {
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
                     case .settings:
-                        SettingsView(
+                        SettingsScreen(
                             viewModel: appContainer.makeSettingsViewModel(),
                             
                             openSettingsAppearance: { profileRouter.push(.settingsAppearance) },
@@ -42,13 +42,13 @@ struct ProfileStack: View {
                             openSettingsNotifications: { profileRouter.push(.settingsNotifications) }
                         )
                     case .settingsAppearance:
-                        SettingsAppearensView()
+                        SettingsAppearensScreen()
                     case .settingsPrivacy:
-                        SettingsPrivacyView()
+                        SettingsPrivacyScreen()
                     case .settingsNotifications:
-                        SettingsNotificationsView()
+                        SettingsNotificationsScreen()
                     case .petSettings(let id):
-                        PetSettingsView(
+                        PetSettingsScreen(
                             viewModel: appContainer.makePetSettingsViewModel(
                                 petId: id,
                                 ownerUUID: ownerUUID
@@ -58,7 +58,7 @@ struct ProfileStack: View {
                             openPetProfile: openPetProfile
                         )
                     case .petProfile(let id):
-                        PetProfileView(
+                        PetProfileScreen(
                             viewModel: appContainer.makePetProfileViewModel(petId: id),
                             
                             petId: id,
@@ -67,7 +67,7 @@ struct ProfileStack: View {
                             }
                         )
                     case .petAdding:
-                        PetAddingView(viewModel: appContainer.makePetAddingViewModel())
+                        PetAddingScreen(viewModel: appContainer.makePetAddingViewModel())
                     }
                 }
         }

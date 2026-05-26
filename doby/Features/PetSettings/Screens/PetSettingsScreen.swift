@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 //TODO: добавить изменение недостоющих полей в форме и изменение фотографий питомца
-struct PetSettingsView: View {
+struct PetSettingsScreen: View {
     @State private var viewModel: PetSettingsViewModel
     @State private var selectedPhotoItem: PhotosPickerItem?
     
@@ -81,7 +81,7 @@ struct PetSettingsView: View {
 }
 
 #Preview {
-    PetSettingsView(
+    PetSettingsScreen(
         viewModel: .mock,
         petId: 1,
         ownerUUID: "",

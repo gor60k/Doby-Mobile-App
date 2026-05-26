@@ -15,7 +15,7 @@ struct PetStack: View {
     
     var body: some View {
         NavigationStack(path: $petRouter.path) {
-            PetView(
+            PetScreen(
                 viewModel: appContainer.makePetViewModel(ownerUUID: ownerUUID),
                 ownerUUID: userStorage.user?.uuid ?? "",
                 openPetAdding: { petRouter.push(.petAdding) },
@@ -25,9 +25,9 @@ struct PetStack: View {
                 .navigationDestination(for: PetRoute.self) { route in
                     switch route {
                     case .petAdding:
-                        PetAddingView(viewModel: appContainer.makePetAddingViewModel())
+                        PetAddingScreen(viewModel: appContainer.makePetAddingViewModel())
                     case .profile(let id):
-                        PetProfileView(
+                        PetProfileScreen(
                             viewModel: appContainer.makePetProfileViewModel(petId: id),
                             petId: id,
                             openSettings: { id in
@@ -35,7 +35,7 @@ struct PetStack: View {
                             }
                         )
                     case .petSettings(let id):
-                        PetSettingsView(
+                        PetSettingsScreen(
                             viewModel: appContainer.makePetSettingsViewModel(
                                 petId: id,
                                 ownerUUID: ownerUUID

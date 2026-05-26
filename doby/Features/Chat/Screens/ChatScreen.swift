@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ChatView: View {
+struct ChatScreen: View {
     @State private var searchText = ""
     @State private var selectedTab = 0
     
@@ -68,6 +68,6 @@ struct ChatView: View {
 
 #Preview {
     NavigationStack {
-        ChatView()
+        ChatScreen()
     }
 }

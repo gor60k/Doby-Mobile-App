@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PetProfileView: View {
+struct PetProfileScreen: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State private var viewModel: PetProfileViewModel
@@ -106,7 +106,7 @@ struct PetProfileView: View {
 }
 
 #Preview {
-    PetProfileView(
+    PetProfileScreen(
         viewModel: .mock,
         petId: 1,
         openSettings: {_ in }

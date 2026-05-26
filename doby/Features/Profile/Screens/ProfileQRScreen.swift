@@ -4,7 +4,7 @@ import QRCode
 import VisionKit
 internal import Vision
 
-struct ProfileQRView: View {
+struct ProfileQRScreen: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @Binding var showQRSheet: Bool
@@ -97,7 +97,7 @@ struct ProfileQRView: View {
 }
 
 #Preview {
-    ProfileQRView(
+    ProfileQRScreen(
         showQRSheet: .constant(true),
         userUUID: "1",
         userImageURL: ""

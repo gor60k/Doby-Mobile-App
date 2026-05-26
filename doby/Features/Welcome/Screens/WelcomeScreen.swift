@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct WelcomeView: View {
+struct WelcomeScreen: View {
     @Environment(\.appContainer) private var appContainer
     
     private var sessionService: SessionService { appContainer.sessionService }

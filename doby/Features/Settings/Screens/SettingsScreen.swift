@@ -1,7 +1,7 @@
 import SwiftUI
 import PhotosUI
 
-struct SettingsView: View {
+struct SettingsScreen: View {
     @Environment(ProfileRouter.self) private var router
     @Environment(UserStorage.self) private var userStorage
     @Environment(\.appContainer) private var appContainer
@@ -99,7 +99,7 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView(
+    SettingsScreen(
         viewModel: .mock,
         openSettingsAppearance: {},
         openSettingsPrivacy: {},

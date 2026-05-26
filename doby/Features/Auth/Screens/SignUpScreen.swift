@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SignUpView: View {
+struct SignUpScreen: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     @Environment(SessionService.self) private var sessionSerive
     
@@ -96,7 +96,7 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView(viewMode: .mock)
+    SignUpScreen(viewMode: .mock)
         .PreviewAppEnvironment()
         .environment(SessionService())
 }

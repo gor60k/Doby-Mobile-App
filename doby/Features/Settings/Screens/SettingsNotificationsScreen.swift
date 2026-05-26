@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SettingsNotificationsView: View {
+struct SettingsNotificationsScreen: View {
     var body: some View {
         Form {
             Text("Settings Notifications")

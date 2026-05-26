@@ -1,7 +1,7 @@
 import SwiftUI
 import AuthenticationServices
 
-struct SignInView: View {
+struct SignInScreen: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     @Environment(SessionService.self) private var sessionService
     @Environment(AuthRouter.self) private var authRouter
@@ -108,7 +108,7 @@ struct SignInView: View {
 }
 
 #Preview {
-    SignInView(viewModel: .mock)
+    SignInScreen(viewModel: .mock)
         .PreviewAppEnvironment()
         .environment(SessionService())
         .environment(AuthRouter())

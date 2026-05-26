@@ -7,11 +7,11 @@ struct AuthStack: View {
     
     var body: some View {
         NavigationStack(path: $authRouter.path) {
-            SignInView(viewModel: appContainer.makeAuthViewModel())
+            SignInScreen(viewModel: appContainer.makeAuthViewModel())
                 .navigationDestination(for: AuthRoute.self) { route in
                     switch route {
                     case .signUp:
-                        SignUpView(viewMode: appContainer.makeAuthViewModel())
+                        SignUpScreen(viewMode: appContainer.makeAuthViewModel())
                     }
                 }
         }

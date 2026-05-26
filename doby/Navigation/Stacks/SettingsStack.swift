@@ -13,7 +13,7 @@ struct SettingsStack: View {
     
     var body: some View {
         NavigationStack(path: $settingsRouter.path) {
-            SettingsView(
+            SettingsScreen(
                 viewModel: appContainer.makeSettingsViewModel(),
                 
                 openSettingsAppearance: { settingsRouter.push(.appearance) },
@@ -23,13 +23,13 @@ struct SettingsStack: View {
                 .navigationDestination(for: SettingsRoute.self) { route in
                     switch route {
                     case .appearance:
-                        SettingsAppearensView()
+                        SettingsAppearensScreen()
                     case .privacy:
-                        SettingsPrivacyView()
+                        SettingsPrivacyScreen()
                     case .notifications:
-                        SettingsNotificationsView()
+                        SettingsNotificationsScreen()
                     case .petSettings(let id):
-                        PetSettingsView(
+                        PetSettingsScreen(
                             viewModel: appContainer.makePetSettingsViewModel(
                                 petId: id,
                                 ownerUUID: ownerUUID

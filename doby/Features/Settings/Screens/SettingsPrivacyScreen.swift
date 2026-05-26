@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SettingsPrivacyView: View {
+struct SettingsPrivacyScreen: View {
     @Environment(PrimaryColorService.self) var primaryColorService
     
     @State private var viewModel: SettingsPrivacyViewModel

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct OrdersView: View {
+struct OrdersScreen: View {
     @State private var selectedTab = 0
     @State private var viewModel = OrdersViewModel()
     

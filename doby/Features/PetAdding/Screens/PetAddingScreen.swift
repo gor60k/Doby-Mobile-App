@@ -1,7 +1,7 @@
 import SwiftUI
 import PhotosUI
 
-struct PetAddingView: View {
+struct PetAddingScreen: View {
     @Environment(PetRouter.self) private var router
     
     @State private var viewModel: PetAddingViewModel
@@ -67,7 +67,7 @@ struct PetAddingView: View {
 }
 
 #Preview {
-    PetAddingView(viewModel: .mock)
+    PetAddingScreen(viewModel: .mock)
         .PreviewAppEnvironment()
         .environment(PetRouter())
 }

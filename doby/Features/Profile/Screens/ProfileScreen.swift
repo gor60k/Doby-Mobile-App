@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProfileView: View {
+struct ProfileScreen: View {
     @Environment(PetStorage.self) private var petStorage
     @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) var primaryColorService
@@ -101,7 +101,7 @@ struct ProfileView: View {
             }
         )
         .fullScreenCover(isPresented: $showQRSheet) {
-            ProfileQRView(
+            ProfileQRScreen(
                 showQRSheet: $showQRSheet,
                 userUUID: viewModel.user?.uuid ?? "",
                 userImageURL: viewModel.user?.avatar

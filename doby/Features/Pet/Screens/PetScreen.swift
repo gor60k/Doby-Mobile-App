@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PetView: View {
+struct PetScreen: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State var viewModel: PetViewModel
@@ -79,7 +79,7 @@ struct PetView: View {
 }
 
 #Preview {
-    PetView(
+    PetScreen(
         viewModel: .mock,
         ownerUUID: "",
         openPetAdding: {},
