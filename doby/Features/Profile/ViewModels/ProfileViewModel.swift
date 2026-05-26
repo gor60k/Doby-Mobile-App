@@ -36,6 +36,14 @@ class ProfileViewModel {
         }
     }
     
+    //TODO: доделать функцию для получения пользователя по uuid
+    func fetchUser(with uuid: String) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        
+    }
+    
     func fetchPets() async {
         guard let ownerUUID else { return }
         

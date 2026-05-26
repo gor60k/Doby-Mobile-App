@@ -31,8 +31,22 @@ struct ProfileStack: View {
                     profileRouter.push(.petProfile(id: id))
                 }
             )
+            .environment(DisplayModeService(mode: .owner))
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
+                    case .profile(let uuid):
+                        ProfileScreen(
+                            viewModel: appContainer.makeProfileViewModel(),
+                            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
+                            profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
+                            
+                            openSettings: {},
+                            openPetAdding: {},
+                            opentPetProfile: { id in
+                                profileRouter.push(.petProfile(id: id))
+                            },
+                        )
+                        .environment(DisplayModeService(mode: .visitor))
                     case .settings:
                         SettingsScreen(
                             viewModel: appContainer.makeSettingsViewModel(),
@@ -72,5 +86,13 @@ struct ProfileStack: View {
                 }
         }
         .environment(profileRouter)
+        .onOpenURL { url in
+            guard let deeplink = DeepLinkManager.parse(url: url) else { return }
+            
+            switch deeplink {
+            case .profile(let uuid):
+                profileRouter.push(.profile(uuid: uuid))
+            }
+        }
     }
 }

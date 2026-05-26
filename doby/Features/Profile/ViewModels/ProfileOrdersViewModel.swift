@@ -26,3 +26,10 @@ final class ProfileOrdersViewModel {
         ),
     ]
 }
+
+extension ProfileOrdersViewModel {
+    static var mock: ProfileOrdersViewModel {
+        
+        return ProfileOrdersViewModel()
+    }
+}

@@ -14,3 +14,11 @@ final class ProfilePetsViewModel {
     var isLoading = false
     var error: String?
 }
+
+extension ProfilePetsViewModel {
+    static var mock: ProfilePetsViewModel {
+        let petRepository = MockPetRepository()
+        
+        return ProfilePetsViewModel(petRepository: petRepository)
+    }
+}

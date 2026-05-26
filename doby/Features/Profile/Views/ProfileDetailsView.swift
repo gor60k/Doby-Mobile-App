@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct ProfileDetailsView<Selection: Hashable>: View {
+    
     @Binding var selection: Selection
+    
     let aboutValue: Selection
     let feedbackValue: Selection
     let options: [Selection]

@@ -1,4 +1,5 @@
 enum ProfileRoute: Hashable {
+    case profile(uuid: String)
     case settings
     case settingsAppearance
     case settingsPrivacy

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfilePetsView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
+    @Environment(DisplayModeService.self) private var displayModeService
     
     @State var currentPage: Int = 0
     
@@ -11,11 +12,19 @@ struct ProfilePetsView: View {
     let openPetAdding: () -> Void
     let openPetProfile: (Int) -> Void
     
+    private var emptyViewTitle: String {
+        if displayModeService.isOwner {
+            return "Вы пока не добавили ни одного питомца"
+        } else {
+            return "Пользователь пока не добавил ни одного питомца"
+        }
+    }
+    
     var body: some View {
         if pets.isEmpty {
             PrimaryEmptyView(
                 icon: "pawprint.circle.fill",
-                title: "У вас пока нет питомцев",
+                title: emptyViewTitle,
                 description: "Добавьте своего первого питомца, чтобы начать",
                 buttonTitle: "Добавить питомца",
                 buttonIcon: "plus",

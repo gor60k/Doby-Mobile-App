@@ -10,6 +10,7 @@ final class AppContainer {
     // MARK: - Сервисы инфраструктуры
     let keychainService = KeychainService()
     let sessionService = SessionService()
+    let displayModeService = DisplayModeService()
     let tokenManager: TokenManager
     
     // MARK: - API

@@ -3,11 +3,14 @@ import SwiftUI
 extension View {
     
     @MainActor
-    func PreviewAppEnvironment() -> some View {
+    func PreviewAppEnvironment(
+        displayModeService: DisplayModeService? = nil
+    ) -> some View {
         appEnvironment(
             container: AppContainer(),
             themeService: ThemeService(),
-            primaryColorService: PrimaryColorService()
+            primaryColorService: PrimaryColorService(),
+            displayModeService: displayModeService ?? DisplayModeService()
         )
     }
 
@@ -15,7 +18,8 @@ extension View {
     func appEnvironment(
         container: AppContainer,
         themeService: ThemeService,
-        primaryColorService: PrimaryColorService
+        primaryColorService: PrimaryColorService,
+        displayModeService: DisplayModeService
     ) -> some View {
         self
             .environment(\.appContainer, container)
@@ -25,6 +29,7 @@ extension View {
             .environment(container.cityStorage)
         
             .environment(container.sessionService)
+            .environment(displayModeService)
         
             .environment(themeService)
             .environment(primaryColorService)

@@ -4,6 +4,7 @@ struct ProfileScreen: View {
     @Environment(PetStorage.self) private var petStorage
     @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) var primaryColorService
+    @Environment(DisplayModeService.self) var displayModeService
     
     @State private var viewModel: ProfileViewModel
     @State private var profilePetsViewModel: ProfilePetsViewModel
@@ -107,8 +108,34 @@ struct ProfileScreen: View {
                 userImageURL: viewModel.user?.avatar
             )
         }
+        .task {
+            if displayModeService.isVisitor {
+                Task {
+                    await viewModel.fetchUser()
+                }
+            }
+        }
         .refreshable {
             await viewModel.fetchUser()
         }
+    }
+}
+
+#Preview {
+    let displayModeService = DisplayModeService(mode: .visitor)
+    
+    NavigationStack {
+        ProfileScreen(
+            viewModel: .mock,
+            profilePetsViewModel: .mock,
+            profileOrdersViewModel: .mock,
+            openSettings: {},
+            openPetAdding: {},
+            opentPetProfile: { _ in }
+        )
+        .PreviewAppEnvironment(
+            displayModeService: displayModeService
+        )
+        .environment(ProfileRouter())
     }
 }

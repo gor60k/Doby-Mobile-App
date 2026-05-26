@@ -6,6 +6,7 @@ struct dobyApp: App {
     @State private var appContainer = AppContainer()
     @State private var themeService = ThemeService()
     @State private var primaryColorService = PrimaryColorService()
+    @State private var displayModeService = DisplayModeService()
 
     var body: some Scene {
         WindowGroup {
@@ -13,7 +14,8 @@ struct dobyApp: App {
                 .appEnvironment(
                     container: appContainer,
                     themeService: themeService,
-                    primaryColorService: primaryColorService
+                    primaryColorService: primaryColorService,
+                    displayModeService: displayModeService
                 )
         }
     }

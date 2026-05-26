@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PrimaryEmptyView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
+    @Environment(DisplayModeService.self) private var displayModeService
     
     let icon: String
     let title: String
@@ -11,7 +12,7 @@ struct PrimaryEmptyView: View {
     let action: () -> Void
  
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(alignment: .center, spacing: 16) {
             Spacer()
             
             Image(systemName: icon)
@@ -22,26 +23,46 @@ struct PrimaryEmptyView: View {
                 Text(title)
                     .font(.title3)
                     .fontWeight(.semibold)
-                
-                Text(description)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
-//                    .padding(.horizontal, 32)
+                
+                if displayModeService.isOwner {
+                    Text(description)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
             }
             
-            PrimaryButton(
-                title: buttonTitle,
-                icon: buttonIcon,
-                action: {
-                    action()
-                },
-                size: .medium
-            )
+            if displayModeService.isOwner {
+                PrimaryButton(
+                    title: buttonTitle,
+                    icon: buttonIcon,
+                    action: {
+                        action()
+                    },
+                    size: .medium
+                )
+            }
             
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .padding(.horizontal, 16)
     }
+}
+
+#Preview {
+    VStack(alignment: .center) {
+        PrimaryEmptyView(
+            icon: "person.fill",
+            title: "Title",
+            description: "Description",
+            buttonTitle: "Button",
+            buttonIcon: "pencil.fill",
+            action: {}
+        )
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+    .environment(PrimaryColorService())
+    .environment(DisplayModeService(mode: .owner))
 }
