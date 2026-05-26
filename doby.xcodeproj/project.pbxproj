@@ -11,6 +11,7 @@
 		082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 082CE80B2FA35E480085F31A /* Kingfisher */; };
 		088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21652F44A6F8002E5A40 /* PhoneNumberKit */; };
 		088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */; };
+		08E067162FC4B5E1005752A5 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 08E067152FC4B5E1005752A5 /* QRCode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08E067162FC4B5E1005752A5 /* QRCode in Frameworks */,
 				082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */,
 				082A5ABE2FA4C0B200B56A6D /* Alamofire in Frameworks */,
 				088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */,
@@ -184,6 +186,7 @@
 				088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */,
 				082CE80B2FA35E480085F31A /* Kingfisher */,
 				082A5ABD2FA4C0B200B56A6D /* Alamofire */,
+				08E067152FC4B5E1005752A5 /* QRCode */,
 			);
 			productName = doby;
 			productReference = 08A280DD2F4104B600B54BD2 /* doby.app */;
@@ -271,6 +274,7 @@
 				088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 				088CAE882FA35C8000EE438D /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				082A5ABC2FA4C02900B56A6D /* XCRemoteSwiftPackageReference "Alamofire" */,
+				08E067142FC4B5CC005752A5 /* XCRemoteSwiftPackageReference "QRCode" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 08A280DE2F4104B600B54BD2 /* Products */;
@@ -683,6 +687,14 @@
 				minimumVersion = 4.2.5;
 			};
 		};
+		08E067142FC4B5CC005752A5 /* XCRemoteSwiftPackageReference "QRCode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dagronf/QRCode";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 28.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -705,6 +717,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
 			productName = "PhoneNumberKit-Static";
+		};
+		08E067152FC4B5E1005752A5 /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08E067142FC4B5CC005752A5 /* XCRemoteSwiftPackageReference "QRCode" */;
+			productName = QRCode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -12,6 +12,8 @@ struct ProfileView: View {
     @State private var currentPage: Int = 1
     @State private var selection: ProfileDetailsTab = .about
     
+    @State private var showQRSheet = false
+    
     let options = ProfileDetailsTab.allCases
     
     let openSettings: () -> Void
@@ -94,21 +96,19 @@ struct ProfileView: View {
         .scrollIndicators(.hidden)
         .profileToolbar(
             onEditTap: { openSettings() },
-            onQRScanTap: {}
+            onQRScanTap: {
+                showQRSheet = true
+            }
         )
+        .fullScreenCover(isPresented: $showQRSheet) {
+            ProfileQRView(
+                showQRSheet: $showQRSheet,
+                userUUID: viewModel.user?.uuid ?? "",
+                userImageURL: viewModel.user?.avatar
+            )
+        }
         .refreshable {
             await viewModel.fetchUser()
         }
     }
 }
-
-//#Preview {
-//    ProfileView(
-//        viewModel: .mock,
-//        profilePetsViewModel: ,
-//        profileOrdersViewModel: <#T##ProfileOrdersViewModel#>,
-//        openSettings: <#T##() -> Void#>,
-//        openPetAdding: <#T##() -> Void#>,
-//        opentPetProfile: <#T##(Int) -> Void#>
-//    )
-//}
