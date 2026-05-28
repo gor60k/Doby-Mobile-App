@@ -1,0 +1,90 @@
+import SwiftUI
+import PhotosUI
+
+//TODO: добавить изменение недостоющих полей в форме и изменение фотографий питомца
+struct PetSettingsScreen: View {
+    @State private var viewModel: PetSettingsViewModel
+    @State private var selectedPhotoItem: PhotosPickerItem?
+    
+    let petId: Int
+    let ownerUUID: String
+    
+    let openPetProfile: () -> Void
+    
+    init(
+        viewModel: PetSettingsViewModel,
+        petId: Int,
+        ownerUUID: String,
+        openPetProfile: @escaping () -> Void
+    ) {
+        _viewModel = State(initialValue: viewModel)
+        
+        self.petId = petId
+        self.ownerUUID = ownerUUID
+        self.openPetProfile = openPetProfile
+    }
+    
+    var body: some View {
+        Form {
+            PetSettingsPhotosPickerView(
+                selectedPhotoItem: $selectedPhotoItem,
+                selectedPhotoImage: $viewModel.selectedPhotoImage,
+                currentPhotoURL: viewModel.currentPhotoURL
+            )
+            
+//            Section("Основые данные питомца") {
+//                Stepper("Возраст: \(age) лет", value: $age, in: 0...30)
+//            }
+            
+            PetSettingsDetailsView(
+                height: $viewModel.height,
+                weight: $viewModel.weight,
+                description: $viewModel.description
+            )
+            
+            PetSettingsDietView(
+                dietType: $viewModel.dietType,
+                dietPattern: $viewModel.dietPattern,
+                dietAdditionalInfo: $viewModel.dietAdditionalInfo
+            )
+            
+            PetSettingsTagsView(
+                viewModel: $viewModel.warningTagsViewModel,
+                title: "Особые предупреждения"
+            )
+            
+            PetSettingsTagsView(
+                viewModel: $viewModel.featureTagsViewModel,
+                title: "Особенности"
+            )
+        }
+        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Готово") {
+                    Task {
+                        await viewModel.updatePet()
+                        openPetProfile()
+                    }
+                }
+            }
+        }
+        .onChange(of: selectedPhotoItem) { _, newItem in
+            guard let newItem else { return }
+            
+            Task {
+                await viewModel.handlePhotoSelection(newItem)
+            }
+        }
+    }
+}
+
+#Preview {
+    PetSettingsScreen(
+        viewModel: .mock,
+        petId: 1,
+        ownerUUID: "",
+        openPetProfile: {}
+    )
+}

@@ -1,0 +1,110 @@
+import Alamofire
+import GRDB
+import Foundation
+
+@MainActor
+final class AppContainer {
+    let dbPool: DatabasePool
+    let chatStorageActor: ChatStorageActor
+    
+    // MARK: - Хранилища
+    let userStorage = UserStorage()
+    let petStorage = PetStorage()
+    let cityStorage = CityStorage()
+    let chatStorage: ChatStorage
+    
+    // MARK: - Сервисы инфраструктуры
+    let keychainService = KeychainService()
+    let sessionService = SessionService()
+    let displayModeService = DisplayModeService()
+    let tokenManager: TokenManager
+    
+    // MARK: - API
+    let apiClient: APIClient
+    let authApiClient: APIClient
+    
+    // MARK: - Репозитории
+    let authRepository: AuthRepositoryProtocol
+    let userRepository: UserRepositoryProtocol
+    let petRepository: PetRepositoryProtocol
+    
+    init() throws {
+        authApiClient = AppContainer.makePlainClient()
+        
+        let dbURL = try Self.makeDatabaseURL()
+        dbPool = try DatabasePool(path: dbURL.path)
+        
+        chatStorageActor = ChatStorageActor(dbPool: dbPool)
+        chatStorage = ChatStorage(actor: chatStorageActor)
+        
+        tokenManager = TokenManager(
+            authAPI: AuthAPI(apiClient: authApiClient),
+            keychainService: keychainService,
+            sessionService: sessionService
+        )
+        
+        apiClient = AppContainer.makeAuthorizedClient(tokenManager: tokenManager)
+        
+        authRepository = AuthRepository(
+            api: AuthAPI(apiClient: authApiClient),
+            storage: userStorage,
+            petStorage: petStorage,
+            session: sessionService,
+            keychain: keychainService
+        )
+        
+        userRepository = UserRepository(
+            api: UserAPI(apiClient: apiClient),
+            userStorage: userStorage,
+            petStorage: petStorage,
+            cityStorage: cityStorage
+        )
+        
+        petRepository = PetRepository(
+            api: PetAPI(apiClient: apiClient),
+            storage: petStorage
+        )
+    }
+}
+
+private extension AppContainer {
+    static func makePlainClient() -> APIClient {
+        let session = Session(eventMonitors: [NetworkLogService()])
+        
+        return APIClient(session: session)
+    }
+    
+    static func makeAuthorizedClient(tokenManager: TokenManager) -> APIClient {
+        let interceptor = AuthInterceptor(tokenManager: tokenManager)
+        
+        let session = Session(
+            interceptor: interceptor,
+            eventMonitors: [NetworkLogService()]
+        )
+        
+        return APIClient(session: session)
+    }
+    
+    static func makeDatabaseURL() throws -> URL {
+        let appSupport = try FileManager.default
+            .url(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            )
+        
+        let directory = appSupport
+            .appendingPathComponent("Database", isDirectory: true)
+        
+        try FileManager.default
+            .createDirectory(
+                at: directory,
+                withIntermediateDirectories: true
+        )
+        
+        return directory.appendingPathComponent("app.sqlite")
+    }
+}
+
+

@@ -1,0 +1,11 @@
+enum ProfileRoute: Hashable {
+    case profile(uuid: String)
+    case settings
+    case settingsAppearance
+    case settingsPrivacy
+    case settingsNotifications
+    case petAdding
+    case petProfile(id: Int)
+    case petSettings(id: Int)
+    
+}

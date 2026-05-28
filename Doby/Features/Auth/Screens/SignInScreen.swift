@@ -1,0 +1,115 @@
+import SwiftUI
+import AuthenticationServices
+
+struct SignInScreen: View {
+    @Environment(PrimaryColorService.self) private var primaryColorService
+    @Environment(SessionService.self) private var sessionService
+    @Environment(AuthRouter.self) private var authRouter
+    
+    @State private var viewModel: AuthViewModel
+    
+    @State private var didEditEmail = false
+    @State private var didEditPassword = false
+    
+    init(viewModel: AuthViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
+    
+    var body: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 16) {
+                AuthHeaderView(
+                    title: "C возвращением",
+                    subtitle: "Войдите, чтобы продолжить пользоваться приложением"
+                )
+                
+                VStack(spacing: 16) {
+                    AuthEmailFieldView(
+                        title: "Введите ваш Email",
+                        isValid: viewModel.isEmailValid,
+                        showsError: didEditEmail,
+                        errorText: viewModel.isEmailValid ? "" : "Некоректный email",
+                        email: $viewModel.email
+                    )
+                    .onChange(of: viewModel.email) { _, _ in
+                        didEditEmail = true
+                    }
+                    
+                    VStack(alignment: .trailing, spacing: 10) {
+                        AuthPasswordFieldView(
+                            title: "Введите пароль",
+                            placeholder: "Пароль не менее 8 символов",
+                            isValid: viewModel.password.count >= 8,
+                            showsError: didEditPassword,
+                            errorText: viewModel.password.count >= 8 ? nil : "Минимум 8 символов",
+                            password: $viewModel.password
+                        )
+                        .onChange(of: viewModel.password) { _, _ in
+                            didEditPassword = true
+                        }
+                        
+                        Button("Забыли пароль?") {
+                            
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundColor(primaryColorService.primaryColor.color)
+                        .font(.system(.subheadline, design: .rounded))
+                        .underline()
+                    }
+                    
+                    
+                    PrimaryButton(
+                        title: "Войти",
+                        isEnabled: viewModel.isLoginFormValid,
+                        action: {
+                            Task {
+                                await viewModel.login()
+                                
+                                if viewModel.errorMessage == nil {
+                                    await MainActor.run {
+                                        sessionService.setAuthenticated(true)
+                                    }
+                                }
+                            }
+                        }
+                    )
+                    
+                    AuthBottomBarView(
+                        openSignUp: { authRouter.push(.signUp) }
+                    )
+                }
+                .frame(maxWidth: .infinity)
+                
+                DividerLabel(label: "или")
+                
+                SignInWithAppleButton(
+                    .signIn,
+                    onRequest: { request in
+                    },
+                    onCompletion: { result in
+                    }
+                )
+                .frame(height: 54)
+                .signInWithAppleButtonStyle(.black)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+                
+                PrimaryButton(
+                    title: "Войти с Telegram",
+                    isEnabled: true,
+                    action: {},
+                    buttonColor: Color("TelegramBlue")
+                )
+            }
+            .padding(.horizontal)
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+#Preview {
+    SignInScreen(viewModel: .mock)
+        .PreviewAppEnvironment()
+        .environment(SessionService())
+        .environment(AuthRouter())
+}
