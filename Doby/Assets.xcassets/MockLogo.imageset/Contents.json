@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "a_digital_vector_app_icon_features_a_rounded_squar.png",
+      "filename" : "Монтажная область 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Монтажная область 2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Монтажная область 3.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

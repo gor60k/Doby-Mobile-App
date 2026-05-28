@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "08A280DC2F4104B600B54BD2"
-               BuildableName = "doby.app"
-               BlueprintName = "doby"
-               ReferencedContainer = "container:doby.xcodeproj">
+               BuildableName = "Doby.app"
+               BlueprintName = "Doby"
+               ReferencedContainer = "container:Doby.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -38,7 +38,7 @@
                BlueprintIdentifier = "08A280E92F4104B700B54BD2"
                BuildableName = "dobyTests.xctest"
                BlueprintName = "dobyTests"
-               ReferencedContainer = "container:doby.xcodeproj">
+               ReferencedContainer = "container:Doby.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "08A280F32F4104B700B54BD2"
                BuildableName = "dobyUITests.xctest"
                BlueprintName = "dobyUITests"
-               ReferencedContainer = "container:doby.xcodeproj">
+               ReferencedContainer = "container:Doby.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "08A280DC2F4104B600B54BD2"
-            BuildableName = "doby.app"
-            BlueprintName = "doby"
-            ReferencedContainer = "container:doby.xcodeproj">
+            BuildableName = "Doby.app"
+            BlueprintName = "Doby"
+            ReferencedContainer = "container:Doby.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "08A280DC2F4104B600B54BD2"
-            BuildableName = "doby.app"
-            BlueprintName = "doby"
-            ReferencedContainer = "container:doby.xcodeproj">
+            BuildableName = "Doby.app"
+            BlueprintName = "Doby"
+            ReferencedContainer = "container:Doby.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

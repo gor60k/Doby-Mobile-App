@@ -6,14 +6,24 @@ struct ChatScreen: View {
     @State private var searchText = ""
     @State private var selectedTab = 0
     
+    private let openChatroom: (Int) -> Void
+    
+    init(openChatroom: @escaping (Int) -> Void) {
+        self.openChatroom = openChatroom
+    }
+    
     var body: some View {
         VStack {
             ScrollView {
                 VStack(spacing: 16) {
                     ForEach(0..<10, id: \.self) { _ in
                         ChatItemView(
+                            chatId: 1,
                             userIcon: "MockUserIcon",
-                            username: "user"
+                            username: "User",
+                            lastMessage: "text",
+                            lastMessageTime: "11:11",
+                            openChatroom: openChatroom
                         )
                     }
                 }
@@ -42,6 +52,9 @@ struct ChatScreen: View {
 
 #Preview {
     NavigationStack {
-        ChatScreen()
+        ChatScreen(
+            openChatroom: { _ in }
+        )
     }
+    .PreviewAppEnvironment()
 }

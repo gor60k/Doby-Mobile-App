@@ -5,6 +5,7 @@ struct SettingsScreen: View {
     @Environment(ProfileRouter.self) private var router
     @Environment(UserStorage.self) private var userStorage
     @Environment(\.appContainer) private var appContainer
+    @Environment(\.dismiss) private var dismiss
     
     private var sessionService: SessionService { appContainer.sessionService }
     
@@ -87,6 +88,7 @@ struct SettingsScreen: View {
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle("Настройки")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .settingsToolbar(onSave: { saveChanges() })
         .task(id: selectedAvatarItem) {
             guard let selectedAvatarItem else { return }

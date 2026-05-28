@@ -10,8 +10,6 @@
 		082A5ABE2FA4C0B200B56A6D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 082A5ABD2FA4C0B200B56A6D /* Alamofire */; };
 		082B1D792FC74A35003AD916 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 082B1D782FC74A35003AD916 /* GRDB */; };
 		082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 082CE80B2FA35E480085F31A /* Kingfisher */; };
-		088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21652F44A6F8002E5A40 /* PhoneNumberKit */; };
-		088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */; };
 		08E067162FC4B5E1005752A5 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 08E067152FC4B5E1005752A5 /* QRCode */; };
 /* End PBXBuildFile section */
 
@@ -46,18 +44,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08A280DD2F4104B600B54BD2 /* doby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = doby.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		08A280DD2F4104B600B54BD2 /* Doby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A280EA2F4104B700B54BD2 /* dobyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dobyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A280F42F4104B700B54BD2 /* dobyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dobyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		088F21632F44A689002E5A40 /* Exceptions for "doby" folder in "doby" target */ = {
+		088F21632F44A689002E5A40 /* Exceptions for "Doby" folder in "Doby" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 08A280DC2F4104B600B54BD2 /* doby */;
+			target = 08A280DC2F4104B600B54BD2 /* Doby */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -72,12 +70,12 @@
 			path = OldNetwork;
 			sourceTree = "<group>";
 		};
-		08A280DF2F4104B600B54BD2 /* doby */ = {
+		08A280DF2F4104B600B54BD2 /* Doby */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				088F21632F44A689002E5A40 /* Exceptions for "doby" folder in "doby" target */,
+				088F21632F44A689002E5A40 /* Exceptions for "Doby" folder in "Doby" target */,
 			);
-			path = doby;
+			path = Doby;
 			sourceTree = "<group>";
 		};
 		08A280ED2F4104B700B54BD2 /* dobyTests */ = {
@@ -101,8 +99,6 @@
 				082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */,
 				082A5ABE2FA4C0B200B56A6D /* Alamofire in Frameworks */,
 				082B1D792FC74A35003AD916 /* GRDB in Frameworks */,
-				088F21662F44A6F8002E5A40 /* PhoneNumberKit in Frameworks */,
-				088F216A2F44A6F8002E5A40 /* PhoneNumberKit-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				0851C1F92FBDA5DD007A309F /* legacy */,
-				08A280DF2F4104B600B54BD2 /* doby */,
+				08A280DF2F4104B600B54BD2 /* Doby */,
 				08A280ED2F4104B700B54BD2 /* dobyTests */,
 				08A280F72F4104B700B54BD2 /* dobyUITests */,
 				082CE80A2FA35E480085F31A /* Frameworks */,
@@ -154,7 +150,7 @@
 		08A280DE2F4104B600B54BD2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				08A280DD2F4104B600B54BD2 /* doby.app */,
+				08A280DD2F4104B600B54BD2 /* Doby.app */,
 				08A280EA2F4104B700B54BD2 /* dobyTests.xctest */,
 				08A280F42F4104B700B54BD2 /* dobyUITests.xctest */,
 			);
@@ -164,9 +160,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		08A280DC2F4104B600B54BD2 /* doby */ = {
+		08A280DC2F4104B600B54BD2 /* Doby */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 08A280FE2F4104B700B54BD2 /* Build configuration list for PBXNativeTarget "doby" */;
+			buildConfigurationList = 08A280FE2F4104B700B54BD2 /* Build configuration list for PBXNativeTarget "Doby" */;
 			buildPhases = (
 				08A280D92F4104B600B54BD2 /* Sources */,
 				08A280DA2F4104B600B54BD2 /* Frameworks */,
@@ -180,19 +176,17 @@
 			fileSystemSynchronizedGroups = (
 				0851C2002FBDA5EA007A309F /* OldContainers */,
 				0851C20C2FBDA5F1007A309F /* OldNetwork */,
-				08A280DF2F4104B600B54BD2 /* doby */,
+				08A280DF2F4104B600B54BD2 /* Doby */,
 			);
-			name = doby;
+			name = Doby;
 			packageProductDependencies = (
-				088F21652F44A6F8002E5A40 /* PhoneNumberKit */,
-				088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */,
 				082CE80B2FA35E480085F31A /* Kingfisher */,
 				082A5ABD2FA4C0B200B56A6D /* Alamofire */,
 				08E067152FC4B5E1005752A5 /* QRCode */,
 				082B1D782FC74A35003AD916 /* GRDB */,
 			);
 			productName = doby;
-			productReference = 08A280DD2F4104B600B54BD2 /* doby.app */;
+			productReference = 08A280DD2F4104B600B54BD2 /* Doby.app */;
 			productType = "com.apple.product-type.application";
 		};
 		08A280E92F4104B700B54BD2 /* dobyTests */ = {
@@ -274,7 +268,6 @@
 			mainGroup = 08A280D42F4104B600B54BD2;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 				088CAE882FA35C8000EE438D /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				082A5ABC2FA4C02900B56A6D /* XCRemoteSwiftPackageReference "Alamofire" */,
 				08E067142FC4B5CC005752A5 /* XCRemoteSwiftPackageReference "QRCode" */,
@@ -285,7 +278,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				08A280DC2F4104B600B54BD2 /* doby */,
+				08A280DC2F4104B600B54BD2 /* Doby */,
 				08A280E92F4104B700B54BD2 /* dobyTests */,
 				08A280F32F4104B700B54BD2 /* dobyUITests */,
 			);
@@ -343,12 +336,12 @@
 /* Begin PBXTargetDependency section */
 		08A280EC2F4104B700B54BD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 08A280DC2F4104B600B54BD2 /* doby */;
+			target = 08A280DC2F4104B600B54BD2 /* Doby */;
 			targetProxy = 08A280EB2F4104B700B54BD2 /* PBXContainerItemProxy */;
 		};
 		08A280F62F4104B700B54BD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 08A280DC2F4104B600B54BD2 /* doby */;
+			target = 08A280DC2F4104B600B54BD2 /* Doby */;
 			targetProxy = 08A280F52F4104B700B54BD2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -637,7 +630,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		08A280FE2F4104B700B54BD2 /* Build configuration list for PBXNativeTarget "doby" */ = {
+		08A280FE2F4104B700B54BD2 /* Build configuration list for PBXNativeTarget "Doby" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				08A280FF2F4104B700B54BD2 /* Debug */,
@@ -691,14 +684,6 @@
 				minimumVersion = 8.8.1;
 			};
 		};
-		088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.2.5;
-			};
-		};
 		08E067142FC4B5CC005752A5 /* XCRemoteSwiftPackageReference "QRCode" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dagronf/QRCode";
@@ -724,16 +709,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 088CAE882FA35C8000EE438D /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		088F21652F44A6F8002E5A40 /* PhoneNumberKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
-			productName = PhoneNumberKit;
-		};
-		088F21692F44A6F8002E5A40 /* PhoneNumberKit-Static */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 088F21642F44A6F8002E5A40 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
-			productName = "PhoneNumberKit-Static";
 		};
 		08E067152FC4B5E1005752A5 /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;

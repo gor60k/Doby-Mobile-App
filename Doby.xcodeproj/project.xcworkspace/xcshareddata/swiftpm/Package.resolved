@@ -1,5 +1,5 @@
 {
-  "originHash" : "3f33720d56bea8e3ffc898ca5fd607025e8862b8208bb450a6c010a5ddbd7dbf",
+  "originHash" : "89d750615e7ddd6a550c4b9370b7cc3779a19ec3317ec546e8d84d9039b4733d",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -26,15 +26,6 @@
       "state" : {
         "revision" : "c152c1915f60c51e4afa0752656993ee5b3c63db",
         "version" : "8.8.1"
-      }
-    },
-    {
-      "identity" : "phonenumberkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/marmelroy/PhoneNumberKit",
-      "state" : {
-        "revision" : "e0f91a22bbc96a67430e1cff502f943a67a97ed3",
-        "version" : "4.2.5"
       }
     },
     {

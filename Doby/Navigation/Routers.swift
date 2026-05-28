@@ -11,3 +11,6 @@ final class PetRouter: AppRouter<PetRoute> {}
 
 @Observable
 final class SettingsRouter: AppRouter<SettingsRoute> {}
+
+@Observable
+final class ChatRouter: AppRouter<ChatRoute> {}
