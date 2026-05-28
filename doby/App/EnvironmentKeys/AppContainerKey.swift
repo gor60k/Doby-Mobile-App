@@ -1,7 +1,13 @@
 import SwiftUI
 
 struct AppContainerKey: EnvironmentKey {
-    static let defaultValue: AppContainer = .init()
+    static let defaultValue: AppContainer = {
+        do {
+            return try AppContainer()
+        } catch {
+            fatalError("Ошибка при создании контейнера: \(error.localizedDescription)")
+        }
+    }()
 }
 
 extension EnvironmentValues {

@@ -124,7 +124,7 @@ struct ProfileScreen: View {
 }
 
 #Preview {
-    let displayModeService = DisplayModeService(mode: .visitor)
+    let displayModeService = DisplayModeService(mode: .owner)
     
     NavigationStack {
         ProfileScreen(

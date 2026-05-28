@@ -264,7 +264,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 08A280D82F4104B600B54BD2 /* Build configuration list for PBXProject "doby" */;
+			buildConfigurationList = 08A280D82F4104B600B54BD2 /* Build configuration list for PBXProject "Doby" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -628,7 +628,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		08A280D82F4104B600B54BD2 /* Build configuration list for PBXProject "doby" */ = {
+		08A280D82F4104B600B54BD2 /* Build configuration list for PBXProject "Doby" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				08A280FC2F4104B700B54BD2 /* Debug */,
