@@ -6,7 +6,7 @@ struct User: Codable {
     var firstName: String?
     var lastName: String?
     var patronymic: String?
-    var avatar: String?
+    var avatar: String? //TODO: убрать поле аватар
     var phone: String?
     var city: City?
     var bio: String?

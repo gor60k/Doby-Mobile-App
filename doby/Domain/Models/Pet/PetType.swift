@@ -2,6 +2,7 @@ enum PetType: String, CaseIterable, Codable {
     case dog, cat
 }
 
+//TODO: убрать это расширение
 extension PetType {
     func toDTO() -> PetTypeDTO {
         switch self {

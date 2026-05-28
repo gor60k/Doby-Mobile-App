@@ -1,38 +1,46 @@
 import SwiftUI
 
 struct ChatItemView: View {
-    let userName: String
+    @Environment(PrimaryColorService.self) private var primaryColorService
+    
     let userIcon: String
+    let username: String
+    
     
     var body: some View {
-        HStack(alignment: .top) {
-            Image(userIcon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 50, height: 50)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-            
-            VStack {
-                Text(userName)
-                    .style(AppTextStyle.Presets.subheadlineSemibold)
+        VStack {
+            HStack(alignment: .center) {
+                Image(userIcon)
+                    .resizable()
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+                
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text(username)
+                            .font(.system(.headline, design: .rounded))
+                        
+                        Spacer()
+                        
+                        Text("11:56")
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Text("Эпш:")
+                        .font(.system(.body, design: .rounded))
+                        .foregroundColor(primaryColorService.primaryColor.color)
+                    Text("привет, хочешь ко мне на остров?")
+                        .font(.system(.body, design: .rounded))
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Divider()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(10)
-        .glassEffect(
-            .regular.tint(.primaryYellowLight).interactive(),
-            in: RoundedRectangle(cornerRadius: 16)
-        )
     }
 }
 
-#Preview {
-    ZStack {
-        Color.gray.ignoresSafeArea()
-        VStack {
-            ChatItemView(userName: "test", userIcon: "MockUserIcon")
-        }
-        .padding()
-    }
-}
+

@@ -59,12 +59,14 @@ struct ProfilePetsView: View {
                     }
                 }
                 .overlay(alignment: .topTrailing) {
-                    UtilityButton(
-                        action: { openPetAdding() },
-                        icon: "plus"
-                    )
-                    .padding(.vertical, 16)
-                    .padding(.trailing, 16)
+                    if displayModeService.isOwner {
+                        UtilityButton(
+                            action: { openPetAdding() },
+                            icon: "plus"
+                        )
+                        .padding(.vertical, 16)
+                        .padding(.trailing, 16)
+                    }
                 }
             }
         }

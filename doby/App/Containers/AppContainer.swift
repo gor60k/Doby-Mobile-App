@@ -1,11 +1,17 @@
 import Alamofire
+import GRDB
+import Foundation
 
 @MainActor
 final class AppContainer {
+    let dbPool: DatabasePool
+    let chatStorageActor: ChatStorageActor
+    
     // MARK: - Хранилища
     let userStorage = UserStorage()
     let petStorage = PetStorage()
     let cityStorage = CityStorage()
+    let chatStorage: ChatStorage
     
     // MARK: - Сервисы инфраструктуры
     let keychainService = KeychainService()
@@ -22,8 +28,14 @@ final class AppContainer {
     let userRepository: UserRepositoryProtocol
     let petRepository: PetRepositoryProtocol
     
-    init() {
+    init() throws {
         authApiClient = AppContainer.makePlainClient()
+        
+        let dbURL = try Self.makeDatabaseURL()
+        dbPool = try DatabasePool(path: dbURL.path)
+        
+        chatStorageActor = ChatStorageActor(dbPool: dbPool)
+        chatStorage = ChatStorage(actor: chatStorageActor)
         
         tokenManager = TokenManager(
             authAPI: AuthAPI(apiClient: authApiClient),
@@ -71,6 +83,27 @@ private extension AppContainer {
         )
         
         return APIClient(session: session)
+    }
+    
+    static func makeDatabaseURL() throws -> URL {
+        let appSupport = try FileManager.default
+            .url(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            )
+        
+        let directory = appSupport
+            .appendingPathComponent("Database", isDirectory: true)
+        
+        try FileManager.default
+            .createDirectory(
+                at: directory,
+                withIntermediateDirectories: true
+        )
+        
+        return directory.appendingPathComponent("app.sqlite")
     }
 }
 

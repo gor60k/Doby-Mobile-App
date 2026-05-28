@@ -53,7 +53,7 @@ struct ProfileScreen: View {
                 .padding(.bottom, 10)
             
             // MARK: - Секция с питомцами юзера
-            PrimaryCollapsibleSection(title: "Мои питомцы") {
+            PrimaryCollapsibleSection(title: "Питомцы") {
                 ProfilePetsView(
                     currentPage: profilePetsViewModel.currentPage,
                     pets: petStorage.pets,
@@ -82,15 +82,17 @@ struct ProfileScreen: View {
             .padding(.bottom, 10)
             
             // MARK: - Секция с историей заказов
-            PrimaryCollapsibleSection(title: "История заказов") {
-                VStack(spacing: 12) {
-                    ForEach(profileOrdersViewModel.orders, id: \.self) { order in
-                        PrimaryOrderCard(order: order)
+            if displayModeService.isOwner {
+                PrimaryCollapsibleSection(title: "История заказов") {
+                    VStack(spacing: 12) {
+                        ForEach(profileOrdersViewModel.orders, id: \.self) { order in
+                            PrimaryOrderCard(order: order)
+                        }
                     }
                 }
+                .padding(.horizontal)
+                .padding(.bottom, 10)
             }
-            .padding(.horizontal)
-            .padding(.bottom, 10)
         }
         .padding(.top, 60)
         .ignoresSafeArea(edges: .top)

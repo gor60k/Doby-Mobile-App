@@ -7,7 +7,7 @@ extension View {
         displayModeService: DisplayModeService? = nil
     ) -> some View {
         appEnvironment(
-            container: AppContainer(),
+            container: try! AppContainer(),
             themeService: ThemeService(),
             primaryColorService: PrimaryColorService(),
             displayModeService: displayModeService ?? DisplayModeService()
@@ -27,6 +27,7 @@ extension View {
             .environment(container.petStorage)
             .environment(container.userStorage)
             .environment(container.cityStorage)
+            .environment(container.chatStorage)
         
             .environment(container.sessionService)
             .environment(displayModeService)
