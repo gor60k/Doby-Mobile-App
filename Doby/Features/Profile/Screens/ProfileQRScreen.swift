@@ -60,7 +60,6 @@ struct ProfileQRScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(8)
         .padding(.bottom, 0)
-//        .background(primaryColorService.primaryColor.color.opacity(0.1))
         .background {
             Image(backgroundImageString)
                 .resizable()

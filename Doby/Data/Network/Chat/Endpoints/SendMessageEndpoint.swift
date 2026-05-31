@@ -1,8 +1,8 @@
 import Foundation
 import Alamofire
 
-struct SendMessage: APIEndpointProtocol {
-    typealias Response = MessageResponse
+struct SendMessageEndpoint: APIEndpointProtocol {
+    typealias Response = MessageDTO
     
     let request: MessageRequest
     

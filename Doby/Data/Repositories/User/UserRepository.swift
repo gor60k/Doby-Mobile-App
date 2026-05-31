@@ -37,7 +37,6 @@ final class UserRepository: UserRepositoryProtocol {
             currentUser.lastName = user.lastName
             currentUser.patronymic = user.patronymic
             currentUser.phone = user.phone
-            currentUser.avatar = user.avatar
             currentUser.city = user.city
             currentUser.bio = user.bio
         }

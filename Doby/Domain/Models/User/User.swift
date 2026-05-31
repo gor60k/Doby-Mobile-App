@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 
 struct User: Codable {
     let uuid: String
@@ -6,9 +6,9 @@ struct User: Codable {
     var firstName: String?
     var lastName: String?
     var patronymic: String?
-    var avatar: String? //TODO: убрать поле аватар
     var phone: String?
     var city: City?
     var bio: String?
     var pets: [Pet]?
+    var photos: [UserPhoto]?
 }
