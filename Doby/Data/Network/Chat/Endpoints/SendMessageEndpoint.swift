@@ -1,8 +1,8 @@
 import Foundation
 import Alamofire
 
-struct SendMessage: APIEndpointProtocol {
-    typealias Response = MessageResponse
+struct SendMessageEndpoint: APIEndpointProtocol {
+    typealias Response = MessageDTO
     
     let request: MessageRequest
     
@@ -14,6 +14,9 @@ struct SendMessage: APIEndpointProtocol {
     func encodeMultipart(to formData: MultipartFormData) {
         formData.append(Data("\(request.chat)".utf8), withName: "chat")
         formData.append(Data(request.text.utf8), withName: "text")
-        formData.append(Data(request.media_file.utf8), withName: "media_file")
+        if let mediaFile = request.media_file {
+            formData.append(Data(mediaFile.utf8), withName: "media_file")
+        }
+        
     }
 }

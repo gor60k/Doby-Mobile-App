@@ -3,7 +3,6 @@ import GRDB
 
 struct Message: Codable, FetchableRecord, PersistableRecord, Identifiable {
     let id: Int64
-    let chatID: Int64
     
     let senderUUID: String
     let text: String
@@ -11,7 +10,7 @@ struct Message: Codable, FetchableRecord, PersistableRecord, Identifiable {
     
     let messageType: MessageType
     let isRead: Bool
-    let createdAt: Date
+    let dtCreated: Date
     
     let mediaURL: String
     var isPinned: Bool = false

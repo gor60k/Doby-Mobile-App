@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ProfileScreen: View {
     @Environment(PetStorage.self) private var petStorage
-    @Environment(ProfileRouter.self) private var router
     @Environment(PrimaryColorService.self) var primaryColorService
     @Environment(DisplayModeService.self) var displayModeService
     
@@ -107,7 +106,7 @@ struct ProfileScreen: View {
             ProfileQRScreen(
                 showQRSheet: $showQRSheet,
                 userUUID: viewModel.user?.uuid ?? "",
-                userImageURL: viewModel.user?.avatar
+                userImageURL: ""
             )
         }
         .task {
