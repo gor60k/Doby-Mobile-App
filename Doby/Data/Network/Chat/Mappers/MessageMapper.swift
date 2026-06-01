@@ -18,9 +18,10 @@ struct MessageMapper {
         dtos.map(map(dto:))
     }
     
-    nonisolated static func mapToRecord(dto: MessageDTO) -> MessageRecord {
+    nonisolated static func mapToRecord(dto: MessageDTO, chatId: Int64) -> MessageRecord {
         MessageRecord(
             id: dto.id,
+            chatId: chatId,
             senderUUID: dto.sender_uuid,
             text: dto.text,
             originalFileName: dto.original_filename,
@@ -31,8 +32,10 @@ struct MessageMapper {
         )
     }
     
-    nonisolated static func mapToRecord(dtos: [MessageDTO]) -> [MessageRecord] {
-        dtos.map(mapToRecord(dto:))
+    nonisolated static func mapToRecord(dtos: [MessageDTO], chatId: Int64) -> [MessageRecord] {
+        dtos.map { dto in
+            mapToRecord(dto: dto, chatId: chatId)
+        }
     }
     
     nonisolated static func mapMessageType(dto: MessageTypeDTO) -> MessageType {

@@ -7,7 +7,7 @@ final class ChatViewModel {
     private let storage: ChatStorage
     private let socket :WebSocketService
     
-    var messages: [Message] { storage.messages }
+//    var messages: [Message] { storage.messages }
     
     let chatId: Int64
     

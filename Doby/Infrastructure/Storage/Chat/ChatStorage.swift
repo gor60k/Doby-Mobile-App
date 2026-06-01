@@ -20,6 +20,22 @@ final class ChatStorage {
         self.actor = actor
     }
     
+    func sync(
+        chat: ChatRecord,
+        participants: [UserRecord],
+        messages: [MessageRecord]
+    ) async throws {
+        try await actor.sync(
+            chat: chat,
+            participants: participants,
+            messages: messages
+        )
+    }
+
+    func saveMessage(_ message: MessageRecord) async throws {
+        try await actor.saveMessage(message)
+    }
+    
     func start(chatID: Int64) {
         guard currentChatID != chatID else { return }
         

@@ -8,6 +8,30 @@ actor ChatStorageActor {
         self.dbPool = dbPool
     }
     
+    func sync(
+        chat: ChatRecord,
+        participants: [UserRecord],
+        messages: [MessageRecord]
+    ) throws {
+        try dbPool.write { db in
+            try chat.save(db)
+
+            for participant in participants {
+                try participant.save(db)
+            }
+
+            for message in messages {
+                try message.save(db)
+            }
+        }
+    }
+
+    func saveMessage(_ message: MessageRecord) throws {
+        try dbPool.write { db in
+            try message.save(db)
+        }
+    }
+    
     func observeChats() -> AsyncValueObservation<[ChatRecord]> {
         ValueObservation
             .tracking { db in
