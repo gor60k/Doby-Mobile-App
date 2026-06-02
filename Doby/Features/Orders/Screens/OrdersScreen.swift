@@ -4,6 +4,19 @@ struct OrdersScreen: View {
     @State private var selectedTab = 0
     @State private var viewModel = OrdersViewModel()
     
+    @State private var isPresented: Bool = false
+    
+    let openOrderTypes: () -> Void
+    let openSitters: () -> Void
+    
+    init(
+        openOrderTypes: @escaping () -> Void,
+        openSitters: @escaping () -> Void
+    ) {
+        self.openOrderTypes = openOrderTypes
+        self.openSitters = openSitters
+    }
+    
     var body: some View {
         PrimaryTabsPager(
             selectedIndex: $selectedTab,
@@ -20,7 +33,7 @@ struct OrdersScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .ordersToolbar(
             onEditTap: {},
-            onAddTap: {}
+            onAddTap: { openOrderTypes() }
         )
         .ordersTopBar(selectedTab: $selectedTab)
     }

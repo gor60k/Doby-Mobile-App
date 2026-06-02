@@ -14,3 +14,6 @@ final class SettingsRouter: AppRouter<SettingsRoute> {}
 
 @Observable
 final class ChatRouter: AppRouter<ChatRoute> {}
+
+@Observable
+final class OrdersRouter: AppRouter<OrdersRoute> {}
