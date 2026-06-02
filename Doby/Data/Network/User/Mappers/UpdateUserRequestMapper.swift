@@ -1,5 +1,5 @@
 struct UpdateUserRequestMapper {
-    static func map(input: UpdateUserInput) -> UpdateUserRequest {
+    nonisolated static func map(input: UpdateUserInput) -> UpdateUserRequest {
         return UpdateUserRequest(
             first_name: input.firstName,
             last_name: input.lastName,

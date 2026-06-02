@@ -31,6 +31,12 @@ final class UserStorage {
         persist()
     }
     
+    func patch(mutate: (inout User) -> Void) {
+        guard var user else { return }
+        mutate(&user)
+        persist()
+    }
+    
     private func persist() {
         let snapshot = user
         Task {

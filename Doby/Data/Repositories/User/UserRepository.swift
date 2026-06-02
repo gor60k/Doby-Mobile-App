@@ -48,4 +48,14 @@ final class UserRepository: UserRepositoryProtocol {
         
         cityStorage.cities = cities
     }
+    
+    func uploadPhoto(_ input: UserPhotoInput) async throws {
+        let request = UserPhotoMapper.mapToRequest(from: input)
+        let response = try await api.uploadPhoto(request)
+        let photo = UserPhotoMapper.mapToDomain(from: response)
+        
+        userStorage.patch { user in
+            user.photos?.append(photo)
+        }
+    }
 }

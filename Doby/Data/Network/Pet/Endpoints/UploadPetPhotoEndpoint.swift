@@ -17,7 +17,7 @@ struct UploadPetPhotoEndpoint: APIEndpointProtocol {
         formData.append(Data("\(request.order_number)".utf8), withName: "order_number")
         
         if let isMain = request.is_main {
-            formData.append(Data("\(request.is_main, default: "false")".utf8), withName: "is_main")
+            formData.append(Data("\(isMain, default: "false")".utf8), withName: "is_main")
         }
     }
 }
