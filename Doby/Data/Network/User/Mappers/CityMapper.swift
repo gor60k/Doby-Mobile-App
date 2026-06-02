@@ -1,5 +1,6 @@
 struct CityMapper {
-    nonisolated static func map(dto: CityDTO) -> City {
+    // MARK: - Маппинг в доменную модель
+    nonisolated static func mapToDomain(from dto: CityDTO) -> City {
         City(
             id: dto.id,
             name: dto.name,
@@ -7,7 +8,11 @@ struct CityMapper {
         )
     }
     
-    nonisolated static func map(dto: [CityDTO]) -> [City] {
-        dto.map(map(dto:))
+    nonisolated static func mapToDomain(from dto: CityDTO?) -> City? {
+        dto.map(mapToDomain(from:))
+    }
+    
+    nonisolated static func mapToDomain(from dtos: [CityDTO]) -> [City] {
+        dtos.map(mapToDomain(from:))
     }
 }

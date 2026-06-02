@@ -1,5 +1,6 @@
 struct UserMapper {
-    nonisolated static func map(dto: UserDTO) -> User {
+    // MARK: - Маппинг в доменную модель
+    nonisolated static func mapToDomain(from dto: UserDTO) -> User {
         User(
             uuid: dto.uuid,
             username: dto.username,
@@ -7,16 +8,17 @@ struct UserMapper {
             lastName: dto.last_name,
             patronymic: dto.patronymic,
             phone: dto.phone,
-            city: dto.city.map(mapCity),
+            city: CityMapper.mapToDomain(from: dto.city),
             bio: dto.bio
         )
     }
     
-    nonisolated static func map(dtos: [UserDTO]) -> [User] {
-        dtos.map(map)
+    nonisolated static func mapToDomain(from dtos: [UserDTO]) -> [User] {
+        dtos.map(mapToDomain(from:))
     }
     
-    nonisolated static func mapToRecord(dto: UserDTO) -> UserRecord {
+    // MARK: - Маппинг в модель для SQLite
+    nonisolated static func mapToRecord(from dto: UserDTO) -> UserRecord {
         UserRecord(
             uuid: dto.uuid,
             username: dto.username,
@@ -26,15 +28,7 @@ struct UserMapper {
         )
     }
     
-    nonisolated static func mapToRecord(dtos: [UserDTO]) -> [UserRecord] {
-        dtos.map(mapToRecord)
-    }
-    
-    nonisolated private static func mapCity(_ dto: CityDTO) -> City {
-        City(
-            id: dto.id,
-            name: dto.name,
-            translit: dto.translit
-        )
+    nonisolated static func mapToRecord(from dtos: [UserDTO]) -> [UserRecord] {
+        dtos.map(mapToRecord(from:))
     }
 }

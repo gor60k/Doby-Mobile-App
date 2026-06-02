@@ -8,7 +8,7 @@ struct ChatMapper {
                 booking: dto.booking,
                 dtCreated: dto.dt_created
             ),
-            participants: UserMapper.mapToRecord(dtos: dto.participants),
+            participants: UserMapper.mapToRecord(from: dto.participants),
             messages: MessageMapper.mapToRecord(dtos: dto.messages, chatId: dto.id)
         )
     }

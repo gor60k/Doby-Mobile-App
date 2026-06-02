@@ -19,7 +19,7 @@ final class PetSettingsViewModel {
     var petType: PetType = .dog
     var name: String = ""
     var age = 0
-    var gender: Gender = .male
+    var gender: PetGender = .male
     
     var breedName: String = ""
     

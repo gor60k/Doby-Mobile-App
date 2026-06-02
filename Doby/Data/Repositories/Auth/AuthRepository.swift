@@ -26,7 +26,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     func register(input: RegisterInput) async throws {
         let request = RegisterRequestMapper.map(input: input)
         let response = try await api.register(request)
-        let user = UserMapper.map(dto: response.user)
+        let user = UserMapper.mapToDomain(from: response.user)
         
         saveTokens(
             accessToken: response.access_token,
@@ -45,7 +45,7 @@ final class AuthRepository: AuthRepositoryProtocol {
     func login(input: LoginInput) async throws {
         let request = LoginRequestMapper.map(input: input)
         let response = try await api.login(request)
-        let user = UserMapper.map(dto: response.user)
+        let user = UserMapper.mapToDomain(from: response.user)
         
         saveTokens(
             accessToken: response.access_token,

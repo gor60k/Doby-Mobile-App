@@ -6,7 +6,7 @@ struct PetRequest: Codable {
     let uploaded_photos: [Data]
     let name: String
     let age: Int
-    let sex: GenderDTO
+    let sex: PetGenderDTO
     let height: Int?
     let weight: Int?
     let breed_name: String

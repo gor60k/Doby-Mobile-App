@@ -5,7 +5,7 @@ struct UpdatePetRequest: Codable {
     let pet_type: PetTypeDTO?
     let name: String?
     let age: Int?
-    let sex: GenderDTO?
+    let sex: PetGenderDTO?
     let height: Int?
     let uploded_photos: [Data]?
     let weight: Int?

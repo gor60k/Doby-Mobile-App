@@ -5,7 +5,7 @@ struct UpdatePetInput {
     let uploadedPhotos: [Data]?
     let name: String?
     let age: Int?
-    let gender: Gender?
+    let gender: PetGender?
     let height: Int?
     let weight: Int?
     let breedName: String?

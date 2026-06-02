@@ -11,4 +11,6 @@ final class MockUserRepository: UserRepositoryProtocol {
     func updateUser(input: UpdateUserInput) async throws {}
     
     func fetchCities() async throws {}
+    
+    func uploadPhoto(_ input: UserPhotoInput) async throws {}
 }

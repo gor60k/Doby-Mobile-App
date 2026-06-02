@@ -1,4 +1,4 @@
-struct PetPhotoDTO: Codable {
+nonisolated struct PetPhotoDTO: Codable {
     let id: Int
     let image_url: String
     let order_number: Int

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PetAddingInfoView: View {
     @Binding var petType: PetType?
-    @Binding var petGender: Gender?
+    @Binding var petGender: PetGender?
     @Binding var name: String
     @Binding var breedName: String
     @Binding var age: Int
@@ -38,7 +38,7 @@ struct PetAddingInfoView: View {
     Form {
         PetAddingInfoView(
             petType: .constant(.dog),
-            petGender: .constant(Gender.male),
+            petGender: .constant(PetGender.male),
             name: .constant(""),
             breedName: .constant(""),
             age: .constant(10)

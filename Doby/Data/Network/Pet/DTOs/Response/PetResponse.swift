@@ -8,7 +8,7 @@ struct PetResponse: Codable, Sendable {
     let owner_uuid: String
     let name: String
     let age: Int
-    let sex: GenderDTO
+    let sex: PetGenderDTO
     let height: Int?
     let weight: Int?
     let breed_name: String

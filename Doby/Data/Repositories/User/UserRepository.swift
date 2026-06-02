@@ -22,15 +22,15 @@ final class UserRepository: UserRepositoryProtocol {
     
     func fetchUser() async throws {
         let response = try await api.me()
-        let user = UserMapper.map(dto: response)
+        let user = UserMapper.mapToDomain(from: response)
         
         userStorage.user = user
     }
     
     func updateUser(input: UpdateUserInput) async throws {
-        let request = UpdateUserRequestMapper.map(input: input)
+        let request = UpdateUserMapper.mapToRequest(input: input)
         let response = try await api.update(request)
-        let user = UserMapper.map(dto: response)
+        let user = UserMapper.mapToDomain(from: response)
         
         userStorage.update { currentUser in
             currentUser.firstName = user.firstName
@@ -44,7 +44,7 @@ final class UserRepository: UserRepositoryProtocol {
     
     func fetchCities() async throws {
         let response = try await api.cities()
-        let cities = CityMapper.map(dto: response)
+        let cities = CityMapper.mapToDomain(from: response)
         
         cityStorage.cities = cities
     }

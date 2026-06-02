@@ -1,15 +1,33 @@
 import Foundation
 
 struct PetMapper {
-
-    nonisolated static func map(response: PetResponse) -> Pet {
+    nonisolated static func mapToRequest(from input: CreatePetInput) -> PetRequest {
+        return PetRequest(
+            pet_type: PetTypeMapper.mapToDTO(from: input.petType),
+            uploaded_photos: input.uploadedPhotos,
+            name: input.name,
+            age: input.age,
+            sex: PetGenderMapper.mapToDTO(from: input.gender),
+            height: input.height,
+            weight: input.weight,
+            breed_name: input.breedName,
+            diet_type: input.dietType,
+            diet_pattern: input.dietPattern,
+            additional_info: input.additionalInfo,
+            diet_additional_info: input.dietAdditionalInfo,
+            warning_tags: input.warningTags,
+            specific_features: input.specificTags
+        )
+    }
+    
+    nonisolated static func mapToDomain(from response: PetResponse) -> Pet {
         return Pet(
             id: response.id,
-            petType: mapPetType(response.pet_type),
+            petType: PetTypeMapper.mapToDomain(from: response.pet_type),
             ownerUUID: response.owner_uuid,
             name: response.name,
             age: response.age,
-            gender: mapGener(response.sex),
+            gender: PetGenderMapper.mapToDomain(from: response.sex),
             height: response.height ?? 0,
             weight: response.weight ?? 0,
             breedName: response.breed_name,
@@ -19,36 +37,11 @@ struct PetMapper {
             specificTags: response.specific_features,
             additionalInfo: response.additional_info,
             dietAdditionalInfo: response.diet_additional_info,
-            photos: mapPhotos(response.photos)
+            photos: PetPhotoMapper.mapToDomain(from: response.photos)
         )
     }
     
-    nonisolated static func map(response: [PetResponse]) -> [Pet] {
-        response.map(map)
-    }
-
-    nonisolated private static func mapPetType(_ dto: PetTypeDTO) -> PetType {
-        switch dto {
-        case .dog: return .dog
-        case .cat: return .cat
-        }
-    }
-    
-    nonisolated private static func mapGener(_ dto: GenderDTO) -> Gender {
-        switch dto {
-        case .male: return .male
-        case .female: return .female
-        }
-    }
-
-    nonisolated private static func mapPhotos(_ dtos: [PetPhotoDTO]) -> [PetPhoto] {
-        return dtos.map { dto in
-            PetPhoto(
-                id: dto.id,
-                imageURL: dto.image_url,
-                orderNumber: dto.order_number,
-                isMain: dto.is_main
-            )
-        }
+    nonisolated static func mapToDomain(from response: [PetResponse]) -> [Pet] {
+        response.map(mapToDomain(from:))
     }
 }
