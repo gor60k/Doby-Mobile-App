@@ -43,6 +43,7 @@ struct ProfileScreen: View {
             // MARK: - Шапка профиля
             ProfileHeaderView(
                 uuid: viewModel.user?.uuid,
+                photo: viewModel.user?.photos?.first,
                 username: viewModel.user?.username,
                 firstName: viewModel.user?.firstName,
                 lastName: viewModel.user?.lastName,

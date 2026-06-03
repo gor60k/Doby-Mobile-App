@@ -158,6 +158,8 @@ final class PetSettingsViewModel {
             currentPhotoURL = URL(string: baseURL.absoluteString)?.appendingPathComponent(photoPath)
         }
         
+        print("ФОТО ПИТОМЦА", currentPhotoURL)
+        
         age = loaded.age
         height = loaded.height
         weight = loaded.weight

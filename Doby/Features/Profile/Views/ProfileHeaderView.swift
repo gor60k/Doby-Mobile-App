@@ -1,11 +1,20 @@
 import SwiftUI
+import Kingfisher
 
 struct ProfileHeaderView: View {
     let uuid: String?
+    let photo: UserPhoto?
     let username: String?
     let firstName: String?
     let lastName: String?
     let cityName: String?
+    
+    private let baseURL: URL = APIConstants.getImageBaseURL()
+    
+    private var imageURL: URL? {
+        guard let photo else { return nil }
+        return baseURL.appendingPathComponent(photo.imageURL)
+    }
     
     private var fullName: String {
         if let firstName, !firstName.isEmpty {
@@ -28,13 +37,14 @@ struct ProfileHeaderView: View {
     
     var body: some View {
         VStack {
-            Circle()
-                .fill(Color.secondary.opacity(0.12))
-                .overlay {
+            KFImage(imageURL)
+                .placeholder {
                     Image(systemName: "person.fill")
                         .font(.system(size: 36))
                         .foregroundColor(.secondary)
                 }
+                .resizable()
+                .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
             
@@ -50,6 +60,12 @@ struct ProfileHeaderView: View {
 #Preview {
     ProfileHeaderView(
         uuid: "228",
+        photo: UserPhoto(
+            id: 1,
+            imageURL: "",
+            orderNumber: 1,
+            isMain: true
+        ),
         username: "",
         firstName: "",
         lastName: "",

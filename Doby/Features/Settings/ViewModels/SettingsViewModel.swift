@@ -11,9 +11,10 @@ final class SettingsViewModel {
     private let userStorage: UserStorage
     private let cityStorage: CityStorage
     
-    var avatar: String = ""
-    var selectedAvatarImage: UIImage?
-    var isUploadingAvatar = false
+    var photos: [Data] = []
+    var selectedPhotoImage: UIImage?
+    var currentPhotoURL: URL?
+    var isUploadingPhoto = false
 
     var selectedCityId: Int?
     var cities: [City] { cityStorage.cities }
@@ -32,6 +33,8 @@ final class SettingsViewModel {
     
     var isLoading = false
     var error: String?
+    
+    private let baseURL = APIConstants.getImageBaseURL()
     
     init(
         authRespository: AuthRepositoryProtocol,
@@ -69,19 +72,49 @@ final class SettingsViewModel {
         }
     }
     
-    func handleAvatarSelection(_ item: PhotosPickerItem) async {
+    func handlePhotoSelection(_ item: PhotosPickerItem) async {
         guard let data = try? await item.loadTransferable(type: Data.self),
-              let image = UIImage(data: data)
-        else { return }
+              let image = UIImage(data: data) else { return }
         
-        await MainActor.run {
-            selectedAvatarImage = image
+        let maxDimension: CGFloat = 1200
+        let originalSize = image.size
+        
+        let scale = min(
+            maxDimension / originalSize.width,
+            maxDimension / originalSize.height,
+            1
+        )
+
+        let resizedSize = CGSize(
+            width: originalSize.width * scale,
+            height: originalSize.height * scale
+        )
+
+        let rendererFormat = UIGraphicsImageRendererFormat.default()
+        rendererFormat.scale = 1
+
+        let renderer = UIGraphicsImageRenderer(
+            size: resizedSize,
+            format: rendererFormat
+        )
+
+        let resizedImage = renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: resizedSize))
         }
-        
-        await uploadedAvatar(data)
+
+        guard let compressedData = resizedImage.jpegData(compressionQuality: 0.35) else {
+            return
+        }
+
+        print("ORIGINAL SIZE MB:", Double(data.count) / 1024 / 1024)
+        print("COMPRESSED SIZE KB:", compressedData.count / 1024)
+
+        await MainActor.run {
+            selectedPhotoImage = resizedImage
+        }
+
+        await uploadedPhotos(compressedData)
     }
-    
-    
     
     func updateUser() async {
         isLoading = true
@@ -93,7 +126,6 @@ final class SettingsViewModel {
                 lastName: lastName.nilIfEmpty,
                 patronymic: patronymic.nilIfEmpty,
                 phone: phone.nilIfEmpty,
-                avatar: avatar.nilIfEmpty,
                 city: selectedCityId,
                 bio: bio.nilIfEmpty,
             )
@@ -117,7 +149,16 @@ final class SettingsViewModel {
     
     private func loadCurrentUser() {
         guard let user = userStorage.user else { return }
-    
+
+        if let photoPath = user.photos?.first(where: { $0.isMain })?.imageURL
+            ?? user.photos?.first?.imageURL,
+           !photoPath.isEmpty {
+
+            currentPhotoURL = baseURL.appendingPathComponent(photoPath)
+        }
+
+        print("ФОТО ПОЛЬЗОВАТЕЛЯ", currentPhotoURL)
+        
         firstName = user.firstName ?? ""
         lastName = user.lastName ?? ""
         phone = user.phone ?? ""
@@ -126,12 +167,20 @@ final class SettingsViewModel {
         selectedCityId = user.city?.id
     }
     
-    private func uploadedAvatar(_ data: Data) async {
-        isUploadingAvatar = true
-        defer { isUploadingAvatar = false }
+    private func uploadedPhotos(_ data: Data) async {
+        isUploadingPhoto = true
+        defer { isUploadingPhoto = false }
         
         do {
+            let input = UserPhotoInput(
+                image: data,
+                orderNumber: photos.count + 1,
+                isMain: photos.isEmpty
+            )
             
+            _ = try await userRepository.uploadPhoto(input)
+            
+            photos.append(data)
         } catch {
             self.error = error.localizedDescription
         }

@@ -26,10 +26,13 @@ struct PetSettingsScreen: View {
     
     var body: some View {
         Form {
-            PetSettingsPhotosPickerView(
+            PrimaryPhotoPicker(
                 selectedPhotoItem: $selectedPhotoItem,
                 selectedPhotoImage: $viewModel.selectedPhotoImage,
-                currentPhotoURL: viewModel.currentPhotoURL
+                currentPhotoURL: viewModel.currentPhotoURL,
+                placeholderIcon: "pawprint.fill",
+                title: "Профиль питомца",
+                subtitle: "Управляйте данными вашего питомца"
             )
             
 //            Section("Основые данные питомца") {
@@ -87,4 +90,5 @@ struct PetSettingsScreen: View {
         ownerUUID: "",
         openPetProfile: {}
     )
+    .PreviewAppEnvironment()
 }

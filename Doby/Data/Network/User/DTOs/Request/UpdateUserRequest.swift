@@ -5,7 +5,6 @@ struct UpdateUserRequest: Codable {
     let last_name: String?
     let patronymic: String?
     let phone: String?
-    let avatar: String?
     let city: Int?
     let bio: String?
 }

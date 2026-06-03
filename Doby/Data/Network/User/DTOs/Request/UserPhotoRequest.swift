@@ -1,5 +1,7 @@
+import Foundation
+
 nonisolated struct UserPhotoRequest: Codable {
-    let image: String
+    let image: Data
     let order_number: Int
     let is_main: Bool?
 }
