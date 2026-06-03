@@ -11,8 +11,6 @@ struct SettingsScreen: View {
     
     @State private var viewModel: SettingsViewModel
     
-    @State private var selectedPhotoItem: PhotosPickerItem?
-    
     // MARK: - Функции для перехода на дочерние экраны
     let openSettingsAppearance: () -> Void
     let openSettingsPrivacy: () -> Void
@@ -49,9 +47,12 @@ struct SettingsScreen: View {
     var body: some View {
         Form {
             PrimaryPhotoPicker(
-                selectedPhotoItem: $selectedPhotoItem,
-                selectedPhotoImage: $viewModel.selectedPhotoImage,
+                viewModel: viewModel.photoPickerViewModel,
                 currentPhotoURL: viewModel.currentPhotoURL,
+                onImageReady: { data in
+                    await viewModel.uploadPhoto(data)
+                },
+                
                 placeholderIcon: "person.fill",
                 title: "Ваш профиль",
                 subtitle: "Управляйте своими данными и настройками приложения"
@@ -96,13 +97,6 @@ struct SettingsScreen: View {
         .settingsToolbar(onSave: { saveChanges() })
         .task {
             await viewModel.fetchCities()
-        }
-        .onChange(of: selectedPhotoItem) { _, newItem in
-            guard let newItem else { return }
-            
-            Task {
-                await viewModel.handlePhotoSelection(newItem)
-            }
         }
     }
 }

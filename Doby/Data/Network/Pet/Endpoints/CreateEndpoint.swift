@@ -2,7 +2,7 @@ import Foundation
 import Alamofire
 
 struct CreateEndpoint: APIEndpointProtocol {
-    typealias Response = PetResponse
+    typealias Response = PetDTO
     
     let request: PetRequest
     

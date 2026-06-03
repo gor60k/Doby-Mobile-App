@@ -26,14 +26,14 @@ struct PetSettingsScreen: View {
     
     var body: some View {
         Form {
-            PrimaryPhotoPicker(
-                selectedPhotoItem: $selectedPhotoItem,
-                selectedPhotoImage: $viewModel.selectedPhotoImage,
-                currentPhotoURL: viewModel.currentPhotoURL,
-                placeholderIcon: "pawprint.fill",
-                title: "Профиль питомца",
-                subtitle: "Управляйте данными вашего питомца"
-            )
+//            PrimaryPhotoPicker(
+//                selectedPhotoItem: $selectedPhotoItem,
+//                selectedPhotoImage: $viewModel.selectedPhotoImage,
+//                currentPhotoURL: viewModel.currentPhotoURL,
+//                placeholderIcon: "pawprint.fill",
+//                title: "Профиль питомца",
+//                subtitle: "Управляйте данными вашего питомца"
+//            )
             
 //            Section("Основые данные питомца") {
 //                Stepper("Возраст: \(age) лет", value: $age, in: 0...30)

@@ -17,4 +17,12 @@ struct UserPhotoMapper {
             isMain: dto.is_main
         )
     }
+    
+    nonisolated static func mapToDomain(from dtos: [UserPhotoDTO]) -> [UserPhoto] {
+        dtos.map(mapToDomain(from:))
+    }
+    
+    nonisolated static func mapToDomain(from dtos: [UserPhotoDTO]?) -> [UserPhoto]? {
+        dtos.map(mapToDomain(from:))
+    }
 }

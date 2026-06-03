@@ -52,10 +52,10 @@ final class UserRepository: UserRepositoryProtocol {
     func uploadPhoto(_ input: UserPhotoInput) async throws {
         let request = UserPhotoMapper.mapToRequest(from: input)
         let response = try await api.uploadPhoto(request)
-        let photo = UserPhotoMapper.mapToDomain(from: response)
+        let photos = UserPhotoMapper.mapToDomain(from: response)
         
         userStorage.patch { user in
-            user.photos?.append(photo)
+            user.photos = photos
         }
     }
 }

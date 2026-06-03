@@ -11,10 +11,10 @@ final class SettingsViewModel {
     private let userStorage: UserStorage
     private let cityStorage: CityStorage
     
+    let photoPickerViewModel = PrimaryPhotoPickerViewModel()
+    
     var photos: [Data] = []
-    var selectedPhotoImage: UIImage?
     var currentPhotoURL: URL?
-    var isUploadingPhoto = false
 
     var selectedCityId: Int?
     var cities: [City] { cityStorage.cities }
@@ -72,48 +72,8 @@ final class SettingsViewModel {
         }
     }
     
-    func handlePhotoSelection(_ item: PhotosPickerItem) async {
-        guard let data = try? await item.loadTransferable(type: Data.self),
-              let image = UIImage(data: data) else { return }
-        
-        let maxDimension: CGFloat = 1200
-        let originalSize = image.size
-        
-        let scale = min(
-            maxDimension / originalSize.width,
-            maxDimension / originalSize.height,
-            1
-        )
-
-        let resizedSize = CGSize(
-            width: originalSize.width * scale,
-            height: originalSize.height * scale
-        )
-
-        let rendererFormat = UIGraphicsImageRendererFormat.default()
-        rendererFormat.scale = 1
-
-        let renderer = UIGraphicsImageRenderer(
-            size: resizedSize,
-            format: rendererFormat
-        )
-
-        let resizedImage = renderer.image { _ in
-            image.draw(in: CGRect(origin: .zero, size: resizedSize))
-        }
-
-        guard let compressedData = resizedImage.jpegData(compressionQuality: 0.35) else {
-            return
-        }
-
-        print("ORIGINAL SIZE MB:", Double(data.count) / 1024 / 1024)
-        print("COMPRESSED SIZE KB:", compressedData.count / 1024)
-
-        await MainActor.run {
-            selectedPhotoImage = resizedImage
-        }
-
-        await uploadedPhotos(compressedData)
+    func uploadPhoto(_ data: Data) async {
+        await uploadedPhotos(data)
     }
     
     func updateUser() async {
@@ -148,7 +108,11 @@ final class SettingsViewModel {
     }
     
     private func loadCurrentUser() {
+        print("USER:", userStorage.user as Any)
+        
         guard let user = userStorage.user else { return }
+        
+        print("PHOTOS:", user.photos as Any)
 
         if let photoPath = user.photos?.first(where: { $0.isMain })?.imageURL
             ?? user.photos?.first?.imageURL,
@@ -156,8 +120,6 @@ final class SettingsViewModel {
 
             currentPhotoURL = baseURL.appendingPathComponent(photoPath)
         }
-
-        print("ФОТО ПОЛЬЗОВАТЕЛЯ", currentPhotoURL)
         
         firstName = user.firstName ?? ""
         lastName = user.lastName ?? ""
@@ -168,9 +130,6 @@ final class SettingsViewModel {
     }
     
     private func uploadedPhotos(_ data: Data) async {
-        isUploadingPhoto = true
-        defer { isUploadingPhoto = false }
-        
         do {
             let input = UserPhotoInput(
                 image: data,

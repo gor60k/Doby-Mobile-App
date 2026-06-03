@@ -1,7 +1,7 @@
 import Foundation
 
 struct FetchByIdEndpoint: APIEndpointProtocol {
-    typealias Response = PetResponse
+    typealias Response = PetDTO
     
     let ownerUUID: String
     let petId: Int

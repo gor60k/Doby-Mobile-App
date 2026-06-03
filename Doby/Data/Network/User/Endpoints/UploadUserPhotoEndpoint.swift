@@ -2,7 +2,7 @@ import Foundation
 import Alamofire
 
 struct UploadUserPhotoEndpoint: APIEndpointProtocol {
-    typealias Response = UserPhotoDTO
+    typealias Response = [UserPhotoDTO]
     
     let request: UserPhotoRequest
     

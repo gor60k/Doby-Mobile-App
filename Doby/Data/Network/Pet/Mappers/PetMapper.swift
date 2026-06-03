@@ -20,7 +20,7 @@ struct PetMapper {
         )
     }
     
-    nonisolated static func mapToDomain(from response: PetResponse) -> Pet {
+    nonisolated static func mapToDomain(from response: PetDTO) -> Pet {
         return Pet(
             id: response.id,
             petType: PetTypeMapper.mapToDomain(from: response.pet_type),
@@ -41,7 +41,11 @@ struct PetMapper {
         )
     }
     
-    nonisolated static func mapToDomain(from response: [PetResponse]) -> [Pet] {
+    nonisolated static func mapToDomain(from response: [PetDTO]) -> [Pet] {
+        response.map(mapToDomain(from:))
+    }
+    
+    nonisolated static func mapToDomain(from response: [PetDTO]?) -> [Pet]? {
         response.map(mapToDomain(from:))
     }
 }

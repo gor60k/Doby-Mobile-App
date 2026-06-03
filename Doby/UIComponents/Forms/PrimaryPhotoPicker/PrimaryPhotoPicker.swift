@@ -1,20 +1,21 @@
 import SwiftUI
-import PhotosUI
 import Kingfisher
+import PhotosUI
 
 struct PrimaryPhotoPicker: View {
     
-    @Binding var selectedPhotoItem: PhotosPickerItem?
-    @Binding var selectedPhotoImage: UIImage?
-    
+    @State private var selectedPhotoItem: PhotosPickerItem?
+
+    let viewModel: PrimaryPhotoPickerViewModel
     let currentPhotoURL: URL?
-    let placeholderIcon: String
+    let onImageReady: (Data) async -> Void
     
+    let placeholderIcon: String
     let title: String
     let subtitle: String
     
     private var hasPhoto: Bool {
-        selectedPhotoImage != nil
+        viewModel.selectedPhotoImage != nil
     }
     
     var body: some View {
@@ -24,7 +25,7 @@ struct PrimaryPhotoPicker: View {
                     VStack(spacing: 10) {
                         ZStack(alignment: .bottomTrailing) {
                             PrimaryPhotoPickerAvatar(
-                                selectedPhotoImage: selectedPhotoImage,
+                                selectedPhotoImage: viewModel.selectedPhotoImage,
                                 currentPhotoURL: currentPhotoURL,
                                 placeholderIcon: placeholderIcon
                             )
@@ -38,6 +39,15 @@ struct PrimaryPhotoPicker: View {
                     }
                 }
                 .buttonStyle(.plain)
+                .task(id: selectedPhotoItem) {
+                    guard let selectedPhotoItem else { return }
+
+                    guard let data = await viewModel.processPhoto(selectedPhotoItem) else {
+                        return
+                    }
+
+                    await onImageReady(data)
+                }
                 
                 VStack(spacing: 4) {
                     Text(title)

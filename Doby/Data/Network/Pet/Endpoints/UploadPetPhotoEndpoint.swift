@@ -9,7 +9,7 @@ struct UploadPetPhotoEndpoint: APIEndpointProtocol {
     
     var isMultipart: Bool { true }
     var baseURL: URL { APIConstants.baseURL }
-    var path: String { "/pets/\(petId)/photos" }
+    var path: String { "/pets/\(petId)/photos/" }
     var method: HTTPMethod { .post }
     
     func encodeMultipart(to formData: MultipartFormData) {

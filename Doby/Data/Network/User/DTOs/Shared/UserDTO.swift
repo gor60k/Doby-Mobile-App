@@ -11,4 +11,6 @@ struct UserDTO: Codable {
     var phone: String?
     var city: CityDTO?
     var bio: String?
+    var pets: [PetDTO]?
+    var photos: [UserPhotoDTO]?
 }

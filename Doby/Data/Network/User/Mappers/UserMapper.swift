@@ -9,7 +9,9 @@ struct UserMapper {
             patronymic: dto.patronymic,
             phone: dto.phone,
             city: CityMapper.mapToDomain(from: dto.city),
-            bio: dto.bio
+            bio: dto.bio,
+            pets: PetMapper.mapToDomain(from: dto.pets),
+            photos: UserPhotoMapper.mapToDomain(from: dto.photos)
         )
     }
     
