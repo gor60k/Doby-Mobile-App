@@ -26,14 +26,17 @@ struct PetSettingsScreen: View {
     
     var body: some View {
         Form {
-//            PrimaryPhotoPicker(
-//                selectedPhotoItem: $selectedPhotoItem,
-//                selectedPhotoImage: $viewModel.selectedPhotoImage,
-//                currentPhotoURL: viewModel.currentPhotoURL,
-//                placeholderIcon: "pawprint.fill",
-//                title: "Профиль питомца",
-//                subtitle: "Управляйте данными вашего питомца"
-//            )
+            PrimaryPhotoPicker(
+                viewModel: viewModel.photoPickerViewModel,
+                currentPhotoURL: viewModel.currentPhotoURL,
+                onImageReady: { data in
+                    await viewModel.uploadPhoto(data)
+                },
+                
+                placeholderIcon: "pawprint.fill",
+                title: "Профиль питомца",
+                subtitle: "Управляйте данными вашего питомца"
+            )
             
 //            Section("Основые данные питомца") {
 //                Stepper("Возраст: \(age) лет", value: $age, in: 0...30)
@@ -71,13 +74,6 @@ struct PetSettingsScreen: View {
                         openPetProfile()
                     }
                 }
-            }
-        }
-        .onChange(of: selectedPhotoItem) { _, newItem in
-            guard let newItem else { return }
-            
-            Task {
-                await viewModel.handlePhotoSelection(newItem)
             }
         }
     }

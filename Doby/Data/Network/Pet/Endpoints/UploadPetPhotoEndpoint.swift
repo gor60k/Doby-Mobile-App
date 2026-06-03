@@ -13,7 +13,12 @@ struct UploadPetPhotoEndpoint: APIEndpointProtocol {
     var method: HTTPMethod { .post }
     
     func encodeMultipart(to formData: MultipartFormData) {
-        formData.append(Data(request.image.utf8), withName: "image")
+        formData.append(
+            Data(request.image),
+            withName: "image",
+            fileName: "photo.jpeg",
+            mimeType: "image/jpeg"
+        )
         formData.append(Data("\(request.order_number)".utf8), withName: "order_number")
         
         if let isMain = request.is_main {

@@ -6,36 +6,52 @@ import PhotosUI
 //TODO: доделать логику добавления и изменения фото
 @Observable
 final class SettingsViewModel {
+    // MARK: - Dependencies
+
     private let authRepository: AuthRepositoryProtocol
     private let userRepository: UserRepositoryProtocol
     private let userStorage: UserStorage
     private let cityStorage: CityStorage
-    
-    let photoPickerViewModel = PrimaryPhotoPickerViewModel()
-    
-    var photos: [Data] = []
-    var currentPhotoURL: URL?
 
-    var selectedCityId: Int?
-    var cities: [City] { cityStorage.cities }
-    
+    // MARK: - Private Properties
+
+    private let baseURL = APIConstants.getImageBaseURL()
+
+    // MARK: - Child ViewModels
+
+    let photoPickerViewModel = PrimaryPhotoPickerViewModel()
+
+    // MARK: - User Data
+
     var firstName: String = ""
     var lastName: String = ""
     var patronymic: String = ""
     var phone: String = ""
+    var email: String = ""
     var bio: String = ""
-    
+
+    // MARK: - Passwords
+
     var password: String = ""
     var newPassword: String = ""
     var confirmNewPassword: String = ""
 
-    var email: String = ""
-    
+    // MARK: - Photos
+
+    var photos: [Data] = []
+    var currentPhotoURL: URL?
+
+    // MARK: - Location
+
+    var selectedCityId: Int?
+    var cities: [City] { cityStorage.cities }
+
+    // MARK: - UI State
+
     var isLoading = false
     var error: String?
     
-    private let baseURL = APIConstants.getImageBaseURL()
-    
+    // MARK: - Initialization
     init(
         authRespository: AuthRepositoryProtocol,
         userRepository: UserRepositoryProtocol,
@@ -50,6 +66,7 @@ final class SettingsViewModel {
         loadCurrentUser()
     }
     
+    // MARK: - User Actions
     func fetchUser() async {
         isLoading = true
         defer { isLoading = false }
@@ -107,18 +124,12 @@ final class SettingsViewModel {
         }
     }
     
+    // MARK: - Private Helpers
     private func loadCurrentUser() {
-        print("USER:", userStorage.user as Any)
-        
         guard let user = userStorage.user else { return }
-        
-        print("PHOTOS:", user.photos as Any)
 
-        if let photoPath = user.photos?.first(where: { $0.isMain })?.imageURL
-            ?? user.photos?.first?.imageURL,
-           !photoPath.isEmpty {
-
-            currentPhotoURL = baseURL.appendingPathComponent(photoPath)
+        if let photoURL = makeCurrentPhotoURL(from: user) {
+            currentPhotoURL = photoURL
         }
         
         firstName = user.firstName ?? ""
@@ -127,6 +138,16 @@ final class SettingsViewModel {
         email = user.username
         bio = user.bio ?? ""
         selectedCityId = user.city?.id
+    }
+
+    private func makeCurrentPhotoURL(from user: User) -> URL? {
+        guard let photoPath = user.photos?.first(where: { $0.isMain })?.imageURL
+                ?? user.photos?.first?.imageURL,
+              !photoPath.isEmpty else {
+            return nil
+        }
+
+        return baseURL.appendingPathComponent(photoPath)
     }
     
     private func uploadedPhotos(_ data: Data) async {

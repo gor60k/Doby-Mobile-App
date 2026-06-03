@@ -1,7 +1,7 @@
 import Foundation
 
 struct PetPhotoInput: Codable {
-    let image: String
+    let image: Data
     let orderNumber: Int
     let isMain: Bool?
 }

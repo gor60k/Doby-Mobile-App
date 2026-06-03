@@ -8,12 +8,17 @@ final class PetSettingsViewModel {
     private let petRepository: PetRepositoryProtocol
     private let petStorage: PetStorage
     
+    let photoPickerViewModel = PrimaryPhotoPickerViewModel()
+    
+    let photos: [Data] = []
+    var currentPhotoURL: URL?
+    
     let petId: Int
     let ownerUUID: String
     
     var uploadedPhotos: [Data] = []
     var selectedPhotoImage: UIImage?
-    var currentPhotoURL: URL?
+    
     var isUploadingPhoto = false
     
     var petType: PetType = .dog
@@ -63,6 +68,7 @@ final class PetSettingsViewModel {
         loadPet()
     }
     
+    // MARK: - Публичные методы
     func fetchPet() async {
         isLoading = true
         defer { isLoading = false }
@@ -107,58 +113,17 @@ final class PetSettingsViewModel {
         }
     }
     
-    func handlePhotoSelection(_ item: PhotosPickerItem) async {
-        guard let data = try? await item.loadTransferable(type: Data.self),
-              let image = UIImage(data: data) else { return }
-
-        let maxDimension: CGFloat = 1200
-        let originalSize = image.size
-
-        let scale = min(
-            maxDimension / originalSize.width,
-            maxDimension / originalSize.height,
-            1
-        )
-
-        let resizedSize = CGSize(
-            width: originalSize.width * scale,
-            height: originalSize.height * scale
-        )
-
-        let rendererFormat = UIGraphicsImageRendererFormat.default()
-        rendererFormat.scale = 1
-
-        let renderer = UIGraphicsImageRenderer(
-            size: resizedSize,
-            format: rendererFormat
-        )
-
-        let resizedImage = renderer.image { _ in
-            image.draw(in: CGRect(origin: .zero, size: resizedSize))
-        }
-
-        guard let compressedData = resizedImage.jpegData(compressionQuality: 0.35) else {
-            return
-        }
-
-        print("ORIGINAL SIZE MB:", Double(data.count) / 1024 / 1024)
-        print("COMPRESSED SIZE KB:", compressedData.count / 1024)
-
-        await MainActor.run {
-            selectedPhotoImage = resizedImage
-        }
-
-        await uploadedPhotos(compressedData)
+    func uploadPhoto(_ data: Data) async {
+        await uploadedPhotos(data)
     }
     
+    // MARK: - Приватные методы
     private func loadPet() {
         guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
         
         if let photoPath = loaded.photos.first(where: { $0.isMain })?.imageURL ?? loaded.photos.first?.imageURL {
             currentPhotoURL = URL(string: baseURL.absoluteString)?.appendingPathComponent(photoPath)
         }
-        
-        print("ФОТО ПИТОМЦА", currentPhotoURL)
         
         age = loaded.age
         height = loaded.height
@@ -180,15 +145,13 @@ final class PetSettingsViewModel {
         defer { isUploadingPhoto = false }
         
         do {
-            print("BASE64 SIZE KB:", data.base64EncodedString().count / 1024)
-            let base64Image = data.base64EncodedString()
-
             let input = PetPhotoInput(
-                image: base64Image,
-                orderNumber: uploadedPhotos.count,
+                image: data,
+                orderNumber: uploadedPhotos.count + 1,
                 isMain: uploadedPhotos.isEmpty
             )
             _ = try await petRepository.uploadPetPhoto(input, with: petId)
+            
             uploadedPhotos.append(data)
         } catch {
             self.error = error.localizedDescription
