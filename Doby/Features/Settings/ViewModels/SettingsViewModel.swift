@@ -3,51 +3,34 @@ import Foundation
 import Observation
 import PhotosUI
 
-//TODO: доделать логику добавления и изменения фото
 @Observable
 final class SettingsViewModel {
     // MARK: - Dependencies
-
     private let authRepository: AuthRepositoryProtocol
     private let userRepository: UserRepositoryProtocol
     private let userStorage: UserStorage
     private let cityStorage: CityStorage
 
     // MARK: - Private Properties
-
     private let baseURL = APIConstants.getImageBaseURL()
 
     // MARK: - Child ViewModels
-
     let photoPickerViewModel = PrimaryPhotoPickerViewModel()
 
     // MARK: - User Data
-
-    var firstName: String = ""
-    var lastName: String = ""
-    var patronymic: String = ""
-    var phone: String = ""
+    var personalInfo = PersonalInfo()
     var email: String = ""
     var bio: String = ""
 
-    // MARK: - Passwords
-
-    var password: String = ""
-    var newPassword: String = ""
-    var confirmNewPassword: String = ""
-
     // MARK: - Photos
-
     var photos: [Data] = []
     var currentPhotoURL: URL?
 
     // MARK: - Location
-
     var selectedCityId: Int?
     var cities: [City] { cityStorage.cities }
 
     // MARK: - UI State
-
     var isLoading = false
     var error: String?
     
@@ -63,78 +46,92 @@ final class SettingsViewModel {
         self.userStorage = userStorage
         self.cityStorage = cityStorage
         
-        loadCurrentUser()
+        syncFromStorage()
     }
     
     // MARK: - User Actions
+    func load() async {
+        await perform {
+            async let userTask = userRepository.fetchUser()
+            async let citiesTask = userRepository.fetchCities()
+
+            _ = try await userTask
+            _ = try await citiesTask
+
+            syncFromStorage()
+        }
+    }
+    
     func fetchUser() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await userRepository.fetchUser()
-        } catch {
-            self.error = error.localizedDescription
+            syncFromStorage()
         }
     }
     
     func fetchCities() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
-            _ = try await userRepository.fetchCities()
-        } catch {
-            self.error = error.localizedDescription
+        await perform {
+            try await userRepository.fetchCities()
         }
     }
     
-    func uploadPhoto(_ data: Data) async {
-        await uploadedPhotos(data)
-    }
-    
     func updateUser() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             let input = UpdateUserInput(
-                firstName: firstName.nilIfEmpty,
-                lastName: lastName.nilIfEmpty,
-                patronymic: patronymic.nilIfEmpty,
-                phone: phone.nilIfEmpty,
+                firstName: personalInfo.firstName.nilIfEmpty,
+                lastName: personalInfo.lastName.nilIfEmpty,
+                phone: personalInfo.phone.nilIfEmpty,
                 city: selectedCityId,
                 bio: bio.nilIfEmpty,
             )
             
-            _ = try await userRepository.updateUser(input: input)
-        } catch {
-            self.error = error.localizedDescription
+            try await userRepository.updateUser(input: input)
+            syncFromStorage()
+        }
+    }
+    
+    func uploadPhoto(_ data: Data) async {
+        await perform {
+            let input = UserPhotoInput(
+                image: data,
+                orderNumber: photos.count + 1,
+                isMain: photos.isEmpty
+            )
+            
+            try await userRepository.uploadPhoto(input)
+            syncFromStorage()
         }
     }
     
     func logout() async {
+        await perform {
+            try await authRepository.logout()
+        }
+    }
+    
+    // MARK: - Private Helpers
+    private func perform(
+        _ action: () async throws -> Void
+    ) async {
         isLoading = true
         defer { isLoading = false }
         
         do {
-            try await authRepository.logout()
+            try await action()
         } catch {
             self.error = error.localizedDescription
         }
     }
     
-    // MARK: - Private Helpers
-    private func loadCurrentUser() {
+    private func syncFromStorage() {
         guard let user = userStorage.user else { return }
 
-        if let photoURL = makeCurrentPhotoURL(from: user) {
-            currentPhotoURL = photoURL
-        }
+        currentPhotoURL = makeCurrentPhotoURL(from: user)
         
-        firstName = user.firstName ?? ""
-        lastName = user.lastName ?? ""
-        phone = user.phone ?? ""
+        personalInfo.firstName = user.firstName ?? ""
+        personalInfo.lastName = user.lastName ?? ""
+        personalInfo.phone = user.phone ?? ""
+        
         email = user.username
         bio = user.bio ?? ""
         selectedCityId = user.city?.id
@@ -148,22 +145,6 @@ final class SettingsViewModel {
         }
 
         return baseURL.appendingPathComponent(photoPath)
-    }
-    
-    private func uploadedPhotos(_ data: Data) async {
-        do {
-            let input = UserPhotoInput(
-                image: data,
-                orderNumber: photos.count + 1,
-                isMain: photos.isEmpty
-            )
-            
-            _ = try await userRepository.uploadPhoto(input)
-            
-            photos.append(data)
-        } catch {
-            self.error = error.localizedDescription
-        }
     }
 }
 

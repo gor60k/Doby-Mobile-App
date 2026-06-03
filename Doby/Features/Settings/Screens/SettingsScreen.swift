@@ -59,9 +59,9 @@ struct SettingsScreen: View {
             )
             
             SettingsPersonalInfoView(
-                name: $viewModel.firstName,
-                surname: $viewModel.lastName,
-                phone: $viewModel.phone,
+                name: $viewModel.personalInfo.firstName,
+                surname: $viewModel.personalInfo.lastName,
+                phone: $viewModel.personalInfo.phone,
                 selectedCityId: $viewModel.selectedCityId,
                 cities: viewModel.cities,
             )
