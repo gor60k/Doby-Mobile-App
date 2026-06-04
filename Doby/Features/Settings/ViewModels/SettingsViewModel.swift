@@ -4,7 +4,7 @@ import Observation
 import PhotosUI
 
 @Observable
-final class SettingsViewModel {
+final class SettingsViewModel: ViewModel {
     // MARK: - Dependencies
     private let authRepository: AuthRepositoryProtocol
     private let userRepository: UserRepositoryProtocol
@@ -29,10 +29,6 @@ final class SettingsViewModel {
     // MARK: - Location
     var selectedCityId: Int?
     var cities: [City] { cityStorage.cities }
-
-    // MARK: - UI State
-    var isLoading = false
-    var error: String?
     
     // MARK: - Initialization
     init(
@@ -45,8 +41,6 @@ final class SettingsViewModel {
         self.userRepository = userRepository
         self.userStorage = userStorage
         self.cityStorage = cityStorage
-        
-        syncFromStorage()
     }
     
     // MARK: - User Actions
@@ -110,19 +104,6 @@ final class SettingsViewModel {
     }
     
     // MARK: - Private Helpers
-    private func perform(
-        _ action: () async throws -> Void
-    ) async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
-            try await action()
-        } catch {
-            self.error = error.localizedDescription
-        }
-    }
-    
     private func syncFromStorage() {
         guard let user = userStorage.user else { return }
 

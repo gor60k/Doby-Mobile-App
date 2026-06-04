@@ -1,7 +1,19 @@
-//
-//  ViewModel.swift
-//  Doby
-//
-//  Created by Александр Шабельников on 04.06.2026.
-//
+import Foundation
 
+class ViewModel {
+    var isLoading = false
+    var error: String?
+    
+    func perform(
+        _ action: () async throws -> Void
+    ) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await action()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+}

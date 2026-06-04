@@ -3,7 +3,7 @@ import Observation
 
 @MainActor
 @Observable
-class ProfileViewModel {
+class ProfileViewModel: ViewModel {
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
     private let storage: UserStorage
@@ -11,9 +11,6 @@ class ProfileViewModel {
     var user: User? { storage.user }
     
     private var ownerUUID: String? { user?.uuid }
-    
-    var isLoading = false
-    var error: String?
     
     init(
         userRepository: UserRepositoryProtocol,
@@ -49,19 +46,6 @@ class ProfileViewModel {
         
         await perform {
             try await petRepository.fetchPets(from: ownerUUID)
-        }
-    }
-    
-    private func perform(
-        _ action: () async throws -> Void
-    ) async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
-            try await action()
-        } catch {
-            self.error = error.localizedDescription
         }
     }
 }

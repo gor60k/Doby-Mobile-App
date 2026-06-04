@@ -2,7 +2,7 @@ import SwiftUI
 import Observation
 
 @Observable
-final class PetProfileViewModel {
+final class PetProfileViewModel: ViewModel {
     private let repository: PetRepositoryProtocol
     private let petStorage: PetStorage
     private let userStorage: UserStorage
@@ -31,9 +31,6 @@ final class PetProfileViewModel {
         self.petId = petId
     }
     
-    private(set) var isLoading = false
-    var error: String?
-    
     func load() async {
         guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
         
@@ -48,14 +45,8 @@ final class PetProfileViewModel {
             return
         }
         
-        isLoading = true
-        error = nil
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await repository.fetchPet(with: petId, from: ownerUUID)
-        } catch {
-            self.error = error.localizedDescription
         }
     }
     

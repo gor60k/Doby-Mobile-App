@@ -3,15 +3,12 @@ import Observation
 
 @MainActor
 @Observable
-final class PetViewModel {
+final class PetViewModel: ViewModel {
     private let repository: PetRepositoryProtocol
     private let storage: PetStorage
     private let ownerUUID: String
     
     var pets: [Pet] { storage.pets }
-    
-    var isLoading = false
-    var error: String?
     
     init(
         repository: PetRepositoryProtocol,
@@ -24,35 +21,20 @@ final class PetViewModel {
     }
     
     func fetchPets() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await repository.fetchPets(from: ownerUUID)
-        } catch {
-            self.error = error.localizedDescription
         }
     }
 
     func fetchPet(petId: Int) async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await repository.fetchPet(with: petId, from: ownerUUID)
-        } catch {
-            self.error = error.localizedDescription
         }
     }
     
     func deletePet(id: Int) async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await repository.deletePet(id: id)
-        } catch {
-            self.error = error.localizedDescription
         }
     }
 }

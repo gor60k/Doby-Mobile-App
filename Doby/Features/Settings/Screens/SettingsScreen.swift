@@ -96,7 +96,7 @@ struct SettingsScreen: View {
         .toolbar(.hidden, for: .tabBar)
         .settingsToolbar(onSave: { saveChanges() })
         .task {
-            await viewModel.fetchCities()
+            await viewModel.load()
         }
     }
 }

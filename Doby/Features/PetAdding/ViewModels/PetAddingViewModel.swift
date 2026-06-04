@@ -5,7 +5,7 @@ import Observation
 import PhotosUI
 
 @Observable
-final class PetAddingViewModel {
+final class PetAddingViewModel: ViewModel {
     private let repository: PetRepositoryProtocol
     
     // MARK: - Обязательные поля
@@ -40,9 +40,6 @@ final class PetAddingViewModel {
         placeholder: "Например: любит детей"
     )
     
-    var isLoading: Bool = false
-    var errorMessage: String?
-    
     init(repository: PetRepositoryProtocol) {
         self.repository = repository
     }
@@ -62,14 +59,9 @@ final class PetAddingViewModel {
     
     @MainActor
     func addPet() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        errorMessage = nil
-        
         await loadSelectedPhotos()
         
-        do {
+        await perform {
             let input = CreatePetInput(
                 petType: petType ?? .dog,
                 uploadedPhotos: selectedPhotosData,
@@ -88,8 +80,6 @@ final class PetAddingViewModel {
             )
             
             _ = try await repository.createPet(input: input)
-        } catch {
-            errorMessage = error.localizedDescription
         }
     }
 }

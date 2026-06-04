@@ -3,7 +3,7 @@ import os
 import Observation
 
 @Observable
-final class AuthViewModel {
+final class AuthViewModel: ViewModel {
     private let repository: AuthRepositoryProtocol
     
     var email: String = ""
@@ -36,9 +36,6 @@ final class AuthViewModel {
         isLoginPasswordValid
     }
     
-    var isLoading: Bool = false
-    var errorMessage: String?
-    
     init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
@@ -46,74 +43,52 @@ final class AuthViewModel {
     @MainActor
     func register() async {
         guard isEmailValid else {
-            errorMessage = "Некорректный email"
+            error = "Некорректный email"
             return
         }
         
         guard isRegisterPasswordValid else {
-            errorMessage = "Пароли не совпадают или слишком короткие"
+            error = "Пароли не совпадают или слишком короткие"
             return
         }
         
-        isLoading = true
-        errorMessage = nil
-        
-        do {
+        await perform {
             let input = RegisterInput(
                 username: email,
                 password: password
             )
             
-            _ = try await repository.register(input: input)
-        } catch {
-            errorMessage = error.localizedDescription
+            try await repository.register(input: input)
         }
-        
-        isLoading = false
     }
     
     @MainActor
     func login() async {
         guard isEmailValid else {
-            errorMessage = "Некорректный email"
+            error = "Некорректный email"
             return
         }
         
         guard isLoginPasswordValid else {
-            errorMessage = "Введите пароль"
+            error = "Введите пароль"
             return
         }
         
-        isLoading = true
-        errorMessage = nil
-        
-        do {
+        await perform {
             let input = LoginInput(
                 username: email,
                 password: password
             )
             
-            _ = try await repository.login(input: input)
-        } catch {
-            errorMessage = error.localizedDescription
+            try await repository.login(input: input)
         }
-        
-        isLoading = false
     }
     
     @MainActor
     func logout() async {
-        
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            _ = try await repository.logout()
-        } catch {
-            errorMessage = error.localizedDescription
+        await perform {
+            try await repository.logout()
         }
-       
-        isLoading = false
     }
 }
 

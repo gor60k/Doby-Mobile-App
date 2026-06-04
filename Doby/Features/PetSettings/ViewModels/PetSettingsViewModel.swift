@@ -4,7 +4,7 @@ import Observation
 import PhotosUI
 
 @Observable
-final class PetSettingsViewModel {
+final class PetSettingsViewModel: ViewModel {
     // MARK: - Dependencies
     private let petRepository: PetRepositoryProtocol
     private let petStorage: PetStorage
@@ -45,10 +45,6 @@ final class PetSettingsViewModel {
     var detailsInfo = PetDetails()
     var dietInfo = PetDiet()
     var petTags = PetTags()
-    
-    // MARK: - UI State
-    var isLoading = false
-    var error: String?
 
     // MARK: - Initialization
     init(
@@ -111,19 +107,6 @@ final class PetSettingsViewModel {
     }
     
     // MARK: - Приватные методы
-    private func perform(
-        _ action: () async throws -> Void
-    ) async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
-            try await action()
-        } catch {
-            self.error = error.localizedDescription
-        }
-    }
-    
     private func loadPet() {
         guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
         
