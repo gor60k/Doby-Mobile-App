@@ -58,7 +58,7 @@ final class PetSettingsViewModel: ViewModel {
         self.petId = petId
         self.ownerUUID = ownerUUID
         
-        loadPet()
+//        loadPet()
     }
     
     // MARK: - Публичные методы
@@ -106,8 +106,7 @@ final class PetSettingsViewModel: ViewModel {
         }
     }
     
-    // MARK: - Приватные методы
-    private func loadPet() {
+    func load() {
         guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
         
         currentPhotoURL = makeCurrentPhotoURL(from: loaded)
@@ -128,6 +127,7 @@ final class PetSettingsViewModel: ViewModel {
         featureTagsViewModel.tags = petTags.featureTags
     }
     
+    // MARK: - Приватные методы
     private func makeCurrentPhotoURL(from pet: Pet) -> URL? {
         guard let photoPath = pet.photos.first(where: { $0.isMain })?.imageURL ?? pet.photos.first?.imageURL,
               !photoPath.isEmpty else { return nil }

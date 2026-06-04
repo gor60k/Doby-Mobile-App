@@ -1,5 +1,8 @@
 import Foundation
+import Observation
 
+@MainActor
+@Observable
 class ViewModel {
     var isLoading = false
     var error: String?

@@ -60,6 +60,7 @@ struct PetScreen: View {
                                 age: pet.age,
                                 openPetProfile: { openPetProfile(pet.id) }
                             )
+                            .loadingPlaceholder(isLoading: viewModel.isLoading)
                         }
                         .animation(.easeInOut, value: isEditing)
                     }

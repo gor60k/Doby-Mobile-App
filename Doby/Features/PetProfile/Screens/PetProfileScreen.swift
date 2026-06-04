@@ -4,6 +4,7 @@ struct PetProfileScreen: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
     
     @State private var viewModel: PetProfileViewModel
+    
     let petId: Int
     
     // MARK: - Функции для перехода к дочерним экранам
@@ -37,13 +38,13 @@ struct PetProfileScreen: View {
             VStack(spacing: 0) {
                 PetProfileGallaryView(
                     currentPage: $viewModel.currentPage,
-                    items: viewModel.slides
+                    items: viewModel.pet.photos
                 )
                 
                 PetProfileLabelView(
-                    name: viewModel.pet?.name ?? "",
-                    species: viewModel.pet?.breedName ?? "",
-                    age: viewModel.pet?.age ?? 0,
+                    name: viewModel.pet.name,
+                    species: viewModel.pet.breedName,
+                    age: viewModel.pet.age,
                     gender: .male
                 )
                 
@@ -61,7 +62,7 @@ struct PetProfileScreen: View {
                             feedbackValue: .feedback,
                             options: options,
                             title: { $0.rawValue },
-                            description: viewModel.description ?? "",
+                            description: viewModel.pet.additionalInfo,
                             buttonAction: {}
                         )
                     }
@@ -70,23 +71,23 @@ struct PetProfileScreen: View {
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Мои особенности") {
-                    PetProfileTagsView(tags: viewModel.pet?.specificTags ?? [])
+                    PetProfileTagsView(tags: viewModel.pet.specificTags)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Что я ем") {
                     PetProfileDietView(
-                        dietType: viewModel.pet?.dietType ?? "-",
-                        dietPatterns: viewModel.pet?.dietPatterns ?? "-",
-                        dietAdditionalInfo: viewModel.pet?.dietAdditionalInfo ?? "-"
+                        dietType: viewModel.pet.dietType ?? "-",
+                        dietPatterns: viewModel.pet.dietPatterns ?? "-",
+                        dietAdditionalInfo: viewModel.pet.dietAdditionalInfo ?? "-"
                     )
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
                 PrimaryCollapsibleSection(title: "Важные предупреждения!") {
-                    PetProfileTagsView(tags: viewModel.pet?.warningTags ?? [])
+                    PetProfileTagsView(tags: viewModel.pet.warningTags)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
@@ -98,7 +99,7 @@ struct PetProfileScreen: View {
             await viewModel.fetchPet()
         }
         .task {
-            await viewModel.load()
+            await viewModel.fetchPet()
         }
         .ignoresSafeArea(edges: .top)
         .petProfileToolbar(onEdit: { openSettings(petId) })

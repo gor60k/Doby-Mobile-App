@@ -26,7 +26,7 @@ struct SignUpScreen: View {
         Task {
             await viewModel.register()
             
-            if viewModel.errorMessage == nil {
+            if viewModel.error == nil {
                 await MainActor.run {
                     sessionSerive.isAuthenticated = true
                 }

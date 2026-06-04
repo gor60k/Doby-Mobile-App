@@ -45,6 +45,7 @@ struct ProfileHeaderView: View {
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
+                .unredacted()
             
             Text(fullName)
                 .style(AppTextStyle.Presets.titleSemibold)
@@ -66,7 +67,7 @@ struct ProfileHeaderView: View {
                     orderNumber: 1,
                     isMain: true
                 ),
-                username: "",
+                username: "Username username",
                 firstName: "",
                 lastName: "",
                 cityName: ""

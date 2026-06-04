@@ -9,14 +9,17 @@ final class PetProfileViewModel: ViewModel {
     
     var currentPage = 0
     
-    var pet: Pet?
-    var description: String?
+    var pet: Pet {
+        guard let pet = petStorage.pets.first(where: { $0.id == petId })
+        else {
+            preconditionFailure("Питомец не найден")
+        }
+        return pet
+    }
+    var user: User? { userStorage.user }
     
     private let petId: Int
     
-    var user: User? { userStorage.user }
-    
-    private(set) var slides: [PetPhoto] = []
     private(set) var infoItems: [PetProfileInfoItem] = []
     
     init(
@@ -31,15 +34,8 @@ final class PetProfileViewModel: ViewModel {
         self.petId = petId
     }
     
-    func load() async {
-        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
-        
-        pet = loaded
-        slides = makeSlides(from: loaded)
-    }
-    
     func fetchPet() async {
-        guard let petId = pet?.id else { return }
+//        guard let petId = pet.id else { return }
         guard let ownerUUID = user?.uuid else {
             error = "User not found"
             return
@@ -47,17 +43,6 @@ final class PetProfileViewModel: ViewModel {
         
         await perform {
             try await repository.fetchPet(with: petId, from: ownerUUID)
-        }
-    }
-    
-    private func makeSlides(from pet: Pet) -> [PetPhoto] {
-        pet.photos.map {
-            PetPhoto(
-                id: $0.id,
-                imageURL: $0.imageURL,
-                orderNumber: $0.orderNumber,
-                isMain: $0.isMain
-            )
         }
     }
 }

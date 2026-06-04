@@ -76,6 +76,9 @@ struct PetSettingsScreen: View {
                 }
             }
         }
+        .task {
+            await viewModel.load()
+        }
     }
 }
 

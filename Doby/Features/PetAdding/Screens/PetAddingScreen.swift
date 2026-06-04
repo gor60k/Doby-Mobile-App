@@ -14,7 +14,7 @@ struct PetAddingScreen: View {
         Task {
             await viewModel.addPet()
             
-            if viewModel.errorMessage == nil {
+            if viewModel.error == nil {
                 router.pop()
             }
         }

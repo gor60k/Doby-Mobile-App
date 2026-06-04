@@ -65,7 +65,7 @@ struct SignInScreen: View {
                             Task {
                                 await viewModel.login()
                                 
-                                if viewModel.errorMessage == nil {
+                                if viewModel.error == nil {
                                     await MainActor.run {
                                         sessionService.setAuthenticated(true)
                                     }
