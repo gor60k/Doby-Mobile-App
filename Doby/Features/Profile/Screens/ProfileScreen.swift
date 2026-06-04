@@ -94,8 +94,8 @@ struct ProfileScreen: View {
                 .padding(.bottom, 10)
             }
         }
-        .padding(.top, 60)
-        .ignoresSafeArea(edges: .top)
+        .navigationTitle("Профиль")
+        .navigationBarTitleDisplayMode(.inline)
         .scrollIndicators(.hidden)
         .profileToolbar(
             onEditTap: { openSettings() },
@@ -111,11 +111,7 @@ struct ProfileScreen: View {
             )
         }
         .task {
-            if displayModeService.isVisitor {
-                Task {
-                    await viewModel.fetchUser()
-                }
-            }
+            await viewModel.load()
         }
         .refreshable {
             await viewModel.fetchUser()

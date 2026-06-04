@@ -29,12 +29,17 @@ final class PetProfileViewModel {
         self.userStorage = userStorage
         self.petStorage = petStorage
         self.petId = petId
-        
-        loadPet()
     }
     
     private(set) var isLoading = false
     var error: String?
+    
+    func load() async {
+        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
+        
+        pet = loaded
+        slides = makeSlides(from: loaded)
+    }
     
     func fetchPet() async {
         guard let petId = pet?.id else { return }
@@ -49,19 +54,9 @@ final class PetProfileViewModel {
         
         do {
             try await repository.fetchPet(with: petId, from: ownerUUID)
-            loadPet()
         } catch {
             self.error = error.localizedDescription
         }
-    }
-    
-    private func loadPet() {
-        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
-        
-        pet = loaded
-        slides = makeSlides(from: loaded)
-        infoItems = makeInfoItems(from: loaded)
-        description = loaded.additionalInfo
     }
     
     private func makeSlides(from pet: Pet) -> [PetPhoto] {
@@ -73,13 +68,6 @@ final class PetProfileViewModel {
                 isMain: $0.isMain
             )
         }
-    }
-    
-    private func makeInfoItems(from pet: Pet) -> [PetProfileInfoItem] {
-        [
-            .weight(pet.weight),
-            .height(pet.height)
-        ]
     }
 }
 

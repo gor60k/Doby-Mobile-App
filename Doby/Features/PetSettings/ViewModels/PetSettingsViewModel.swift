@@ -5,11 +5,25 @@ import PhotosUI
 
 @Observable
 final class PetSettingsViewModel {
+    // MARK: - Dependencies
     private let petRepository: PetRepositoryProtocol
     private let petStorage: PetStorage
     
-    let photoPickerViewModel = PrimaryPhotoPickerViewModel()
+    // MARK: - Private Properties
+    private let baseURL = APIConstants.getImageBaseURL()
     
+    // MARK: - Child ViewModels
+    let photoPickerViewModel = PrimaryPhotoPickerViewModel()
+    var warningTagsViewModel = PrimaryTagsViewModel(
+        type: .warning,
+        placeholder: "Например: аллергия"
+    )
+    var featureTagsViewModel = PrimaryTagsViewModel(
+        type: .feature,
+        placeholder: "Например: любит детей"
+    )
+    
+    // MARK: - Pet Data
     let photos: [Data] = []
     var currentPhotoURL: URL?
     
@@ -28,32 +42,15 @@ final class PetSettingsViewModel {
     
     var breedName: String = ""
     
-    var height: Int = 0
-    var weight: Int = 0
-    var description: String = ""
+    var detailsInfo = PetDetails()
+    var dietInfo = PetDiet()
+    var petTags = PetTags()
     
-    var dietType: String = ""
-    var dietPattern: String = ""
-    var dietAdditionalInfo: String = ""
-    
-    var warningTags: [String] = []
-    var featureTags: [String] = []
-    
-    var warningTagsViewModel = PrimaryTagsViewModel(
-        type: .warning,
-        placeholder: "Например: аллергия"
-    )
-    
-    var featureTagsViewModel = PrimaryTagsViewModel(
-        type: .feature,
-        placeholder: "Например: любит детей"
-    )
-    
+    // MARK: - UI State
     var isLoading = false
     var error: String?
-    
-    private let baseURL = APIConstants.getImageBaseURL()
-    
+
+    // MARK: - Initialization
     init(
         petRepository: PetRepositoryProtocol,
         petStorage: PetStorage,
@@ -70,92 +67,89 @@ final class PetSettingsViewModel {
     
     // MARK: - Публичные методы
     func fetchPet() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await petRepository.fetchPet(with: petId, from: ownerUUID)
-        } catch {
-            self.error = error.localizedDescription
         }
     }
     
     func updatePet() async {
-        isLoading = true
-        defer { isLoading = false }
+        petTags.warningTags = warningTagsViewModel.tags
+        petTags.featureTags = featureTagsViewModel.tags
         
-        warningTags = warningTagsViewModel.tags
-        featureTags = featureTagsViewModel.tags
-        
-        do {
+        await perform {
             let input = UpdatePetInput(
                 petType: petType,
                 uploadedPhotos: uploadedPhotos,
                 name: name.nilIfEmpty,
                 age: age.nilIfZero,
                 gender: gender,
-                height: height.nilIfZero,
-                weight: weight.nilIfZero,
+                height: detailsInfo.height.nilIfZero,
+                weight: detailsInfo.weight.nilIfZero,
                 breedName: breedName.nilIfEmpty,
-                dietType: dietType.nilIfEmpty,
-                dietPattern: dietPattern.nilIfEmpty,
-                additionalInfo: description.nilIfEmpty,
-                dietAdditionalInfo: dietAdditionalInfo.nilIfEmpty,
-                warningTags: warningTags,
-                specificTags: featureTags
+                dietType: dietInfo.dietType.nilIfEmpty,
+                dietPattern: dietInfo.dietPattern.nilIfEmpty,
+                additionalInfo: detailsInfo.description.nilIfEmpty,
+                dietAdditionalInfo: dietInfo.dietAdditionalInfo.nilIfEmpty,
+                warningTags: petTags.warningTags,
+                specificTags: petTags.featureTags
             )
             
-            print("ИНПУТ ПИТОМЦА", input)
-            
             try await petRepository.updatePet(input, with: petId)
-        } catch {
-            self.error = error.localizedDescription
         }
     }
     
     func uploadPhoto(_ data: Data) async {
-        await uploadedPhotos(data)
-    }
-    
-    // MARK: - Приватные методы
-    private func loadPet() {
-        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
-        
-        if let photoPath = loaded.photos.first(where: { $0.isMain })?.imageURL ?? loaded.photos.first?.imageURL {
-            currentPhotoURL = URL(string: baseURL.absoluteString)?.appendingPathComponent(photoPath)
-        }
-        
-        age = loaded.age
-        height = loaded.height
-        weight = loaded.weight
-        description = loaded.additionalInfo
-        
-        dietType = loaded.dietType
-        dietPattern = loaded.dietPatterns
-        dietAdditionalInfo = loaded.dietAdditionalInfo
-        
-        warningTags = loaded.warningTags
-        featureTags = loaded.specificTags
-        warningTagsViewModel.tags = warningTags
-        featureTagsViewModel.tags = featureTags
-    }
-    
-    private func uploadedPhotos(_ data: Data) async {
-        isUploadingPhoto = true
-        defer { isUploadingPhoto = false }
-        
-        do {
+        await perform {
             let input = PetPhotoInput(
                 image: data,
                 orderNumber: uploadedPhotos.count + 1,
                 isMain: uploadedPhotos.isEmpty
             )
-            _ = try await petRepository.uploadPetPhoto(input, with: petId)
             
-            uploadedPhotos.append(data)
+            try await petRepository.uploadPetPhoto(input, with: petId)
+        }
+    }
+    
+    // MARK: - Приватные методы
+    private func perform(
+        _ action: () async throws -> Void
+    ) async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        do {
+            try await action()
         } catch {
             self.error = error.localizedDescription
         }
+    }
+    
+    private func loadPet() {
+        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
+        
+        currentPhotoURL = makeCurrentPhotoURL(from: loaded)
+        
+        age = loaded.age
+        
+        detailsInfo.height = loaded.height
+        detailsInfo.weight = loaded.weight
+        detailsInfo.description = loaded.additionalInfo
+        
+        dietInfo.dietType = loaded.dietType
+        dietInfo.dietPattern = loaded.dietPatterns
+        dietInfo.dietAdditionalInfo = loaded.dietAdditionalInfo
+        
+        petTags.warningTags = loaded.warningTags
+        petTags.featureTags = loaded.specificTags
+        warningTagsViewModel.tags = petTags.warningTags
+        featureTagsViewModel.tags = petTags.featureTags
+    }
+    
+    private func makeCurrentPhotoURL(from pet: Pet) -> URL? {
+        guard let photoPath = pet.photos.first(where: { $0.isMain })?.imageURL ?? pet.photos.first?.imageURL,
+              !photoPath.isEmpty else { return nil }
+        
+        return baseURL.appendingPathComponent(photoPath)
     }
 }
 

@@ -98,7 +98,7 @@ struct PetProfileScreen: View {
             await viewModel.fetchPet()
         }
         .task {
-            await viewModel.fetchPet()
+            await viewModel.load()
         }
         .ignoresSafeArea(edges: .top)
         .petProfileToolbar(onEdit: { openSettings(petId) })
@@ -106,10 +106,12 @@ struct PetProfileScreen: View {
 }
 
 #Preview {
-    PetProfileScreen(
-        viewModel: .mock,
-        petId: 1,
-        openSettings: {_ in }
-    )
+    NavigationStack {
+        PetProfileScreen(
+            viewModel: .mock,
+            petId: 1,
+            openSettings: {_ in }
+        )
+    }
     .PreviewAppEnvironment()
 }

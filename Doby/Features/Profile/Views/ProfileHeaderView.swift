@@ -39,9 +39,7 @@ struct ProfileHeaderView: View {
         VStack {
             KFImage(imageURL)
                 .placeholder {
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 36))
-                        .foregroundColor(.secondary)
+                    PrimaryAvatarPlaceholder(icon: "person.fill")
                 }
                 .resizable()
                 .scaledToFill()
@@ -58,17 +56,29 @@ struct ProfileHeaderView: View {
 }
 
 #Preview {
-    ProfileHeaderView(
-        uuid: "228",
-        photo: UserPhoto(
-            id: 1,
-            imageURL: "",
-            orderNumber: 1,
-            isMain: true
-        ),
-        username: "",
-        firstName: "",
-        lastName: "",
-        cityName: ""
-    )
+    NavigationStack {
+        VStack {
+            ProfileHeaderView(
+                uuid: "228",
+                photo: UserPhoto(
+                    id: 1,
+                    imageURL: "",
+                    orderNumber: 1,
+                    isMain: true
+                ),
+                username: "",
+                firstName: "",
+                lastName: "",
+                cityName: ""
+            )
+            
+            Spacer()
+        }
+    }
+    .navigationTitle("Профиль")
+    .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+            Button("Кнопка", systemImage: "pen") {}
+        }
+    }
 }

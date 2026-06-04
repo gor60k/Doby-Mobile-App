@@ -25,33 +25,41 @@ class ProfileViewModel {
         self.storage = storage
     }
     
+    func load() async {
+        await fetchUser()
+        await fetchPets()
+    }
+    
     func fetchUser() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
+        await perform {
             try await userRepository.fetchUser()
-        } catch {
-            self.error = error.localizedDescription
         }
     }
     
     //TODO: доделать функцию для получения пользователя по uuid
-    func fetchUser(with uuid: String) async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        
-    }
+//    func fetchUser(with uuid: String) async {
+//        isLoading = true
+//        defer { isLoading = false }
+//        
+//        
+//    }
     
     func fetchPets() async {
         guard let ownerUUID else { return }
         
+        await perform {
+            try await petRepository.fetchPets(from: ownerUUID)
+        }
+    }
+    
+    private func perform(
+        _ action: () async throws -> Void
+    ) async {
         isLoading = true
         defer { isLoading = false }
         
         do {
-            try await petRepository.fetchPets(from: ownerUUID)
+            try await action()
         } catch {
             self.error = error.localizedDescription
         }

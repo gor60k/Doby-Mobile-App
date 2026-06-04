@@ -43,15 +43,15 @@ struct PetSettingsScreen: View {
 //            }
             
             PetSettingsDetailsView(
-                height: $viewModel.height,
-                weight: $viewModel.weight,
-                description: $viewModel.description
+                height: $viewModel.detailsInfo.height,
+                weight: $viewModel.detailsInfo.weight,
+                description: $viewModel.detailsInfo.description
             )
             
             PetSettingsDietView(
-                dietType: $viewModel.dietType,
-                dietPattern: $viewModel.dietPattern,
-                dietAdditionalInfo: $viewModel.dietAdditionalInfo
+                dietType: $viewModel.dietInfo.dietType,
+                dietPattern: $viewModel.dietInfo.dietPattern,
+                dietAdditionalInfo: $viewModel.dietInfo.dietAdditionalInfo
             )
             
             PetSettingsTagsView(

@@ -11,20 +11,29 @@ struct PetProfileGallaryView: View {
         return URL(string: baseURL.absoluteString)?.appendingPathComponent(imageURL)
     }
     
+    private var isPreview: Bool {
+        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+    }
+    
     var body: some View {
         ZStack {
             PrimarySlider(
                 currentPage: $currentPage,
                 items: items,
             ) { slide in
-                KFImage(getFullImageURL(imageURL: slide.imageURL))
-                    .placeholder {
-                        ProgressView()
+                Group {
+                    if isPreview {
+                        Image("PetAvatarPlaceholder")
+                            .resizable()
+                            .scaledToFill()
+                    } else {
+                        KFImage(getFullImageURL(imageURL: slide.imageURL))
+                            .placeholder { ProgressView() }
+                            .resizable()
+                            .scaledToFill()
                     }
-                    .resizable()
-                    .scaledToFill()
-                    .clipped()
-                    .frame(height: 350)
+                }
+                .frame(maxHeight: 350)
             }
             
             PrimaryGalleryPagination(
