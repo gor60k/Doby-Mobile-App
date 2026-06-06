@@ -19,7 +19,10 @@ struct WelcomeScreen: View {
             
             VStack(spacing: 16) {
                 // MARK: - Пагинация для слайдера
-                PrimaryPagination(numberOfPages: viewModel.slides.count, currentPage: viewModel.currentPage)
+                PrimaryPagination(
+                    numberOfPages: viewModel.slides.count,
+                    currentPage: viewModel.currentPage
+                )
                 
                 // MARK: - Сам слайдер
                 PrimarySlider(
@@ -48,7 +51,7 @@ struct WelcomeScreen: View {
     }
 }
 
-//#Preview {
-//    WelcomeView()
-//        .withAppEnvironment()
-//}
+#Preview {
+    WelcomeScreen()
+        .PreviewAppEnvironment()
+}

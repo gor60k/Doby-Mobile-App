@@ -6,12 +6,15 @@ struct AuthHeaderView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.system(.title, design: .rounded, weight: .bold))
+            PrimaryText(
+                text: title,
+                style: .subtitle
+            )
             
-            Text(subtitle)
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(.secondary)
+            PrimaryText(
+                text: subtitle,
+                style: .secondaryContent
+            )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 24)

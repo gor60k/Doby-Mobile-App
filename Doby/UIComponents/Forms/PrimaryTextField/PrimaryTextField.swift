@@ -24,9 +24,10 @@ struct PrimaryTextField<Content: View>: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .style(AppTextStyle.Presets.headlineRegular)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            PrimaryText(
+                text: title,
+                style: .secondaryContent
+            )
             
             content
                 .padding()
@@ -40,9 +41,10 @@ struct PrimaryTextField<Content: View>: View {
                 )
             
             if let errorText, showsError && !isValid {
-                Text(errorText)
-                    .font(.caption)
-                    .foregroundColor(.red)
+                PrimaryText(
+                    text: errorText,
+                    style: .destructiveAction
+                )
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

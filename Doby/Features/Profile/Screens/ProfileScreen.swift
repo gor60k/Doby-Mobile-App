@@ -13,6 +13,7 @@ struct ProfileScreen: View {
     @State private var selection: ProfileDetailsTab = .about
     
     @State private var showQRSheet = false
+    @State private var showPhotoGallery = false
     
     let options = ProfileDetailsTab.allCases
     

@@ -5,15 +5,17 @@ struct WelcomeSlideContentView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Text(slide.title)
-                .style(AppTextStyle.Presets.largeTitleBold)
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
+            PrimaryText(
+                text: slide.title,
+                style: .subtitle
+            )
+            .multilineTextAlignment(.center)
             
-            Text(slide.subtitle)
-                .style(AppTextStyle.Presets.bodyMedium)
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
+            PrimaryText(
+                text: slide.subtitle,
+                style: .secondaryContent
+            )
+            .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity, alignment: .top)
     }
