@@ -72,10 +72,6 @@ struct SettingsScreen: View {
                 email: $viewModel.email
             )
             
-//            SettingsPetServicesView(action: {
-//                router.push(.petSettings())
-//            })
-            
             SettingsAppView(
                 appearanceAction: { openSettingsAppearance() },
                 privacyAction: { openSettingsPrivacy() },

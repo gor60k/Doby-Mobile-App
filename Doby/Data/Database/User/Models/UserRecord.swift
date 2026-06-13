@@ -9,7 +9,7 @@ struct UserRecord: Codable, FetchableRecord, PersistableRecord {
     var lastName: String?
     var patronymic: String?
     
-    var photos: [UserPhoto]?
+    var photos: [Photo]?
     
     static let databaseTableName = "users"
 }

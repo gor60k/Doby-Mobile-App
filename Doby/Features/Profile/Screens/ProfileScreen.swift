@@ -48,7 +48,9 @@ struct ProfileScreen: View {
                 username: viewModel.user?.username,
                 firstName: viewModel.user?.firstName,
                 lastName: viewModel.user?.lastName,
-                cityName: viewModel.user?.city?.name
+                cityName: viewModel.user?.city?.name,
+                
+                showPhotoGallery: { showPhotoGallery = true }
             )
             .padding(.horizontal)
             .padding(.bottom, 10)
@@ -110,6 +112,15 @@ struct ProfileScreen: View {
                 showQRSheet: $showQRSheet,
                 userUUID: viewModel.user?.uuid ?? "",
                 userImageURL: ""
+            )
+        }
+        .fullScreenCover(isPresented: $showPhotoGallery) {
+            PrimaryGallary(
+                fullName: viewModel.user?.username ?? "",
+                photos: viewModel.user?.photos ?? [],
+                hidePhotoGallary: {
+                    showPhotoGallery = false
+                }
             )
         }
         .task {

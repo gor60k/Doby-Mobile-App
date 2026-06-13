@@ -3,11 +3,13 @@ import Kingfisher
 
 struct ProfileHeaderView: View {
     let uuid: String?
-    let photo: UserPhoto?
+    let photo: Photo?
     let username: String?
     let firstName: String?
     let lastName: String?
     let cityName: String?
+    
+    let showPhotoGallery: () -> Void
     
     private let baseURL: URL = APIConstants.getImageBaseURL()
     
@@ -37,15 +39,17 @@ struct ProfileHeaderView: View {
     
     var body: some View {
         VStack {
-            KFImage(imageURL)
-                .placeholder {
-                    PrimaryAvatarPlaceholder(icon: "person.fill")
-                }
-                .resizable()
-                .scaledToFill()
-                .frame(width: 100, height: 100)
-                .clipShape(Circle())
-                .unredacted()
+            Button(action: showPhotoGallery) {
+                KFImage(imageURL)
+                    .placeholder {
+                        PrimaryAvatarPlaceholder(icon: "person.fill")
+                    }
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .unredacted()
+            }
             
             Text(fullName)
                 .style(AppTextStyle.Presets.titleSemibold)
@@ -61,7 +65,7 @@ struct ProfileHeaderView: View {
         VStack {
             ProfileHeaderView(
                 uuid: "228",
-                photo: UserPhoto(
+                photo: Photo(
                     id: 1,
                     imageURL: "",
                     orderNumber: 1,
@@ -70,7 +74,8 @@ struct ProfileHeaderView: View {
                 username: "Username username",
                 firstName: "",
                 lastName: "",
-                cityName: ""
+                cityName: "",
+                showPhotoGallery: {}
             )
             
             Spacer()
