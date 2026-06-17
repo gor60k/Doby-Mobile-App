@@ -3,6 +3,7 @@ import UIKit
 import VisionKit
 internal import Vision
 
+//TODO: - добавить обработку урлов через менеджер
 struct PrimaryQRScannerView: UIViewControllerRepresentable {
     let onScan: (String) -> Void
     let onClose: () -> Void

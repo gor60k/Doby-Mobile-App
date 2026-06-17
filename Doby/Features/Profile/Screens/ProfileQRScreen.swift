@@ -71,7 +71,7 @@ struct ProfileQRScreen: View {
             PrimaryQRScannerView(
                 onScan: { code in
                     scannedCode = code
-                    showScanner = false
+                    showScanner = falsё
 
                     if let url = URL(string: code) {
                         UIApplication.shared.open(url)

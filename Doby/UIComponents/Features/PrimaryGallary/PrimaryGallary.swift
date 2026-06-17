@@ -28,36 +28,25 @@ struct PrimaryGallary: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                GeometryReader { proxy in
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 0) {
-                            ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
-                                PrimaryZoomableView {
-                                    VStack {
-                                        Spacer()
-                                        
-                                        KFImage(getPhotoURL(imageURL: photo.imageURL))
-                                            .resizable()
-                                            .scaledToFit()
-                                        
-                                        Spacer()
-                                    }
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .border(.blue)
-                                }
-                                .frame(
-                                    width: proxy.size.width,
-                                    height: proxy.size.height
-                                )
-                                .border(.red)
-                            }
+                
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 0) {
+                        ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
+                            KFImage(getPhotoURL(imageURL: photo.imageURL))
+                                .resizable()
+                                .scaledToFill()
+                                .zoomable()
+                                .frame(maxWidth: .infinity, maxHeight: 350)
+                                .id(index)
+                                .containerRelativeFrame(.horizontal)
                         }
-                        .scrollTargetLayout()
                     }
-                    .scrollTargetBehavior(.paging)
-                    .scrollPosition(id: $currentPage)
+                    .scrollTargetLayout()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .scrollIndicators(.hidden)
+                .scrollTargetBehavior(.paging)
+                .scrollBounceBehavior(.basedOnSize)
+                .scrollPosition(id: $currentPage)
                 
                 PrimaryGalleryPagination(
                     currentPage: currentPage ?? 0,

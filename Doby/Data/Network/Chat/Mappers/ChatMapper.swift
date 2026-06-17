@@ -1,7 +1,7 @@
 import Foundation
 
 struct ChatMapper {
-    nonisolated static func map(dto: ChatDTO) -> ChatPayload {
+    nonisolated static func mapToPayload(dto: ChatDTO) -> ChatPayload {
         ChatPayload(
             chat: ChatRecord(
                 id: dto.id,
@@ -10,6 +10,13 @@ struct ChatMapper {
             ),
             participants: UserMapper.mapToRecord(from: dto.participants),
             messages: MessageMapper.mapToRecord(dtos: dto.messages, chatId: dto.id)
+        )
+    }
+    
+    nonisolated static func mapToRequest(from input: CreateChatInput) -> CreateChatRequest {
+        CreateChatRequest(
+            participants: input.participants,
+            bookig_id: input.bookingId
         )
     }
 }

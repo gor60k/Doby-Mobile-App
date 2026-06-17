@@ -87,11 +87,12 @@ struct ProfileStack: View {
         }
         .environment(profileRouter)
         .onOpenURL { url in
-            guard let deeplink = DeepLinkManager.parse(url: url) else { return }
-            
-            switch deeplink {
-            case .profile(let uuid):
-                profileRouter.push(.profile(uuid: uuid))
+            print("📥 onOpenURL:", url.absoluteString)
+
+            if let deepLink = DeepLinkManager.parse(url: url) {
+                print("✅ parsed:", deepLink)
+            } else {
+                print("❌ parse failed")
             }
         }
     }

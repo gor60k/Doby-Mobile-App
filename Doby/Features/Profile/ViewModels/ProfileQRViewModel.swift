@@ -34,7 +34,7 @@ final class ProfileQRViewModel {
     ) {
         self.userUUID = userUUID
         self.userImageURL = userImageURL
-        self.profileURLString = "https://app.qutheory.com/profile/\(userUUID)"
+        self.profileURLString = "dobydog://profile/\(userUUID)"
         self.primaryColor = primaryColor
     }
     

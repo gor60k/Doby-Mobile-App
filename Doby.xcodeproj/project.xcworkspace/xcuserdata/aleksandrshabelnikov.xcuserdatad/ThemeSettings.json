@@ -5,8 +5,8 @@
     }
   },
   "light" : {
-    "default" : {
-
+    "classicTheme" : {
+      "name" : "Default (Light).xccolortheme"
     }
   }
 }

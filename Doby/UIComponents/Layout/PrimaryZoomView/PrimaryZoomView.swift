@@ -40,9 +40,8 @@ final class ZoomView: UIView {
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
 
-            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+//            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             contentView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor)
-//            contentView.heightAnchor.constraint(equalToConstant: 350)
         ])
     }
 }

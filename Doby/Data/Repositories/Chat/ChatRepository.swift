@@ -18,10 +18,23 @@ final class ChatRepository: ChatRepositoryProtocol {
         self.chatId = chatId
     }
     
+    func creageChat(_ input: CreateChatInput) async throws {
+        let request = ChatMapper.mapToRequest(from: input)
+        let response = try await api.createChat(request)
+        
+        let payload = ChatMapper.mapToPayload(dto: response)
+        
+        try await storage.sync(
+            chat: payload.chat,
+            participants: payload.participants,
+            messages: payload.messages
+        )
+    }
+    
     func getChat(with id: Int) async throws {
         let response = try await api.getChat(with: id)
 
-        let payload = ChatMapper.map(dto: response)
+        let payload = ChatMapper.mapToPayload(dto: response)
         chatId = payload.chat.id
 
         try await storage.sync(
