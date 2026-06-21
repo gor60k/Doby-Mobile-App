@@ -46,7 +46,6 @@ struct ProfileStack: View {
                                 profileRouter.push(.petProfile(id: id))
                             },
                         )
-                        .environment(DisplayModeService(mode: .visitor))
                     case .settings:
                         SettingsScreen(
                             viewModel: appContainer.makeSettingsViewModel(),
@@ -88,11 +87,12 @@ struct ProfileStack: View {
         .environment(profileRouter)
         .onOpenURL { url in
             print("📥 onOpenURL:", url.absoluteString)
-
-            if let deepLink = DeepLinkManager.parse(url: url) {
-                print("✅ parsed:", deepLink)
-            } else {
-                print("❌ parse failed")
+            
+            guard let deepLink = DeepLinkManager.parse(url: url) else { return }
+            
+            switch deepLink {
+            case .profile(let uuid):
+                profileRouter.push(.profile(uuid: uuid))
             }
         }
     }

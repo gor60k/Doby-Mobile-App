@@ -26,7 +26,7 @@ struct ChatStack: View {
                             openPetAdding: {},
                             opentPetProfile: { _ in }
                         )
-                        .environment(DisplayModeService(mode: .visitor))
+                        .environment(DisplayModeService(mode: .visitor(userUUID: uuid)))
                     }
                 }
         }

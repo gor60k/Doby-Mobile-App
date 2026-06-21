@@ -14,6 +14,10 @@ final class UserAPI: UserAPIProtocol {
         try await apiClient.request(MeEndpoint())
     }
     
+    func getUser(with userUUID: String) async throws -> UserDTO {
+        try await apiClient.request(GetUserEndpoint(userUUID: userUUID))
+    }
+    
     func update(_ request: UpdateUserRequest) async throws -> UserDTO {
         try await apiClient.request(UpdateUser(request: request))
     }

@@ -8,6 +8,10 @@ final class MockUserRepository: UserRepositoryProtocol {
     
     func fetchUser() async throws {}
     
+    func getUser(with uuid: String) async throws -> User {
+        return User(uuid: "", username: "")
+    }
+    
     func updateUser(input: UpdateUserInput) async throws {}
     
     func fetchCities() async throws {}

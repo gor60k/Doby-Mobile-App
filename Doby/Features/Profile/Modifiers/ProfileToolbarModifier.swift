@@ -3,13 +3,15 @@ import SwiftUI
 struct ProfileToolbarModifier: ViewModifier {
     @Environment(DisplayModeService.self) private var displayModeService
     
+    let toolbarMode: DisplayMode? = .owner
+    
     let onEditTap: () -> Void
     let onQRScanTap: () -> Void
     
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if displayModeService.isOwner {
+                if toolbarMode == .owner {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Изм.", action: onEditTap)
                         .tint(.primary)
@@ -19,7 +21,7 @@ struct ProfileToolbarModifier: ViewModifier {
                         Button("Поделиться", systemImage: "qrcode", action: onQRScanTap)
                         .tint(.primary)
                     }
-                } else if displayModeService.isVisitor {
+                } else if toolbarMode == .visitor {
                     ToolbarItem(placement: .topBarLeading) {
                         Button("Поделиться", systemImage: "qrcode", action: onQRScanTap)
                         .tint(.primary)

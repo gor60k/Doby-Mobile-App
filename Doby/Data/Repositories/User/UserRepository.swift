@@ -27,6 +27,13 @@ final class UserRepository: UserRepositoryProtocol {
         userStorage.user = user
     }
     
+    func getUser(with uuid: String) async throws -> User {
+        let response = try await api.getUser(with: uuid)
+        let user = UserMapper.mapToDomain(from: response)
+        
+        return user
+    }
+    
     func updateUser(input: UpdateUserInput) async throws {
         let request = UpdateUserMapper.mapToRequest(input: input)
         let response = try await api.update(request)

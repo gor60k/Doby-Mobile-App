@@ -54,7 +54,6 @@ struct ProfileScreen: View {
             )
             .padding(.horizontal)
             .padding(.bottom, 10)
-//            .loadingPlaceholder(isLoading: true)
             
             // MARK: - Секция с питомцами юзера
             PrimaryCollapsibleSection(title: "Питомцы") {
@@ -124,9 +123,7 @@ struct ProfileScreen: View {
             )
         }
         .task {
-            if viewModel.user == nil {
-                await viewModel.load()
-            }
+            await viewModel.load()
         }
         .refreshable {
             await viewModel.fetchUser()

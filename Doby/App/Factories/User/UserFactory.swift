@@ -4,7 +4,8 @@ extension AppContainer {
         ProfileViewModel(
             userRepository: userRepository,
             petRepository: petRepository,
-            storage: userStorage
+            storage: userStorage,
+            displayModeService: displayModeService
         )
     }
     

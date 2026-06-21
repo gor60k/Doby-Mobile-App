@@ -1,4 +1,4 @@
-enum DisplayMode {
+enum DisplayMode: Equatable {
     case owner
     case visitor
     
