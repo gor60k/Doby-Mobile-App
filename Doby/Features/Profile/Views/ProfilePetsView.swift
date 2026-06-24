@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProfilePetsView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
-    @Environment(DisplayModeService.self) private var displayModeService
+    @Environment(ViewContextService.self) private var viewContextService
     
     @State var currentPage: Int = 0
     
@@ -13,7 +13,7 @@ struct ProfilePetsView: View {
     let openPetProfile: (Int) -> Void
     
     private var emptyViewTitle: String {
-        if displayModeService.isOwner {
+        if viewContextService.isCurrentUser {
             return "Вы пока не добавили ни одного питомца"
         } else {
             return "Пользователь пока не добавил ни одного питомца"
@@ -59,7 +59,7 @@ struct ProfilePetsView: View {
                     }
                 }
                 .overlay(alignment: .topTrailing) {
-                    if displayModeService.isOwner {
+                    if viewContextService.isCurrentUser {
                         UtilityButton(
                             action: { openPetAdding() },
                             icon: "plus"

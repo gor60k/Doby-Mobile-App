@@ -19,14 +19,16 @@ struct ChatStack: View {
                         ChatRoomScreen()
                     case .profile(let uuid):
                         ProfileScreen(
-                            viewModel: appContainer.makeProfileViewModel(),
+                            viewModel: appContainer.makeProfileViewModel(
+                                with: .user(uuid: uuid)
+                            ),
                             profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
                             profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
                             openSettings: {},
                             openPetAdding: {},
                             opentPetProfile: { _ in }
                         )
-                        .environment(DisplayModeService(mode: .visitor(userUUID: uuid)))
+                        .environment(DisplayModeService(mode: .visitor))
                     }
                 }
         }

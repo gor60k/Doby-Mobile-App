@@ -1,11 +1,13 @@
 extension AppContainer {
     // MARK: - Profile
-    func makeProfileViewModel() -> ProfileViewModel {
+    func makeProfileViewModel(with target: ProfileTarget) -> ProfileViewModel {
         ProfileViewModel(
+            viewContextService: viewContextService,
             userRepository: userRepository,
             petRepository: petRepository,
+            chatRepository: chatRepository,
             storage: userStorage,
-            displayModeService: displayModeService
+            target: target
         )
     }
     

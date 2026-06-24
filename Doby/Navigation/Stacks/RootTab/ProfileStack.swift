@@ -21,7 +21,7 @@ struct ProfileStack: View {
     var body: some View {
         NavigationStack(path: $profileRouter.path) {
             ProfileScreen(
-                viewModel: appContainer.makeProfileViewModel(),
+                viewModel: appContainer.makeProfileViewModel(with: .currentUser),
                 profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
                 profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
                 
@@ -36,7 +36,7 @@ struct ProfileStack: View {
                     switch route {
                     case .profile(let uuid):
                         ProfileScreen(
-                            viewModel: appContainer.makeProfileViewModel(),
+                            viewModel: appContainer.makeProfileViewModel(with: .user(uuid: uuid)),
                             profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
                             profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
                             

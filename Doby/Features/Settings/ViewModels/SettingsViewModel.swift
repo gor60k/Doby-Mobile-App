@@ -46,8 +46,8 @@ final class SettingsViewModel: ViewModel {
     // MARK: - User Actions
     func load() async {
         await perform {
-            async let userTask = userRepository.fetchUser()
-            async let citiesTask = userRepository.fetchCities()
+            async let userTask = userRepository.getMe()
+            async let citiesTask = userRepository.getCities()
 
             _ = try await userTask
             _ = try await citiesTask
@@ -58,14 +58,14 @@ final class SettingsViewModel: ViewModel {
     
     func fetchUser() async {
         await perform {
-            try await userRepository.fetchUser()
+            try await userRepository.getMe()
             syncFromStorage()
         }
     }
     
     func fetchCities() async {
         await perform {
-            try await userRepository.fetchCities()
+            try await userRepository.getCities()
         }
     }
     
@@ -79,7 +79,7 @@ final class SettingsViewModel: ViewModel {
                 bio: bio.nilIfEmpty,
             )
             
-            try await userRepository.updateUser(input: input)
+            try await userRepository.updateMe(input)
             syncFromStorage()
         }
     }

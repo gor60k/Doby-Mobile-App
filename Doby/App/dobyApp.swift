@@ -7,7 +7,7 @@ struct dobyApp: App {
     
     @State private var themeService = ThemeService()
     @State private var primaryColorService = PrimaryColorService()
-    @State private var displayModeService = DisplayModeService()
+    @State private var viewContextService = ViewContextService()
     
     init() {
         do {
@@ -24,7 +24,7 @@ struct dobyApp: App {
                     container: appContainer,
                     themeService: themeService,
                     primaryColorService: primaryColorService,
-                    displayModeService: displayModeService
+                    viewContextService: viewContextService
                 )
         }
     }

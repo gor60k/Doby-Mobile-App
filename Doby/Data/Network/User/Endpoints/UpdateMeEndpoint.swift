@@ -1,6 +1,6 @@
 import Foundation
 
-struct UpdateUser: APIEndpointProtocol {
+struct UpdateMeEndpoint: APIEndpointProtocol {
     typealias Response = UserDTO
     
     let request: UpdateUserRequest

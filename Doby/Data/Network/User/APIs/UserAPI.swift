@@ -10,20 +10,20 @@ final class UserAPI: UserAPIProtocol {
         self.apiClient = apiClient
     }
     
-    func me() async throws -> UserDTO {
-        try await apiClient.request(MeEndpoint())
+    func getMe() async throws -> UserDTO {
+        try await apiClient.request(GetMeEndpoint())
     }
     
     func getUser(with userUUID: String) async throws -> UserDTO {
         try await apiClient.request(GetUserEndpoint(userUUID: userUUID))
     }
     
-    func update(_ request: UpdateUserRequest) async throws -> UserDTO {
-        try await apiClient.request(UpdateUser(request: request))
+    func updateMe(_ request: UpdateUserRequest) async throws -> UserDTO {
+        try await apiClient.request(UpdateMeEndpoint(request: request))
     }
     
-    func cities() async throws -> [CityDTO] {
-        try await apiClient.request(CitiesEndpoint())
+    func getCities() async throws -> [CityDTO] {
+        try await apiClient.request(GetCitiesEndpoint())
     }
     
     func uploadPhoto(_ request: UserPhotoRequest) async throws -> [UserPhotoDTO] {

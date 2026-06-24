@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PrimaryEmptyView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
-    @Environment(DisplayModeService.self) private var displayModeService
+    @Environment(ViewContextService.self) private var viewContextService
     
     let icon: String
     let title: String
@@ -25,7 +25,7 @@ struct PrimaryEmptyView: View {
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                 
-                if displayModeService.isOwner {
+                if viewContextService.isCurrentUser {
                     Text(description)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
@@ -33,7 +33,7 @@ struct PrimaryEmptyView: View {
                 }
             }
             
-            if displayModeService.isOwner {
+            if viewContextService.isCurrentUser {
                 PrimaryButton(
                     title: buttonTitle,
                     icon: buttonIcon,
@@ -63,6 +63,5 @@ struct PrimaryEmptyView: View {
         )
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    .environment(PrimaryColorService())
-    .environment(DisplayModeService(mode: .owner))
+    .PreviewAppEnvironment()
 }

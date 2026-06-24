@@ -2,13 +2,13 @@ import SwiftUI
 
 struct ProfileAboutView: View {
     @Environment(PrimaryColorService.self) private var primaryColorService
-    @Environment(DisplayModeService.self) private var displayModeService
+    @Environment(ViewContextService.self) private var viewContextService
     
     let bio: String
     let action: () -> Void
     
     private var emptyViewTitle: String {
-        if displayModeService.isOwner {
+        if viewContextService.isCurrentUser {
             return "Расскажите о себе"
         } else {
             return "Пользователь не заполнил описание"

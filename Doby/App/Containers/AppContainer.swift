@@ -17,6 +17,7 @@ final class AppContainer {
     let keychainService = KeychainService()
     let sessionService = SessionService()
     let displayModeService = DisplayModeService()
+    let viewContextService = ViewContextService()
     let tokenManager: TokenManager
     
     // MARK: - API
@@ -27,6 +28,7 @@ final class AppContainer {
     let authRepository: AuthRepositoryProtocol
     let userRepository: UserRepositoryProtocol
     let petRepository: PetRepositoryProtocol
+    let chatRepository: ChatRepositoryProtocol
     
     init() throws {
         authApiClient = AppContainer.makePlainClient()
@@ -63,6 +65,11 @@ final class AppContainer {
         petRepository = PetRepository(
             api: PetAPI(apiClient: apiClient),
             storage: petStorage
+        )
+        
+        chatRepository = ChatRepository(
+            api: ChatAPI(apiClient: apiClient),
+            storage: chatStorage
         )
     }
 }

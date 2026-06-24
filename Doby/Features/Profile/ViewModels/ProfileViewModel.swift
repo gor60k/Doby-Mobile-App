@@ -1,85 +1,124 @@
 import Foundation
 import Observation
 
+enum ProfileTarget {
+    case currentUser
+    case user(uuid: String)
+}
+
 @MainActor
 @Observable
 final class ProfileViewModel: ViewModel {
+    private let viewContextService: ViewContextService
+    
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
+    private let chatRepository: ChatRepositoryProtocol
+    
     private let storage: UserStorage
-    private let displayModeService: DisplayModeService
     
-//    var user: User? { storage.user }
     private(set) var user: User?
-    private(set) var uuid: String?
+    private var uuid: String?
     
-    
-    private var ownerUUID: String? { user?.uuid }
-    
-    var displayMode: DisplayMode { displayModeService.mode }
+    private let target: ProfileTarget
     
     init(
+        viewContextService: ViewContextService,
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
+        chatRepository: ChatRepositoryProtocol,
         storage: UserStorage,
-        displayModeService: DisplayModeService
-        
+        target: ProfileTarget = .currentUser
     ) {
+        self.viewContextService = viewContextService
         self.userRepository = userRepository
         self.petRepository = petRepository
+        self.chatRepository = chatRepository
         self.storage = storage
-        self.displayModeService = displayModeService
+        
+        self.target = target
     }
     
     func load() async {
-        guard var uuid else { return }
-        
-        switch displayModeService.mode {
-        case .owner:
-            await fetchUser()
-            user = storage.user
-            uuid = user?.uuid ?? ""
-        case .visitor:
-            await getUser(with: uuid)
+        switch target {
+        case .currentUser: await loadCurrentUser()
+        case .user(let uuid): await loadUser(with: uuid)
         }
+    }
+    
+    func getMe() async {
+        await perform {
+            let user = try await userRepository.getMe()
+            
+            self.user = user
+            
+            viewContextService.configure(
+                currentUserUUID: storage.user?.uuid,
+                viewedUserUUID: user.uuid
+            )
+        }
+    }
+    
+    func getUser(with uuid: String) async {
+        await perform {
+            let user = try await userRepository.getUser(with: uuid)
+            
+            self.user = user
+            
+            viewContextService.configure(
+                currentUserUUID: storage.user?.uuid,
+                viewedUserUUID: user.uuid
+            )
+        }
+    }
+    
+    func fetchPets(from uuid: String) async {
+        await perform {
+            try await petRepository.fetchPets(from: uuid)
+        }
+    }
+    
+    func createChat() async {
+        let myUUID = storage.user?.uuid
+        let otherUUID = viewContextService.viewedUserUUID
         
+        await perform {
+            guard let myUUID, let otherUUID else { return }
+            
+            let input = CreateChatInput.direct(participants: [myUUID, otherUUID])
+            
+            try await chatRepository.creageChat(input)
+        }
+    }
+    
+    private func loadCurrentUser() async {
+        await getMe()
+        
+        if let uuid = storage.user?.uuid {
+            await fetchPets(from: uuid)
+        }
+    }
+    
+    private func loadUser(with uuid: String) async {
+        await getUser(with: uuid)
         await fetchPets(from: uuid)
-    }
-    
-    func fetchUser() async {
-        await perform {
-            try await userRepository.fetchUser()
-        }
-    }
-    
-    func getUser(with userUUID: String) async {
-        await perform {
-            user = try await userRepository.getUser(with: userUUID)
-        }
-    }
-    
-    func fetchPets(from userUUID: String) async {
-//        guard let ownerUUID else { return }
-        
-        await perform {
-            try await petRepository.fetchPets(from: userUUID)
-        }
     }
 }
 
 extension ProfileViewModel {
     static var mock: ProfileViewModel {
+        let viewContextService = ViewContextService()
         let userRepository = MockUserRepository()
         let petRepository = MockPetRepository()
+        let chatRepository = MockChatRepository()
         let storage = UserStorage()
         
-        let displayModeService = DisplayModeService(mode: .owner)
-        
         return ProfileViewModel(
+            viewContextService: viewContextService,
             userRepository: userRepository,
             petRepository: petRepository,
+            chatRepository: chatRepository,
             storage: storage,
-            displayModeService: displayModeService
         )
     }
 }

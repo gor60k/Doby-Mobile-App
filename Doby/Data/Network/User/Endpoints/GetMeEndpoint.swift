@@ -1,6 +1,6 @@
 import Foundation
 
-struct MeEndpoint: APIEndpointProtocol {
+struct GetMeEndpoint: APIEndpointProtocol {
     typealias Response = UserDTO
     
     var baseURL: URL { APIConstants.baseURL }

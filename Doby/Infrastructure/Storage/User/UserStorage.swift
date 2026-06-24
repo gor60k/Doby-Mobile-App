@@ -6,39 +6,40 @@ import Observation
 final class UserStorage {
     private let actor = UserStorageActor()
     
-    var user: User?
+    private(set) var user: User?
     
     init() {
-        Task {
-            await load()
+        Task { [weak self] in
+            await self?.load()
         }
     }
     
     func load() async {
-        let loaded = await actor.load()
-        self.user = loaded
+        user = await actor.load()
     }
     
-    func set(_ user: User?) {
+    func save(_ user: User?) {
         self.user = user
         persist()
     }
     
-    func update(_ block: (inout User) -> Void) {
-        guard var user else { return }
-        block(&user)
-        self.user = user
+    func delete() {
+        user = nil
         persist()
     }
     
-    func patch(mutate: (inout User) -> Void) {
+    func update(_ mutate: (inout User) -> Void) {
         guard var user else { return }
+        
         mutate(&user)
+        
+        self.user = user
         persist()
     }
     
     private func persist() {
         let snapshot = user
+
         Task {
             await actor.save(snapshot)
         }

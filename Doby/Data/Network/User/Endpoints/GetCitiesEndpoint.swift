@@ -1,6 +1,6 @@
 import Foundation
 
-struct CitiesEndpoint: APIEndpointProtocol {
+struct GetCitiesEndpoint: APIEndpointProtocol {
     typealias Response = [CityDTO]
     
     var baseURL: URL {APIConstants.baseURL}

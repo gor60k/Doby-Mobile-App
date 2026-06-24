@@ -12,9 +12,12 @@ struct ProfileQRScreen: View {
     @State private var viewModel: ProfileQRViewModel?
     @State private var showScanner = false
     @State private var scannedCode: String?
+    @State private var pendingURL: URL?
     
     let userUUID: String
     let userImageURL: String?
+    
+    let onScanCompleted: () -> Void
     
     private var qrCodeImage: UIImage? {
         return viewModel?.qrImage
@@ -34,10 +37,12 @@ struct ProfileQRScreen: View {
         showQRSheet: Binding<Bool>,
         userUUID: String,
         userImageURL: String?,
+        onScanCompleted: @escaping () -> Void
     ) {
         self._showQRSheet = showQRSheet
         self.userUUID = userUUID
         self.userImageURL = userImageURL
+        self.onScanCompleted = onScanCompleted
     }
     
     var body: some View {
@@ -67,21 +72,27 @@ struct ProfileQRScreen: View {
                 .ignoresSafeArea()
         }
         .ignoresSafeArea(.container, edges: .bottom)
-        .fullScreenCover(isPresented: $showScanner) {
+        .fullScreenCover(
+            isPresented: $showScanner,
+        ) {
             PrimaryQRScannerView(
                 onScan: { code in
-                    scannedCode = code
+                    pendingURL = URL(string: code)
                     showScanner = false
-
-                    if let url = URL(string: code) {
-                        UIApplication.shared.open(url)
-                    }
+                    onScanCompleted()
                 },
                 onClose: {
                     showScanner = false
                 }
             )
-            .ignoresSafeArea(.all)
+        }
+        .onChange(of: showScanner) { _, newValue in
+            if newValue == false, let url = pendingURL {
+                DispatchQueue.main.async {
+                    UIApplication.shared.open(url)
+                }
+                pendingURL = nil
+            }
         }
         .task {
             if viewModel == nil {
@@ -99,7 +110,8 @@ struct ProfileQRScreen: View {
     ProfileQRScreen(
         showQRSheet: .constant(true),
         userUUID: "1",
-        userImageURL: ""
+        userImageURL: "",
+        onScanCompleted: {}
     )
     .PreviewAppEnvironment()
 }

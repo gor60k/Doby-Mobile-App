@@ -8,6 +8,7 @@ final class UserRepository: UserRepositoryProtocol {
     private var petStorage: PetStorage
     private var cityStorage: CityStorage
     
+    
     init(
         api: UserAPIProtocol,
         userStorage: UserStorage,
@@ -20,11 +21,16 @@ final class UserRepository: UserRepositoryProtocol {
         self.cityStorage = cityStorage
     }
     
-    func fetchUser() async throws {
-        let response = try await api.me()
+    func getMe() async throws -> User {
+        if let cached = userStorage.user {
+            return cached
+        }
+        
+        let response = try await api.getMe()
         let user = UserMapper.mapToDomain(from: response)
         
-        userStorage.user = user
+        userStorage.save(user)
+        return user
     }
     
     func getUser(with uuid: String) async throws -> User {
@@ -34,9 +40,9 @@ final class UserRepository: UserRepositoryProtocol {
         return user
     }
     
-    func updateUser(input: UpdateUserInput) async throws {
+    func updateMe(_ input: UpdateUserInput) async throws {
         let request = UpdateUserMapper.mapToRequest(input: input)
-        let response = try await api.update(request)
+        let response = try await api.updateMe(request)
         let user = UserMapper.mapToDomain(from: response)
         
         userStorage.update { currentUser in
@@ -49,8 +55,8 @@ final class UserRepository: UserRepositoryProtocol {
         }
     }
     
-    func fetchCities() async throws {
-        let response = try await api.cities()
+    func getCities() async throws {
+        let response = try await api.getCities()
         let cities = CityMapper.mapToDomain(from: response)
         
         cityStorage.cities = cities
@@ -61,7 +67,7 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await api.uploadPhoto(request)
         let photos = UserPhotoMapper.mapToDomain(from: response)
         
-        userStorage.patch { user in
+        userStorage.update { user in
             user.photos = photos
         }
     }

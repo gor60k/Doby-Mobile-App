@@ -1,9 +1,9 @@
 import Foundation
 
 protocol UserRepositoryProtocol {
-    func fetchUser() async throws
+    func getMe() async throws -> User
     func getUser(with uuid: String) async throws -> User
-    func updateUser(input: UpdateUserInput) async throws
-    func fetchCities() async throws
+    func updateMe(_ input: UpdateUserInput) async throws
+    func getCities() async throws
     func uploadPhoto(_ input: UserPhotoInput) async throws
 }

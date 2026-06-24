@@ -38,7 +38,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.user = user
+        storage.save(user)
         petStorage.pets = user.pets ?? []
     }
     
@@ -59,7 +59,7 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.user = user
+        storage.save(user)
         petStorage.pets = user.pets ?? []
     }
     

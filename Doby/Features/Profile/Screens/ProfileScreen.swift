@@ -3,7 +3,7 @@ import SwiftUI
 struct ProfileScreen: View {
     @Environment(PetStorage.self) private var petStorage
     @Environment(PrimaryColorService.self) var primaryColorService
-    @Environment(DisplayModeService.self) var displayModeService
+    @Environment(ViewContextService.self) var viewContextService
     
     @State private var viewModel: ProfileViewModel
     @State private var profilePetsViewModel: ProfilePetsViewModel
@@ -85,7 +85,7 @@ struct ProfileScreen: View {
             .padding(.bottom, 10)
             
             // MARK: - Секция с историей заказов
-            if displayModeService.isOwner {
+            if viewContextService.isCurrentUser {
                 PrimaryCollapsibleSection(title: "История заказов") {
                     VStack(spacing: 12) {
                         ForEach(profileOrdersViewModel.orders, id: \.self) { order in
@@ -100,17 +100,34 @@ struct ProfileScreen: View {
         .navigationTitle("Профиль")
         .navigationBarTitleDisplayMode(.inline)
         .scrollIndicators(.hidden)
+        .toolbar(viewContextService.isCurrentUser ? .visible : .hidden, for: .tabBar)
         .profileToolbar(
             onEditTap: { openSettings() },
             onQRScanTap: {
                 showQRSheet = true
             }
         )
+        .safeAreaInset(edge: .bottom) {
+            if !viewContextService.isCurrentUser {
+                VStack {
+                    PrimaryButton(
+                        title: "Отправить запрос",
+                        action: {
+                            Task {
+                                await viewModel.createChat()
+                            }
+                        }
+                    )
+                }
+                .padding()
+            }
+        }
         .fullScreenCover(isPresented: $showQRSheet) {
             ProfileQRScreen(
                 showQRSheet: $showQRSheet,
                 userUUID: viewModel.user?.uuid ?? "",
-                userImageURL: ""
+                userImageURL: "",
+                onScanCompleted: { showQRSheet = false }
             )
         }
         .fullScreenCover(isPresented: $showPhotoGallery) {
@@ -126,14 +143,12 @@ struct ProfileScreen: View {
             await viewModel.load()
         }
         .refreshable {
-            await viewModel.fetchUser()
+            await viewModel.load()
         }
     }
 }
 
 #Preview {
-    let displayModeService = DisplayModeService(mode: .owner)
-    
     NavigationStack {
         ProfileScreen(
             viewModel: .mock,
@@ -143,9 +158,7 @@ struct ProfileScreen: View {
             openPetAdding: {},
             opentPetProfile: { _ in }
         )
-        .PreviewAppEnvironment(
-            displayModeService: displayModeService
-        )
+        .PreviewAppEnvironment()
         .environment(ProfileRouter())
     }
 }
