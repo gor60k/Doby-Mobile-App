@@ -41,42 +41,14 @@ final class ProfileViewModel: ViewModel {
     
     func load() async {
         switch target {
-        case .currentUser: await loadCurrentUser()
-        case .user(let uuid): await loadUser(with: uuid)
+        case .currentUser: await loadCurrentUserProfile()
+        case .user(let uuid): await loadProfile(with: uuid)
         }
     }
     
-    func getMe() async {
-        await perform {
-            let user = try await userRepository.getMe()
-            
-            self.user = user
-            
-            viewContextService.configure(
-                currentUserUUID: storage.user?.uuid,
-                viewedUserUUID: user.uuid
-            )
-        }
-    }
+    func loadIfNeeded() async {}
     
-    func getUser(with uuid: String) async {
-        await perform {
-            let user = try await userRepository.getUser(with: uuid)
-            
-            self.user = user
-            
-            viewContextService.configure(
-                currentUserUUID: storage.user?.uuid,
-                viewedUserUUID: user.uuid
-            )
-        }
-    }
-    
-    func fetchPets(from uuid: String) async {
-        await perform {
-            try await petRepository.fetchPets(from: uuid)
-        }
-    }
+    func refresh() async {}
     
     func createChat() async {
         let myUUID = storage.user?.uuid
@@ -86,23 +58,54 @@ final class ProfileViewModel: ViewModel {
             guard let myUUID, let otherUUID else { return }
             
             let input = CreateChatInput.direct(participants: [myUUID, otherUUID])
-            print("PARTICIPANTS IN VIEWMODEL: \(input)")
             
             try await chatRepository.creageChat(input)
         }
     }
     
-    private func loadCurrentUser() async {
-        await getMe()
+    private func loadCurrentUserProfile() async {
+        await loadCurrentUser()
         
-        if let uuid = storage.user?.uuid {
-            await fetchPets(from: uuid)
+        guard let user else { return }
+        await loadPets(for: user.uuid)
+    }
+    
+    private func loadProfile(with uuid: String) async {
+        await loadUser(with: uuid)
+        
+        guard let user else { return }
+        await loadPets(for: user.uuid)
+    }
+    
+    private func loadCurrentUser() async {
+        await perform {
+            let user = try await userRepository.getMe()
+            self.user = user
+            
+            configureContext(with: user)
         }
     }
     
     private func loadUser(with uuid: String) async {
-        await getUser(with: uuid)
-        await fetchPets(from: uuid)
+        await perform {
+            let user = try await userRepository.getUser(with: uuid)
+            self.user = user
+            
+            configureContext(with: user)
+        }
+    }
+    
+    private func loadPets(for uuid: String) async {
+        await perform {
+            try await petRepository.fetchPets(from: uuid)
+        }
+    }
+    
+    private func configureContext(with user: User) {
+        viewContextService.configure(
+            currentUserUUID: storage.user?.uuid,
+            viewedUserUUID: user.uuid
+        )
     }
 }
 

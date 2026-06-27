@@ -7,9 +7,6 @@ final class SessionService {
     private let authStorageKey = "isAuthenticated"
     private let regStorageKey = "isRegistered"
     
-//    private(set) var isRegistered: Bool
-//    private(set) var isAuthenticated: Bool
-    
     var isRegistered: Bool {
         didSet { persist() }
     }
