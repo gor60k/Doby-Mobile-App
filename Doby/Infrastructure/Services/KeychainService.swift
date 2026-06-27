@@ -1,15 +1,11 @@
 import Security
 import Foundation
 
-
-//TODO: - убрать shared и передавать экзепляр сервиса при сборке приложения
 actor KeychainService: Sendable {
     enum TokenKey {
         case accessToken
         case refreshToken
     }
-    
-//    static let shared = KeychainService()
     
     init() {}
     
@@ -73,7 +69,7 @@ actor KeychainService: Sendable {
         }
         
         let shortToken = "\(token.prefix(10))...\(token.suffix(4))"
-        print("🔍 [Keychain] ИЗВЛЕЧЕН токен для \(key): \(shortToken)")
+        print("🔍 [Keychain] ИЗВЛЕЧЕН токен для \(key): \(token)")
         return token
     }
     

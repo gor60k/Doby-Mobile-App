@@ -16,7 +16,7 @@ struct ChatMapper {
     nonisolated static func mapToRequest(from input: CreateChatInput) -> CreateChatRequest {
         CreateChatRequest(
             participants: input.participants,
-            bookig_id: input.bookingId
+            booking_id: input.bookingId
         )
     }
 }

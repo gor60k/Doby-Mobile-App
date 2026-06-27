@@ -86,6 +86,7 @@ final class ProfileViewModel: ViewModel {
             guard let myUUID, let otherUUID else { return }
             
             let input = CreateChatInput.direct(participants: [myUUID, otherUUID])
+            print("PARTICIPANTS IN VIEWMODEL: \(input)")
             
             try await chatRepository.creageChat(input)
         }

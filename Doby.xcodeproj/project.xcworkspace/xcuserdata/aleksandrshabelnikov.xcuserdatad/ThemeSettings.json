@@ -1,7 +1,7 @@
 {
   "dark" : {
-    "classicTheme" : {
-      "name" : "Default (Dark).xccolortheme"
+    "preset" : {
+      "_0" : "Sakura"
     }
   },
   "light" : {

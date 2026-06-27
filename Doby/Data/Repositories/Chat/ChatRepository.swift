@@ -18,6 +18,7 @@ final class ChatRepository: ChatRepositoryProtocol {
     
     func creageChat(_ input: CreateChatInput) async throws {
         let request = ChatMapper.mapToRequest(from: input)
+        print("PARTICIPANTS IN REPOSITORY: \(request)")
         let response = try await api.createChat(request)
         
         let payload = ChatMapper.mapToPayload(dto: response)
@@ -27,8 +28,6 @@ final class ChatRepository: ChatRepositoryProtocol {
             participants: payload.participants,
             messages: payload.messages
         )
-        
-        print("Чат создан с \(payload.participants)")
     }
     
     func getChat(with id: Int) async throws {

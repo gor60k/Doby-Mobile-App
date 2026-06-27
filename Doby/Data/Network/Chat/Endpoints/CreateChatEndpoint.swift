@@ -8,4 +8,5 @@ struct CreateChatEndpoint: APIEndpointProtocol {
     var baseURL: URL { APIConstants.baseURL }
     var path: String { "/chat/" }
     var method: HTTPMethod { .post }
+    var body: Data? { try? JSONEncoder().encode(request) }
 }
