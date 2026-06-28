@@ -16,8 +16,7 @@ final class AppContainer {
     // MARK: - Сервисы инфраструктуры
     let keychainService = KeychainService()
     let sessionService = SessionService()
-    let displayModeService = DisplayModeService()
-    let viewContextService = ViewContextService()
+    let viewContextService: ViewContextService
     let tokenManager: TokenManager
     
     // MARK: - API
@@ -38,6 +37,10 @@ final class AppContainer {
         
         chatStorageActor = ChatStorageActor(dbPool: dbPool)
         chatStorage = ChatStorage(actor: chatStorageActor)
+        
+        viewContextService = ViewContextService(
+            currentUserProvider: userStorage
+        )
         
         tokenManager = TokenManager(
             authAPI: AuthAPI(apiClient: authApiClient),

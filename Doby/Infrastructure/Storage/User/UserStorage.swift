@@ -45,3 +45,9 @@ final class UserStorage {
         }
     }
 }
+
+extension UserStorage: CurrentUserProviding {
+    var currentUserUUID: String? {
+        user?.uuid
+    }
+}

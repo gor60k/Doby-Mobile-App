@@ -26,7 +26,6 @@ struct OrdersStack: View {
                             openPetAdding: {},
                             opentPetProfile: { _ in }
                         )
-                        .environment(DisplayModeService(mode: .visitor))
                     case .petProfile(let id):
                         PetProfileScreen(
                             viewModel: appContainer.makePetProfileViewModel(petId: id),

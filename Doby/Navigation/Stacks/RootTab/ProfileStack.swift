@@ -31,7 +31,6 @@ struct ProfileStack: View {
                     profileRouter.push(.petProfile(id: id))
                 }
             )
-            .environment(DisplayModeService(mode: .owner))
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
                     case .profile(let uuid):

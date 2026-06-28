@@ -10,12 +10,11 @@ enum ProfileTarget {
 @Observable
 final class ProfileViewModel: ViewModel {
     private let viewContextService: ViewContextService
+    private let currentUserProvider: CurrentUserProviding
     
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
     private let chatRepository: ChatRepositoryProtocol
-    
-    private let storage: UserStorage
     
     private(set) var user: User?
     private var uuid: String?
@@ -24,21 +23,23 @@ final class ProfileViewModel: ViewModel {
     
     init(
         viewContextService: ViewContextService,
+        currentUserProvider: CurrentUserProviding,
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
         chatRepository: ChatRepositoryProtocol,
-        storage: UserStorage,
+        
         target: ProfileTarget = .currentUser
     ) {
         self.viewContextService = viewContextService
+        self.currentUserProvider = currentUserProvider
         self.userRepository = userRepository
         self.petRepository = petRepository
         self.chatRepository = chatRepository
-        self.storage = storage
         
         self.target = target
     }
     
+    // MARK: - Публичные методы
     func load() async {
         switch target {
         case .currentUser: await loadCurrentUserProfile()
@@ -51,8 +52,8 @@ final class ProfileViewModel: ViewModel {
     func refresh() async {}
     
     func createChat() async {
-        let myUUID = storage.user?.uuid
-        let otherUUID = viewContextService.viewedUserUUID
+        let myUUID = currentUserProvider.currentUserUUID
+        let otherUUID = viewContextService.viewedUser?.uuid
         
         await perform {
             guard let myUUID, let otherUUID else { return }
@@ -63,6 +64,7 @@ final class ProfileViewModel: ViewModel {
         }
     }
     
+    // MARK: - Привытные методы
     private func loadCurrentUserProfile() async {
         await loadCurrentUser()
         
@@ -82,7 +84,7 @@ final class ProfileViewModel: ViewModel {
             let user = try await userRepository.getMe()
             self.user = user
             
-            configureContext(with: user)
+            viewContextService.open(user: user)
         }
     }
     
@@ -91,7 +93,7 @@ final class ProfileViewModel: ViewModel {
             let user = try await userRepository.getUser(with: uuid)
             self.user = user
             
-            configureContext(with: user)
+            viewContextService.open(user: user)
         }
     }
     
@@ -100,29 +102,22 @@ final class ProfileViewModel: ViewModel {
             try await petRepository.fetchPets(from: uuid)
         }
     }
-    
-    private func configureContext(with user: User) {
-        viewContextService.configure(
-            currentUserUUID: storage.user?.uuid,
-            viewedUserUUID: user.uuid
-        )
-    }
 }
 
 extension ProfileViewModel {
     static var mock: ProfileViewModel {
-        let viewContextService = ViewContextService()
+        let viewContextService = ViewContextService(currentUserProvider: UserStorage())
+        let currentUserProvider = UserStorage()
         let userRepository = MockUserRepository()
         let petRepository = MockPetRepository()
         let chatRepository = MockChatRepository()
-        let storage = UserStorage()
         
         return ProfileViewModel(
             viewContextService: viewContextService,
+            currentUserProvider: currentUserProvider,
             userRepository: userRepository,
             petRepository: petRepository,
             chatRepository: chatRepository,
-            storage: storage,
         )
     }
 }

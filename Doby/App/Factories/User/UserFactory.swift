@@ -3,10 +3,10 @@ extension AppContainer {
     func makeProfileViewModel(with target: ProfileTarget) -> ProfileViewModel {
         ProfileViewModel(
             viewContextService: viewContextService,
+            currentUserProvider: userStorage,
             userRepository: userRepository,
             petRepository: petRepository,
             chatRepository: chatRepository,
-            storage: userStorage,
             target: target
         )
     }

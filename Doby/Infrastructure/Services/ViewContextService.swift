@@ -2,24 +2,28 @@ import Observation
 
 @Observable
 final class ViewContextService {
-    var currentUserUUID: String?
-    var viewedUserUUID: String?
+    
+    private let currentUserProvider: CurrentUserProviding
+    private(set) var viewedUser: User?
+    
+    init(currentUserProvider: CurrentUserProviding) {
+        self.currentUserProvider = currentUserProvider
+    }
     
     var isCurrentUser: Bool {
-        guard let currentUserUUID, let viewedUserUUID else {
-            return false
-        }
+        guard
+            let currentUUID = currentUserProvider.currentUserUUID,
+            let viewedUUID = viewedUser?.uuid
+        else { return false }
         
-        return currentUserUUID == viewedUserUUID
+        return currentUUID == viewedUUID
     }
 
-    func configure(currentUserUUID: String?, viewedUserUUID: String?) {
-        self.currentUserUUID = currentUserUUID
-        self.viewedUserUUID = viewedUserUUID
+    func open(user: User) {
+        viewedUser = user
     }
     
     func reset() {
-        currentUserUUID = nil
-        viewedUserUUID = nil
+        viewedUser = nil
     }
 }

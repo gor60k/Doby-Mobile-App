@@ -8,7 +8,7 @@ extension View {
             container: try! AppContainer(),
             themeService: ThemeService(),
             primaryColorService: PrimaryColorService(),
-            viewContextService: ViewContextService()
+            viewContextService: ViewContextService(currentUserProvider: UserStorage())
         )
     }
 

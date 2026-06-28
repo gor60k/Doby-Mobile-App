@@ -42,5 +42,4 @@ struct ProfileAboutView: View {
         action: {}
     )
     .environment(PrimaryColorService())
-    .environment(DisplayModeService(mode: .owner))
 }
