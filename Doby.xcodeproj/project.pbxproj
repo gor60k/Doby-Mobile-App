@@ -10,6 +10,7 @@
 		082A5ABE2FA4C0B200B56A6D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 082A5ABD2FA4C0B200B56A6D /* Alamofire */; };
 		082B1D792FC74A35003AD916 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 082B1D782FC74A35003AD916 /* GRDB */; };
 		082CE80C2FA35E480085F31A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 082CE80B2FA35E480085F31A /* Kingfisher */; };
+		083B3D602FF2C044008D55E4 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 083B3D5F2FF2C044008D55E4 /* Documentation.docc */; };
 		08E067162FC4B5E1005752A5 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 08E067152FC4B5E1005752A5 /* QRCode */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		083B3D5F2FF2C044008D55E4 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		08A280DD2F4104B600B54BD2 /* Doby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A280EA2F4104B700B54BD2 /* dobyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dobyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A280F42F4104B700B54BD2 /* dobyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = dobyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +140,7 @@
 		08A280D42F4104B600B54BD2 = {
 			isa = PBXGroup;
 			children = (
+				083B3D5F2FF2C044008D55E4 /* Documentation.docc */,
 				0851C1F92FBDA5DD007A309F /* legacy */,
 				08A280DF2F4104B600B54BD2 /* Doby */,
 				08A280ED2F4104B700B54BD2 /* dobyTests */,
@@ -314,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				083B3D602FF2C044008D55E4 /* Documentation.docc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

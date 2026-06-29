@@ -1,25 +1,29 @@
 import SwiftUI
 
 struct SettingsStack: View {
-    @Environment(\.appContainer) private var appContainer
+    @Environment(\.appContainer) var appContainer
     @Environment(UserStorage.self) private var userStorage
     @Environment(CityStorage.self) private var cityStorage
     
-    private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
-    private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
-    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
-    
     @State private var settingsRouter = SettingsRouter()
     
+    private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
+    private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
+    var ownerUUID: String { userStorage.user?.uuid ?? "" }
+    
+    // MARK: - структуры навигации
+    var settingsNavigation: SettingsNavigation {
+        SettingsNavigation(
+            openSettingsAppearance: { settingsRouter.push(.appearance) },
+            openSettingsPrivacy: { settingsRouter.push(.privacy) },
+            openSettingsNotifications: { settingsRouter.push(.notifications) }
+        )
+    }
+    
+    // MARK: - тело стака
     var body: some View {
         NavigationStack(path: $settingsRouter.path) {
-            SettingsScreen(
-                viewModel: appContainer.makeSettingsViewModel(),
-                
-                openSettingsAppearance: { settingsRouter.push(.appearance) },
-                openSettingsPrivacy: { settingsRouter.push(.privacy) },
-                openSettingsNotifications: { settingsRouter.push(.notifications) }
-            )
+            createSettingsScreen()
                 .navigationDestination(for: SettingsRoute.self) { route in
                     switch route {
                     case .appearance:
@@ -29,18 +33,32 @@ struct SettingsStack: View {
                     case .notifications:
                         SettingsNotificationsScreen()
                     case .petSettings(let id):
-                        PetSettingsScreen(
-                            viewModel: appContainer.makePetSettingsViewModel(
-                                petId: id,
-                                ownerUUID: ownerUUID
-                            ),
-                            petId: id,
-                            ownerUUID: ownerUUID,
-                            openPetProfile: {}
-                        )
+                        createPetSettingsScreen(petId: id)
                     }
                 }
         }
         .environment(settingsRouter)
+    }
+}
+
+// MARK: - фабрика экранов
+extension SettingsStack {
+    func createSettingsScreen() -> SettingsScreen {
+        SettingsScreen(
+            viewModel: appContainer.makeSettingsViewModel(),
+            settingsNavigation: settingsNavigation
+        )
+    }
+    
+    func createPetSettingsScreen(petId: Int) -> PetSettingsScreen {
+        PetSettingsScreen(
+            viewModel: appContainer.makePetSettingsViewModel(
+                petId: petId,
+                ownerUUID: ownerUUID
+            ),
+            petId: petId,
+            ownerUUID: ownerUUID,
+            openPetProfile: {}
+        )
     }
 }

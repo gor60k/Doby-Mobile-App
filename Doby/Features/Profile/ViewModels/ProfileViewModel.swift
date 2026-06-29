@@ -1,23 +1,19 @@
 import Foundation
 import Observation
 
-enum ProfileTarget {
-    case currentUser
-    case user(uuid: String)
-}
-
 @MainActor
 @Observable
 final class ProfileViewModel: ViewModel {
+    // MARK: - Инфраструктура
     private let viewContextService: ViewContextService
     private let currentUserProvider: CurrentUserProviding
     
+    // MARK: - Репозитории сущностей
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
     private let chatRepository: ChatRepositoryProtocol
     
     private(set) var user: User?
-    private var uuid: String?
     
     private let target: ProfileTarget
     

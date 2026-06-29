@@ -5,6 +5,14 @@ struct ChatStack: View {
     
     @State private var chatRouter = ChatRouter()
     
+    private var profileNavigation: ProfileNavigation {
+        ProfileNavigation(
+            openSettings: {},
+            openPetAdding: {},
+            openPetProfile: {_ in}
+        )
+    }
+    
     var body: some View {
         NavigationStack(path: $chatRouter.path) {
             ChatScreen(
@@ -24,9 +32,7 @@ struct ChatStack: View {
                             ),
                             profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
                             profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
-                            openSettings: {},
-                            openPetAdding: {},
-                            opentPetProfile: { _ in }
+                            profileNavigation: profileNavigation
                         )
                     }
                 }

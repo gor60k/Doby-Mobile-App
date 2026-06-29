@@ -13,40 +13,56 @@ struct PetStack: View {
         petRouter.pop()
     }
     
+    // MARK: - тело стака
     var body: some View {
         NavigationStack(path: $petRouter.path) {
-            PetScreen(
-                viewModel: appContainer.makePetViewModel(ownerUUID: ownerUUID),
-                ownerUUID: userStorage.user?.uuid ?? "",
-                openPetAdding: { petRouter.push(.petAdding) },
-                openPetProfile: { id in
-                    petRouter.push(.profile(id: id)) }
-            )
+            createPetScreen()
                 .navigationDestination(for: PetRoute.self) { route in
                     switch route {
                     case .petAdding:
                         PetAddingScreen(viewModel: appContainer.makePetAddingViewModel())
                     case .profile(let id):
-                        PetProfileScreen(
-                            viewModel: appContainer.makePetProfileViewModel(petId: id),
-                            petId: id,
-                            openSettings: { id in
-                                petRouter.push(.petSettings(id: id))
-                            }
-                        )
+                        createPetProfileScreen(petId: id)
                     case .petSettings(let id):
-                        PetSettingsScreen(
-                            viewModel: appContainer.makePetSettingsViewModel(
-                                petId: id,
-                                ownerUUID: ownerUUID
-                            ),
-                            petId: id,
-                            ownerUUID: ownerUUID,
-                            openPetProfile: openPetProfile
-                        )
+                        createPetSettingsScreen(petId: id)
                     }
                 }
         }
         .environment(petRouter)
+    }
+}
+
+// MARK: - фабрика экранов
+extension PetStack {
+    func createPetScreen() -> PetScreen {
+        PetScreen(
+            viewModel: appContainer.makePetViewModel(ownerUUID: ownerUUID),
+            ownerUUID: userStorage.user?.uuid ?? "",
+            openPetAdding: { petRouter.push(.petAdding) },
+            openPetProfile: { id in
+                petRouter.push(.profile(id: id)) }
+        )
+    }
+    
+    func createPetProfileScreen(petId: Int) -> PetProfileScreen {
+        PetProfileScreen(
+            viewModel: appContainer.makePetProfileViewModel(petId: petId),
+            petId: petId,
+            openSettings: { id in
+                petRouter.push(.petSettings(id: id))
+            }
+        )
+    }
+    
+    func createPetSettingsScreen(petId: Int) -> PetSettingsScreen {
+        PetSettingsScreen(
+            viewModel: appContainer.makePetSettingsViewModel(
+                petId: petId,
+                ownerUUID: ownerUUID
+            ),
+            petId: petId,
+            ownerUUID: ownerUUID,
+            openPetProfile: openPetProfile
+        )
     }
 }

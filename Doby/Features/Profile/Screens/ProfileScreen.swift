@@ -17,26 +17,20 @@ struct ProfileScreen: View {
     
     let options = ProfileDetailsTab.allCases
     
-    let openSettings: () -> Void
-    let openPetAdding: () -> Void
-    let openPetProfile: (Int) -> Void
+    let profileNavigation: ProfileNavigation
     
     init(
         viewModel: ProfileViewModel,
         profilePetsViewModel: ProfilePetsViewModel,
         profileOrdersViewModel: ProfileOrdersViewModel,
         
-        openSettings: @escaping () -> Void,
-        openPetAdding: @escaping () -> Void,
-        opentPetProfile: @escaping (Int) -> Void,
+        profileNavigation: ProfileNavigation,
     ) {
         _viewModel = State(initialValue: viewModel)
         _profilePetsViewModel = State(initialValue: profilePetsViewModel)
         _profileOrdersViewModel = State(initialValue: profileOrdersViewModel)
         
-        self.openSettings = openSettings
-        self.openPetAdding = openPetAdding
-        self.openPetProfile = opentPetProfile
+        self.profileNavigation = profileNavigation
     }
     
     var body: some View {
@@ -60,9 +54,9 @@ struct ProfileScreen: View {
                 ProfilePetsView(
                     currentPage: profilePetsViewModel.currentPage,
                     pets: petStorage.pets,
-                    openPetAdding: { openPetAdding() },
+                    openPetAdding: { profileNavigation.openPetAdding() },
                     openPetProfile: { id in
-                        openPetProfile(id)
+                        profileNavigation.openPetProfile(id)
                     }
                 )
             }
@@ -78,7 +72,7 @@ struct ProfileScreen: View {
                     options: options,
                     title: { $0.rawValue },
                     bio: viewModel.user?.bio ?? "",
-                    buttonAction: { openSettings() }
+                    buttonAction: { profileNavigation.openSettings() }
                 )
             }
             .padding(.horizontal)
@@ -102,7 +96,7 @@ struct ProfileScreen: View {
         .scrollIndicators(.hidden)
         .toolbar(viewContextService.isCurrentUser ? .visible : .hidden, for: .tabBar)
         .profileToolbar(
-            onEditTap: { openSettings() },
+            onEditTap: { profileNavigation.openSettings() },
             onQRScanTap: {
                 showQRSheet = true
             }
@@ -154,9 +148,11 @@ struct ProfileScreen: View {
             viewModel: .mock,
             profilePetsViewModel: .mock,
             profileOrdersViewModel: .mock,
-            openSettings: {},
-            openPetAdding: {},
-            opentPetProfile: { _ in }
+            profileNavigation: ProfileNavigation(
+                openSettings: {},
+                openPetAdding: {},
+                openPetProfile: {_ in}
+            )
         )
         .PreviewAppEnvironment()
         .environment(ProfileRouter())

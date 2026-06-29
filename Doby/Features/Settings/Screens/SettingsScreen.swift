@@ -7,14 +7,10 @@ struct SettingsScreen: View {
     @Environment(\.appContainer) private var appContainer
     @Environment(\.dismiss) private var dismiss
     
-    private var sessionService: SessionService { appContainer.sessionService }
-    
     @State private var viewModel: SettingsViewModel
     
-    // MARK: - Функции для перехода на дочерние экраны
-    let openSettingsAppearance: () -> Void
-    let openSettingsPrivacy: () -> Void
-    let openSettingsNotifications: () -> Void
+    private var sessionService: SessionService { appContainer.sessionService }
+    let settingsNavigation: SettingsNavigation
     
     private func logout() {
         Task {
@@ -32,16 +28,10 @@ struct SettingsScreen: View {
     
     init(
         viewModel: SettingsViewModel,
-        
-        openSettingsAppearance: @escaping () -> Void,
-        openSettingsPrivacy: @escaping () -> Void,
-        openSettingsNotifications: @escaping () -> Void
+        settingsNavigation: SettingsNavigation,
     ) {
         _viewModel = State(initialValue: viewModel)
-        
-        self.openSettingsAppearance = openSettingsAppearance
-        self.openSettingsPrivacy = openSettingsPrivacy
-        self.openSettingsNotifications = openSettingsNotifications
+        self.settingsNavigation = settingsNavigation
     }
     
     var body: some View {
@@ -73,9 +63,9 @@ struct SettingsScreen: View {
             )
             
             SettingsAppView(
-                appearanceAction: { openSettingsAppearance() },
-                privacyAction: { openSettingsPrivacy() },
-                notificationsAction: { openSettingsNotifications() }
+                appearanceAction: { settingsNavigation.openSettingsAppearance() },
+                privacyAction: { settingsNavigation.openSettingsPrivacy() },
+                notificationsAction: { settingsNavigation.openSettingsNotifications() }
             )
             
             Section("Аккаунт") {
@@ -100,9 +90,11 @@ struct SettingsScreen: View {
 #Preview {
     SettingsScreen(
         viewModel: .mock,
-        openSettingsAppearance: {},
-        openSettingsPrivacy: {},
-        openSettingsNotifications: {}
+        settingsNavigation: SettingsNavigation(
+            openSettingsAppearance: {},
+            openSettingsPrivacy: {},
+            openSettingsNotifications: {}
+        )
     )
     .PreviewAppEnvironment()
     .environment(ProfileRouter())

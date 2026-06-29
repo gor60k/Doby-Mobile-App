@@ -2,57 +2,55 @@ import SwiftUI
 
 struct ProfileStack: View {
     @Environment(\.appContainer) private var appContainer
-    @Environment(PetStorage.self) private var petStorage
     @Environment(UserStorage.self) private var userStorage
-    @Environment(CityStorage.self) private var cityStorage
-    
-    private var authRepository: AuthRepositoryProtocol { appContainer.authRepository }
-    private var userRepository: UserRepositoryProtocol { appContainer.userRepository }
-    private var petRepository: PetRepositoryProtocol { appContainer.petRepository }
-    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
     
     @State private var profileRouter = ProfileRouter()
     @State private var petRouter = PetRouter()
+
+    private var ownerUUID: String { userStorage.user?.uuid ?? "" }
     
     private func openPetProfile() {
         profileRouter.pop()
     }
     
+    private func openURL(url: URL) {
+        guard let deepLink = DeepLinkManager.parse(url: url) else { return }
+        
+        switch deepLink {
+        case .profile(let uuid):
+            profileRouter.push(.profile(uuid: uuid))
+        }
+    }
+    
+    // MARK: - структуры навигации
+    private var profileNavigation: ProfileNavigation {
+        ProfileNavigation(
+            openSettings: { profileRouter.push(.settings) },
+            openPetAdding: { profileRouter.push(.petAdding) },
+            openPetProfile: { id in
+                profileRouter.push(.petProfile(id: id))
+            }
+        )
+    }
+    
+    private var settingsNavigation: SettingsNavigation {
+        SettingsNavigation(
+            openSettingsAppearance: { profileRouter.push(.settingsAppearance) },
+            openSettingsPrivacy: { profileRouter.push(.settingsPrivacy) },
+            openSettingsNotifications: { profileRouter.push(.settingsNotifications) }
+        )
+    }
+    
+    // MARK: - тело стака
     var body: some View {
         NavigationStack(path: $profileRouter.path) {
-            ProfileScreen(
-                viewModel: appContainer.makeProfileViewModel(with: .currentUser),
-                profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
-                profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
-                
-                openSettings: { profileRouter.push(.settings) },
-                openPetAdding: { profileRouter.push(.petAdding) },
-                opentPetProfile: { id in
-                    profileRouter.push(.petProfile(id: id))
-                }
-            )
+            createProfileScreen(target: .currentUser)
                 .navigationDestination(for: ProfileRoute.self) { route in
                     switch route {
                     case .profile(let uuid):
-                        ProfileScreen(
-                            viewModel: appContainer.makeProfileViewModel(with: .user(uuid: uuid)),
-                            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
-                            profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
-                            
-                            openSettings: {},
-                            openPetAdding: {},
-                            opentPetProfile: { id in
-                                profileRouter.push(.petProfile(id: id))
-                            },
-                        )
+                        createProfileScreen(target: .user(uuid: uuid ))
                     case .settings:
-                        SettingsScreen(
-                            viewModel: appContainer.makeSettingsViewModel(),
-                            
-                            openSettingsAppearance: { profileRouter.push(.settingsAppearance) },
-                            openSettingsPrivacy: { profileRouter.push(.settingsPrivacy) },
-                            openSettingsNotifications: { profileRouter.push(.settingsNotifications) }
-                        )
+                        createSettingsScreen()
                     case .settingsAppearance:
                         SettingsAppearensScreen()
                     case .settingsPrivacy:
@@ -60,24 +58,9 @@ struct ProfileStack: View {
                     case .settingsNotifications:
                         SettingsNotificationsScreen()
                     case .petSettings(let id):
-                        PetSettingsScreen(
-                            viewModel: appContainer.makePetSettingsViewModel(
-                                petId: id,
-                                ownerUUID: ownerUUID
-                            ),
-                            petId: id,
-                            ownerUUID: ownerUUID,
-                            openPetProfile: openPetProfile
-                        )
+                        createPetSettingsScreen(petId: id)
                     case .petProfile(let id):
-                        PetProfileScreen(
-                            viewModel: appContainer.makePetProfileViewModel(petId: id),
-                            
-                            petId: id,
-                            openSettings: { id in
-                                profileRouter.push(.petSettings(id: id))
-                            }
-                        )
+                        createPetProfileScreen(petId: id)
                     case .petAdding:
                         PetAddingScreen(viewModel: appContainer.makePetAddingViewModel())
                     }
@@ -85,14 +68,50 @@ struct ProfileStack: View {
         }
         .environment(profileRouter)
         .onOpenURL { url in
-            print("📥 onOpenURL:", url.absoluteString)
-            
-            guard let deepLink = DeepLinkManager.parse(url: url) else { return }
-            
-            switch deepLink {
-            case .profile(let uuid):
-                profileRouter.push(.profile(uuid: uuid))
-            }
+            openURL(url: url)
         }
+    }
+}
+
+// MARK: - фабрика экранов
+extension ProfileStack {
+    func createProfileScreen(target: ProfileTarget) -> ProfileScreen {
+        ProfileScreen(
+            viewModel: appContainer.makeProfileViewModel(with: target),
+            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
+            profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
+            
+            profileNavigation: profileNavigation,
+        )
+    }
+    
+    func createSettingsScreen() -> SettingsScreen {
+        SettingsScreen(
+            viewModel: appContainer.makeSettingsViewModel(),
+            settingsNavigation: settingsNavigation
+        )
+    }
+    
+    func createPetSettingsScreen(petId: Int) -> PetSettingsScreen {
+        PetSettingsScreen(
+            viewModel: appContainer.makePetSettingsViewModel(
+                petId: petId,
+                ownerUUID: ownerUUID
+            ),
+            petId: petId,
+            ownerUUID: ownerUUID,
+            openPetProfile: openPetProfile
+        )
+    }
+    
+    func createPetProfileScreen(petId: Int) -> PetProfileScreen {
+        PetProfileScreen(
+            viewModel: appContainer.makePetProfileViewModel(petId: petId),
+            
+            petId: petId,
+            openSettings: { id in
+                profileRouter.push(.petSettings(id: id))
+            }
+        )
     }
 }
