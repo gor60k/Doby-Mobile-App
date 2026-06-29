@@ -14,8 +14,12 @@ final class ProfileViewModel: ViewModel {
     private let chatRepository: ChatRepositoryProtocol
     
     private(set) var user: User?
+    private(set) var pets: [Pet] = []
     
     private let target: ProfileTarget
+    var isCurrentUser: Bool {
+        viewContextService.isCurrentUser
+    }
     
     init(
         viewContextService: ViewContextService,
@@ -23,7 +27,6 @@ final class ProfileViewModel: ViewModel {
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
         chatRepository: ChatRepositoryProtocol,
-        
         target: ProfileTarget = .currentUser
     ) {
         self.viewContextService = viewContextService
@@ -31,21 +34,31 @@ final class ProfileViewModel: ViewModel {
         self.userRepository = userRepository
         self.petRepository = petRepository
         self.chatRepository = chatRepository
-        
         self.target = target
     }
     
     // MARK: - Публичные методы
     func load() async {
-        switch target {
-        case .currentUser: await loadCurrentUserProfile()
-        case .user(let uuid): await loadProfile(with: uuid)
+        await perform {
+            let user = try await getUser()
+            self.user = user
+            
+            viewContextService.open(user: user)
+            
+            async let petsTask = petRepository.fetchPets(from: user.uuid)
+            self.pets = try await petsTask
         }
     }
     
-    func loadIfNeeded() async {}
+    func loadIfNeeded() async {
+        if user == nil {
+            await load()
+        }
+    }
     
-    func refresh() async {}
+    func refresh() async {
+        await load()
+    }
     
     func createChat() async {
         let myUUID = currentUserProvider.currentUserUUID
@@ -55,47 +68,17 @@ final class ProfileViewModel: ViewModel {
             guard let myUUID, let otherUUID else { return }
             
             let input = CreateChatInput.direct(participants: [myUUID, otherUUID])
-            
             try await chatRepository.creageChat(input)
         }
     }
     
     // MARK: - Привытные методы
-    private func loadCurrentUserProfile() async {
-        await loadCurrentUser()
-        
-        guard let user else { return }
-        await loadPets(for: user.uuid)
-    }
-    
-    private func loadProfile(with uuid: String) async {
-        await loadUser(with: uuid)
-        
-        guard let user else { return }
-        await loadPets(for: user.uuid)
-    }
-    
-    private func loadCurrentUser() async {
-        await perform {
-            let user = try await userRepository.getMe()
-            self.user = user
-            
-            viewContextService.open(user: user)
-        }
-    }
-    
-    private func loadUser(with uuid: String) async {
-        await perform {
-            let user = try await userRepository.getUser(with: uuid)
-            self.user = user
-            
-            viewContextService.open(user: user)
-        }
-    }
-    
-    private func loadPets(for uuid: String) async {
-        await perform {
-            try await petRepository.fetchPets(from: uuid)
+    private func getUser() async throws -> User {
+        switch target {
+        case .currentUser:
+            return try await userRepository.getMe()
+        case .user(let uuid):
+            return try await userRepository.getUser(with: uuid)
         }
     }
 }

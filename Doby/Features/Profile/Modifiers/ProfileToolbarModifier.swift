@@ -3,13 +3,14 @@ import SwiftUI
 struct ProfileToolbarModifier: ViewModifier {
     @Environment(ViewContextService.self) private var viewContextService
     
+    let isCurrentUser: Bool
     let onEditTap: () -> Void
     let onQRScanTap: () -> Void
     
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if viewContextService.isCurrentUser {
+                if isCurrentUser {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Изм.", action: onEditTap)
                         .tint(.primary)
@@ -60,10 +61,12 @@ struct ProfileToolbarModifier: ViewModifier {
 
 extension View {
     func profileToolbar(
+        isCurrentUser: Bool,
         onEditTap: @escaping () -> Void,
         onQRScanTap: @escaping () -> Void
     ) -> some View {
         modifier(ProfileToolbarModifier(
+            isCurrentUser: isCurrentUser,
             onEditTap: onEditTap,
             onQRScanTap: onQRScanTap
         ))

@@ -6,7 +6,28 @@ final class MockPetRepository: PetRepositoryProtocol {
     
     func createPet(input: CreatePetInput) async throws {}
     
-    func fetchPets(from ownerUUID: String) async throws {}
+    func fetchPets(from ownerUUID: String) async throws -> [Pet] { return
+        [
+            Pet(
+                id: 0,
+                petType: .dog,
+                ownerUUID: "",
+                name: "",
+                age: 0,
+                gender: .female,
+                height: 0,
+                weight: 0,
+                breedName: "",
+                dietType: "",
+                dietPatterns: "",
+                warningTags: [],
+                specificTags: [],
+                additionalInfo: "",
+                dietAdditionalInfo: "",
+                photos: []
+            )
+        ]
+    }
     
     func fetchPet(with petId: Int, from ownerUUID: String) async throws {}
     

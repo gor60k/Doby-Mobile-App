@@ -55,11 +55,16 @@ final class UserRepository: UserRepositoryProtocol {
         }
     }
     
-    func getCities() async throws {
+    func getCities() async throws -> [City] {
+        if let cached = cityStorage.cities, !cached.isEmpty {
+            return cached
+        }
+        
         let response = try await api.getCities()
         let cities = CityMapper.mapToDomain(from: response)
         
-        cityStorage.cities = cities
+        await cityStorage.save(cities)
+        return cities
     }
     
     func uploadPhoto(_ input: UserPhotoInput) async throws {

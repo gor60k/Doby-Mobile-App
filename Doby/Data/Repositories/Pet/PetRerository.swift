@@ -24,11 +24,13 @@ final class PetRepository: PetRepositoryProtocol {
         storage.update(pet)
     }
     
-    func fetchPets(from ownerUUID: String) async throws {
+    func fetchPets(from ownerUUID: String) async throws -> [Pet] {
         let response = try await api.fetchAll(from: ownerUUID)
         let pets = PetMapper.mapToDomain(from: response)
         
         storage.set(pets)
+        
+        return pets
     }
     
     func fetchPet(with petId: Int, from ownerUUID: String) async throws {

@@ -6,7 +6,7 @@ import Observation
 final class CityStorage {
     private let actor = CityStorageActor()
     
-    var cities: [City] = []
+    private(set) var cities: [City]?
     
     init() {
         Task {
@@ -17,5 +17,18 @@ final class CityStorage {
     func load() async {
         let loaded = await actor.load()
         self.cities = loaded
+    }
+    
+    func save(_ cities: [City]?) async {
+        self.cities = cities
+        
+    }
+    
+    private func persist() {
+        let snapshot = cities
+        
+        Task {
+            await actor.save(snapshot)
+        }
     }
 }

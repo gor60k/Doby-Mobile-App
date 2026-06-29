@@ -16,7 +16,11 @@ final class MockUserRepository: UserRepositoryProtocol {
     
     func updateMe(_ input: UpdateUserInput) async throws {}
     
-    func getCities() async throws {}
+    func getCities() async throws -> [City] {
+        return [
+            City(id: 0, name: "", translit: "")
+        ]
+    }
     
     func uploadPhoto(_ input: UserPhotoInput) async throws {}
 }

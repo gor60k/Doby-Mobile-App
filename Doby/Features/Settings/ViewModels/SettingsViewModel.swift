@@ -28,7 +28,7 @@ final class SettingsViewModel: ViewModel {
 
     // MARK: - Location
     var selectedCityId: Int?
-    var cities: [City] { cityStorage.cities }
+    var cities: [City] = []
     
     // MARK: - Initialization
     init(
@@ -50,22 +50,24 @@ final class SettingsViewModel: ViewModel {
             async let citiesTask = userRepository.getCities()
 
             _ = try await userTask
-            _ = try await citiesTask
-
+            let cities = try await citiesTask
+            print(cities)
+            self.cities = cities
             syncFromStorage()
         }
     }
     
     func fetchUser() async {
         await perform {
-            try await userRepository.getMe()
+            _ = try await userRepository.getMe()
             syncFromStorage()
         }
     }
     
     func fetchCities() async {
         await perform {
-            try await userRepository.getCities()
+            self.cities = try await userRepository.getCities()
+            print("ГОРОДА", self.cities)
         }
     }
     

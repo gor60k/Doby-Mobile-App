@@ -96,6 +96,7 @@ struct ProfileScreen: View {
         .scrollIndicators(.hidden)
         .toolbar(viewContextService.isCurrentUser ? .visible : .hidden, for: .tabBar)
         .profileToolbar(
+            isCurrentUser: viewModel.isCurrentUser,
             onEditTap: { profileNavigation.openSettings() },
             onQRScanTap: {
                 showQRSheet = true
