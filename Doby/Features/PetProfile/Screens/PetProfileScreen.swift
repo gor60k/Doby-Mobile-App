@@ -78,9 +78,9 @@ struct PetProfileScreen: View {
                 
                 PrimaryCollapsibleSection(title: "Что я ем") {
                     PetProfileDietView(
-                        dietType: viewModel.pet.dietType ?? "-",
-                        dietPatterns: viewModel.pet.dietPatterns ?? "-",
-                        dietAdditionalInfo: viewModel.pet.dietAdditionalInfo ?? "-"
+                        dietType: viewModel.pet.dietType,
+                        dietPatterns: viewModel.pet.dietPatterns,
+                        dietAdditionalInfo: viewModel.pet.dietAdditionalInfo
                     )
                 }
                 .padding(.horizontal)

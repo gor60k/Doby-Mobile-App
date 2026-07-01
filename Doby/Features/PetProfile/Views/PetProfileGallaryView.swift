@@ -35,15 +35,24 @@ struct PetProfileGallaryView: View {
                 }
                 .frame(maxHeight: 350)
             }
-            
+        }
+        .frame(alignment: .bottom)
+        .frame(height: 350)
+        .overlay(alignment: .bottomLeading) {
             PrimaryGalleryPagination(
                 currentPage: currentPage,
                 itemsCount: items.count
             )
+            .offset(x: 16, y: -32)
         }
-        .frame(alignment: .bottom)
-        .frame(height: 350)
     }
+}
+
+#Preview {
+    PetProfileGallaryView(
+        currentPage: .constant(0),
+        items: []
+    )
 }
 
 
