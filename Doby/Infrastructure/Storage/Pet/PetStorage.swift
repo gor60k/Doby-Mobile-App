@@ -6,7 +6,7 @@ import Observation
 final class PetStorage {
     private let actor = PetStorageActor()
     
-    var pets: [Pet] = []
+    var pets: [Pet]?
     
     init(loadFromDisk: Bool = true) {
         guard loadFromDisk else { return }
@@ -27,6 +27,8 @@ final class PetStorage {
     }
     
     func update(_ pet: Pet) {
+        guard var pets else { return }
+        
         if let index = pets.firstIndex(where: { $0.id == pet.id }) {
             pets[index] = pet
         } else {
@@ -39,23 +41,32 @@ final class PetStorage {
         with petId: Int,
         mutate: (inout Pet) -> Void
     ) {
-        guard let index = pets.firstIndex(where: { $0.id == petId }) else { return }
+        guard
+            var pets,
+            let index = pets.firstIndex(where: { $0.id == petId })
+        else { return }
         
         mutate(&pets[index])
         persist()
     }
     
     func remove(id: Int) {
+        guard var pets else { return }
+        
         pets = pets.filter { $0.id != id }
         persist()
     }
     
     func clear() {
+        guard var pets else { return }
+        
         pets.removeAll()
         persist()
     }
     
     private func persist() {
+        guard var pets else { return }
+        
         let snapshot = pets
         Task {
             await actor.save(snapshot)

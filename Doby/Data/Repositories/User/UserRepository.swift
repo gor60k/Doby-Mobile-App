@@ -8,7 +8,6 @@ final class UserRepository: UserRepositoryProtocol {
     private var petStorage: PetStorage
     private var cityStorage: CityStorage
     
-    
     init(
         api: UserAPIProtocol,
         userStorage: UserStorage,
@@ -23,6 +22,7 @@ final class UserRepository: UserRepositoryProtocol {
     
     func getMe() async throws -> User {
         if let cached = userStorage.user {
+            print("Возвращается кэш юзера")
             return cached
         }
         

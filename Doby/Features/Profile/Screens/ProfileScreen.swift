@@ -53,7 +53,7 @@ struct ProfileScreen: View {
             PrimaryCollapsibleSection(title: "Питомцы") {
                 ProfilePetsView(
                     currentPage: profilePetsViewModel.currentPage,
-                    pets: petStorage.pets,
+                    pets: petStorage.pets ?? [],
                     openPetAdding: { profileNavigation.openPetAdding() },
                     openPetProfile: { id in
                         profileNavigation.openPetProfile(id)

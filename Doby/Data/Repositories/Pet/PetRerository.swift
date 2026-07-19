@@ -16,15 +16,20 @@ final class PetRepository: PetRepositoryProtocol {
         self.storage = storage
     }
     
-    func createPet(input: CreatePetInput) async throws {
+    func createPet(input: CreatePetInput) async throws -> Pet {
         let request = PetMapper.mapToRequest(from: input)
         let response = try await api.create(request)
         let pet = PetMapper.mapToDomain(from: response)
         
         storage.update(pet)
+        return pet
     }
     
     func fetchPets(from ownerUUID: String) async throws -> [Pet] {
+        if let cached = storage.pets, !cached.isEmpty {
+            return cached
+        }
+        
         let response = try await api.fetchAll(from: ownerUUID)
         let pets = PetMapper.mapToDomain(from: response)
         
@@ -33,11 +38,17 @@ final class PetRepository: PetRepositoryProtocol {
         return pets
     }
     
-    func fetchPet(with petId: Int, from ownerUUID: String) async throws {
+    func fetchPet(with petId: Int, from ownerUUID: String) async throws -> Pet {
+        if let cached = storage.pets?.first(where: { $0.id == petId }) {
+            return cached
+        }
+        
         let response = try await api.fetchPet(with: petId, from: ownerUUID)
         let pet = PetMapper.mapToDomain(from: response)
         
         storage.update(pet)
+        
+        return pet
     }
     
     func deletePet(id: Int) async throws {

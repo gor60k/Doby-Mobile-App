@@ -38,20 +38,16 @@ struct PetSettingsScreen: View {
                 subtitle: "Управляйте данными вашего питомца"
             )
             
-//            Section("Основые данные питомца") {
-//                Stepper("Возраст: \(age) лет", value: $age, in: 0...30)
-//            }
-            
             PetSettingsDetailsView(
-                height: $viewModel.detailsInfo.height,
-                weight: $viewModel.detailsInfo.weight,
-                description: $viewModel.detailsInfo.description
+                height: $viewModel.form.height,
+                weight: $viewModel.form.weight,
+                description: $viewModel.form.description
             )
             
             PetSettingsDietView(
-                dietType: $viewModel.dietInfo.dietType,
-                dietPattern: $viewModel.dietInfo.dietPattern,
-                dietAdditionalInfo: $viewModel.dietInfo.dietAdditionalInfo
+                dietType: $viewModel.form.dietType,
+                dietPattern: $viewModel.form.dietPatterns,
+                dietAdditionalInfo: $viewModel.form.dietAdditionalInfo
             )
             
             PetSettingsTagsView(
@@ -64,7 +60,7 @@ struct PetSettingsScreen: View {
                 title: "Особенности"
             )
         }
-        .navigationTitle(viewModel.name)
+        .navigationTitle(viewModel.pet?.name ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -77,7 +73,7 @@ struct PetSettingsScreen: View {
             }
         }
         .task {
-            await viewModel.load()
+            await viewModel.loadPet()
         }
     }
 }

@@ -9,13 +9,8 @@ final class PetProfileViewModel: ViewModel {
     
     var currentPage = 0
     
-    var pet: Pet {
-        guard let pet = petStorage.pets.first(where: { $0.id == petId })
-        else {
-            preconditionFailure("Питомец не найден")
-        }
-        return pet
-    }
+    var pet: Pet = .placeholder
+    
     var user: User? { userStorage.user }
     
     private let petId: Int
@@ -35,14 +30,13 @@ final class PetProfileViewModel: ViewModel {
     }
     
     func fetchPet() async {
-//        guard let petId = pet.id else { return }
         guard let ownerUUID = user?.uuid else {
             error = "User not found"
             return
         }
         
         await perform {
-            try await repository.fetchPet(with: petId, from: ownerUUID)
+            self.pet = try await repository.fetchPet(with: petId, from: ownerUUID)
         }
     }
 }

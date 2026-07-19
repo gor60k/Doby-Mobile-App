@@ -9,8 +9,8 @@ final class PetSettingsViewModel: ViewModel {
     private let petRepository: PetRepositoryProtocol
     private let petStorage: PetStorage
     
-    // MARK: - Private Properties
-    private let baseURL = APIConstants.getImageBaseURL()
+    // MARK: - Единая форма редактирования
+    var form = PetSettingsForm()
     
     // MARK: - Child ViewModels
     let photoPickerViewModel = PrimaryPhotoPickerViewModel()
@@ -23,29 +23,17 @@ final class PetSettingsViewModel: ViewModel {
         placeholder: "Например: любит детей"
     )
     
-    // MARK: - Pet Data
-    let photos: [Data] = []
+    // MARK: - Read-only данные питомца (URL фото, имя для title)
+    private(set) var pet: Pet?
     var currentPhotoURL: URL?
     
+    // MARK: - Meta
     let petId: Int
     let ownerUUID: String
-    
-    var uploadedPhotos: [Data] = []
-    var selectedPhotoImage: UIImage?
-    
     var isUploadingPhoto = false
     
-    var petType: PetType = .dog
-    var name: String = ""
-    var age = 0
-    var gender: PetGender = .male
+    private let baseURL = APIConstants.getImageBaseURL()
     
-    var breedName: String = ""
-    
-    var detailsInfo = PetDetails()
-    var dietInfo = PetDiet()
-    var petTags = PetTags()
-
     // MARK: - Initialization
     init(
         petRepository: PetRepositoryProtocol,
@@ -57,39 +45,40 @@ final class PetSettingsViewModel: ViewModel {
         self.petStorage = petStorage
         self.petId = petId
         self.ownerUUID = ownerUUID
-        
-//        loadPet()
     }
     
     // MARK: - Публичные методы
-    func fetchPet() async {
+    
+    /// Загружает питомца и инициализирует форму
+    func loadPet() async {
         await perform {
-            try await petRepository.fetchPet(with: petId, from: ownerUUID)
+            let pet = try await petRepository.fetchPet(with: petId, from: ownerUUID)
+            self.pet = pet
+            self.form = PetSettingsForm(from: pet)
+            self.currentPhotoURL = self.makeCurrentPhotoURL(from: pet)
+            
+            // Синхронизируем child ViewModels с формой
+            self.warningTagsViewModel = PrimaryTagsViewModel(
+                type: .warning,
+                placeholder: "Например: аллергия",
+                tags: pet.warningTags
+            )
+            self.featureTagsViewModel = PrimaryTagsViewModel(
+                type: .feature,
+                placeholder: "Например: любит детей",
+                tags: pet.specificTags
+            )
         }
     }
     
+    /// Сохраняет изменения на сервер
     func updatePet() async {
-        petTags.warningTags = warningTagsViewModel.tags
-        petTags.featureTags = featureTagsViewModel.tags
+        // Синхронизируем теги из child ViewModels в форму перед отправкой
+        form.warningTags = warningTagsViewModel.tags
+        form.featureTags = featureTagsViewModel.tags
         
         await perform {
-            let input = UpdatePetInput(
-                petType: petType,
-                uploadedPhotos: uploadedPhotos,
-                name: name.nilIfEmpty,
-                age: age.nilIfZero,
-                gender: gender,
-                height: detailsInfo.height.nilIfZero,
-                weight: detailsInfo.weight.nilIfZero,
-                breedName: breedName.nilIfEmpty,
-                dietType: dietInfo.dietType.nilIfEmpty,
-                dietPattern: dietInfo.dietPattern.nilIfEmpty,
-                additionalInfo: detailsInfo.description.nilIfEmpty,
-                dietAdditionalInfo: dietInfo.dietAdditionalInfo.nilIfEmpty,
-                warningTags: petTags.warningTags,
-                specificTags: petTags.featureTags
-            )
-            
+            let input = form.toUpdateInput()
             try await petRepository.updatePet(input, with: petId)
         }
     }
@@ -98,38 +87,17 @@ final class PetSettingsViewModel: ViewModel {
         await perform {
             let input = PetPhotoInput(
                 image: data,
-                orderNumber: uploadedPhotos.count + 1,
-                isMain: uploadedPhotos.isEmpty
+                orderNumber: (pet?.photos.count ?? 0) + 1,
+                isMain: pet?.photos.isEmpty ?? true
             )
-            
             try await petRepository.uploadPetPhoto(input, with: petId)
         }
     }
     
-    func load() {
-        guard let loaded = petStorage.pets.first(where: { $0.id == petId }) else { return }
-        
-        currentPhotoURL = makeCurrentPhotoURL(from: loaded)
-        
-        age = loaded.age
-        
-        detailsInfo.height = loaded.height
-        detailsInfo.weight = loaded.weight
-        detailsInfo.description = loaded.additionalInfo
-        
-        dietInfo.dietType = loaded.dietType
-        dietInfo.dietPattern = loaded.dietPatterns
-        dietInfo.dietAdditionalInfo = loaded.dietAdditionalInfo
-        
-        petTags.warningTags = loaded.warningTags
-        petTags.featureTags = loaded.specificTags
-        warningTagsViewModel.tags = petTags.warningTags
-        featureTagsViewModel.tags = petTags.featureTags
-    }
-    
     // MARK: - Приватные методы
     private func makeCurrentPhotoURL(from pet: Pet) -> URL? {
-        guard let photoPath = pet.photos.first(where: { $0.isMain })?.imageURL ?? pet.photos.first?.imageURL,
+        guard let photoPath = pet.photos.first(where: \.isMain)?.imageURL
+              ?? pet.photos.first?.imageURL,
               !photoPath.isEmpty else { return nil }
         
         return baseURL.appendingPathComponent(photoPath)

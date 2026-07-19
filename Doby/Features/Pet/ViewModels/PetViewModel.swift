@@ -8,7 +8,9 @@ final class PetViewModel: ViewModel {
     private let storage: PetStorage
     private let ownerUUID: String
     
-    var pets: [Pet] { storage.pets }
+//    var pets: [Pet] { storage.pets }
+    
+    var pets: [Pet] = []
     
     init(
         repository: PetRepositoryProtocol,
@@ -22,7 +24,8 @@ final class PetViewModel: ViewModel {
     
     func fetchPets() async {
         await perform {
-            try await repository.fetchPets(from: ownerUUID)
+            self.pets = try await repository.fetchPets(from: ownerUUID)
+            
         }
     }
 

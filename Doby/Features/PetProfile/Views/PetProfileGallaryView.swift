@@ -3,7 +3,7 @@ import Kingfisher
 
 struct PetProfileGallaryView: View {
     @Binding var currentPage: Int
-    let items: [PetPhoto]
+    let items: [PetPhoto?]
     
     private let baseURL = APIConstants.getImageBaseURL()
     
@@ -19,7 +19,7 @@ struct PetProfileGallaryView: View {
         ZStack {
             PrimarySlider(
                 currentPage: $currentPage,
-                items: items,
+                items: items as! [PetPhoto],
             ) { slide in
                 Group {
                     if isPreview {

@@ -1,5 +1,3 @@
-import Foundation
-
 protocol UserRepositoryProtocol {
     func getMe() async throws -> User
     func getUser(with uuid: String) async throws -> User
