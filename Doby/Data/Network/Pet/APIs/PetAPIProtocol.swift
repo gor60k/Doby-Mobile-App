@@ -6,5 +6,5 @@ protocol PetAPIProtocol {
     func fetchPet(with petId: Int, from ownerUUID: String) async throws -> PetDTO
     func delete(_ petId: Int) async throws -> EmptyDTO
     func updatePet(_ request: UpdatePetRequest, with petId: Int) async throws -> PetDTO
-    func uploadPetPhoto(_ request: PetPhotoRequest, with petId: Int) async throws -> PetPhotoDTO
+    func uploadPetPhoto(_ request: PhotoRequest, with petId: Int) async throws -> PhotoDTO
 }

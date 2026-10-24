@@ -29,7 +29,7 @@ final class MockPetStorage {
             additionalInfo: "",
             dietAdditionalInfo: "Аллергия на курицу. Нельзя сладкое и трубчатые кости. В период линьки принимает витамины для шерсти.",
             photos: [
-                PetPhoto(
+                Photo(
                     id: 1,
                     imageURL: "PetAvatarPlaceholder",
                     orderNumber: 1,

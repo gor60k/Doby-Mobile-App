@@ -18,5 +18,5 @@ struct PetDTO: Codable, Sendable {
     let specific_features: [String]
     let additional_info: String
     let diet_additional_info: String
-    let photos: [PetPhotoDTO]
+    let photos: [PhotoDTO]
 }

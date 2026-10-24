@@ -65,7 +65,7 @@ final class PetRepository: PetRepositoryProtocol {
         try await storage.update(pet)
     }
     
-    func uploadPetPhoto(_ input: PetPhotoInput, with petId: Int) async throws {
+    func uploadPetPhoto(_ input: PhotoInput, with petId: Int) async throws {
         let request = PetPhotoMapper.mapToRequest(from: input)
         let response = try await api.uploadPetPhoto(request, with: petId)
         let petPhoto = PetPhotoMapper.mapToDomain(from: response)

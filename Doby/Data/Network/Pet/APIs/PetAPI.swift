@@ -27,7 +27,7 @@ final class PetAPI: PetAPIProtocol {
         try await apiClient.request(UpdatePetEndpoint(request: request, petId: petId))
     }
     
-    func uploadPetPhoto(_ request: PetPhotoRequest, with petId: Int) async throws -> PetPhotoDTO {
+    func uploadPetPhoto(_ request: PhotoRequest, with petId: Int) async throws -> PhotoDTO {
         try await apiClient.request(UploadPetPhotoEndpoint(request: request, petId: petId))
     }
 }
