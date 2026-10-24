@@ -88,7 +88,7 @@ final class SettingsViewModel: ViewModel {
     
     func uploadPhoto(_ data: Data) async {
         await perform {
-            let input = UserPhotoInput(
+            let input = PhotoInput(
                 image: data,
                 orderNumber: photos.count + 1,
                 isMain: photos.isEmpty

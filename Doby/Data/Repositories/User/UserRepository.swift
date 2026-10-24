@@ -67,7 +67,7 @@ final class UserRepository: UserRepositoryProtocol {
         return cities
     }
     
-    func uploadPhoto(_ input: UserPhotoInput) async throws {
+    func uploadPhoto(_ input: PhotoInput) async throws {
         let request = UserPhotoMapper.mapToRequest(from: input)
         let response = try await api.uploadPhoto(request)
         let photos = UserPhotoMapper.mapToDomain(from: response)

@@ -2,9 +2,9 @@ import Foundation
 import Alamofire
 
 struct UploadUserPhotoEndpoint: APIEndpointProtocol {
-    typealias Response = [UserPhotoDTO]
+    typealias Response = [PhotoDTO]
     
-    let request: UserPhotoRequest
+    let request: PhotoRequest
     
     var isMultipart: Bool { true }
     var baseURL: URL { APIConstants.baseURL }
@@ -20,9 +20,10 @@ struct UploadUserPhotoEndpoint: APIEndpointProtocol {
         )
         
         formData.append(Data("\(request.order_number)".utf8), withName: "order_number")
+        formData.append(Data("\(request.is_main, default: "false")".utf8), withName: "is_main")
         
-        if let isMain = request.is_main {
-            formData.append(Data("\(isMain, default: "false")".utf8), withName: "is_main")
-        }
+//        if let isMain = request.is_main {
+//            formData.append(Data("\(isMain, default: "false")".utf8), withName: "is_main")
+//        }
     }
 }

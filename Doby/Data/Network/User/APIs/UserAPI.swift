@@ -26,7 +26,7 @@ final class UserAPI: UserAPIProtocol {
         try await apiClient.request(GetCitiesEndpoint())
     }
     
-    func uploadPhoto(_ request: UserPhotoRequest) async throws -> [UserPhotoDTO] {
+    func uploadPhoto(_ request: PhotoRequest) async throws -> [PhotoDTO] {
         try await apiClient.request(UploadUserPhotoEndpoint(request: request))
     }
 }

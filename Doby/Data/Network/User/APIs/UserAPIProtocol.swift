@@ -3,5 +3,5 @@ protocol UserAPIProtocol {
     func getUser(with userUUID: String) async throws -> UserDTO
     func updateMe(_ request: UpdateUserRequest) async throws -> UserDTO
     func getCities() async throws -> [CityDTO]
-    func uploadPhoto(_ request: UserPhotoRequest) async throws -> [UserPhotoDTO]
+    func uploadPhoto(_ request: PhotoRequest) async throws -> [PhotoDTO]
 }

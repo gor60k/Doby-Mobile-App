@@ -22,5 +22,5 @@ final class MockUserRepository: UserRepositoryProtocol {
         ]
     }
     
-    func uploadPhoto(_ input: UserPhotoInput) async throws {}
+    func uploadPhoto(_ input: PhotoInput) async throws {}
 }

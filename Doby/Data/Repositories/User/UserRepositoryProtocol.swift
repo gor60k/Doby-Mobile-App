@@ -3,5 +3,5 @@ protocol UserRepositoryProtocol {
     func getUser(with uuid: String) async throws -> User
     func updateMe(_ input: UpdateUserInput) async throws
     func getCities() async throws -> [City]
-    func uploadPhoto(_ input: UserPhotoInput) async throws
+    func uploadPhoto(_ input: PhotoInput) async throws
 }
