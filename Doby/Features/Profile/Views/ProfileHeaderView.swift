@@ -3,7 +3,7 @@ import Kingfisher
 
 struct ProfileHeaderView: View {
     let uuid: String?
-    let photo: UserPhoto?
+    let photo: Photo?
     let username: String?
     let firstName: String?
     let lastName: String?
@@ -65,7 +65,7 @@ struct ProfileHeaderView: View {
         VStack {
             ProfileHeaderView(
                 uuid: "228",
-                photo: UserPhoto(
+                photo: Photo(
                     id: 1,
                     imageURL: "",
                     orderNumber: 1,
