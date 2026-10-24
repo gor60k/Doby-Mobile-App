@@ -142,20 +142,3 @@ struct ProfileScreen: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        ProfileScreen(
-            viewModel: .mock,
-            profilePetsViewModel: .mock,
-            profileOrdersViewModel: .mock,
-            profileNavigation: ProfileNavigation(
-                openSettings: {},
-                openPetAdding: {},
-                openPetProfile: {_ in}
-            )
-        )
-        .PreviewAppEnvironment()
-        .environment(ProfileRouter())
-    }
-}

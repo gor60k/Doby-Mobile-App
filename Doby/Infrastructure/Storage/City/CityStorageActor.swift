@@ -1,4 +1,5 @@
 import Foundation
+import GRDB
 
 actor CityStorageActor {
     
@@ -28,3 +29,11 @@ actor CityStorageActor {
         defaults.set(data, forKey: storageKey)
     }
 }
+
+//actor CityStorageActor {
+//    private let dbPool: DatabasePool
+//    
+//    init(dbPool: DatabasePool) {
+//        self.dbPool = dbPool
+//    }
+//}

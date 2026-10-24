@@ -42,14 +42,14 @@ final class PetViewModel: ViewModel {
     }
 }
 
-extension PetViewModel {
-    static var mock: PetViewModel {
-        let storage = PetStorage()
-        
-        return PetViewModel(
-            repository: MockPetRepository(),
-            storage: storage,
-            ownerUUID: ""
-        )
-    }
-}
+//extension PetViewModel {
+//    static var mock: PetViewModel {
+//        let storage = PetStorage()
+//        
+//        return PetViewModel(
+//            repository: MockPetRepository(),
+//            storage: storage,
+//            ownerUUID: ""
+//        )
+//    }
+//}

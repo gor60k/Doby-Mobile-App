@@ -79,12 +79,12 @@ struct PetScreen: View {
     }
 }
 
-#Preview {
-    PetScreen(
-        viewModel: .mock,
-        ownerUUID: "",
-        openPetAdding: {},
-        openPetProfile: { id in }
-    )
-    .PreviewAppEnvironment()
-}
+//#Preview {
+//    PetScreen(
+//        viewModel: .mock,
+//        ownerUUID: "",
+//        openPetAdding: {},
+//        openPetProfile: { id in }
+//    )
+//    .PreviewAppEnvironment()
+//}

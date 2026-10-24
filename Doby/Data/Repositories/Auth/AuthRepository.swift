@@ -38,8 +38,8 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.save(user)
-        petStorage.pets = user.pets ?? []
+        try await storage.save(user)
+        await startStorages(for: user.uuid)
     }
     
     func login(input: LoginInput) async throws {
@@ -59,8 +59,8 @@ final class AuthRepository: AuthRepositoryProtocol {
         session.setAuthenticated(true)
         session.setRegistered(true)
         
-        storage.save(user)
-        petStorage.pets = user.pets ?? []
+        try await storage.save(user)
+        await startStorages(for: user.uuid)
     }
     
     func logout() async throws {
@@ -88,5 +88,11 @@ final class AuthRepository: AuthRepositoryProtocol {
     private func deleteTokens() {
         keychain.deleteToken(for: .accessToken)
         keychain.deleteToken(for: .refreshToken)
+    }
+    
+    @MainActor
+    private func startStorages(for uuid: String) {
+        storage.start(userUUID: uuid)
+        petStorage.start(ownerUUID: uuid)
     }
 }

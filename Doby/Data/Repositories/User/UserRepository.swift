@@ -29,7 +29,7 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await api.getMe()
         let user = UserMapper.mapToDomain(from: response)
         
-        userStorage.save(user)
+        try await userStorage.save(user)
         return user
     }
     
@@ -45,7 +45,7 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await api.updateMe(request)
         let user = UserMapper.mapToDomain(from: response)
         
-        userStorage.update { currentUser in
+        try await userStorage.patch { currentUser in
             currentUser.firstName = user.firstName
             currentUser.lastName = user.lastName
             currentUser.patronymic = user.patronymic
@@ -72,7 +72,7 @@ final class UserRepository: UserRepositoryProtocol {
         let response = try await api.uploadPhoto(request)
         let photos = UserPhotoMapper.mapToDomain(from: response)
         
-        userStorage.update { user in
+        try await userStorage.patch { user in
             user.photos = photos
         }
     }

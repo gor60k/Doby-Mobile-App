@@ -10,5 +10,5 @@ struct User: Codable {
     var city: City?
     var bio: String?
     var pets: [Pet]?
-    var photos: [Photo]?
+    var photos: [UserPhoto]?
 }

@@ -1,7 +1,6 @@
 import Foundation
 
-nonisolated
-struct PetPhotoResponse: Codable {
+nonisolated struct PetPhotoResponse: Codable {
     let id: Int
     let image_url: String
     let order_number: Int

@@ -4,7 +4,7 @@ import Observation
 @MainActor
 @Observable
 final class ChatViewModel {
-    private let repository: ChatRepository
+//    private let repository: ChatRepository
     private let storage: ChatStorage
     private let socket :WebSocketService
     
@@ -16,12 +16,12 @@ final class ChatViewModel {
     var error: String?
     
     init(
-        repository: ChatRepository,
+//        repository: ChatRepository,
         storage: ChatStorage,
         socket: WebSocketService,
         chatId: Int
     ) {
-        self.repository = repository
+//        self.repository = repository
         self.storage = storage
         self.socket = socket
         self.chatId = chatId
@@ -41,7 +41,7 @@ final class ChatViewModel {
     
     func fetchChat() async {
         await perform {
-            try await repository.getChat(with: chatId)
+//            try await repository.getChat(with: chatId)
         }
     }
     

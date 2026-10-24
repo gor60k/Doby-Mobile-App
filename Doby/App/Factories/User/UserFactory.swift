@@ -6,7 +6,7 @@ extension AppContainer {
             currentUserProvider: userStorage,
             userRepository: userRepository,
             petRepository: petRepository,
-            chatRepository: chatRepository,
+//            chatRepository: chatRepository,
             target: target
         )
     }

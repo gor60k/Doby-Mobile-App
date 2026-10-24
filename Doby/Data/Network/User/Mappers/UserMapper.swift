@@ -18,19 +18,4 @@ struct UserMapper {
     nonisolated static func mapToDomain(from dtos: [UserDTO]) -> [User] {
         dtos.map(mapToDomain(from:))
     }
-    
-    // MARK: - Маппинг в модель для SQLite
-    nonisolated static func mapToRecord(from dto: UserDTO) -> UserRecord {
-        UserRecord(
-            uuid: dto.uuid,
-            username: dto.username,
-            firstName: dto.first_name,
-            lastName: dto.last_name,
-            patronymic: dto.patronymic
-        )
-    }
-    
-    nonisolated static func mapToRecord(from dtos: [UserDTO]) -> [UserRecord] {
-        dtos.map(mapToRecord(from:))
-    }
 }

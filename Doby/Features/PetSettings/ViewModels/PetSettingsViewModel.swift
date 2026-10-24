@@ -104,16 +104,16 @@ final class PetSettingsViewModel: ViewModel {
     }
 }
 
-extension PetSettingsViewModel {
-    static var mock: PetSettingsViewModel {
-        let repository = MockPetRepository()
-        let storage = PetStorage()
-        
-        return PetSettingsViewModel(
-            petRepository: repository,
-            petStorage: storage,
-            petId: 1,
-            ownerUUID: ""
-        )
-    }
-}
+//extension PetSettingsViewModel {
+//    static var mock: PetSettingsViewModel {
+//        let repository = MockPetRepository()
+//        let storage = PetStorage()
+//        
+//        return PetSettingsViewModel(
+//            petRepository: repository,
+//            petStorage: storage,
+//            petId: 1,
+//            ownerUUID: ""
+//        )
+//    }
+//}

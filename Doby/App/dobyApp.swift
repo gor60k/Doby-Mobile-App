@@ -23,7 +23,7 @@ struct dobyApp: App {
                     container: appContainer,
                     themeService: themeService,
                     primaryColorService: primaryColorService,
-                    viewContextService: appContainer.viewContextService
+//                    viewContextService: appContainer.viewContextService
                 )
         }
     }

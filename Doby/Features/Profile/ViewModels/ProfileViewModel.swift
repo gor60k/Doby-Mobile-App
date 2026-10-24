@@ -11,7 +11,7 @@ final class ProfileViewModel: ViewModel {
     // MARK: - Репозитории сущностей
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
-    private let chatRepository: ChatRepositoryProtocol
+//    private let chatRepository: ChatRepositoryProtocol
     
     private(set) var user: User?
     private(set) var pets: [Pet] = []
@@ -26,14 +26,14 @@ final class ProfileViewModel: ViewModel {
         currentUserProvider: CurrentUserProviding,
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
-        chatRepository: ChatRepositoryProtocol,
+//        chatRepository: ChatRepositoryProtocol,
         target: ProfileTarget = .currentUser
     ) {
         self.viewContextService = viewContextService
         self.currentUserProvider = currentUserProvider
         self.userRepository = userRepository
         self.petRepository = petRepository
-        self.chatRepository = chatRepository
+//        self.chatRepository = chatRepository
         self.target = target
     }
     
@@ -68,7 +68,7 @@ final class ProfileViewModel: ViewModel {
             guard let myUUID, let otherUUID else { return }
             
             let input = CreateChatInput.direct(participants: [myUUID, otherUUID])
-            try await chatRepository.creageChat(input)
+//            try await chatRepository.creageChat(input)
         }
     }
     
@@ -80,23 +80,5 @@ final class ProfileViewModel: ViewModel {
         case .user(let uuid):
             return try await userRepository.getUser(with: uuid)
         }
-    }
-}
-
-extension ProfileViewModel {
-    static var mock: ProfileViewModel {
-        let viewContextService = ViewContextService(currentUserProvider: UserStorage())
-        let currentUserProvider = UserStorage()
-        let userRepository = MockUserRepository()
-        let petRepository = MockPetRepository()
-        let chatRepository = MockChatRepository()
-        
-        return ProfileViewModel(
-            viewContextService: viewContextService,
-            currentUserProvider: currentUserProvider,
-            userRepository: userRepository,
-            petRepository: petRepository,
-            chatRepository: chatRepository,
-        )
     }
 }

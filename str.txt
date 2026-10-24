@@ -1,0 +1,661 @@
+.
+├── alex-sokolov-rng9oG8FHyI-unsplash.jpg
+├── Doby
+│   ├── App
+│   │   ├── AppRootView.swift
+│   │   ├── Containers
+│   │   │   └── AppContainer.swift
+│   │   ├── dobyApp.swift
+│   │   ├── EnvironmentKeys
+│   │   │   └── AppContainerKey.swift
+│   │   ├── Factories
+│   │   │   ├── Auth
+│   │   │   │   └── AuthFactory.swift
+│   │   │   ├── Pet
+│   │   │   │   └── PetFactory.swift
+│   │   │   ├── Settings
+│   │   │   │   └── SettingsFactory.swift
+│   │   │   └── User
+│   │   │       └── UserFactory.swift
+│   │   └── Models
+│   │       ├── AppPrimaryColor.swift
+│   │       └── AppTheme.swift
+│   ├── Assets.xcassets
+│   │   ├── AccentColor.colorset
+│   │   │   └── Contents.json
+│   │   ├── AppIcon.appiconset
+│   │   │   ├── Contents.json
+│   │   │   ├── Монтажная область 1.png
+│   │   │   ├── Монтажная область 2.png
+│   │   │   └── Монтажная область 3.png
+│   │   ├── Contents.json
+│   │   ├── MockLogo.imageset
+│   │   │   ├── Contents.json
+│   │   │   ├── Монтажная область 1.png
+│   │   │   ├── Монтажная область 2.png
+│   │   │   └── Монтажная область 3.png
+│   │   ├── MockUserIcon.imageset
+│   │   │   ├── Contents.json
+│   │   │   └── f4791e8c01d83f6af819689ab4bfb104.jpg
+│   │   ├── PetAvatarPlaceholder.imageset
+│   │   │   ├── Contents.json
+│   │   │   └── da976561469e2a75578c596220ee6aed.jpg
+│   │   ├── PrimaryBackgroundColor.colorset
+│   │   │   └── Contents.json
+│   │   ├── PrimaryBlue.colorset
+│   │   │   └── Contents.json
+│   │   ├── PrimaryBlueLight.colorset
+│   │   │   └── Contents.json
+│   │   ├── PrimaryGreen.colorset
+│   │   │   └── Contents.json
+│   │   ├── PrimaryGreenLight.colorset
+│   │   │   └── Contents.json
+│   │   ├── PrimaryYellow.colorset
+│   │   │   └── Contents.json
+│   │   ├── PrimaryYellowLight.colorset
+│   │   │   └── Contents.json
+│   │   ├── ProfileAvatarPlaceholder.imageset
+│   │   │   ├── 2026-03-28 13.12.16.jpg
+│   │   │   └── Contents.json
+│   │   ├── QRScreenBackgroundBlue.imageset
+│   │   │   ├── Contents.json
+│   │   │   └── karsten-winegeart-oU6KZTXhuvk-unsplash.jpg
+│   │   ├── QRScreenBackgroundGreen.imageset
+│   │   │   ├── Contents.json
+│   │   │   └── karsten-winegeart-BJaqPaH6AGQ-unsplash.jpg
+│   │   ├── QRScreenBackgroundYellow.imageset
+│   │   │   ├── Contents.json
+│   │   │   └── karsten-winegeart-WaMMo0it6Vg-unsplash.jpg
+│   │   ├── TelegramBlue.colorset
+│   │   │   └── Contents.json
+│   │   └── welcomeImage.imageset
+│   │       ├── alex-sokolov-rng9oG8FHyI-unsplash.jpg
+│   │       └── Contents.json
+│   ├── Core
+│   │   ├── DesignSystem
+│   │   │   ├── Extensions
+│   │   │   │   └── Text.swift
+│   │   │   ├── Media
+│   │   │   │   └── Image.swift
+│   │   │   └── Typography
+│   │   │       ├── Font.swift
+│   │   │       ├── TextColor.swift
+│   │   │       ├── TextStyle.swift
+│   │   │       ├── Typography.swift
+│   │   │       └── ViewModifier
+│   │   │           └── AppTextStyleViewModifier.swift
+│   │   ├── Extensions
+│   │   │   ├── Int.swift
+│   │   │   ├── String.swift
+│   │   │   └── View.swift
+│   │   └── ViewModels
+│   │       └── ViewModel.swift
+│   ├── Data
+│   │   ├── Database
+│   │   │   ├── Chat
+│   │   │   │   ├── Migrations
+│   │   │   │   │   ├── CreateChatParticipantsTable.swift
+│   │   │   │   │   └── CreateChatsTable.swift
+│   │   │   │   └── Models
+│   │   │   │       ├── ChatParticipantRecord.swift
+│   │   │   │       └── ChatRecord.swift
+│   │   │   ├── Cities
+│   │   │   │   ├── Migrations
+│   │   │   │   │   └── CreateCitiesTable.swift
+│   │   │   │   └── Models
+│   │   │   │       └── CityRecord.swift
+│   │   │   ├── Message
+│   │   │   │   ├── Migrations
+│   │   │   │   │   └── CreateMessagesTable.swift
+│   │   │   │   └── Models
+│   │   │   │       └── MessageRecord.swift
+│   │   │   ├── Pet
+│   │   │   │   ├── Migrations
+│   │   │   │   │   ├── CreatePetPhotoTable.swift
+│   │   │   │   │   └── CreatePetsTable.swift
+│   │   │   │   └── Models
+│   │   │   │       ├── PetPhotoRecord.swift
+│   │   │   │       └── PetRecord.swift
+│   │   │   └── User
+│   │   │       ├── Migrations
+│   │   │       │   ├── CreateUserPhotoTable.swift
+│   │   │       │   └── CreateUsersTable.swift
+│   │   │       └── Models
+│   │   │           ├── UserPhotoRecord.swift
+│   │   │           └── UserRecord.swift
+│   │   ├── Network
+│   │   │   ├── Auth
+│   │   │   │   ├── APIs
+│   │   │   │   │   ├── AuthAPI.swift
+│   │   │   │   │   └── AuthAPIProtocol.swift
+│   │   │   │   ├── DTOs
+│   │   │   │   │   ├── Request
+│   │   │   │   │   │   ├── LoginRequest.swift
+│   │   │   │   │   │   ├── RefreshRequest.swift
+│   │   │   │   │   │   ├── RegisterRequest.swift
+│   │   │   │   │   │   └── TokenRequest.swift
+│   │   │   │   │   └── Response
+│   │   │   │   │       ├── LoginResponse.swift
+│   │   │   │   │       ├── RefreshResponse.swift
+│   │   │   │   │       ├── RegisterResponse.swift
+│   │   │   │   │       └── TokenResponse.swift
+│   │   │   │   ├── Endpoints
+│   │   │   │   │   ├── LoginEndpoint.swift
+│   │   │   │   │   ├── LogoutEndpoint.swift
+│   │   │   │   │   ├── RefreshEndpoint.swift
+│   │   │   │   │   ├── RegisterEndpoint.swift
+│   │   │   │   │   └── TokenEndpoint.swift
+│   │   │   │   └── Mappers
+│   │   │   │       ├── LoginRequestMapper.swift
+│   │   │   │       ├── RefreshRequestMapper.swift
+│   │   │   │       └── RegisterRequestMapper.swift
+│   │   │   ├── Chat
+│   │   │   │   ├── APIs
+│   │   │   │   │   ├── ChatAPI.swift
+│   │   │   │   │   └── ChatAPIProtocol.swift
+│   │   │   │   ├── DTOs
+│   │   │   │   │   ├── Request
+│   │   │   │   │   │   ├── CreateChatRequest.swift
+│   │   │   │   │   │   └── MessageRequest.swift
+│   │   │   │   │   ├── Response
+│   │   │   │   │   │   └── MessageResponse.swift
+│   │   │   │   │   └── Shared
+│   │   │   │   │       ├── ChatDTO.swift
+│   │   │   │   │       ├── ChatPayload.swift
+│   │   │   │   │       ├── MessageDTO.swift
+│   │   │   │   │       └── MessageTypeDTO.swift
+│   │   │   │   ├── Endpoints
+│   │   │   │   │   ├── CreateChatEndpoint.swift
+│   │   │   │   │   ├── GetChatEndpoint.swift
+│   │   │   │   │   └── SendMessageEndpoint.swift
+│   │   │   │   └── Mappers
+│   │   │   │       ├── ChatMapper.swift
+│   │   │   │       ├── ChatRequestMapper.swift
+│   │   │   │       ├── MessageMapper.swift
+│   │   │   │       └── MessageRequestMapper.swift
+│   │   │   ├── Core
+│   │   │   │   ├── APIClient.swift
+│   │   │   │   ├── APIConstants.swift
+│   │   │   │   ├── AuthInterceptor.swift
+│   │   │   │   ├── DTOs
+│   │   │   │   │   └── Shared
+│   │   │   │   │       └── EmptyDTO.swift
+│   │   │   │   ├── Models
+│   │   │   │   │   └── HTTPMethod.swift
+│   │   │   │   └── Protocols
+│   │   │   │       ├── APIClientProtocol.swift
+│   │   │   │       └── APIEndpointProtocol.swift
+│   │   │   ├── Pet
+│   │   │   │   ├── APIs
+│   │   │   │   │   ├── PetAPI.swift
+│   │   │   │   │   └── PetAPIProtocol.swift
+│   │   │   │   ├── DTOs
+│   │   │   │   │   ├── Request
+│   │   │   │   │   │   ├── PetPhotoRequest.swift
+│   │   │   │   │   │   ├── PetRequest.swift
+│   │   │   │   │   │   └── UpdatePetRequest.swift
+│   │   │   │   │   ├── Response
+│   │   │   │   │   │   ├── PetPhotoResponse.swift
+│   │   │   │   │   │   └── PetResponse.swift
+│   │   │   │   │   └── Shared
+│   │   │   │   │       ├── PetDTO.swift
+│   │   │   │   │       ├── PetGenderDTO.swift
+│   │   │   │   │       ├── PetPhotoDTO.swift
+│   │   │   │   │       └── PetTypeDTO.swift
+│   │   │   │   ├── Endpoints
+│   │   │   │   │   ├── CreateEndpoint.swift
+│   │   │   │   │   ├── DeletePetEndpoint.swift
+│   │   │   │   │   ├── GetAllEndpoint.swift
+│   │   │   │   │   ├── GetPetEndpoint.swift
+│   │   │   │   │   ├── UpdatePetEndpoint.swift
+│   │   │   │   │   └── UploadPetPhotoEndpoint.swift
+│   │   │   │   └── Mappers
+│   │   │   │       ├── PetGenderMapper.swift
+│   │   │   │       ├── PetMapper.swift
+│   │   │   │       ├── PetPhotoMapper.swift
+│   │   │   │       ├── PetTypeMapper.swift
+│   │   │   │       └── UpdatePetMapper.swift
+│   │   │   └── User
+│   │   │       ├── APIs
+│   │   │       │   ├── UserAPI.swift
+│   │   │       │   └── UserAPIProtocol.swift
+│   │   │       ├── DTOs
+│   │   │       │   ├── Request
+│   │   │       │   │   ├── UpdateUserRequest.swift
+│   │   │       │   │   └── UserPhotoRequest.swift
+│   │   │       │   ├── Response
+│   │   │       │   │   └── MeResponse.swift
+│   │   │       │   └── Shared
+│   │   │       │       ├── CityDTO.swift
+│   │   │       │       ├── UserDTO.swift
+│   │   │       │       └── UserPhotoDTO.swift
+│   │   │       ├── Endpoints
+│   │   │       │   ├── DeleteMeEndpoint.swift
+│   │   │       │   ├── GetCitiesEndpoint.swift
+│   │   │       │   ├── GetMeEndpoint.swift
+│   │   │       │   ├── GetUserEndpoint.swift
+│   │   │       │   ├── UpdateMeEndpoint.swift
+│   │   │       │   └── UploadUserPhotoEndpoint.swift
+│   │   │       └── Mappers
+│   │   │           ├── CityMapper.swift
+│   │   │           ├── UpdateUserMapper.swift
+│   │   │           ├── UserMapper.swift
+│   │   │           └── UserPhotoMapper.swift
+│   │   └── Repositories
+│   │       ├── Auth
+│   │       │   ├── AuthRepository.swift
+│   │       │   └── AuthRepositoryProtocol.swift
+│   │       ├── Chat
+│   │       │   ├── ChatRepository.swift
+│   │       │   └── ChatRepositoryProtocol.swift
+│   │       ├── Pet
+│   │       │   ├── PetRepositoryProtocol.swift
+│   │       │   └── PetRerository.swift
+│   │       ├── Settings
+│   │       │   ├── SettingsRepository.swift
+│   │       │   └── SettingsRepositoryProtocol.swift
+│   │       └── User
+│   │           ├── UserRepository.swift
+│   │           └── UserRepositoryProtocol.swift
+│   ├── Domain
+│   │   ├── Models
+│   │   │   ├── Chat
+│   │   │   │   ├── Chat.swift
+│   │   │   │   ├── Message.swift
+│   │   │   │   ├── MessageStatus.swift
+│   │   │   │   └── MessageType.swift
+│   │   │   ├── Order
+│   │   │   │   └── Order.swift
+│   │   │   ├── Pet
+│   │   │   │   ├── Pet.swift
+│   │   │   │   ├── PetGender.swift
+│   │   │   │   ├── PetPhoto.swift
+│   │   │   │   └── PetType.swift
+│   │   │   ├── Shared
+│   │   │   │   ├── City.swift
+│   │   │   │   ├── DeepLink.swift
+│   │   │   │   ├── DisplayMode.swift
+│   │   │   │   ├── Gender.swift
+│   │   │   │   ├── Photo.swift
+│   │   │   │   ├── ProfileTarget.swift
+│   │   │   │   ├── SitterProfile.swift
+│   │   │   │   └── TagType.swift
+│   │   │   └── User
+│   │   │       ├── User.swift
+│   │   │       ├── UserPhoto.swift
+│   │   │       └── UserTarget.swift
+│   │   └── Protocols
+│   ├── Features
+│   │   ├── Auth
+│   │   │   ├── Components
+│   │   │   │   ├── AuthBottomBarView.swift
+│   │   │   │   ├── AuthEmailFieldView.swift
+│   │   │   │   ├── AuthHeaderView.swift
+│   │   │   │   └── AuthPasswordFieldView.swift
+│   │   │   ├── Models
+│   │   │   │   ├── LoginInput.swift
+│   │   │   │   ├── RefreshInput.swift
+│   │   │   │   └── RegisterInput.swift
+│   │   │   ├── Screens
+│   │   │   │   ├── SignInScreen.swift
+│   │   │   │   └── SignUpScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── AuthViewModel.swift
+│   │   │   └── Views
+│   │   ├── Chat
+│   │   │   ├── Models
+│   │   │   │   ├── CreateChatInput.swift
+│   │   │   │   └── MessageInput.swift
+│   │   │   ├── Screens
+│   │   │   │   ├── ChatRoomScreen.swift
+│   │   │   │   └── ChatScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── ChatViewModel.swift
+│   │   │   └── Views
+│   │   │       └── ChatItemView.swift
+│   │   ├── Orders
+│   │   │   ├── Models
+│   │   │   ├── Modifiers
+│   │   │   │   ├── OrdersToolbarModifier.swift
+│   │   │   │   └── OrdersTopBarModifier.swift
+│   │   │   ├── Screens
+│   │   │   │   ├── OrdersChooseScreen.swift
+│   │   │   │   ├── OrdersScreen.swift
+│   │   │   │   └── OrdersSitterScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── OrdersViewModel.swift
+│   │   │   └── Views
+│   │   │       └── OrdersListView.swift
+│   │   ├── Pet
+│   │   │   ├── Models
+│   │   │   ├── Modifiers
+│   │   │   │   └── PetToolbarModifier.swift
+│   │   │   ├── Screens
+│   │   │   │   └── PetScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── PetViewModel.swift
+│   │   │   └── Views
+│   │   │       └── PetCard.swift
+│   │   ├── PetAdding
+│   │   │   ├── Models
+│   │   │   │   └── CreatePetInput.swift
+│   │   │   ├── Screens
+│   │   │   │   └── PetAddingScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── PetAddingViewModel.swift
+│   │   │   └── Views
+│   │   │       ├── PetAddingDetailsView.swift
+│   │   │       ├── PetAddingFeatureView.swift
+│   │   │       ├── PetAddingInfoView.swift
+│   │   │       ├── PetAddingNutritionView.swift
+│   │   │       ├── PetAddingPhotoView.swift
+│   │   │       ├── PetAddingSubmitView.swift
+│   │   │       └── PetAddingTagsView.swift
+│   │   ├── PetProfile
+│   │   │   ├── Components
+│   │   │   │   ├── PetProfileInfoCardView.swift
+│   │   │   │   └── PetProfileLabelView.swift
+│   │   │   ├── Models
+│   │   │   │   ├── PetAvaratSlide.swift
+│   │   │   │   └── PetProfileInfoItem.swift
+│   │   │   ├── Modifiers
+│   │   │   │   └── PetProfileToolbarModifier.swift
+│   │   │   ├── Screens
+│   │   │   │   └── PetProfileScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── PetProfileViewModel.swift
+│   │   │   └── Views
+│   │   │       ├── PetProfileAboutView.swift
+│   │   │       ├── PetProfileContentView.swift
+│   │   │       ├── PetProfileDetailsView.swift
+│   │   │       ├── PetProfileDietView.swift
+│   │   │       ├── PetProfileGallaryView.swift
+│   │   │       └── PetProfileTagsView.swift
+│   │   ├── PetSettings
+│   │   │   ├── Components
+│   │   │   ├── Models
+│   │   │   │   ├── PetDetails.swift
+│   │   │   │   ├── PetDiet.swift
+│   │   │   │   ├── PetForm.swift
+│   │   │   │   ├── PetPhotoInput.swift
+│   │   │   │   ├── PetTags.swift
+│   │   │   │   └── UpdatePetInput.swift
+│   │   │   ├── Screens
+│   │   │   │   └── PetSettingsScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   └── PetSettingsViewModel.swift
+│   │   │   └── Views
+│   │   │       ├── PetSettingsDetailsView.swift
+│   │   │       ├── PetSettingsDietView.swift
+│   │   │       └── PetSettingsTagsView.swift
+│   │   ├── Profile
+│   │   │   ├── Components
+│   │   │   │   ├── ProfilePetCardView.swift
+│   │   │   │   ├── ProfileQRAvatarView.swift
+│   │   │   │   └── ProfileServiceButtonView.swift
+│   │   │   ├── Models
+│   │   │   │   ├── ProfileDetailsTab.swift
+│   │   │   │   └── ProfilePetsSlide.swift
+│   │   │   ├── Modifiers
+│   │   │   │   └── ProfileToolbarModifier.swift
+│   │   │   ├── Screens
+│   │   │   │   ├── ProfileQRScreen.swift
+│   │   │   │   └── ProfileScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   ├── ProfileOrdersViewModel.swift
+│   │   │   │   ├── ProfilePetsViewModel.swift
+│   │   │   │   ├── ProfileQRViewModel.swift
+│   │   │   │   └── ProfileViewModel.swift
+│   │   │   └── Views
+│   │   │       ├── ProfileAboutView.swift
+│   │   │       ├── ProfileDetailsView.swift
+│   │   │       ├── ProfileHeaderView.swift
+│   │   │       ├── ProfilePetsView.swift
+│   │   │       ├── ProfileQRBottomView.swift
+│   │   │       ├── ProfileQRImageView.swift
+│   │   │       ├── ProfileReviewsView.swift
+│   │   │       └── ProfileServicesView.swift
+│   │   ├── RootTab
+│   │   │   ├── Models
+│   │   │   ├── ModelViews
+│   │   │   ├── RootTabView.swift
+│   │   │   └── Views
+│   │   ├── Settings
+│   │   │   ├── Models
+│   │   │   │   ├── PersonalInfo.swift
+│   │   │   │   ├── UpdateUserInput.swift
+│   │   │   │   └── UserPhotoInput.swift
+│   │   │   ├── Modifiers
+│   │   │   │   └── SettingsToolbarModifier.swift
+│   │   │   ├── Screens
+│   │   │   │   ├── SettingsAppearensScreen.swift
+│   │   │   │   ├── SettingsNotificationsScreen.swift
+│   │   │   │   ├── SettingsPrivacyScreen.swift
+│   │   │   │   └── SettingsScreen.swift
+│   │   │   ├── ViewModels
+│   │   │   │   ├── SettingsPrivacyViewModel.swift
+│   │   │   │   └── SettingsViewModel.swift
+│   │   │   └── Views
+│   │   │       ├── SettingsAccountActionsView.swift
+│   │   │       ├── SettingsAccountInfoView.swift
+│   │   │       ├── SettingsAppView.swift
+│   │   │       ├── SettingsBIOView.swift
+│   │   │       ├── SettingsPersonalInfoView.swift
+│   │   │       └── SettingsPetServicesView.swift
+│   │   └── Welcome
+│   │       ├── Models
+│   │       │   └── WelcomeSlide.swift
+│   │       ├── Screens
+│   │       │   └── WelcomeScreen.swift
+│   │       ├── ViewModels
+│   │       │   └── WelcomeViewModel.swift
+│   │       └── Views
+│   │           └── WelcomeSlideContentView.swift
+│   ├── Info.plist
+│   ├── Infrastructure
+│   │   ├── Managers
+│   │   │   ├── DeepLinkManager.swift
+│   │   │   ├── MigrationsManager.swift
+│   │   │   └── TokenManager.swift
+│   │   ├── Services
+│   │   │   ├── KeychainService.swift
+│   │   │   ├── LogService.swift
+│   │   │   ├── NetworkLogService.swift
+│   │   │   ├── PrimaryColorService.swift
+│   │   │   ├── SessionService.swift
+│   │   │   ├── ThemeService.swift
+│   │   │   ├── ViewContextService.swift
+│   │   │   └── WebSocketService.swift
+│   │   └── Storage
+│   │       ├── Chat
+│   │       │   ├── ChatStorage.swift
+│   │       │   └── ChatStorageActor.swift
+│   │       ├── City
+│   │       │   ├── CityStorage.swift
+│   │       │   └── CityStorageActor.swift
+│   │       ├── Pet
+│   │       │   ├── PetStorage.swift
+│   │       │   └── PetStorageActor.swift
+│   │       └── User
+│   │           ├── CurrentUserProviding.swift
+│   │           ├── UserStorage.swift
+│   │           └── UserStorageActor.swift
+│   ├── Mocks
+│   │   ├── Repositories
+│   │   │   ├── Auth
+│   │   │   │   └── MockAuthRepository.swift
+│   │   │   ├── Chat
+│   │   │   │   └── MockChatRepository.swift
+│   │   │   ├── Pet
+│   │   │   │   └── MockPetRepository.swift
+│   │   │   └── User
+│   │   │       └── MockUserRepository.swift
+│   │   ├── Services
+│   │   │   ├── MockKeychainService.swift
+│   │   │   └── MockSessionService.swift
+│   │   ├── Storage
+│   │   │   └── MockPetStorage.swift
+│   │   └── UserMock.swift
+│   ├── Navigation
+│   │   ├── AppRouter.swift
+│   │   ├── Models
+│   │   │   ├── Auth
+│   │   │   │   └── AuthRoute.swift
+│   │   │   ├── RootTab
+│   │   │   │   ├── Chat
+│   │   │   │   │   └── ChatRoute.swift
+│   │   │   │   ├── Orders
+│   │   │   │   │   └── OrdersRoute.swift
+│   │   │   │   ├── Pet
+│   │   │   │   │   └── PetRoute.swift
+│   │   │   │   ├── Profile
+│   │   │   │   │   ├── ProfileNavigation.swift
+│   │   │   │   │   └── ProfileRoute.swift
+│   │   │   │   └── RootTab.swift
+│   │   │   └── Settings
+│   │   │       ├── SettingsNavigation.swift
+│   │   │       └── SettingsRoute.swift
+│   │   ├── Routers.swift
+│   │   ├── Stacks
+│   │   │   ├── AuthStack.swift
+│   │   │   ├── RootTab
+│   │   │   │   ├── ChatStack.swift
+│   │   │   │   ├── OrdersStack.swift
+│   │   │   │   ├── PetStack.swift
+│   │   │   │   └── ProfileStack.swift
+│   │   │   ├── RootTabStack.swift
+│   │   │   ├── SettingsStack.swift
+│   │   │   └── WelcomeStack.swift
+│   │   └── Views
+│   │       └── CurrentFlowView.swift
+│   └── UIComponents
+│       ├── Actions
+│       │   ├── PrimaryButton
+│       │   │   ├── Models
+│       │   │   │   └── PrimaryButtonSize.swift
+│       │   │   └── PrimaryButton.swift
+│       │   └── UtilityButton
+│       │       └── UtilityButton.swift
+│       ├── Features
+│       │   ├── PrimaryFeedback
+│       │   │   └── PrimaryFeedback.swift
+│       │   ├── PrimaryGallary
+│       │   │   ├── Modifiers
+│       │   │   │   └── ZoomableModifier.swift
+│       │   │   ├── PrimaryGallary.swift
+│       │   │   ├── ViewModels
+│       │   │   │   └── PrimaryFullScreenGallaryViewModel.swift
+│       │   │   └── Views
+│       │   │       └── PrimaryGallaryPagination.swift
+│       │   ├── PrimaryOrderCard
+│       │   │   └── PrimaryOrderCard.swift
+│       │   ├── PrimaryQRScannerView
+│       │   ├── PrimaryTagsView
+│       │   │   ├── PrimaryTagsView.swift
+│       │   │   ├── TagFlow.swift
+│       │   │   └── ViewModels
+│       │   │       └── PrimaryTagsViewModel.swift
+│       │   ├── PrimaryZoomableImage
+│       │   │   └── PrimaryZoomableImage.swift
+│       │   └── QRScanner
+│       │       ├── DataScannerViewController.swift
+│       │       ├── PrimaryQRScannerView.swift
+│       │       └── PrimaryScannerCoordinator.swift
+│       ├── Forms
+│       │   ├── CityAutocompleteView
+│       │   │   └── CityAutocompleteView.swift
+│       │   ├── FormItemRow
+│       │   │   └── FormItemRow.swift
+│       │   ├── PrimaryAvatarPlaceholder
+│       │   │   └── PrimaryAvatarPlaceholder.swift
+│       │   ├── PrimaryPhotoPicker
+│       │   │   ├── Components
+│       │   │   │   ├── PrimaryPhotoPickerAvatar.swift
+│       │   │   │   └── PrimaryPhotoPickerCameraBadge.swift
+│       │   │   ├── PrimaryPhotoPicker.swift
+│       │   │   └── ViewModels
+│       │   │       └── PrimaryPhotoPickerViewModel.swift
+│       │   ├── PrimaryPicker
+│       │   │   └── PrimaryPicker.swift
+│       │   └── PrimaryTextField
+│       │       └── PrimaryTextField.swift
+│       ├── Layout
+│       │   ├── FlowLayout
+│       │   │   └── FlowLayout.swift
+│       │   ├── PrimaryCollapsibleSection
+│       │   │   └── PrimaryCollapsibleSection.swift
+│       │   ├── PrimaryEmptyView
+│       │   │   └── PrimaryEmptyView.swift
+│       │   ├── PrimaryPagination
+│       │   │   └── PrimaryPagination.swift
+│       │   ├── PrimarySlider
+│       │   │   └── PrimarySlider.swift
+│       │   ├── PrimaryTabsPager
+│       │   │   └── PrimaryTabsPager.swift
+│       │   ├── PrimaryZoomableView
+│       │   │   └── PrimaryZoomableView.swift
+│       │   └── PrimaryZoomView
+│       │       └── PrimaryZoomView.swift
+│       └── Typography
+│           ├── DividerLabel
+│           │   └── DividerLabel.swift
+│           ├── DividerWithTitle
+│           │   └── DividerWithTitle.swift
+│           ├── PrimaryFormSectionHeader
+│           │   └── PrimaryFormSectionHeader.swift
+│           ├── PrimaryText
+│           │   └── PrimaryText.swift
+│           └── ViewHeadline
+│               └── ViewHeadline.swift
+├── Doby.xcodeproj
+│   ├── project.pbxproj
+│   ├── project.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   ├── xcshareddata
+│   │   │   └── swiftpm
+│   │   │       ├── configuration
+│   │   │       └── Package.resolved
+│   │   └── xcuserdata
+│   │       └── aleksandrshabelnikov.xcuserdatad
+│   │           ├── Bookmarks
+│   │           │   └── bookmarks.plist
+│   │           ├── IDEFindNavigatorScopes.plist
+│   │           ├── ThemeSettings.json
+│   │           └── UserInterfaceState.xcuserstate
+│   ├── xcshareddata
+│   │   └── xcschemes
+│   │       └── doby.xcscheme
+│   └── xcuserdata
+│       └── aleksandrshabelnikov.xcuserdatad
+│           ├── xcdebugger
+│           │   └── Breakpoints_v2.xcbkptlist
+│           └── xcschemes
+│               └── xcschememanagement.plist
+├── dobyTests
+│   └── dobyTests.swift
+├── dobyUITests
+│   ├── dobyUITests.swift
+│   └── dobyUITestsLaunchTests.swift
+├── Documentation
+│   ├── Documentation.md
+│   └── Resources
+├── karsten-winegeart-BJaqPaH6AGQ-unsplash.jpg
+├── karsten-winegeart-oU6KZTXhuvk-unsplash.jpg
+├── karsten-winegeart-WaMMo0it6Vg-unsplash.jpg
+├── legacy
+│   ├── OldContainers
+│   │   ├── OldAppContainer.swift
+│   │   ├── OldAuthContainer.swift
+│   │   ├── OldInfrastructureContainer.swift
+│   │   ├── OldNetworkContainer.swift
+│   │   ├── OldPetContainer.swift
+│   │   └── OldUserContainer.swift
+│   └── OldNetwork
+│       ├── NativeAPIClient.swift
+│       ├── NativeMultypartFormDataBuilder.swift
+│       └── OldProtocols
+│           ├── OldAPIClientProtocol.swift
+│           └── OldAPIEndpointProtocol.swift
+└── str.txt
+
+261 directories, 398 files

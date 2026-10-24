@@ -131,18 +131,18 @@ final class SettingsViewModel: ViewModel {
     }
 }
 
-extension SettingsViewModel {
-    static var mock: SettingsViewModel {
-        let authRepository = MockAuthRepository()
-        let userRepository = MockUserRepository()
-        let userStorage = UserStorage()
-        let cityStorage = CityStorage()
-        
-        return SettingsViewModel(
-            authRespository: authRepository,
-            userRepository: userRepository,
-            userStorage: userStorage,
-            cityStorage: cityStorage
-        )
-    }
-}
+//extension SettingsViewModel {
+//    static var mock: SettingsViewModel {
+//        let authRepository = MockAuthRepository()
+//        let userRepository = MockUserRepository()
+//        let userStorage = UserStorage()
+//        let cityStorage = CityStorage()
+//        
+//        return SettingsViewModel(
+//            authRespository: authRepository,
+//            userRepository: userRepository,
+//            userStorage: userStorage,
+//            cityStorage: cityStorage
+//        )
+//    }
+//}

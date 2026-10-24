@@ -6,7 +6,7 @@ struct PetProfileLabelView: View {
     let name: String
     let species: String
     let age: Int
-    let gender: Gender
+    let gender: PetGender
     
     var body: some View {
         HStack(spacing: 8) {

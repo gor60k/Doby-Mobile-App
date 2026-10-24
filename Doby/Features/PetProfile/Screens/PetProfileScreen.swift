@@ -35,62 +35,19 @@ struct PetProfileScreen: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
-                PetProfileGallaryView(
+            switch viewModel.state {
+            case .loading:
+                ProgressView()
+            case .loaded(let pet):
+                PetProfileContentView(
+                    pet: pet,
                     currentPage: $viewModel.currentPage,
-                    items: viewModel.pet.photos
+                    infoItems: viewModel.infoItems,
+                    selection: $selection,
+                    options: options
                 )
-                
-                PetProfileLabelView(
-                    name: viewModel.pet.name,
-                    species: viewModel.pet.breedName,
-                    age: viewModel.pet.age,
-                    gender: .male
-                )
-                
-                PrimaryCollapsibleSection(title: "Подробнее") {
-                    VStack(spacing: 10) {
-                        HStack(spacing: 8) {
-                            ForEach(Array(viewModel.infoItems.enumerated()), id: \.offset) { _, item in
-                                PetProfileInfoCardView(item: item)
-                            }
-                        }
-                        
-                        PetProfileDetailsView(
-                            selection: $selection,
-                            aboutValue: .about,
-                            feedbackValue: .feedback,
-                            options: options,
-                            title: { $0.rawValue },
-                            description: viewModel.pet.additionalInfo,
-                            buttonAction: {}
-                        )
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                
-                PrimaryCollapsibleSection(title: "Мои особенности") {
-                    PetProfileTagsView(tags: viewModel.pet.specificTags)
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                
-                PrimaryCollapsibleSection(title: "Что я ем") {
-                    PetProfileDietView(
-                        dietType: viewModel.pet.dietType,
-                        dietPatterns: viewModel.pet.dietPatterns,
-                        dietAdditionalInfo: viewModel.pet.dietAdditionalInfo
-                    )
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
-                
-                PrimaryCollapsibleSection(title: "Важные предупреждения!") {
-                    PetProfileTagsView(tags: viewModel.pet.warningTags)
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 10)
+            case .failed(let string):
+                Text(string)
             }
         }
         .background(.primaryBackground)
@@ -106,13 +63,13 @@ struct PetProfileScreen: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        PetProfileScreen(
-            viewModel: .mock,
-            petId: 1,
-            openSettings: {_ in }
-        )
-    }
-    .PreviewAppEnvironment()
-}
+//#Preview {
+//    NavigationStack {
+//        PetProfileScreen(
+//            viewModel: .mock,
+//            petId: 1,
+//            openSettings: {_ in }
+//        )
+//    }
+//    .PreviewAppEnvironment()
+//}

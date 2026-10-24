@@ -9,8 +9,8 @@ struct UserPhotoMapper {
     }
     
     // MARK: - Маппинг в доменную модель
-    nonisolated static func mapToDomain(from dto: UserPhotoDTO) -> Photo {
-        return Photo(
+    nonisolated static func mapToDomain(from dto: UserPhotoDTO) -> UserPhoto {
+        return UserPhoto(
             id: dto.id,
             imageURL: dto.image_url,
             orderNumber: dto.order_number,
@@ -18,11 +18,11 @@ struct UserPhotoMapper {
         )
     }
     
-    nonisolated static func mapToDomain(from dtos: [UserPhotoDTO]) -> [Photo] {
+    nonisolated static func mapToDomain(from dtos: [UserPhotoDTO]) -> [UserPhoto] {
         dtos.map(mapToDomain(from:))
     }
     
-    nonisolated static func mapToDomain(from dtos: [UserPhotoDTO]?) -> [Photo]? {
+    nonisolated static func mapToDomain(from dtos: [UserPhotoDTO]?) -> [UserPhoto]? {
         dtos.map(mapToDomain(from:))
     }
 }

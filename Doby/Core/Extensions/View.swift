@@ -7,8 +7,7 @@ extension View {
         appEnvironment(
             container: try! AppContainer(),
             themeService: ThemeService(),
-            primaryColorService: PrimaryColorService(),
-            viewContextService: ViewContextService(currentUserProvider: UserStorage())
+            primaryColorService: PrimaryColorService()
         )
     }
 
@@ -16,8 +15,7 @@ extension View {
     func appEnvironment(
         container: AppContainer,
         themeService: ThemeService,
-        primaryColorService: PrimaryColorService,
-        viewContextService: ViewContextService
+        primaryColorService: PrimaryColorService
     ) -> some View {
         self
             .environment(\.appContainer, container)
@@ -25,7 +23,7 @@ extension View {
             .environment(container.petStorage)
             .environment(container.userStorage)
             .environment(container.cityStorage)
-            .environment(container.chatStorage)
+//            .environment(container.chatStorage)
         
             .environment(container.sessionService)
             .environment(container.viewContextService)

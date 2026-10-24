@@ -87,17 +87,17 @@ struct SettingsScreen: View {
     }
 }
 
-#Preview {
-    SettingsScreen(
-        viewModel: .mock,
-        settingsNavigation: SettingsNavigation(
-            openSettingsAppearance: {},
-            openSettingsPrivacy: {},
-            openSettingsNotifications: {}
-        )
-    )
-    .PreviewAppEnvironment()
-    .environment(ProfileRouter())
-    .environment(UserStorage())
-}
+//#Preview {
+//    SettingsScreen(
+//        viewModel: .mock,
+//        settingsNavigation: SettingsNavigation(
+//            openSettingsAppearance: {},
+//            openSettingsPrivacy: {},
+//            openSettingsNotifications: {}
+//        )
+//    )
+//    .PreviewAppEnvironment()
+//    .environment(ProfileRouter())
+//    .environment(UserStorage())
+//}
 

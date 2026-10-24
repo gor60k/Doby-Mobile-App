@@ -1,123 +1,84 @@
 import Foundation
 import Observation
+import GRDB
 
 @MainActor
 @Observable
 final class PetStorage {
-    private let actor = PetStorageActor()
-    
-    var pets: [Pet]?
-    
-    init(loadFromDisk: Bool = true) {
-        guard loadFromDisk else { return }
-        
-        Task {
-            await load()
-        }
-    }
-    
-    func load() async {
-        let loaded = await actor.load()
-        self.pets = loaded
-    }
-    
-    func set(_ pets: [Pet]) {
-        self.pets = pets
-        persist()
-    }
-    
-    func update(_ pet: Pet) {
-        guard var pets else { return }
-        
-        if let index = pets.firstIndex(where: { $0.id == pet.id }) {
-            pets[index] = pet
-        } else {
-            pets.append(pet)
-        }
-        persist()
-    }
-    
-    func patch(
-        with petId: Int,
-        mutate: (inout Pet) -> Void
-    ) {
-        guard
-            var pets,
-            let index = pets.firstIndex(where: { $0.id == petId })
-        else { return }
-        
-        mutate(&pets[index])
-        persist()
-    }
-    
-    func remove(id: Int) {
-        guard var pets else { return }
-        
-        pets = pets.filter { $0.id != id }
-        persist()
-    }
-    
-    func clear() {
-        guard var pets else { return }
-        
-        pets.removeAll()
-        persist()
-    }
-    
-    private func persist() {
-        guard var pets else { return }
-        
-        let snapshot = pets
-        Task {
-            await actor.save(snapshot)
-        }
-    }
-}
+    private let actor: PetStorageActor
+    private var ownerUUID: String?
+    @ObservationIgnored private var observationTask: Task<Void, Never>?
 
-extension PetStorage {
-    static var mock: PetStorage {
-        let storage = PetStorage(loadFromDisk: false)
+    /// nil, пока первая выборка из БД не пришла
+    private(set) var pets: [Pet]?
+
+    init(actor: PetStorageActor) {
+        self.actor = actor
+    }
+
+    // MARK: - Подписка
+
+    /// Вызывать после входа или при смене пользователя
+    func start(ownerUUID: String) {
+        guard self.ownerUUID != ownerUUID else { return }
+        stop()
+        self.ownerUUID = ownerUUID
+
+        let source = actor.observeAll(ownerUUID: ownerUUID)
+        observationTask = Task { [weak self] in
+            do {
+                for try await items in source {
+                    self?.pets = PetRecordMapper.mapToDomain(from: items)
+                }
+            } catch {
+                // залогировать через LogService
+            }
+        }
+    }
+
+    /// Вызывать при логауте
+    func stop() {
+        observationTask?.cancel()
+        observationTask = nil
+        ownerUUID = nil
+        pets = nil
+    }
+
+    // MARK: - CRUD
+
+    func set(_ pets: [Pet]) async throws {
+        guard let ownerUUID else { return }
+        let items = PetRecordMapper.mapToRecord(from: pets)
+        try await actor.replaceAll(items, ownerUUID: ownerUUID)
+    }
+
+    func update(_ pet: Pet) async throws {
+        let snapshot = PetRecordMapper.mapToRecord(from: pet)
+        try await actor.save(snapshot.pet, with: snapshot.photos)
+    }
+
+    func patch(with petId: Int, mutate: (inout Pet) -> Void) async throws {
+        guard var pet = pets?.first(where: { $0.id == petId }) else { return }
+        mutate(&pet)
+        try await update(pet)
+    }
+
+    func remove(id: Int) async throws {
+        try await actor.delete(by: id)
+    }
+
+    func clear() async throws {
+        guard let ownerUUID else { return }
+        try await actor.deleteAll(ownerUUID: ownerUUID)
+    }
+
+    func pet(id: Int) async throws -> Pet? {
+        let record = try await actor.fetch(with: id)
         
-        storage.pets = [
-            Pet(
-                id: 1,
-                petType: .dog,
-                ownerUUID: "",
-                name: "Варя",
-                age: 4,
-                gender: .female,
-                height: 20,
-                weight: 6,
-                breedName: "Вест Хайлен Уайт Терьер",
-                dietType: "Натуральное питание + сухой корм супер-премиум класса",
-                dietPatterns: "Ест 2 раза в день, любит индейку и овощи, пьёт много воды, иногда выпрашивает лакомства",
-                warningTags: [
-                    "Аллергия",
-                    "Чувствительное пищеварение",
-                    "Боится громких звуков",
-                    "Нельзя курицу",
-                    "Склонность к перееданию"
-                ],
-                specificTags: [
-                    "Любит сыр",
-                    "Обожает прогулки",
-                    "Спит только с игрушкой",
-                    "Дружелюбна к детям",
-                    "Знает команды"
-                ],
-                additionalInfo: "Описание питомца",
-                dietAdditionalInfo: "Аллергия на курицу. Нельзя сладкое и трубчатые кости. В период линьки принимает витамины для шерсти.",
-                photos: [
-                    PetPhoto(
-                        id: 1,
-                        imageURL: "PetAvatarPlaceholder",
-                        orderNumber: 1,
-                        isMain: true
-                    )
-                ]
-            )
-        ]
+        guard var record = record else { return nil }
         
-        return storage
+        let pet = PetRecordMapper.mapToDomain(from: record)
+        
+        return pet
     }
 }

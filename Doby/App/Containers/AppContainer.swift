@@ -5,13 +5,15 @@ import Foundation
 @MainActor
 final class AppContainer {
     let dbPool: DatabasePool
-    let chatStorageActor: ChatStorageActor
+    let userStorageActor: UserStorageActor
+    let petStorageActor: PetStorageActor
+//    let chatStorageActor: ChatStorageActor
     
     // MARK: - Хранилища
-    let userStorage = UserStorage()
-    let petStorage = PetStorage()
+    let userStorage: UserStorage
+    let petStorage: PetStorage
     let cityStorage = CityStorage()
-    let chatStorage: ChatStorage
+//    let chatStorage: ChatStorage
     
     // MARK: - Сервисы инфраструктуры
     let keychainService = KeychainService()
@@ -27,7 +29,7 @@ final class AppContainer {
     let authRepository: AuthRepositoryProtocol
     let userRepository: UserRepositoryProtocol
     let petRepository: PetRepositoryProtocol
-    let chatRepository: ChatRepositoryProtocol
+//    let chatRepository: ChatRepositoryProtocol
     
     init() throws {
         authApiClient = AppContainer.makePlainClient()
@@ -35,8 +37,14 @@ final class AppContainer {
         let dbURL = try Self.makeDatabaseURL()
         dbPool = try DatabasePool(path: dbURL.path)
         
-        chatStorageActor = ChatStorageActor(dbPool: dbPool)
-        chatStorage = ChatStorage(actor: chatStorageActor)
+        userStorageActor = UserStorageActor(dbPool: dbPool)
+        userStorage = UserStorage(actor: userStorageActor)
+        
+        petStorageActor = PetStorageActor(dbPool: dbPool)
+        petStorage = PetStorage(actor: petStorageActor)
+        
+//        chatStorageActor = ChatStorageActor(dbPool: dbPool)
+//        chatStorage = ChatStorage(actor: chatStorageActor)
         
         viewContextService = ViewContextService(
             currentUserProvider: userStorage
@@ -70,10 +78,10 @@ final class AppContainer {
             storage: petStorage
         )
         
-        chatRepository = ChatRepository(
-            api: ChatAPI(apiClient: apiClient),
-            storage: chatStorage
-        )
+//        chatRepository = ChatRepository(
+//            api: ChatAPI(apiClient: apiClient),
+//            storage: chatStorage
+//        )
     }
 }
 
