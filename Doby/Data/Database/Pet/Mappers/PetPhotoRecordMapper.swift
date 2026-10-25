@@ -1,7 +1,7 @@
 import Foundation
 
 struct PetPhotoRecordMapper {
-    nonisolated static func mapToRecord(from photo: PetPhoto, petId: Int) -> PetPhotoRecord {
+    nonisolated static func mapToRecord(from photo: Photo, petId: Int) -> PetPhotoRecord {
         return PetPhotoRecord(
             id: photo.id,
             petId: petId,
@@ -11,8 +11,8 @@ struct PetPhotoRecordMapper {
         )
     }
     
-    nonisolated static func mapToDomain(from record: PetPhotoRecord) -> PetPhoto {
-        return PetPhoto(
+    nonisolated static func mapToDomain(from record: PetPhotoRecord) -> Photo {
+        return Photo(
             id: record.id,
             imageURL: record.imageURL,
             orderNumber: record.orderNumber,
