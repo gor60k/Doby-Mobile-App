@@ -35,7 +35,13 @@ final class AppContainer {
         authApiClient = AppContainer.makePlainClient()
         
         let dbURL = try Self.makeDatabaseURL()
+        
+//        file:///Users/aleksandrsabelnikov/Library/Developer/CoreSimulator/Devices/60857DA3-E675-43DE-BD98-3813C289B97D/data/Containers/Data/Application/B97A6679-04C1-4797-9F94-072CF1B69836/Library/Application%20Support/Database/app.sqlite
+        
         dbPool = try DatabasePool(path: dbURL.path)
+        
+        let migrator = MigrationsManager.makeMigrator()
+        try migrator.migrate(dbPool)
         
         userStorageActor = UserStorageActor(dbPool: dbPool)
         userStorage = UserStorage(actor: userStorageActor)

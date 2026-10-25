@@ -85,7 +85,7 @@ final class PetSettingsViewModel: ViewModel {
     
     func uploadPhoto(_ data: Data) async {
         await perform {
-            let input = PetPhotoInput(
+            let input = PhotoInput(
                 image: data,
                 orderNumber: (pet?.photos.count ?? 0) + 1,
                 isMain: pet?.photos.isEmpty ?? true
@@ -103,17 +103,3 @@ final class PetSettingsViewModel: ViewModel {
         return baseURL.appendingPathComponent(photoPath)
     }
 }
-
-//extension PetSettingsViewModel {
-//    static var mock: PetSettingsViewModel {
-//        let repository = MockPetRepository()
-//        let storage = PetStorage()
-//        
-//        return PetSettingsViewModel(
-//            petRepository: repository,
-//            petStorage: storage,
-//            petId: 1,
-//            ownerUUID: ""
-//        )
-//    }
-//}
