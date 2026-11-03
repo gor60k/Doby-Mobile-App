@@ -12,7 +12,7 @@ struct PetRecord: Codable, Identifiable, FetchableRecord, PersistableRecord {
     
     let id: Int
     let petType: PetType
-    let ownerUUID: String
+    let ownerUuid: String
     let name: String
     let age: Int
     let gender: PetGender

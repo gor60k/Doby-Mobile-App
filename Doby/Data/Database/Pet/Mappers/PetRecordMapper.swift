@@ -5,7 +5,7 @@ struct PetRecordMapper {
         let record = PetRecord(
             id: pet.id,
             petType: pet.petType,
-            ownerUUID: pet.ownerUUID,
+            ownerUuid: pet.ownerUUID,
             name: pet.name,
             age: pet.age,
             gender: pet.gender,
@@ -40,7 +40,7 @@ struct PetRecordMapper {
         return Pet(
             id: record.id,
             petType: record.petType,
-            ownerUUID: record.ownerUUID,
+            ownerUUID: record.ownerUuid,
             name: record.name,
             age: record.age,
             gender: record.gender,

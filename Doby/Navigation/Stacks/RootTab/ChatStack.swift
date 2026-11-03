@@ -30,8 +30,8 @@ struct ChatStack: View {
                             viewModel: appContainer.makeProfileViewModel(
                                 with: .user(uuid: uuid)
                             ),
-                            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
-                            profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
+//                            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
+                            ordersViewModel: appContainer.makeProfileOrdersViewModel(),
                             profileNavigation: profileNavigation
                         )
                     }

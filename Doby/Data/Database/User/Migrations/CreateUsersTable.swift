@@ -6,11 +6,11 @@ extension MigrationsManager {
             try db.create(table: UserRecord.databaseTableName) { t in
                 t.column("uuid", .text).primaryKey()
                 t.column("username", .text).notNull()
-                t.column("firstName", .text)
-                t.column("lastName", .text)
+                t.column("first_name", .text)
+                t.column("last_name", .text)
                 t.column("patronymic", .text)
                 t.column("phone", .text)
-                t.column("city_id", .integer)
+                t.column("city_id", .integer).notNull()
                 t.column("bio", .text)
             }
         }

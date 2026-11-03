@@ -4,76 +4,62 @@ import Observation
 @MainActor
 @Observable
 final class ProfileViewModel: ViewModel {
-    // MARK: - Инфраструктура
-    private let viewContextService: ViewContextService
-    private let currentUserProvider: CurrentUserProviding
-    
-    // MARK: - Репозитории сущностей
+    // MARK: - Зависимости
     private let userRepository: UserRepositoryProtocol
     private let petRepository: PetRepositoryProtocol
-//    private let chatRepository: ChatRepositoryProtocol
+
+    // MARK: - Состояние
+    let target: ProfileTarget
+    private(set) var state: LoadState<ProfileContent> = .idle
+
+    var isCurrentUser: Bool { target == .currentUser }
     
-    private(set) var user: User?
-    private(set) var pets: [Pet] = []
-    
-    private let target: ProfileTarget
-    var isCurrentUser: Bool {
-        viewContextService.isCurrentUser
+    var content: ProfileContent? {
+        if case .loaded(let content) = state { return content }
+        return nil
     }
-    
+    var user: User? { content?.user }
+
+    // MARK: - Init
     init(
-        viewContextService: ViewContextService,
-        currentUserProvider: CurrentUserProviding,
         userRepository: UserRepositoryProtocol,
         petRepository: PetRepositoryProtocol,
-//        chatRepository: ChatRepositoryProtocol,
         target: ProfileTarget = .currentUser
     ) {
-        self.viewContextService = viewContextService
-        self.currentUserProvider = currentUserProvider
         self.userRepository = userRepository
         self.petRepository = petRepository
-//        self.chatRepository = chatRepository
         self.target = target
     }
-    
+
     // MARK: - Публичные методы
-    func load() async {
-        await perform {
-            let user = try await getUser()
-            self.user = user
-            
-            viewContextService.open(user: user)
-            
-            async let petsTask = petRepository.fetchPets(from: user.uuid)
-            self.pets = try await petsTask
-        }
-    }
-    
     func loadIfNeeded() async {
-        if user == nil {
-            await load()
-        }
-    }
-    
-    func refresh() async {
+        guard case .idle = state else { return }
         await load()
     }
-    
-    func createChat() async {
-        let myUUID = currentUserProvider.currentUserUUID
-        let otherUUID = viewContextService.viewedUser?.uuid
-        
-        await perform {
-            guard let myUUID, let otherUUID else { return }
-            
-            let input = CreateChatInput.direct(participants: [myUUID, otherUUID])
-//            try await chatRepository.creageChat(input)
+
+    func refresh() async {
+        await load(showsLoading: false)
+    }
+
+    // MARK: - Загрузка
+    private func load(showsLoading: Bool = true) async {
+        let previous = state
+        if showsLoading { state = .loading }
+
+        do {
+            let user = try await fetchUser()
+            let pets = try await petRepository.fetchPets(from: user.uuid)
+            state = .loaded(ProfileContent(user: user, pets: pets))
+        } catch is CancellationError {
+            state = previous
+        } catch {
+            // при refresh не затираем уже показанный профиль ошибкой
+            if case .loaded = previous, !showsLoading { state = previous }
+            else { state = .error(error) }
         }
     }
-    
-    // MARK: - Привытные методы
-    private func getUser() async throws -> User {
+
+    private func fetchUser() async throws -> User {
         switch target {
         case .currentUser:
             return try await userRepository.getMe()

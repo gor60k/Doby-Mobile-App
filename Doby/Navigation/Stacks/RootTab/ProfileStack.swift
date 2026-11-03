@@ -78,8 +78,8 @@ extension ProfileStack {
     func createProfileScreen(target: ProfileTarget) -> ProfileScreen {
         ProfileScreen(
             viewModel: appContainer.makeProfileViewModel(with: target),
-            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
-            profileOrdersViewModel: appContainer.makeProfileOrdersViewModel(),
+//            profilePetsViewModel: appContainer.makeProfilePetsViewModel(),
+            ordersViewModel: appContainer.makeProfileOrdersViewModel(),
             
             profileNavigation: profileNavigation,
         )

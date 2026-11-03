@@ -4,7 +4,7 @@ import Observation
 @MainActor
 @Observable
 final class SessionService {
-    private let authStorageKey = "isAuthenticated"
+    private let authStorageKey = "isAuthenticated" 
     private let regStorageKey = "isRegistered"
     
     var isRegistered: Bool {

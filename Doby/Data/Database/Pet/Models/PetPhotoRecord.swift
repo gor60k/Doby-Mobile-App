@@ -10,7 +10,7 @@ struct PetPhotoRecord: Codable, Identifiable, FetchableRecord, PersistableRecord
     
     let id: Int
     let petId: Int
-    let imageURL: String
+    let imageUrl: String
     let orderNumber: Int
     let isMain: Bool
 }

@@ -100,6 +100,8 @@
 │   │   │   │       ├── ChatParticipantRecord.swift
 │   │   │   │       └── ChatRecord.swift
 │   │   │   ├── Cities
+│   │   │   │   ├── Mappers
+│   │   │   │   │   └── CityRecordMapper.swift
 │   │   │   │   ├── Migrations
 │   │   │   │   │   └── CreateCitiesTable.swift
 │   │   │   │   └── Models
@@ -110,19 +112,27 @@
 │   │   │   │   └── Models
 │   │   │   │       └── MessageRecord.swift
 │   │   │   ├── Pet
+│   │   │   │   ├── Mappers
+│   │   │   │   │   ├── PetPhotoRecordMapper.swift
+│   │   │   │   │   └── PetRecordMapper.swift
 │   │   │   │   ├── Migrations
 │   │   │   │   │   ├── CreatePetPhotoTable.swift
 │   │   │   │   │   └── CreatePetsTable.swift
 │   │   │   │   └── Models
 │   │   │   │       ├── PetPhotoRecord.swift
-│   │   │   │       └── PetRecord.swift
+│   │   │   │       ├── PetRecord.swift
+│   │   │   │       └── PetSnapshot.swift
 │   │   │   └── User
+│   │   │       ├── Mappers
+│   │   │       │   ├── UserPhotoRecordMapper.swift
+│   │   │       │   └── UserRecordMapper.swift
 │   │   │       ├── Migrations
 │   │   │       │   ├── CreateUserPhotoTable.swift
 │   │   │       │   └── CreateUsersTable.swift
 │   │   │       └── Models
 │   │   │           ├── UserPhotoRecord.swift
-│   │   │           └── UserRecord.swift
+│   │   │           ├── UserRecord.swift
+│   │   │           └── UserSnapshot.swift
 │   │   ├── Network
 │   │   │   ├── Auth
 │   │   │   │   ├── APIs
@@ -215,6 +225,13 @@
 │   │   │   │       ├── PetPhotoMapper.swift
 │   │   │   │       ├── PetTypeMapper.swift
 │   │   │   │       └── UpdatePetMapper.swift
+│   │   │   ├── Shared
+│   │   │   │   └── Models
+│   │   │   │       ├── PhotoDTO.swift
+│   │   │   │       ├── Request
+│   │   │   │       │   └── PhotoRequest.swift
+│   │   │   │       └── Response
+│   │   │   │           └── PhotoResponse.swift
 │   │   │   └── User
 │   │   │       ├── APIs
 │   │   │       │   ├── UserAPI.swift
@@ -277,6 +294,7 @@
 │   │   │   │   ├── DisplayMode.swift
 │   │   │   │   ├── Gender.swift
 │   │   │   │   ├── Photo.swift
+│   │   │   │   ├── PhotoInput.swift
 │   │   │   │   ├── ProfileTarget.swift
 │   │   │   │   ├── SitterProfile.swift
 │   │   │   │   └── TagType.swift
@@ -658,4 +676,4 @@
 │           └── OldAPIEndpointProtocol.swift
 └── str.txt
 
-261 directories, 398 files
+268 directories, 409 files

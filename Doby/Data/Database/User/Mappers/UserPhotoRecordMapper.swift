@@ -5,7 +5,7 @@ struct UserPhotoRecordMapper {
         return UserPhotoRecord(
             id: photo.id,
             userUuid: userUUID,
-            imageURL: photo.imageURL,
+            imageUrl: photo.imageURL,
             orderNumber: photo.orderNumber,
             isMain: photo.isMain
         )
@@ -18,7 +18,7 @@ struct UserPhotoRecordMapper {
     nonisolated static func mapToDomain(from record: UserPhotoRecord) -> Photo {
         return Photo(
             id: record.id,
-            imageURL: record.imageURL,
+            imageURL: record.imageUrl,
             orderNumber: record.orderNumber,
             isMain: record.isMain
         )
